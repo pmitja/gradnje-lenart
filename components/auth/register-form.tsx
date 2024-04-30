@@ -55,6 +55,26 @@ function RegisterForm() {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <div className="space-y-4">
+          <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => {
+                return (
+                  <FormItem>
+                    <FormLabel>Name</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        disabled={isPending}
+                        placeholder="John Wick"
+                        type="text"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
+            />
             <FormField
               control={form.control}
               name="email"
@@ -88,26 +108,6 @@ function RegisterForm() {
                         disabled={isPending}
                         placeholder="***********"
                         type="password"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                );
-              }}
-            />
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => {
-                return (
-                  <FormItem>
-                    <FormLabel>Name</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        disabled={isPending}
-                        placeholder="John Wick"
-                        type="text"
                       />
                     </FormControl>
                     <FormMessage />

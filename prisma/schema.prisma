@@ -20,7 +20,7 @@ model User {
   accounts      Account[]
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-  passowrd      String?
+  password      String?
 }
 
 model Account {

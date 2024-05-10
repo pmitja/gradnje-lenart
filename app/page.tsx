@@ -1,30 +1,28 @@
-
-import LoginButton from "@/components/auth/login-button";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import { Poppins } from "next/font/google";
+import LoginButton from '@/components/auth/login-button';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+import { Poppins } from 'next/font/google';
 
 const font = Poppins({
-  subsets: ["latin"],
+  subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
-})
+});
 
 export default function Home() {
   return (
-    <main>
-      <div className="space-y-6">
-        <h1 className={cn("text-6xl font-semibold text-center text-white drop-shadow-md", font.className)}>
-          Auth
-        </h1>
-        <p className="text-lg text-white">Simple authentication services</p>
-        <div>
-          <LoginButton>
-            <Button size='lg' variant='secondary' className="w-full">
-              Sign in
-            </Button>
-          </LoginButton>
+    <main className="h-full">
+      <div className="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
+      <section className="h-full w-full md:pt-44 mt-[-70px] relative flex items-center justify-center flex-col ">
+        <p className="text-center">Run your next project, in one place</p>
+        <div className="bg-gradient-to-r from-primary to-secondary-foreground text-transparent bg-clip-text relative">
+          <h1 className="font-bold text-center md:text-[300px] text-7xl">
+            Start.
+          </h1>
         </div>
-      </div>
+        <div className="flex justify-center items-center relative md:mt-[-70px]">
+          <div className="bottom-0 top-[50%] bg-gradient-to-t dark:from-background left-0 right-0 absolute z-10"></div>
+        </div>
+      </section>
     </main>
   );
 }

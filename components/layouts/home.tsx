@@ -5,7 +5,7 @@ import CenteredLayout from './centered';
 
 const HomeLayout: FC<PropsWithChildren> = ({ children }) => (
   <CenteredLayout>
-    <main className={''}>{children}</main>
+    <main className={'w-full h-full'}>{children}</main>
   </CenteredLayout>
 );
 

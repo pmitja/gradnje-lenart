@@ -10,7 +10,7 @@ const CenteredLayout: FC<PropsWithChildren> = ({ children }) => (
   
     <div
       className={
-        'container mx-auto flex w-full min-w-0 items-center justify-center px-4 py-14 md:px-14 lg:px-28 h-full'
+        'container mx-auto flex w-full min-w-0 items-center justify-center h-full'
       }>
       {children}
     </div>

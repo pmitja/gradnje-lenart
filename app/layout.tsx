@@ -3,7 +3,10 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import { SessionProvider } from 'next-auth/react';
 import { auth } from '@/auth';
-import { cn } from '@/lib/utils';
+import Navigation from '@/components/containers/navigation';
+import { User } from 'next-auth';
+import { ThemeProvider } from '@/providers/theme-provider';
+import WithLayout from '@/components/with-layout';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -21,7 +24,15 @@ export default async function RootLayout({
   return (
     <SessionProvider session={session}>
       <html lang="en">
-        <body className={cn('flex h-full flex-col items-center justify-center bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-sky-400 to-blue-800', inter.className)}>{children}</body>
+        <body className={inter.className}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange>
+            <WithLayout layout="home">{children}</WithLayout>
+          </ThemeProvider>
+        </body>
       </html>
     </SessionProvider>
   );

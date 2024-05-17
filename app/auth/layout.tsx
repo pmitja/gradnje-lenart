@@ -1,12 +1,14 @@
+import WithLayout from "@/components/with-layout";
+
 type AuthLayoutProps = {
   children: React.ReactNode;
 };
 
 const AuthLayout = ({ children }: AuthLayoutProps) => {
   return (
-    <div className="flex h-full w-full flex-col items-center justify-center bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-sky-400 to-blue-800">
+    <WithLayout layout="centered">
       {children}
-    </div>
+    </WithLayout>
   );
 };
 

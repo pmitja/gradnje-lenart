@@ -22,7 +22,7 @@ function LoginButton({ children, mode = 'redirect', asChild }: LoginButtonProps)
   }
 
   return (
-    <div onClick={onClick} className="cursor-pointer">{children}</div>
+    <div onClick={onClick} className="cursor-pointer bg-primary text-white p-2 px-4 rounded-md hover:bg-primary/80 dark:bg-white dark:text-black">{children}</div>
   )
 }
 

@@ -1,14 +1,14 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Archivo, Montserrat } from 'next/font/google';
 import './globals.css';
 import { SessionProvider } from 'next-auth/react';
 import { auth } from '@/auth';
-import Navigation from '@/components/containers/navigation';
-import { User } from 'next-auth';
 import { ThemeProvider } from '@/providers/theme-provider';
 import WithLayout from '@/components/with-layout';
+import { cn } from '@/lib/utils';
 
-const inter = Inter({ subsets: ['latin'] });
+const montserrat = Montserrat({ subsets: ['latin'] });
+const archivo = Archivo({ subsets: ['latin'], variable: '--font-archivo' });
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -23,15 +23,9 @@ export default async function RootLayout({
   const session = await auth();
   return (
     <SessionProvider session={session}>
-      <html lang="en">
-        <body className={inter.className}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange>
-            <WithLayout layout="home">{children}</WithLayout>
-          </ThemeProvider>
+      <html lang="sl">
+        <body className={`${montserrat.className} ${archivo.variable} bg-body-75`}>
+          <WithLayout layout="centered">{children}</WithLayout>
         </body>
       </html>
     </SessionProvider>

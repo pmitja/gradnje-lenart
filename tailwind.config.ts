@@ -28,14 +28,65 @@ const config = {
         primary: {
           DEFAULT: 'hsl(var(--primary))',
           foreground: 'hsl(var(--primary-foreground))',
+          50: '#f0f4ed',
+          75: '#c3d2b6',
+          100: '#aabf98',
+          200: '#85a46c',
+          300: '#6c914e',
+          400: '#4c6637',
+          500: '#425830'
         },
         secondary: {
           DEFAULT: 'hsl(var(--secondary))',
           foreground: 'hsl(var(--secondary-foreground))',
+          50: '#e8ebed',
+          75: '#a0abb4',
+          100: '#788894',
+          200: '#3e5566',
+          300: '#173247',
+          400: '#102332',
+          500: '#0e1f2b'
+        },
+        body: {
+          DEFAULT: '#FFFFF',
+          50: '#fefdfa',
+          75: '#fcf6eb',
+          100: '#fbf3e3',
+          200: '#f9eed6',
+          300: '#f8eace',
+          400: '#aea490',
+          500: '#978f7e'
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
+          50: '#fceae9',
+          75: '#f1a9a4',
+          100: '#eb857f',
+          200: '#e25148',
+          300: '#dc2d22',
+          400: '#9a1f18',
+          500: '#861b15'
+        },
+        success: {
+          DEFAULT: "#ffff",
+          50: '#e9fbeb',
+          75: '#a6efae',
+          100: '#82e88c',
+          200: '#4cde5b',
+          300: '#27d739',
+          400: '#1b9728',
+          500: '#188323'
+        },
+        informative: {
+          DEFAULT: "#ffff",
+          50: '#e9fafd',
+          75: '#a6ecf6',
+          100: '#81e4f2',
+          200: '#4bd9ed',
+          300: '#26d1e9',
+          400: '#1b92a3',
+          500: '#177f8e'
         },
         muted: {
           DEFAULT: "hsl(var(--muted))",

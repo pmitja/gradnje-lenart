@@ -1,14 +1,57 @@
-import type { FC } from 'react';
-import Navigation from './containers/navigation';
-import { auth } from '@/auth';
-import { User } from 'next-auth';
+"use client"
 
-const WithNavigation: FC = async () => {
-  const session = await auth();
+import { useState, type FC, useEffect } from 'react';
+import { useMediaQuery } from '@/hooks/use-media-query';
+import MobileNavigation from './containers/navigation/mobile-navigation';
+import DesktopNavigation from '@/components/containers/navigation/desktop-navigation';
+
+const navItems = [
+  {
+    text: 'Projekti',
+    link: '/projekti',
+  },
+  {
+    text: 'Podjetje',
+    link: '/podjetje',
+  },
+  {
+    text: 'Reference',
+    link: '/reference',
+  },
+  {
+    text: 'Kontakt',
+    link: '/kontakt',
+  },
+  {
+    text: 'Blog',
+    link: '/blog',
+  },
+]
+
+const WithNavigation: FC = () => {
+
+  const isDesktop = useMediaQuery('(min-width: 768px)')
+
+  const [ isMounted, setIsMounted ] = useState(false)
+
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
 
   return (
-    <Navigation user={session?.user as User & { role: 'ADMIN' | 'USER' }} />
-  );
+    <>
+      {!isDesktop && isMounted && (
+        <>
+          <MobileNavigation navItems={navItems} />
+        </>
+      )}
+      {isDesktop && isMounted && (
+        <>
+          <DesktopNavigation navItems={navItems} />
+        </>
+      )}
+    </>
+  )
 };
 
 export default WithNavigation;

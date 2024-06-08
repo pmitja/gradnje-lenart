@@ -3,9 +3,7 @@ import { Archivo, Montserrat } from 'next/font/google';
 import './globals.css';
 import { SessionProvider } from 'next-auth/react';
 import { auth } from '@/auth';
-import { ThemeProvider } from '@/providers/theme-provider';
 import WithLayout from '@/components/with-layout';
-import { cn } from '@/lib/utils';
 
 const montserrat = Montserrat({ subsets: ['latin'] });
 const archivo = Archivo({ subsets: ['latin'], variable: '--font-archivo' });

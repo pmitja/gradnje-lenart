@@ -8,7 +8,7 @@ const containerVariants = cva('mx-auto px-2 sm:px-10 lg:px-20', {
     variant: {
       outer: 'max-w-8xl',
       inner: 'max-w-8xl px-6 lg:px-[172px]',
-      navigation: 'max-w-8xl bg-navigation-banner bg-left-top py-14',
+      navigation: 'max-w-8xl bg-navigation-banner bg-left-top py-14s',
       form: 'max-w-[848px]',
     },
   },

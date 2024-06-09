@@ -30,7 +30,7 @@ const navItems = [
 
 const WithNavigation: FC = () => {
 
-  const isDesktop = useMediaQuery('(min-width: 768px)')
+  const isDesktop = useMediaQuery('(min-width: 1120px)')
 
   const [ isMounted, setIsMounted ] = useState(false)
 

@@ -65,7 +65,7 @@ const MobileNavigation = ({ navItems }: NavbarProps) => {
   return (
     <>
       <nav
-        className="fixed top-0 right-0 left-0 py-5 flex items-center justify-between z-10 bg-body-75 mx-5"
+        className="fixed top-0 right-0 left-0 py-5 flex items-center justify-between z-10 px-5 bg-body-75"
         aria-label="Mobile Menu">
         <Link href={'/'}>
           <Image

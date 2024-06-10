@@ -6,7 +6,7 @@ import { ArrowUpRight } from 'lucide-react';
 
 const Hero = () => {
   return (
-    <div className="min-w-[100vw] bg-primary-75">
+    <div className="min-w-[100vw] bg-primary-75 w-[100vw] relative left-1/2 right-1/2 ml-[-50vw] mr-[-50vw]">
       <div className="container w-full grid lg:grid-cols-2 justify-center relative lg:gap-6 gap-10 lg:w-full">
         <div className="flex flex-col gap-5 justify-center relative">
           <div className="bg-primary-500 px-5 py-2 flex gap-[10px] text-body-200 rounded-2xl max-w-fit font-semibold font-archivo">

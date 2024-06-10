@@ -1,4 +1,5 @@
 import Hero from '@/components/common/hero';
+import Partners from '@/components/common/partners';
 import ImageLeftTextRight from '@/components/layouts/image-left-text-right';
 
 export default function Home() {
@@ -12,6 +13,7 @@ export default function Home() {
         text="Odkrijte edinstvene nepremičnine z našimi storitvami. Gradnje 
         Plus vam pomagajo pri svetovanju, prodaji in odkup nepremičnin."
       />
+      <Partners />
     </>
   );
 }

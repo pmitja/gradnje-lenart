@@ -65,7 +65,7 @@ const MobileNavigation = ({ navItems }: NavbarProps) => {
   return (
     <>
       <nav
-        className="fixed top-0 right-0 left-0 py-5 flex items-center justify-between z-10 px-5 bg-body-75"
+        className="fixed top-0 right-0 left-0 py-5 flex items-center justify-between z-[21470000] px-5 bg-body-75"
         aria-label="Mobile Menu">
         <Link href={'/'}>
           <Image
@@ -79,7 +79,7 @@ const MobileNavigation = ({ navItems }: NavbarProps) => {
       </nav>
       <Container
         className={cn(
-          'absolute flex min-h-[calc(100dvh)] min-w-full flex-col gap-6 bg-body-75 p-6 text-xl transition-all duration-500 z-20',
+          'fixed left-0 top-0 flex min-h-[100dvh] min-w-full flex-col gap-6 bg-body-75 p-6 text-xl transition-all duration-500 z-20',
           isOpen ? 'animation-fadeAndSlideIn' : '-translate-y-full opacity-0'
         )}
         role="navigation"
@@ -87,7 +87,7 @@ const MobileNavigation = ({ navItems }: NavbarProps) => {
         <button className="w-full flex justify-end" onClick={handleMenu}>
           <CloseIcon width={40} height={40} />
         </button>
-        <ul className="flex items-center justify-center gap-8 "></ul>
+        <ul className="flex items-center justify-center gap-8"></ul>
         {navItems.map((navItem) => (
           <li className='list-none pb-4' key={navItem.link}>
             <Link href={navItem.link} key={navItem.link} className='text-secondary-300 text-3xl leading-6 font-semibold'>

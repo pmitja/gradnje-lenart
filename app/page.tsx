@@ -2,6 +2,7 @@ import FeatureCards from '@/components/common/feature-cards';
 import Hero from '@/components/common/hero';
 import Partners from '@/components/common/partners';
 import ImageLeftTextRight from '@/components/layouts/image-left-text-right';
+import SectionWithImageAbsolute from '@/components/layouts/sections/image-absolute';
 import SectionWithTitleInMiddle from '@/components/layouts/sections/title-middle';
 
 export default function Home() {
@@ -19,6 +20,13 @@ export default function Home() {
       <SectionWithTitleInMiddle title="Prednosti">
         <FeatureCards />
       </SectionWithTitleInMiddle>
+      <SectionWithImageAbsolute
+        text={
+          'Naj bo vaš dom oaza dobrega počutja. Znižaj stres, povečaj zadovoljstvo in izboljšaj spanec s pozitivnim in udobnim okoljem.'
+        }
+        title="Najdimo vam dom, o katerem sanjate. Na vas je, da spišete najlepšo zgodbo."
+        image={{ src: '/apartment-image.webp', alt: 'Image' }}
+      />
     </>
   );
 }

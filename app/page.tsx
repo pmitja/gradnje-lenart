@@ -1,3 +1,4 @@
+import Cta from '@/components/common/cta';
 import FeatureCards from '@/components/common/feature-cards';
 import Hero from '@/components/common/hero';
 import Partners from '@/components/common/partners';
@@ -27,6 +28,7 @@ export default function Home() {
         title="Najdimo vam dom, o katerem sanjate. Na vas je, da spišete najlepšo zgodbo."
         image={{ src: '/apartment-image.webp', alt: 'Image' }}
       />
+      <Cta />
     </>
   );
 }

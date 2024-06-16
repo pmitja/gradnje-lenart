@@ -17,7 +17,6 @@ const Partners = () => {
             Autoplay({
               delay: 3500,
             }),
-            
           ]}>
           <CarouselContent className="-ml-1">
             <CarouselItem className="basis-1/2 lg:basis-1/4">

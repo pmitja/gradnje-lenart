@@ -2,6 +2,7 @@ import Cta from '@/components/common/cta';
 import FeatureCards from '@/components/common/feature-cards';
 import Hero from '@/components/common/hero';
 import Partners from '@/components/common/partners';
+import Testimonials from '@/components/common/testimonials';
 import ImageLeftTextRight from '@/components/layouts/image-left-text-right';
 import SectionWithImageAbsolute from '@/components/layouts/sections/image-absolute';
 import SectionWithTitleInMiddle from '@/components/layouts/sections/title-middle';
@@ -28,6 +29,7 @@ export default function Home() {
         title="Najdimo vam dom, o katerem sanjate. Na vas je, da spišete najlepšo zgodbo."
         image={{ src: '/apartment-image.webp', alt: 'Image' }}
       />
+      <Testimonials />
       <Cta />
     </>
   );

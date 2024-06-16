@@ -6,6 +6,7 @@ import Testimonials from '@/components/common/testimonials';
 import ImageLeftTextRight from '@/components/layouts/image-left-text-right';
 import Faq from '@/components/layouts/sections/faq';
 import SectionWithImageAbsolute from '@/components/layouts/sections/image-absolute';
+import LatestBlogPosts from '@/components/layouts/sections/latests-blog-posts';
 import SectionWithTitleInMiddle from '@/components/layouts/sections/title-middle';
 
 export default function Home() {
@@ -32,6 +33,9 @@ export default function Home() {
       />
       <Testimonials />
       <Cta />
+      <SectionWithTitleInMiddle title="Zadnje blog objave">
+        <LatestBlogPosts />
+      </SectionWithTitleInMiddle>
       <Faq />
     </>
   );

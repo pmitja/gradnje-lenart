@@ -1,5 +1,6 @@
 import type { FC, PropsWithChildren } from 'react';
 import WithNavigation from '../with-navigation';
+import WithFooter from '../with-footer';
 
 const CenteredLayout: FC<PropsWithChildren> = ({ children }) => (
   <>
@@ -9,6 +10,7 @@ const CenteredLayout: FC<PropsWithChildren> = ({ children }) => (
       }>
         <WithNavigation />
       {children}
+        <WithFooter />
     </div>
   </>
 );

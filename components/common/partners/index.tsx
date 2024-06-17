@@ -19,7 +19,7 @@ const Partners = () => {
             }),
           ]}>
           <CarouselContent className="-ml-1">
-            <CarouselItem className="basis-1/2 lg:basis-1/4">
+            <CarouselItem className="md:basis-1/2 lg:basis-1/4">
               <Image
                 src={'/gradnje-plus-logo.webp'}
                 alt="Partner 1"
@@ -28,7 +28,7 @@ const Partners = () => {
                 className="h-7 md:h-9 lg:h-10 w-fit"
               />
             </CarouselItem>
-            <CarouselItem className="basis-1/2 lg:basis-1/4">
+            <CarouselItem className="md:basis-1/2 lg:basis-1/4">
               <Image
                 src={'/gradnje-plus-logo.webp'}
                 alt="Partner 2"
@@ -37,7 +37,7 @@ const Partners = () => {
                 className="h-7 md:h-9 lg:h-10 w-fit"
               />
             </CarouselItem>
-            <CarouselItem className="basis-1/2 lg:basis-1/4">
+            <CarouselItem className="md:basis-1/2 lg:basis-1/4">
               <Image
                 src={'/gradnje-plus-logo.webp'}
                 alt="Partner 3"
@@ -46,7 +46,7 @@ const Partners = () => {
                 className="h-7 md:h-9 lg:h-10 w-fit"
               />
             </CarouselItem>
-            <CarouselItem className="basis-1/2 lg:basis-1/4">
+            <CarouselItem className="md:basis-1/2 lg:basis-1/4">
               <Image
                 src={'/gradnje-plus-logo.webp'}
                 alt="Partner 4"
@@ -55,7 +55,7 @@ const Partners = () => {
                 className="h-7 md:h-9 lg:h-10 w-fit"
               />
             </CarouselItem>
-            <CarouselItem className="basis-1/2 lg:basis-1/4">
+            <CarouselItem className="md:basis-1/2 lg:basis-1/4">
               <Image
                 src={'/gradnje-plus-logo.webp'}
                 alt="Partner 5"
@@ -64,7 +64,7 @@ const Partners = () => {
                 className="h-7 md:h-9 lg:h-10 w-fit"
               />
             </CarouselItem>
-            <CarouselItem className="basis-1/2 lg:basis-1/4">
+            <CarouselItem className="md:basis-1/2 lg:basis-1/4">
               <Image
                 src={'/gradnje-plus-logo.webp'}
                 alt="Partner 6"
@@ -73,7 +73,7 @@ const Partners = () => {
                 className="h-7 md:h-9 lg:h-10 w-fit"
               />
             </CarouselItem>
-            <CarouselItem className="basis-1/2 lg:basis-1/4">
+            <CarouselItem className="md:basis-1/2 lg:basis-1/4">
               <Image
                 src={'/gradnje-plus-logo.webp'}
                 alt="Partner 7"
@@ -82,7 +82,7 @@ const Partners = () => {
                 className="h-7 md:h-9 lg:h-10 w-fit"
               />
             </CarouselItem>
-            <CarouselItem className="basis-1/2 lg:basis-1/4">
+            <CarouselItem className="md:basis-1/2 lg:basis-1/4">
               <Image
                 src={'/gradnje-plus-logo.webp'}
                 alt="Partner 8"
@@ -91,7 +91,7 @@ const Partners = () => {
                 className="h-7 md:h-9 lg:h-10 w-fit"
               />
             </CarouselItem>
-            <CarouselItem className="basis-1/2 lg:basis-1/4">
+            <CarouselItem className="md:basis-1/2 lg:basis-1/4">
               <Image
                 src={'/gradnje-plus-logo.webp'}
                 alt="Partner 9"

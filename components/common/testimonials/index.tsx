@@ -29,7 +29,7 @@ const Testimonials = () => {
           </ButtonWithIcon>
         </div>
         <Carousel
-          className="flex flex-row flex-wrap gap-6 row-start-2 col-span-2 min-w-[100vw] w-[100vw] relative left-1/2 right-1/2 ml-[-50vw] mr-[-50vw]"
+          className="flex flex-row flex-wrap gap-6 row-start-2 col-span-2 min-w-[100vw] w-[100vw] relative left-1/2 right-1/2 ml-[-50vw] mr-[-50vw] md:w-full md:left-auto md:right-auto md:mr-auto md:ml-auto md:min-w-[auto]"
           opts={{
             align: 'start',
           }}

@@ -13,7 +13,7 @@ const Hero = () => {
             <DoubleChervonRightIcon />
             Pozdravljeni, najdite svoje sanje!
           </div>
-          <h2 className="text-4xl leading-[57px] font-bold md:text-[51px] md:leading-[76.5px] lg:mt-2">
+          <h2 className="text-4xl leading-[120%] md:leading-[57px] font-bold md:text-[51px] lg:leading-[76.5px] lg:mt-2">
             Najdite, kupite & stanujte v svoji nepremični z nami!
           </h2>
           <p className="font-archivo text-xl leading-8 text-secondary-200">
@@ -56,7 +56,7 @@ const Hero = () => {
               className="hidden lg:block absolute bottom-0 right-0"
             />
           </div>
-          <div className="bg-body-75 px-5 py-3 lg:p-8 flex gap-4 flex-col lg:flex-row">
+          <div className="bg-body-100 lg:bg-body-75 px-5 py-3 lg:p-8 flex gap-4 flex-col lg:flex-row">
             <div className='flex flex-col gap-3'>
             <h3 className="text-xl font-bold text-secondary-400">
               Večstanovanjskih objekt - Lenart

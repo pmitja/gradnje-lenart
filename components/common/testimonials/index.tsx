@@ -15,7 +15,7 @@ const Testimonials = () => {
     <>
       <section className="grid lg:grid-cols-2 grid-cols-1 gap-8 justify-between">
         <div className="flex flex-col gap-6">
-          <h2 className="text-[51px] leading-[76.5px] font-bold text-primary-200">
+          <h2 className="text-4xl leading-[120%] md:leading-[57px] font-bold md:text-[51px] lg:leading-[76.5px] text-primary-200">
             Izjave zadovoljih strank
           </h2>
 

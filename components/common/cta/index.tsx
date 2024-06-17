@@ -29,7 +29,7 @@ const Cta = () => {
             </Button>
           </div>
           <div className='flex flex-col gap-6'>
-          <h2 className='text-[38px] lg:leading-[57px] font-bold text-body-200 self-center'>Prijavite se za najnovejše projekte</h2>
+          <h2 className='text-3xl lg:text-[38px] lg:leading-[57px] font-bold text-body-200 self-center'>Prijavite se za najnovejše projekte</h2>
           <p className='text-base leading-5 text-secondary-300'>
             Nikar ne zamudite prihodnjih projektov! Prijavite se na našo listo
             obveščanja in bodite med prvimi, ki bodo izvedeli o naših novih

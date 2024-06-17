@@ -30,7 +30,7 @@ const SectionWithImageAbsolute = ({
         className="rounded-2xl max-h-[250px] md:max-h-[550px] lg:max-h-[630px] object-cover relative"
       />
       <div className="flex flex-col gap-6 bg-body-75 md:absolute top-0 left-0 md:max-w-[60%] rounded-2xl rounded-bl-none rounded-tr-none md:pr-2 md:pb-2 lg:pr-6 lg:pb-[50px]">
-        <h2 className="text-[38px] lg:leading-[57px] font-bold text-secondary-200 self-center">
+        <h2 className="text-4xl leading-[120%] md:leading-[57px] font-bold md:text-[51px] lg:leading-[76.5px] text-secondary-200 self-center">
           {title}
         </h2>
         <p className="text-xl leading-6 text-secondary-200">{text}</p>

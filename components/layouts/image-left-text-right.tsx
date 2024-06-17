@@ -39,9 +39,9 @@ const ImageLeftTextRight = ({
         />}
         </div>
       <div className="flex flex-col gap-6 md:gap-5 row-start-1 lg:row-start-auto">
-        <h3 className="text-4xl leading-[57px] font-bold text-secondary-400">
+        <h2 className="text-4xl leading-[120%] md:leading-[57px] font-bold md:text-[51px] lg:leading-[76.5px] text-secondary-400">
           {heading}
-        </h3>
+        </h2>
         <p className="text-xl leading-6">{text}</p>
         <ButtonWithIcon
           variant="primary"

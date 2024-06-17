@@ -35,7 +35,7 @@ const CardWithIcon: FC<CardWithIconProps<Icons>> = ({ icon, iconSize, title, tex
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <IconComponent width={iconSize} height={iconSize} className='text-primary-300' />
-      <h3 className='text-[38px] leading-[57px] text-primary-300 font-bold'>{title}</h3>
+      <h3 className='text-3xl lg:text-[38px] lg:leading-[57px] text-primary-300 font-bold'>{title}</h3>
       <p className='text-xl leading-6 text-secondary-200'>{text}</p>
     </div>
   );

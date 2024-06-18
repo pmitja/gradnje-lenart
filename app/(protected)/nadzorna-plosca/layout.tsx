@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { Archivo, Montserrat } from 'next/font/google';
-import './globals.css';
+import '../../globals.css';
 import { SessionProvider } from 'next-auth/react';
 import { auth } from '@/auth';
 import WithLayout from '@/components/with-layout';
@@ -23,7 +23,7 @@ export default async function RootLayout({
     <SessionProvider session={session}>
       <html lang="sl">
         <body className={`${montserrat.className} ${archivo.variable} bg-body-75`}>
-          <WithLayout layout="centered">{children}</WithLayout>
+          {children}
         </body>
       </html>
     </SessionProvider>

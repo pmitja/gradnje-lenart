@@ -44,7 +44,7 @@ function LoginForm() {
 
     startTransition(() => {
       login(values).then((data) => {
-        setError(data.error);
+        if (data.error) return setError(data.error);
         setSuccess(data.success);
       });
     });
@@ -52,10 +52,7 @@ function LoginForm() {
 
   return (
     <CardWrapper
-      headerLabel="Welcome back!"
-      backButtonLabel="Don't have an account? Register here."
-      backButtonHref="/auth/register"
-      showSocial>
+      headerLabel="Dobrodošli!">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <div className="space-y-4">
@@ -105,7 +102,7 @@ function LoginForm() {
           </div>
           <FormError message={error || urlError} />
           <FormSuccess message={success} />
-          <Button type="submit" className="w-full" disabled={isPending}>
+          <Button type="submit" className="w-full" disabled={isPending} variant={'primary'}>
             Login
           </Button>
         </form>

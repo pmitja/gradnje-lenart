@@ -1,12 +1,11 @@
 import LoginForm from '@/components/auth/login-form';
+import CenteredLayout from '@/components/layouts/centered';
 
 const LoginPage = () => {
   return (
-    <main>
-      <div className="space-y-6">
+    <CenteredLayout className='items-center'>
         <LoginForm />
-      </div>
-    </main>
+    </CenteredLayout>
   );
 };
 

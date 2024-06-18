@@ -7,9 +7,9 @@ const UserPage = () => {
   const user = useCurrentUser();
 
   return ( 
-    <div className="bg-white p-10 rounded-xl">
+    <main className="bg-white p-10 rounded-xl">
       <LogoutButton>Logout</LogoutButton>
-    </div>
+    </main>
    );
 }
  

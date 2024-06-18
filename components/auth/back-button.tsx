@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 
 interface BackButtonProps {
   href: string;
-  label: string;
+  label?: string;
   disabled?: boolean;
 };
 
@@ -23,9 +23,9 @@ export const BackButton = ({
       disabled={disabled}
       asChild
     >
-      <Link href={href}>
+      {label && <Link href={href}>
         {label}
-      </Link>
+      </Link>}
     </Button>
   );
 };

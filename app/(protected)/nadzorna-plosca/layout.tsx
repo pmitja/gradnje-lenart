@@ -3,7 +3,7 @@ import { Archivo, Montserrat } from 'next/font/google';
 import '../../globals.css';
 import { SessionProvider } from 'next-auth/react';
 import { auth } from '@/auth';
-import WithLayout from '@/components/with-layout';
+import WithDashBoardNavigation from '@/components/with-dashboard-navigation';
 
 const montserrat = Montserrat({ subsets: ['latin'] });
 const archivo = Archivo({ subsets: ['latin'], variable: '--font-archivo' });
@@ -22,8 +22,10 @@ export default async function RootLayout({
   return (
     <SessionProvider session={session}>
       <html lang="sl">
-        <body className={`${montserrat.className} ${archivo.variable} bg-body-75`}>
-          {children}
+        <body className={`${montserrat.className} ${archivo.variable}`}>
+          <WithDashBoardNavigation>
+            {children}
+          </WithDashBoardNavigation>
         </body>
       </html>
     </SessionProvider>

@@ -15,6 +15,7 @@ enum UserRole {
   USER
   ADMIN
 }
+
 model User {
   id            String    @id @default(cuid())
   name          String?
@@ -25,7 +26,7 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   password      String?
-  role          UserRole @default(USER)
+  role          UserRole  @default(USER)
 }
 
 model Account {
@@ -50,19 +51,46 @@ model Account {
 }
 
 model VerificationToken {
-  id       String   @id @default(cuid())
-  email String?
+  id        String   @id @default(cuid())
+  email     String?
   token     String   @unique
   expiresAt DateTime
-  
+
   @@unique([email, token])
 }
 
 model PasswordResetToken {
-  id       String   @id @default(cuid())
-  email String
+  id        String   @id @default(cuid())
+  email     String
   token     String   @unique
   expiresAt DateTime
-  
+
   @@unique([email, token])
+}
+
+model Location {
+  id          String       @id @default(cuid())
+  name        String
+  description String
+  address     String
+  city        String
+  realEstate  RealEstate[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model RealEstate {
+  id           String   @id @default(cuid())
+  name         String
+  description  String?
+  number       String?
+  floor        String?
+  size         Float?
+  priceWithTax Float?
+  price        Float?
+  images       String[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  location     Location @relation(fields: [id], references: [id], onDelete: Cascade)
+  userId       String
 }

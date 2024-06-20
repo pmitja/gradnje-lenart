@@ -1,258 +1,450 @@
 'use client';
 
-import LogoutButton from '@/components/auth/logout-button';
-import Link from 'next/link';
-import {
-  ArchiveIcon,
-  DoorOpenIcon,
-  Home,
-  LineChart,
-  Menu,
-  Package,
-  Package2,
-  RssIcon,
-  ShoppingCart,
-  SquarePlusIcon,
-  StickyNoteIcon,
-  Users,
-} from 'lucide-react';
+import { ChevronLeft } from 'lucide-react';
 
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import Image from 'next/image';
+
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion';
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import { Textarea } from '@/components/ui/textarea';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import { useEffect, useState } from 'react';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { ToggleGroup } from '@radix-ui/react-toggle-group';
+import { ToggleGroupItem } from '@/components/ui/toggle-group';
+
+enum StatusType {
+  Prodaja = 'Na prodaj',
+  Rezervirano = 'Rezervirano',
+  Prodano = 'Prodano',
+}
+
+type Apartment = {
+  'stevilka-stanovanja': string;
+  naziv: string;
+  etaza: string;
+  kvadratura: string;
+  'cena-brez-ddv': string;
+  cena: string;
+  status: StatusType;
+};
+
+const formSchema = z.object({
+  'stevilka-stanovanja': z.string().min(1, {
+    message: 'Vnesi številko ki je večja od nič, to polje je obvezno.',
+  }),
+  naziv: z.string().min(3, {
+    message: 'Vnesi naziv ki je daljši od 3 znakov, to polje je obvezno.',
+  }),
+  etaza: z.string().min(1, {
+    message: 'Vnesi etazo ki je daljša od 3 znakov, to polje je obvezno.',
+  }),
+  kvadratura: z.string().min(1, {
+    message: 'Vnesi kvadraturo ki je daljša od 3 znakov, to polje je obvezno.',
+  }),
+  'cena-brez-ddv': z.string().min(1, {
+    message:
+      'Vnesi ceno brez ddv ki je daljša od 3 znakov, to polje je obvezno.',
+  }),
+  cena: z.string().min(1, {
+    message: 'Vnesi ceno ki je daljša od 3 znakov, to polje je obvezno.',
+  }),
+  status: z.nativeEnum(StatusType),
+});
+
+export function DialogDemo({
+  saveFormValues,
+}: {
+  saveFormValues: (values: Apartment) => void;
+}) {
+  const [open, setOpen] = useState(false);
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      'stevilka-stanovanja': '',
+      naziv: '',
+      etaza: '',
+      kvadratura: '',
+      'cena-brez-ddv': '',
+      cena: '',
+      status: StatusType.Prodaja,
+    },
+  });
+
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    saveFormValues(values);
+    setOpen(false);
+  }
+
+  return (
+    <Dialog  open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button variant="outline">Dodaj stanovanje</Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>Dodaj stanovanje</DialogTitle>
+          <DialogDescription>
+            Prosim vnesite točne podatke o stanovanju.
+          </DialogDescription>
+        </DialogHeader>
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="grid gap-4 py-4">
+            <div className="grid grid-cols-1 items-center gap-4">
+              <FormField
+                control={form.control}
+                name="stevilka-stanovanja"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Št. stanovanja</FormLabel>
+                    <FormControl>
+                      <Input
+                        id="stevilka-stanovanja"
+                        defaultValue="1"
+                        className="col-span-3"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="grid grid-cols-1 items-center gap-4">
+              <FormField
+                control={form.control}
+                name="naziv"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Naziv</FormLabel>
+                    <FormControl>
+                      <Input
+                        id="naziv"
+                        defaultValue="2 sobno stanovanje"
+                        className="col-span-3"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="grid grid-cols-1 items-center gap-4">
+              <FormField
+                control={form.control}
+                name="etaza"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Etaža</FormLabel>
+                    <FormControl>
+                      <Input
+                        id="etaza"
+                        defaultValue="3. nadstropje"
+                        className="col-span-3"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="grid grid-cols-1 items-center gap-4">
+              <FormField
+                control={form.control}
+                name="kvadratura"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Kvadratura</FormLabel>
+                    <FormControl>
+                      <Input
+                        id="kvadratura"
+                        defaultValue="3. nadstropje"
+                        className="col-span-3"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="grid grid-cols-1 items-center gap-4">
+              <FormField
+                control={form.control}
+                name="cena-brez-ddv"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Cena (brez ddv)</FormLabel>
+                    <FormControl>
+                      <Input
+                        id="cena-brez-ddv"
+                        defaultValue="100.000 €"
+                        className="col-span-3"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="grid grid-cols-1 items-center gap-4">
+              <FormField
+                control={form.control}
+                name="cena"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Cena</FormLabel>
+                    <FormControl>
+                      <Input
+                        id="cena"
+                        defaultValue="130.000 €"
+                        className="col-span-3"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="grid grid-cols-1 items-center gap-4">
+              <FormField
+                control={form.control}
+                name="status"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Status</FormLabel>
+                    <FormControl>
+                      <ToggleGroup
+                        type="single"
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}>
+                        <FormItem>
+                          <FormControl>
+                            <ToggleGroupItem value={StatusType.Prodaja}>
+                              {StatusType.Prodaja}
+                            </ToggleGroupItem>
+                          </FormControl>
+                        </FormItem>
+                        <FormItem>
+                          <FormControl>
+                            <ToggleGroupItem value={StatusType.Rezervirano}>
+                              {StatusType.Rezervirano}
+                            </ToggleGroupItem>
+                          </FormControl>
+                        </FormItem>
+
+                        <FormItem>
+                          <FormControl>
+                            <ToggleGroupItem value={StatusType.Prodano}>
+                              {StatusType.Prodano}
+                            </ToggleGroupItem>
+                          </FormControl>
+                        </FormItem>
+                      </ToggleGroup>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <DialogFooter>
+              <Button type="submit">Dodaj stanovanje</Button>
+            </DialogFooter>
+          </form>
+        </Form>
+      </DialogContent>
+    </Dialog>
+  );
+}
 
 const UserPage = () => {
+  const [apartments, setApartments] = useState<Apartment[]>([]);
+
+  const saveFormValues = (values: Apartment) => {
+    setApartments((prevApartments) => [...prevApartments, values]);
+  };
+
+  useEffect(() => {
+    console.log(apartments);
+  }, [apartments]);
+
   return (
-    <main>
-      <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
-        <div className="hidden border-r bg-muted/40 md:block">
-          <div className="flex h-full max-h-screen flex-col gap-2">
-            <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
-              <Link
-                href="/nadzorna-plosca"
-                className="flex items-center gap-2 font-semibold">
-                <Image
-                  src={'/gradnje-plus-logo.webp'}
-                  alt="Logo"
-                  width={200}
-                  height={32}
-                />
-              </Link>
-            </div>
-            <div className="flex-1">
-              <nav className="grid items-start px-2 text-sm font-medium lg:px-4 gap-4">
-                <Accordion type="single" collapsible className="w-full">
-                  <AccordionItem value="item-1">
-                    <AccordionTrigger><DoorOpenIcon /> Aktualni projekti</AccordionTrigger>
-                    <AccordionContent>
-                      <Link
-                        href="#"
-                        className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
-                        <Home className="h-4 w-4" />
-                        Dashboard
-                      </Link>
-                      <Link
-                        href="#"
-                        className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
-                        <ShoppingCart className="h-4 w-4" />
-                        Orders
-                        <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
-                          6
-                        </Badge>
-                      </Link>
-                      <Link
-                        href="#"
-                        className="flex items-center gap-3 rounded-lg bg-muted px-3 py-2 text-primary transition-all hover:text-primary">
-                        <Package className="h-4 w-4" />
-                        Products{' '}
-                      </Link>
-                      <Link
-                        href="#"
-                        className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
-                        <Users className="h-4 w-4" />
-                        Customers
-                      </Link>
-                      <Link
-                        href="#"
-                        className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
-                        <LineChart className="h-4 w-4" />
-                        Analytics
-                      </Link>
-                    </AccordionContent>
-                  </AccordionItem>
-                  <AccordionItem value="item-2">
-                    <AccordionTrigger><ArchiveIcon /> Pretekli projekti</AccordionTrigger>
-                    <AccordionContent>
-                      <Link
-                        href="#"
-                        className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
-                        <Home className="h-4 w-4" />
-                        Dashboard
-                      </Link>
-                      <Link
-                        href="#"
-                        className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
-                        <ShoppingCart className="h-4 w-4" />
-                        Orders
-                        <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
-                          6
-                        </Badge>
-                      </Link>
-                      <Link
-                        href="#"
-                        className="flex items-center gap-3 rounded-lg bg-muted px-3 py-2 text-primary transition-all hover:text-primary">
-                        <Package className="h-4 w-4" />
-                        Products{' '}
-                      </Link>
-                      <Link
-                        href="#"
-                        className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
-                        <Users className="h-4 w-4" />
-                        Customers
-                      </Link>
-                      <Link
-                        href="#"
-                        className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
-                        <LineChart className="h-4 w-4" />
-                        Analytics
-                      </Link>
-                    </AccordionContent>
-                  </AccordionItem>
-                  <AccordionItem value="item-3">
-                    <AccordionTrigger><RssIcon />Blog objave</AccordionTrigger>
-                    <AccordionContent>
-                      <Link
-                        href="#"
-                        className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
-                        <StickyNoteIcon className="h-4 w-4" />
-                        Pregled
-                      </Link>
-                      <Link
-                        href="#"
-                        className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
-                        <SquarePlusIcon className="h-4 w-4" />
-                        Dodaj blog objavo
-                      </Link>
-                    </AccordionContent>
-                  </AccordionItem>
-                </Accordion>
-              </nav>
-            </div>
-            <div className="mt-auto p-4">
-              <Card x-chunk="dashboard-02-chunk-0">
-                <CardContent className="p-2 pt-0 md:p-4">
-                  <LogoutButton>Logout</LogoutButton>
-                </CardContent>
-              </Card>
-            </div>
+    <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
+      <div className="mx-auto grid max-w-[59rem] flex-1 auto-rows-max gap-4">
+        <div className="flex items-center gap-4">
+          <Button variant="outline" size="icon" className="h-7 w-7">
+            <ChevronLeft className="h-4 w-4" />
+            <span className="sr-only">Back</span>
+          </Button>
+          <h1 className="flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0 text-primary-300">
+            Dodajanje nove lokacije
+          </h1>
+          <div className="hidden items-center gap-2 md:ml-auto md:flex">
+            <Button variant="outline" size="sm">
+              Prekliči
+            </Button>
+            <Button
+              size="sm"
+              variant={'primary'}
+              className="border border-body-200">
+              Dodaj lokacijo
+            </Button>
           </div>
         </div>
-        <div className="flex flex-col">
-          <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="shrink-0 md:hidden">
-                  <Menu className="h-5 w-5" />
-                  <span className="sr-only">Toggle navigation menu</span>
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="left" className="flex flex-col">
-                <nav className="grid gap-2 text-lg font-medium">
-                  <Link
-                    href="#"
-                    className="flex items-center gap-2 text-lg font-semibold">
-                    <Package2 className="h-6 w-6" />
-                    <span className="sr-only">Acme Inc</span>
-                  </Link>
-                  <Link
-                    href="#"
-                    className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground">
-                    <Home className="h-5 w-5" />
-                    Dashboard
-                  </Link>
-                  <Link
-                    href="#"
-                    className="mx-[-0.65rem] flex items-center gap-4 rounded-xl bg-muted px-3 py-2 text-foreground hover:text-foreground">
-                    <ShoppingCart className="h-5 w-5" />
-                    Orders
-                    <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
-                      6
-                    </Badge>
-                  </Link>
-                  <Link
-                    href="#"
-                    className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground">
-                    <Package className="h-5 w-5" />
-                    Products
-                  </Link>
-                  <Link
-                    href="#"
-                    className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground">
-                    <Users className="h-5 w-5" />
-                    Customers
-                  </Link>
-                  <Link
-                    href="#"
-                    className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground">
-                    <LineChart className="h-5 w-5" />
-                    Analytics
-                  </Link>
-                </nav>
-                <div className="mt-auto">
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Upgrade to Pro</CardTitle>
-                      <CardDescription>
-                        Unlock all features and get unlimited access to our
-                        support team.
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <Button size="sm" className="w-full">
-                        Upgrade
-                      </Button>
-                    </CardContent>
-                  </Card>
+        <div className="grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-2 lg:gap-8">
+          <div className="grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-8">
+            <Card x-chunk="dashboard-07-chunk-0" className="bg-primary-75">
+              <CardHeader>
+                <CardTitle>Osnovno</CardTitle>
+                <CardDescription>
+                  Prosim vnesi vse zahtevane podatke za uspešno dodajanje nove
+                  lokacije.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid gap-6">
+                  <div className="grid gap-3">
+                    <Label htmlFor="name">Naziv</Label>
+                    <Input
+                      id="name"
+                      type="text"
+                      className="w-full"
+                      defaultValue="Več stanovanjski objekt"
+                    />
+                  </div>
+                  <div className="grid gap-3">
+                    <Label htmlFor="description">Opis</Label>
+                    <Textarea
+                      id="description"
+                      defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl nec ultricies ultricies, nunc nisl ultricies nunc, nec ultricies nunc nisl nec nunc."
+                      className="min-h-32"
+                    />
+                  </div>
+                  <div className="grid gap-3">
+                    <Label htmlFor="description">Mesto</Label>
+                    <Input id="city" defaultValue="Lenart" className="w-full" />
+                  </div>
+                  <div className="grid gap-3">
+                    <Label htmlFor="description">Naslov</Label>
+                    <Input
+                      id="address"
+                      defaultValue="Lenart"
+                      className="w-full"
+                    />
+                  </div>
                 </div>
-              </SheetContent>
-            </Sheet>
-            {/* Content */}
-          </header>
-          <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
-            <div className="flex items-center">
-              <h1 className="text-lg font-semibold md:text-2xl">Inventory</h1>
-            </div>
-            <div
-              className="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm"
-              x-chunk="dashboard-02-chunk-1">
-              <div className="flex flex-col items-center gap-1 text-center">
-                <h3 className="text-2xl font-bold tracking-tight">
-                  You have no products
-                </h3>
-                <p className="text-sm text-muted-foreground">
-                  You can start selling as soon as you add a product.
-                </p>
-                <Button className="mt-4">Add Product</Button>
-              </div>
-            </div>
-          </main>
+              </CardContent>
+            </Card>
+            <Card x-chunk="dashboard-07-chunk-1" className="bg-primary-75">
+              <CardHeader>
+                <CardTitle>Stanovanja</CardTitle>
+                <CardDescription>
+                  V tabeli so prikazana vsa stanovanja, ki so trenutno dodana na
+                  lokacijo.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Št. stanovanja</TableHead>
+                      <TableHead>Naziv</TableHead>
+                      <TableHead>Etaža</TableHead>
+                      <TableHead>Kvadratura</TableHead>
+                      <TableHead>Cena (brez ddv)</TableHead>
+                      <TableHead>Cena</TableHead>
+                      <TableHead>Status</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {apartments.map((apartment, index) => (
+                      <TableRow key={apartment['stevilka-stanovanja']}>
+                        <TableCell className="font-semibold">
+                          {apartment['stevilka-stanovanja']}
+                        </TableCell>
+                        <TableCell>{apartment.naziv}</TableCell>
+                        <TableCell>{apartment.etaza}. nadstropje</TableCell>
+                        <TableCell>{apartment.kvadratura} m2</TableCell>
+                        <TableCell>{apartment['cena-brez-ddv']} €</TableCell>
+                        <TableCell>{apartment.cena} €</TableCell>
+                        <TableCell>
+                          {apartment.status === StatusType.Prodaja && <div className="rounded-full h-4 w-4 bg-green-400"></div>}
+                          {apartment.status === StatusType.Rezervirano && <div className="rounded-full h-4 w-4 bg-yellow-400"></div>}
+                          {apartment.status === StatusType.Prodano && <div className="rounded-full h-4 w-4 bg-red-400"></div>}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </CardContent>
+              <CardFooter className="justify-center border-t p-4">
+                <DialogDemo saveFormValues={saveFormValues} />
+              </CardFooter>
+            </Card>
+          </div>
+          {/* <div className="grid auto-rows-max items-start gap-4 lg:gap-8">
+            <Card x-chunk="dashboard-07-chunk-5" className='bg-primary-75'>
+              <CardHeader>
+                <CardTitle>Status</CardTitle>
+                <CardDescription>
+                  Lipsum dolor sit amet, consectetur adipiscing elit.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div></div>
+                <Button size="sm" variant="secondary">
+                  Archive Product
+                </Button>
+              </CardContent>
+            </Card>
+          </div> */}
+        </div>
+        <div className="flex items-center justify-center gap-2 md:hidden">
+          <Button variant="outline" size="sm">
+            Discard
+          </Button>
+          <Button size="sm">Save Product</Button>
         </div>
       </div>
     </main>

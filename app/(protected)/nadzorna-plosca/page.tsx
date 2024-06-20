@@ -86,6 +86,25 @@ const formSchema = z.object({
   status: z.nativeEnum(StatusType),
 });
 
+const mainFormSchema = z.object({
+  naziv: z.string().min(3, {
+    message: 'Vnesi naziv ki je daljši od 3 znakov, to polje je obvezno.',
+  }),
+  opis: z.string().min(1, {
+    message: 'Vnesi etazo ki je daljša od 3 znakov, to polje je obvezno.',
+  }),
+  mesto: z.string().min(1, {
+    message: 'Vnesi kvadraturo ki je daljša od 3 znakov, to polje je obvezno.',
+  }),
+  naslov: z.string().min(1, {
+    message:
+      'Vnesi ceno brez ddv ki je daljša od 3 znakov, to polje je obvezno.',
+  }),
+  stanovanja: z.array(formSchema).min(1, {
+    message: 'Dodaj vsaj eno stanovanje.',
+  }),
+});
+
 export function DialogDemo({
   saveFormValues,
 }: {
@@ -112,7 +131,7 @@ export function DialogDemo({
   }
 
   return (
-    <Dialog  open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="outline">Dodaj stanovanje</Button>
       </DialogTrigger>
@@ -301,129 +320,212 @@ export function DialogDemo({
 const UserPage = () => {
   const [apartments, setApartments] = useState<Apartment[]>([]);
 
+  const form = useForm<z.infer<typeof mainFormSchema>>({
+    resolver: zodResolver(mainFormSchema),
+    defaultValues: {
+      naziv: '',
+      opis: '',
+      mesto: '',
+      naslov: '',
+      stanovanja: apartments,
+    },
+  });
+
+  const { setValue } = form
+
   const saveFormValues = (values: Apartment) => {
     setApartments((prevApartments) => [...prevApartments, values]);
   };
 
   useEffect(() => {
-    console.log(apartments);
-  }, [apartments]);
+    setValue('stanovanja', apartments)
+  }, [apartments])
+
+  function onSubmit(values: z.infer<typeof mainFormSchema>) {
+    console.log(values);
+  }
 
   return (
     <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
+      <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
       <div className="mx-auto grid max-w-[59rem] flex-1 auto-rows-max gap-4">
-        <div className="flex items-center gap-4">
-          <Button variant="outline" size="icon" className="h-7 w-7">
-            <ChevronLeft className="h-4 w-4" />
-            <span className="sr-only">Back</span>
-          </Button>
-          <h1 className="flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0 text-primary-300">
-            Dodajanje nove lokacije
-          </h1>
-          <div className="hidden items-center gap-2 md:ml-auto md:flex">
-            <Button variant="outline" size="sm">
-              Prekliči
-            </Button>
-            <Button
-              size="sm"
-              variant={'primary'}
-              className="border border-body-200">
-              Dodaj lokacijo
-            </Button>
-          </div>
-        </div>
-        <div className="grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-2 lg:gap-8">
-          <div className="grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-8">
-            <Card x-chunk="dashboard-07-chunk-0" className="bg-primary-75">
-              <CardHeader>
-                <CardTitle>Osnovno</CardTitle>
-                <CardDescription>
-                  Prosim vnesi vse zahtevane podatke za uspešno dodajanje nove
-                  lokacije.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="grid gap-6">
-                  <div className="grid gap-3">
-                    <Label htmlFor="name">Naziv</Label>
-                    <Input
-                      id="name"
-                      type="text"
-                      className="w-full"
-                      defaultValue="Več stanovanjski objekt"
-                    />
-                  </div>
-                  <div className="grid gap-3">
-                    <Label htmlFor="description">Opis</Label>
-                    <Textarea
-                      id="description"
-                      defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl nec ultricies ultricies, nunc nisl ultricies nunc, nec ultricies nunc nisl nec nunc."
-                      className="min-h-32"
-                    />
-                  </div>
-                  <div className="grid gap-3">
-                    <Label htmlFor="description">Mesto</Label>
-                    <Input id="city" defaultValue="Lenart" className="w-full" />
-                  </div>
-                  <div className="grid gap-3">
-                    <Label htmlFor="description">Naslov</Label>
-                    <Input
-                      id="address"
-                      defaultValue="Lenart"
-                      className="w-full"
-                    />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-            <Card x-chunk="dashboard-07-chunk-1" className="bg-primary-75">
-              <CardHeader>
-                <CardTitle>Stanovanja</CardTitle>
-                <CardDescription>
-                  V tabeli so prikazana vsa stanovanja, ki so trenutno dodana na
-                  lokacijo.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Št. stanovanja</TableHead>
-                      <TableHead>Naziv</TableHead>
-                      <TableHead>Etaža</TableHead>
-                      <TableHead>Kvadratura</TableHead>
-                      <TableHead>Cena (brez ddv)</TableHead>
-                      <TableHead>Cena</TableHead>
-                      <TableHead>Status</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {apartments.map((apartment, index) => (
-                      <TableRow key={apartment['stevilka-stanovanja']}>
-                        <TableCell className="font-semibold">
-                          {apartment['stevilka-stanovanja']}
-                        </TableCell>
-                        <TableCell>{apartment.naziv}</TableCell>
-                        <TableCell>{apartment.etaza}. nadstropje</TableCell>
-                        <TableCell>{apartment.kvadratura} m2</TableCell>
-                        <TableCell>{apartment['cena-brez-ddv']} €</TableCell>
-                        <TableCell>{apartment.cena} €</TableCell>
-                        <TableCell>
-                          {apartment.status === StatusType.Prodaja && <div className="rounded-full h-4 w-4 bg-green-400"></div>}
-                          {apartment.status === StatusType.Rezervirano && <div className="rounded-full h-4 w-4 bg-yellow-400"></div>}
-                          {apartment.status === StatusType.Prodano && <div className="rounded-full h-4 w-4 bg-red-400"></div>}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </CardContent>
-              <CardFooter className="justify-center border-t p-4">
-                <DialogDemo saveFormValues={saveFormValues} />
-              </CardFooter>
-            </Card>
-          </div>
-          {/* <div className="grid auto-rows-max items-start gap-4 lg:gap-8">
+            <div className="flex items-center gap-4">
+              <Button variant="outline" size="icon" className="h-7 w-7">
+                <ChevronLeft className="h-4 w-4" />
+                <span className="sr-only">Back</span>
+              </Button>
+              <h1 className="flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0 text-primary-300">
+                Dodajanje nove lokacije
+              </h1>
+
+              <div className="hidden items-center gap-2 md:ml-auto md:flex">
+                <Button variant="outline" size="sm">
+                  Prekliči
+                </Button>
+                <Button
+                  size="sm"
+                  variant={'primary'}
+                  className="border border-body-200"
+                  type="submit">
+                  Dodaj lokacijo
+                </Button>
+              </div>
+            </div>
+            <div className="grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-2 lg:gap-8">
+              <div className="grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-8">
+                <Card x-chunk="dashboard-07-chunk-0" className="bg-primary-75">
+                  <CardHeader>
+                    <CardTitle>Osnovno</CardTitle>
+                    <CardDescription>
+                      Prosim vnesi vse zahtevane podatke za uspešno dodajanje
+                      nove lokacije.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid gap-6">
+                      <div className="grid gap-3">
+                        <FormField
+                          control={form.control}
+                          name="naziv"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Naziv</FormLabel>
+                              <FormControl>
+                                <Input
+                                  {...field}
+                                  id="naziv"
+                                  type="text"
+                                  className="w-full"
+                                  defaultValue="Več stanovanjski objekt"
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      <div className="grid gap-3">
+                        <FormField
+                          control={form.control}
+                          name="opis"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Opis</FormLabel>
+                              <FormControl>
+                                <Textarea
+                                  {...field}
+                                  id="opis"
+                                  className="w-full min-h-32"
+                                  defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl nec ultricies ultricies, nunc nisl ultricies nunc, nec ultricies nunc nisl nec nunc."
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      <div className="grid gap-3">
+                        <FormField
+                          control={form.control}
+                          name="mesto"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Mesto</FormLabel>
+                              <FormControl>
+                                <Input
+                                  {...field}
+                                  id="mesto"
+                                  type="text"
+                                  className="w-full"
+                                  defaultValue="Lenart"
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      <div className="grid gap-3">
+                        <FormField
+                          control={form.control}
+                          name="naslov"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Naslov</FormLabel>
+                              <FormControl>
+                                <Input
+                                  {...field}
+                                  id="naslov"
+                                  type="text"
+                                  className="w-full"
+                                  defaultValue="Jurovska cesta 14"
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+                <Card x-chunk="dashboard-07-chunk-1" className="bg-primary-75">
+                  <CardHeader>
+                    <CardTitle>Stanovanja</CardTitle>
+                    <CardDescription>
+                      V tabeli so prikazana vsa stanovanja, ki so trenutno
+                      dodana na lokacijo.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Št. stanovanja</TableHead>
+                          <TableHead>Naziv</TableHead>
+                          <TableHead>Etaža</TableHead>
+                          <TableHead>Kvadratura</TableHead>
+                          <TableHead>Cena (brez ddv)</TableHead>
+                          <TableHead>Cena</TableHead>
+                          <TableHead>Status</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {apartments.map((apartment, index) => (
+                          <TableRow key={apartment['stevilka-stanovanja']}>
+                            <TableCell className="font-semibold">
+                              {apartment['stevilka-stanovanja']}
+                            </TableCell>
+                            <TableCell>{apartment.naziv}</TableCell>
+                            <TableCell>{apartment.etaza}. nadstropje</TableCell>
+                            <TableCell>{apartment.kvadratura} m2</TableCell>
+                            <TableCell>
+                              {apartment['cena-brez-ddv']} €
+                            </TableCell>
+                            <TableCell>{apartment.cena} €</TableCell>
+                            <TableCell>
+                              {apartment.status === StatusType.Prodaja && (
+                                <div className="rounded-full h-4 w-4 bg-green-400"></div>
+                              )}
+                              {apartment.status === StatusType.Rezervirano && (
+                                <div className="rounded-full h-4 w-4 bg-yellow-400"></div>
+                              )}
+                              {apartment.status === StatusType.Prodano && (
+                                <div className="rounded-full h-4 w-4 bg-red-400"></div>
+                              )}
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </CardContent>
+                  <CardFooter className="justify-center border-t p-4">
+                    <DialogDemo saveFormValues={saveFormValues} />
+                  </CardFooter>
+                </Card>
+              </div>
+              {/* <div className="grid auto-rows-max items-start gap-4 lg:gap-8">
             <Card x-chunk="dashboard-07-chunk-5" className='bg-primary-75'>
               <CardHeader>
                 <CardTitle>Status</CardTitle>
@@ -439,14 +541,18 @@ const UserPage = () => {
               </CardContent>
             </Card>
           </div> */}
-        </div>
-        <div className="flex items-center justify-center gap-2 md:hidden">
-          <Button variant="outline" size="sm">
-            Discard
-          </Button>
-          <Button size="sm">Save Product</Button>
-        </div>
-      </div>
+            </div>
+            <div className="flex items-center justify-center gap-2 md:hidden">
+              <Button variant="outline" size="sm">
+                Discard
+              </Button>
+              <Button size="sm">Save Product</Button>
+            </div>
+          </div>
+
+      </form>
+    </Form>
+    
     </main>
   );
 };

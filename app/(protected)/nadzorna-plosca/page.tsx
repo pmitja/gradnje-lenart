@@ -13,7 +13,6 @@ import {
 } from '@/components/ui/card';
 
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import {
   Table,
   TableBody,
@@ -32,7 +31,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useTransition } from 'react';
 import {
   Form,
   FormControl,
@@ -46,64 +45,11 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { ToggleGroup } from '@radix-ui/react-toggle-group';
 import { ToggleGroupItem } from '@/components/ui/toggle-group';
-
-enum StatusType {
-  Prodaja = 'Na prodaj',
-  Rezervirano = 'Rezervirano',
-  Prodano = 'Prodano',
-}
-
-type Apartment = {
-  'stevilka-stanovanja': string;
-  naziv: string;
-  etaza: string;
-  kvadratura: string;
-  'cena-brez-ddv': string;
-  cena: string;
-  status: StatusType;
-};
-
-const formSchema = z.object({
-  'stevilka-stanovanja': z.string().min(1, {
-    message: 'Vnesi številko ki je večja od nič, to polje je obvezno.',
-  }),
-  naziv: z.string().min(3, {
-    message: 'Vnesi naziv ki je daljši od 3 znakov, to polje je obvezno.',
-  }),
-  etaza: z.string().min(1, {
-    message: 'Vnesi etazo ki je daljša od 3 znakov, to polje je obvezno.',
-  }),
-  kvadratura: z.string().min(1, {
-    message: 'Vnesi kvadraturo ki je daljša od 3 znakov, to polje je obvezno.',
-  }),
-  'cena-brez-ddv': z.string().min(1, {
-    message:
-      'Vnesi ceno brez ddv ki je daljša od 3 znakov, to polje je obvezno.',
-  }),
-  cena: z.string().min(1, {
-    message: 'Vnesi ceno ki je daljša od 3 znakov, to polje je obvezno.',
-  }),
-  status: z.nativeEnum(StatusType),
-});
-
-const mainFormSchema = z.object({
-  naziv: z.string().min(3, {
-    message: 'Vnesi naziv ki je daljši od 3 znakov, to polje je obvezno.',
-  }),
-  opis: z.string().min(1, {
-    message: 'Vnesi etazo ki je daljša od 3 znakov, to polje je obvezno.',
-  }),
-  mesto: z.string().min(1, {
-    message: 'Vnesi kvadraturo ki je daljša od 3 znakov, to polje je obvezno.',
-  }),
-  naslov: z.string().min(1, {
-    message:
-      'Vnesi ceno brez ddv ki je daljša od 3 znakov, to polje je obvezno.',
-  }),
-  stanovanja: z.array(formSchema).min(1, {
-    message: 'Dodaj vsaj eno stanovanje.',
-  }),
-});
+import { newLocation } from '@/actions/new-location';
+import { Apartment, StatusType } from '@/types/general';
+import { formSchema, mainFormSchema } from '@/schemas';
+import { FormError } from '@/components/form-error';
+import { FormSuccess } from '@/components/form-success';
 
 export function DialogDemo({
   saveFormValues,
@@ -319,6 +265,9 @@ export function DialogDemo({
 
 const UserPage = () => {
   const [apartments, setApartments] = useState<Apartment[]>([]);
+  const [isPending, startTransition] = useTransition();
+  const [error, setError] = useState<string | undefined>('');
+  const [success, setSuccess] = useState<string | undefined>('');
 
   const form = useForm<z.infer<typeof mainFormSchema>>({
     resolver: zodResolver(mainFormSchema),
@@ -342,7 +291,15 @@ const UserPage = () => {
   }, [apartments])
 
   function onSubmit(values: z.infer<typeof mainFormSchema>) {
-    console.log(values);
+    setError('');
+    setSuccess('');
+
+    startTransition(() => {
+      newLocation(values).then((data) => {
+        setError(data.error);
+        setSuccess(data.success);
+      });
+    });
   }
 
   return (
@@ -549,7 +506,8 @@ const UserPage = () => {
               <Button size="sm">Save Product</Button>
             </div>
           </div>
-
+          <FormError message={error} />
+          <FormSuccess message={success} />
       </form>
     </Form>
     

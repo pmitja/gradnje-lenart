@@ -74,7 +74,7 @@ model Location {
   description String
   address     String
   city        String
-  realEstate  RealEstate[]
+  realEstates RealEstate[] @relation("LocationRealEstate")
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
 }
@@ -89,8 +89,8 @@ model RealEstate {
   priceWithTax Float?
   price        Float?
   images       String[]
+  locationId   String
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
-  location     Location @relation(fields: [id], references: [id], onDelete: Cascade)
-  userId       String
+  location     Location @relation(fields: [locationId], references: [id], onDelete: Cascade, name: "LocationRealEstate")
 }

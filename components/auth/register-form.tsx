@@ -48,10 +48,7 @@ function RegisterForm() {
 
   return (
     <CardWrapper
-      headerLabel="Create an account"
-      backButtonLabel="Already have an account? Login here."
-      backButtonHref="/auth/login"
-      showSocial>
+      headerLabel="Create an account">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <div className="space-y-4">

@@ -21,7 +21,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Textarea } from '@/components/ui/textarea';
 import {
   Dialog,
   DialogContent,
@@ -46,30 +45,28 @@ import { z } from 'zod';
 import { ToggleGroup } from '@radix-ui/react-toggle-group';
 import { ToggleGroupItem } from '@/components/ui/toggle-group';
 import { newLocation } from '@/actions/new-location';
-import { Apartment, StatusType } from '@/types/general';
+import { Location, RealEstate, StatusType } from '@/types/general';
 import { formSchema, mainFormSchema } from '@/schemas';
-import { RealEstate } from '@prisma/client';
 import { getLocationRealEstates } from '@/actions/get-location-real-esatates';
-import Spinner from '@/components/common/spinner';
 import Project404 from '@/components/containers/404/project-404';
 import Link from 'next/link';
 
 export function DialogDemo({
   saveFormValues,
 }: {
-  saveFormValues: (values: Apartment) => void;
+  saveFormValues: (values: RealEstate) => void;
 }) {
   const [open, setOpen] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      'stevilka-stanovanja': '',
-      naziv: '',
-      etaza: '',
-      kvadratura: '',
-      'cena-brez-ddv': '',
-      cena: '',
+      number: '',
+      name: '',
+      floor: '',
+      size: '',
+      price: '',
+      priceWithTax: '',
       status: StatusType.Prodaja,
     },
   });
@@ -98,13 +95,13 @@ export function DialogDemo({
             <div className="grid grid-cols-1 items-center gap-4">
               <FormField
                 control={form.control}
-                name="stevilka-stanovanja"
+                name='number'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Št. stanovanja</FormLabel>
                     <FormControl>
                       <Input
-                        id="stevilka-stanovanja"
+                        id='number'
                         defaultValue="1"
                         className="col-span-3"
                         {...field}
@@ -118,13 +115,13 @@ export function DialogDemo({
             <div className="grid grid-cols-1 items-center gap-4">
               <FormField
                 control={form.control}
-                name="naziv"
+                name="name"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Naziv</FormLabel>
                     <FormControl>
                       <Input
-                        id="naziv"
+                        id="name"
                         defaultValue="2 sobno stanovanje"
                         className="col-span-3"
                         {...field}
@@ -138,13 +135,13 @@ export function DialogDemo({
             <div className="grid grid-cols-1 items-center gap-4">
               <FormField
                 control={form.control}
-                name="etaza"
+                name="floor"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Etaža</FormLabel>
                     <FormControl>
                       <Input
-                        id="etaza"
+                        id="floor"
                         defaultValue="3. nadstropje"
                         className="col-span-3"
                         {...field}
@@ -158,13 +155,13 @@ export function DialogDemo({
             <div className="grid grid-cols-1 items-center gap-4">
               <FormField
                 control={form.control}
-                name="kvadratura"
+                name="size"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Kvadratura</FormLabel>
                     <FormControl>
                       <Input
-                        id="kvadratura"
+                        id="size"
                         defaultValue="3. nadstropje"
                         className="col-span-3"
                         {...field}
@@ -178,13 +175,13 @@ export function DialogDemo({
             <div className="grid grid-cols-1 items-center gap-4">
               <FormField
                 control={form.control}
-                name="cena-brez-ddv"
+                name="price"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Cena (brez ddv)</FormLabel>
                     <FormControl>
                       <Input
-                        id="cena-brez-ddv"
+                        id="price"
                         defaultValue="100.000 €"
                         className="col-span-3"
                         {...field}
@@ -198,13 +195,13 @@ export function DialogDemo({
             <div className="grid grid-cols-1 items-center gap-4">
               <FormField
                 control={form.control}
-                name="cena"
+                name="priceWithTax"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Cena</FormLabel>
                     <FormControl>
                       <Input
-                        id="cena"
+                        id="priceWithTax"
                         defaultValue="130.000 €"
                         className="col-span-3"
                         {...field}
@@ -271,24 +268,31 @@ const AktualniProjektPage = ({
 }: {
   params: { slug: string };
 }) => {
-  const [apartments, setApartments] = useState<Apartment[]>([]);
+  const [apartments, setApartments] = useState<RealEstate[]>([]);
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
-  const [location, setLocation] = useState<RealEstate | null>(null);
+  const [location, setLocation] = useState<Location | null>(null);
   const [isError, setIsError] = useState(false);
 
   useEffect(() => {
     setIsError(false);
     startTransition(() => {
       getLocationRealEstates(slug).then((result) => {
-        setLocation(result as RealEstate | null);
+        setLocation(result as Location | null);
         if (!result) {
           setIsError(true);
         }
       });
     });
   }, []);
+
+  useEffect(() => {
+    if (location) {
+      console.log(location.realEstates)
+      setApartments((prev) => [...prev, ...(location.realEstates)]);
+    }
+  }, [location])
 
   const form = useForm<z.infer<typeof mainFormSchema>>({
     resolver: zodResolver(mainFormSchema),
@@ -303,7 +307,7 @@ const AktualniProjektPage = ({
 
   const { setValue } = form;
 
-  const saveFormValues = (values: Apartment) => {
+  const saveFormValues = (values: RealEstate) => {
     setApartments((prevApartments) => [...prevApartments, values]);
   };
 
@@ -363,15 +367,15 @@ const AktualniProjektPage = ({
                     </TableHeader>
                     <TableBody>
                       {apartments.map((apartment, index) => (
-                        <TableRow key={apartment['stevilka-stanovanja']}>
+                        <TableRow key={apartment.number}>
                           <TableCell className="font-semibold">
-                            {apartment['stevilka-stanovanja']}
+                            {apartment.number}
                           </TableCell>
-                          <TableCell>{apartment.naziv}</TableCell>
-                          <TableCell>{apartment.etaza}. nadstropje</TableCell>
-                          <TableCell>{apartment.kvadratura} m2</TableCell>
-                          <TableCell>{apartment['cena-brez-ddv']} €</TableCell>
-                          <TableCell>{apartment.cena} €</TableCell>
+                          <TableCell>{apartment.name}</TableCell>
+                          <TableCell>{apartment.floor}. nadstropje</TableCell>
+                          <TableCell>{apartment.size} m2</TableCell>
+                          <TableCell>{apartment.price} €</TableCell>
+                          <TableCell>{apartment.priceWithTax} €</TableCell>
                           <TableCell>
                             {apartment.status === StatusType.Prodaja && (
                               <div className="rounded-full h-4 w-4 bg-green-400"></div>

@@ -18,12 +18,31 @@ export enum StatusType {
   Prodano = 'Prodano',
 }
 
-export type Apartment = {
-  'stevilka-stanovanja': string;
-  naziv: string;
-  etaza: string;
-  kvadratura: string;
-  'cena-brez-ddv': string;
-  cena: string;
-  status: StatusType;
-};
+export interface RealEstate {
+  id?: string;
+  name: string;
+  description?: string | null;
+  number: string | null;
+  floor: string | null;
+  size: string | null;
+  priceWithTax: string | null;
+  price: string | null;
+  status: string | null;
+  images: string[] | undefined;
+  locationId: string;
+  slug?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export interface Location {
+  id: string;
+  name: string;
+  description: string | null;
+  address: string;
+  city: string;
+  slug: string;
+  realEstates: RealEstate[];
+  createdAt: Date;
+  updatedAt: Date;
+}

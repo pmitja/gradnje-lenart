@@ -35,23 +35,23 @@ export const NewPasswordSchema = z.object({
 });
 
 export const formSchema = z.object({
-  'stevilka-stanovanja': z.string().min(1, {
+  number: z.string().min(1, {
     message: 'Vnesi številko ki je večja od nič, to polje je obvezno.',
   }),
-  naziv: z.string().min(3, {
+  name: z.string().min(3, {
     message: 'Vnesi naziv ki je daljši od 3 znakov, to polje je obvezno.',
   }),
-  etaza: z.string().min(1, {
+  floor: z.string().min(1, {
     message: 'Vnesi etazo ki je daljša od 3 znakov, to polje je obvezno.',
   }),
-  kvadratura: z.string().min(1, {
+  size: z.string().min(1, {
     message: 'Vnesi kvadraturo ki je daljša od 3 znakov, to polje je obvezno.',
   }),
-  'cena-brez-ddv': z.string().min(1, {
+  price: z.string().min(1, {
     message:
       'Vnesi ceno brez ddv ki je daljša od 3 znakov, to polje je obvezno.',
   }),
-  cena: z.string().min(1, {
+  priceWithTax: z.string().min(1, {
     message: 'Vnesi ceno ki je daljša od 3 znakov, to polje je obvezno.',
   }),
   status: z.nativeEnum(StatusType),

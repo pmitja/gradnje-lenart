@@ -50,6 +50,7 @@ import { Apartment, StatusType } from '@/types/general';
 import { formSchema, mainFormSchema } from '@/schemas';
 import { FormError } from '@/components/form-error';
 import { FormSuccess } from '@/components/form-success';
+import Link from 'next/link';
 
 export function DialogDemo({
   saveFormValues,
@@ -280,15 +281,15 @@ const UserPage = () => {
     },
   });
 
-  const { setValue } = form
+  const { setValue } = form;
 
   const saveFormValues = (values: Apartment) => {
     setApartments((prevApartments) => [...prevApartments, values]);
   };
 
   useEffect(() => {
-    setValue('stanovanja', apartments)
-  }, [apartments])
+    setValue('stanovanja', apartments);
+  }, [apartments]);
 
   function onSubmit(values: z.infer<typeof mainFormSchema>) {
     setError('');
@@ -305,12 +306,14 @@ const UserPage = () => {
   return (
     <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
       <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-      <div className="mx-auto grid max-w-[59rem] flex-1 auto-rows-max gap-4">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <div className="mx-auto grid max-w-[59rem] flex-1 auto-rows-max gap-4">
             <div className="flex items-center gap-4">
               <Button variant="outline" size="icon" className="h-7 w-7">
-                <ChevronLeft className="h-4 w-4" />
-                <span className="sr-only">Back</span>
+                <Link href={'/nadzorna-plosca'}>
+                  <ChevronLeft className="h-4 w-4" />
+                  <span className="sr-only">Back</span>
+                </Link>
               </Button>
               <h1 className="flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0 text-primary-300">
                 Dodajanje nove lokacije
@@ -508,9 +511,8 @@ const UserPage = () => {
           </div>
           <FormError message={error} />
           <FormSuccess message={success} />
-      </form>
-    </Form>
-    
+        </form>
+      </Form>
     </main>
   );
 };

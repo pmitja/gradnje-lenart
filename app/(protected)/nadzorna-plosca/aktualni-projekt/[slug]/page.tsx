@@ -98,7 +98,7 @@ export function DialogDemo({
                 name='number'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Št. stanovanja</FormLabel>
+                    <FormLabel>Št. apartments</FormLabel>
                     <FormControl>
                       <Input
                         id='number'
@@ -118,7 +118,7 @@ export function DialogDemo({
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Naziv</FormLabel>
+                    <FormLabel>name</FormLabel>
                     <FormControl>
                       <Input
                         id="name"
@@ -263,6 +263,12 @@ export function DialogDemo({
   );
 }
 
+const updateSchema = z.object({
+  apartments: z.array(formSchema).min(1, {
+    message: 'Dodaj vsaj eno stanovanje.',
+  }),
+});
+
 const AktualniProjektPage = ({
   params: { slug },
 }: {
@@ -294,14 +300,10 @@ const AktualniProjektPage = ({
     }
   }, [location])
 
-  const form = useForm<z.infer<typeof mainFormSchema>>({
-    resolver: zodResolver(mainFormSchema),
+  const form = useForm<z.infer<typeof updateSchema>>({
+    resolver: zodResolver(updateSchema),
     defaultValues: {
-      naziv: '',
-      opis: '',
-      mesto: '',
-      naslov: '',
-      stanovanja: apartments,
+      apartments: apartments,
     },
   });
 
@@ -312,19 +314,14 @@ const AktualniProjektPage = ({
   };
 
   useEffect(() => {
-    setValue('stanovanja', apartments);
+    setValue('apartments', apartments);
   }, [apartments]);
 
-  function onSubmit(values: z.infer<typeof mainFormSchema>) {
+  function onSubmit(values: z.infer<typeof updateSchema>) {
     setError('');
     setSuccess('');
 
-    startTransition(() => {
-      newLocation(values).then((data) => {
-        setError(data.error);
-        setSuccess(data.success);
-      });
-    });
+    console.log(values)
   }
 
   return (
@@ -341,14 +338,26 @@ const AktualniProjektPage = ({
             <h1 className="flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0 text-primary-300">
               {location.name}
             </h1>
+            <div className="hidden items-center gap-2 md:ml-auto md:flex">
+                <Button variant="outline" size="sm">
+                  Prekliči
+                </Button>
+                <Button
+                  size="sm"
+                  variant={'primary'}
+                  className="border border-body-200"
+                  onClick={() => onSubmit(apartments)}>
+                  Dodaj lokacijo
+                </Button>
+              </div>
           </div>
           <div className="grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-2 lg:gap-8">
             <div className="grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-8">
               <Card x-chunk="dashboard-07-chunk-1" className="bg-primary-75">
                 <CardHeader>
-                  <CardTitle>Stanovanja</CardTitle>
+                  <CardTitle>apartments</CardTitle>
                   <CardDescription>
-                    V tabeli so prikazana vsa stanovanja, ki so trenutno dodana
+                    V tabeli so prikazana vsa apartments, ki so trenutno dodana
                     na lokacijo.
                   </CardDescription>
                 </CardHeader>
@@ -356,8 +365,8 @@ const AktualniProjektPage = ({
                   <Table>
                     <TableHeader>
                       <TableRow>
-                        <TableHead>Št. stanovanja</TableHead>
-                        <TableHead>Naziv</TableHead>
+                        <TableHead>Št. apartments</TableHead>
+                        <TableHead>name</TableHead>
                         <TableHead>Etaža</TableHead>
                         <TableHead>Kvadratura</TableHead>
                         <TableHead>Cena (brez ddv)</TableHead>

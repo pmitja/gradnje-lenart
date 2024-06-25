@@ -58,20 +58,20 @@ export const formSchema = z.object({
 });
 
 export const mainFormSchema = z.object({
-  naziv: z.string().min(3, {
+  name: z.string().min(3, {
     message: 'Vnesi naziv ki je daljši od 3 znakov, to polje je obvezno.',
   }),
-  opis: z.string().min(1, {
+  description: z.string().min(1, {
     message: 'Vnesi etazo ki je daljša od 3 znakov, to polje je obvezno.',
   }),
-  mesto: z.string().min(1, {
+  city: z.string().min(1, {
     message: 'Vnesi kvadraturo ki je daljša od 3 znakov, to polje je obvezno.',
   }),
-  naslov: z.string().min(1, {
+  address: z.string().min(1, {
     message:
       'Vnesi ceno brez ddv ki je daljša od 3 znakov, to polje je obvezno.',
   }),
-  stanovanja: z.array(formSchema).min(1, {
+  apartments: z.array(formSchema).min(1, {
     message: 'Dodaj vsaj eno stanovanje.',
   }),
 });

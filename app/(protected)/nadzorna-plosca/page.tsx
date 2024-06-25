@@ -46,7 +46,7 @@ import { z } from 'zod';
 import { ToggleGroup } from '@radix-ui/react-toggle-group';
 import { ToggleGroupItem } from '@/components/ui/toggle-group';
 import { newLocation } from '@/actions/new-location';
-import { Apartment, StatusType } from '@/types/general';
+import { StatusType } from '@/types/general';
 import { formSchema, mainFormSchema } from '@/schemas';
 import { FormError } from '@/components/form-error';
 import { FormSuccess } from '@/components/form-success';
@@ -62,12 +62,12 @@ export function DialogDemo({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      'stevilka-stanovanja': '',
-      naziv: '',
-      etaza: '',
-      kvadratura: '',
-      'cena-brez-ddv': '',
-      cena: '',
+      'number': '',
+      name: '',
+      floor: '',
+      size: '',
+      price: '',
+      priceWithTax: '',
       status: StatusType.Prodaja,
     },
   });
@@ -96,13 +96,13 @@ export function DialogDemo({
             <div className="grid grid-cols-1 items-center gap-4">
               <FormField
                 control={form.control}
-                name="stevilka-stanovanja"
+                name="number"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Št. stanovanja</FormLabel>
+                    <FormLabel>Št. apartments</FormLabel>
                     <FormControl>
                       <Input
-                        id="stevilka-stanovanja"
+                        id="number"
                         defaultValue="1"
                         className="col-span-3"
                         {...field}
@@ -116,13 +116,13 @@ export function DialogDemo({
             <div className="grid grid-cols-1 items-center gap-4">
               <FormField
                 control={form.control}
-                name="naziv"
+                name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Naziv</FormLabel>
+                    <FormLabel>name</FormLabel>
                     <FormControl>
                       <Input
-                        id="naziv"
+                        id="name"
                         defaultValue="2 sobno stanovanje"
                         className="col-span-3"
                         {...field}
@@ -136,13 +136,13 @@ export function DialogDemo({
             <div className="grid grid-cols-1 items-center gap-4">
               <FormField
                 control={form.control}
-                name="etaza"
+                name="floor"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Etaža</FormLabel>
                     <FormControl>
                       <Input
-                        id="etaza"
+                        id="floor"
                         defaultValue="3. nadstropje"
                         className="col-span-3"
                         {...field}
@@ -156,13 +156,13 @@ export function DialogDemo({
             <div className="grid grid-cols-1 items-center gap-4">
               <FormField
                 control={form.control}
-                name="kvadratura"
+                name="size"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Kvadratura</FormLabel>
+                    <FormLabel>size</FormLabel>
                     <FormControl>
                       <Input
-                        id="kvadratura"
+                        id="size"
                         defaultValue="3. nadstropje"
                         className="col-span-3"
                         {...field}
@@ -176,13 +176,13 @@ export function DialogDemo({
             <div className="grid grid-cols-1 items-center gap-4">
               <FormField
                 control={form.control}
-                name="cena-brez-ddv"
+                name="price"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Cena (brez ddv)</FormLabel>
+                    <FormLabel>priceWithTax (brez ddv)</FormLabel>
                     <FormControl>
                       <Input
-                        id="cena-brez-ddv"
+                        id="price"
                         defaultValue="100.000 €"
                         className="col-span-3"
                         {...field}
@@ -196,13 +196,13 @@ export function DialogDemo({
             <div className="grid grid-cols-1 items-center gap-4">
               <FormField
                 control={form.control}
-                name="cena"
+                name="priceWithTax"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Cena</FormLabel>
+                    <FormLabel>priceWithTax</FormLabel>
                     <FormControl>
                       <Input
-                        id="cena"
+                        id="priceWithTax"
                         defaultValue="130.000 €"
                         className="col-span-3"
                         {...field}
@@ -273,11 +273,11 @@ const UserPage = () => {
   const form = useForm<z.infer<typeof mainFormSchema>>({
     resolver: zodResolver(mainFormSchema),
     defaultValues: {
-      naziv: '',
-      opis: '',
-      mesto: '',
-      naslov: '',
-      stanovanja: apartments,
+      name: '',
+      description: '',
+      city: '',
+      address: '',
+      apartments: apartments,
     },
   });
 
@@ -288,7 +288,7 @@ const UserPage = () => {
   };
 
   useEffect(() => {
-    setValue('stanovanja', apartments);
+    setValue('apartments', apartments);
   }, [apartments]);
 
   function onSubmit(values: z.infer<typeof mainFormSchema>) {
@@ -347,14 +347,14 @@ const UserPage = () => {
                       <div className="grid gap-3">
                         <FormField
                           control={form.control}
-                          name="naziv"
+                          name="name"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>Naziv</FormLabel>
+                              <FormLabel>name</FormLabel>
                               <FormControl>
                                 <Input
                                   {...field}
-                                  id="naziv"
+                                  id="name"
                                   type="text"
                                   className="w-full"
                                   defaultValue="Več stanovanjski objekt"
@@ -368,14 +368,14 @@ const UserPage = () => {
                       <div className="grid gap-3">
                         <FormField
                           control={form.control}
-                          name="opis"
+                          name="description"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>Opis</FormLabel>
+                              <FormLabel>description</FormLabel>
                               <FormControl>
                                 <Textarea
                                   {...field}
-                                  id="opis"
+                                  id="description"
                                   className="w-full min-h-32"
                                   defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl nec ultricies ultricies, nunc nisl ultricies nunc, nec ultricies nunc nisl nec nunc."
                                 />
@@ -388,14 +388,14 @@ const UserPage = () => {
                       <div className="grid gap-3">
                         <FormField
                           control={form.control}
-                          name="mesto"
+                          name="city"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>Mesto</FormLabel>
+                              <FormLabel>city</FormLabel>
                               <FormControl>
                                 <Input
                                   {...field}
-                                  id="mesto"
+                                  id="city"
                                   type="text"
                                   className="w-full"
                                   defaultValue="Lenart"
@@ -409,14 +409,14 @@ const UserPage = () => {
                       <div className="grid gap-3">
                         <FormField
                           control={form.control}
-                          name="naslov"
+                          name="address"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>Naslov</FormLabel>
+                              <FormLabel>address</FormLabel>
                               <FormControl>
                                 <Input
                                   {...field}
-                                  id="naslov"
+                                  id="address"
                                   type="text"
                                   className="w-full"
                                   defaultValue="Jurovska cesta 14"
@@ -432,9 +432,9 @@ const UserPage = () => {
                 </Card>
                 <Card x-chunk="dashboard-07-chunk-1" className="bg-primary-75">
                   <CardHeader>
-                    <CardTitle>Stanovanja</CardTitle>
+                    <CardTitle>apartments</CardTitle>
                     <CardDescription>
-                      V tabeli so prikazana vsa stanovanja, ki so trenutno
+                      V tabeli so prikazana vsa apartments, ki so trenutno
                       dodana na lokacijo.
                     </CardDescription>
                   </CardHeader>
@@ -442,28 +442,28 @@ const UserPage = () => {
                     <Table>
                       <TableHeader>
                         <TableRow>
-                          <TableHead>Št. stanovanja</TableHead>
-                          <TableHead>Naziv</TableHead>
+                          <TableHead>Št. apartments</TableHead>
+                          <TableHead>name</TableHead>
                           <TableHead>Etaža</TableHead>
-                          <TableHead>Kvadratura</TableHead>
-                          <TableHead>Cena (brez ddv)</TableHead>
-                          <TableHead>Cena</TableHead>
+                          <TableHead>size</TableHead>
+                          <TableHead>priceWithTax (brez ddv)</TableHead>
+                          <TableHead>priceWithTax</TableHead>
                           <TableHead>Status</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
                         {apartments.map((apartment, index) => (
-                          <TableRow key={apartment['stevilka-stanovanja']}>
+                          <TableRow key={apartment['number']}>
                             <TableCell className="font-semibold">
-                              {apartment['stevilka-stanovanja']}
+                              {apartment['number']}
                             </TableCell>
-                            <TableCell>{apartment.naziv}</TableCell>
-                            <TableCell>{apartment.etaza}. nadstropje</TableCell>
-                            <TableCell>{apartment.kvadratura} m2</TableCell>
+                            <TableCell>{apartment.name}</TableCell>
+                            <TableCell>{apartment.floor}. nadstropje</TableCell>
+                            <TableCell>{apartment.size} m2</TableCell>
                             <TableCell>
-                              {apartment['cena-brez-ddv']} €
+                              {apartment['priceWithTax-brez-ddv']} €
                             </TableCell>
-                            <TableCell>{apartment.cena} €</TableCell>
+                            <TableCell>{apartment.priceWithTax} €</TableCell>
                             <TableCell>
                               {apartment.status === StatusType.Prodaja && (
                                 <div className="rounded-full h-4 w-4 bg-green-400"></div>

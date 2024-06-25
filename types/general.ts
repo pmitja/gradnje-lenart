@@ -27,9 +27,9 @@ export interface RealEstate {
   size: string | null;
   priceWithTax: string | null;
   price: string | null;
-  status: string | null;
-  images: string[] | undefined;
-  locationId: string;
+  status?: string | null;
+  images?: string[] | undefined;
+  locationId?: string;
   slug?: string;
   createdAt?: Date;
   updatedAt?: Date;

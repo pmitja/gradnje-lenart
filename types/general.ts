@@ -33,6 +33,7 @@ export interface RealEstate {
   slug?: string;
   createdAt?: Date;
   updatedAt?: Date;
+  statusType?: StatusType;
 }
 
 export interface Location {

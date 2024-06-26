@@ -50,6 +50,7 @@ import { formSchema, mainFormSchema } from '@/schemas';
 import { getLocationRealEstates } from '@/actions/get-location-real-esatates';
 import Project404 from '@/components/containers/404/project-404';
 import Link from 'next/link';
+import { updateLocationRealEstate } from '@/actions/update-location-real-estates';
 
 export function DialogDemo({
   saveFormValues,
@@ -263,7 +264,7 @@ export function DialogDemo({
   );
 }
 
-const updateSchema = z.object({
+export const updateSchema = z.object({
   apartments: z.array(formSchema).min(1, {
     message: 'Dodaj vsaj eno stanovanje.',
   }),
@@ -295,7 +296,6 @@ const AktualniProjektPage = ({
 
   useEffect(() => {
     if (location) {
-      console.log(location.realEstates)
       setApartments((prev) => [...prev, ...(location.realEstates)]);
     }
   }, [location])
@@ -320,8 +320,16 @@ const AktualniProjektPage = ({
   function onSubmit(values: z.infer<typeof updateSchema>) {
     setError('');
     setSuccess('');
-
-    console.log(values)
+    
+    startTransition(() => {
+      updateLocationRealEstate({apartments: values}).then((result) => {
+        if ('error' in result) {
+          setError(result.error);
+        } else {
+          setSuccess(result.success);
+        }
+      });
+    })
   }
 
   return (

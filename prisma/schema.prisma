@@ -91,6 +91,7 @@ model RealEstate {
   price        Float?
   images       String[]
   locationId   String
+  status       String?
   slug         String   @unique
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt

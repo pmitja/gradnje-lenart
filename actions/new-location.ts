@@ -12,34 +12,35 @@ export const newLocation = async (values: z.infer<typeof mainFormSchema>) => {
     return { error: 'Invalid fields' }
   }
 
-  const { naziv, opis, mesto, naslov, stanovanja } = validatedFields.data
+  const { name, description, city, address, apartments } = validatedFields.data
 
-  const slug = generateSlug(naziv, mesto)
+  const slug = generateSlug(name, city)
 
   const location = await db.location.create({
     data: {
-      name: naziv,
-      description: opis,
-      city: mesto,
-      address: naslov,
+      name: name,
+      description: description,
+      city: city,
+      address: address,
       slug: slug,
     }
   })
 
   // Create the RealEstate entries associated with the created Location
-  await Promise.all(stanovanja.map((stanovanje, index) => 
+  await Promise.all(apartments.map((apartment, index) => 
     db.realEstate.create({
       data: {
-        name: stanovanje.naziv,
+        name: apartment.name,
         description: '',
-        number: stanovanje['stevilka-stanovanja'],
-        floor: stanovanje.etaza,
-        size: parseFloat(stanovanje.kvadratura),
-        priceWithTax: parseFloat(stanovanje['cena-brez-ddv']),
-        price: parseFloat(stanovanje.cena),
+        number: apartment.number,
+        floor: apartment.floor,
+        size: parseFloat(apartment.size),
+        priceWithTax: parseFloat(apartment.price),
+        price: parseFloat(apartment.priceWithTax),
         images: [],
         locationId: location.id,
-        slug: generateSlugWithNumber(location.slug, stanovanje['stevilka-stanovanja']),
+        slug: generateSlugWithNumber(location.slug, apartment.number),
+        status: apartment.status
       }
     })
   ))

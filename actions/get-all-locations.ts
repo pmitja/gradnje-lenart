@@ -3,6 +3,16 @@
 import { db } from '@/lib/db'
 
 export const getLocations = async () => {
-  const location = await db.location.findMany()
-  return location
+  try {
+    const locations = await db.location.findMany()
+
+    if (locations.length === 0) {
+      return null
+    }
+
+    return locations
+  } catch (error) {
+    console.error('Error fetching locations:', error)
+    return []
+  }
 }

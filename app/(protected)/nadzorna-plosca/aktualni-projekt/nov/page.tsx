@@ -62,12 +62,12 @@ export function DialogDemo({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      'stevilka-stanovanja': '',
-      naziv: '',
-      etaza: '',
-      kvadratura: '',
-      'cena-brez-ddv': '',
-      cena: '',
+      number: '',
+      name: '',
+      floor: '',
+      size: '',
+      price: '',
+      priceWithTax: '',
       status: StatusType.Prodaja,
     },
   });
@@ -96,13 +96,13 @@ export function DialogDemo({
             <div className="grid grid-cols-1 items-center gap-4">
               <FormField
                 control={form.control}
-                name="stevilka-stanovanja"
+                name="number"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Št. stanovanja</FormLabel>
                     <FormControl>
                       <Input
-                        id="stevilka-stanovanja"
+                        id="number"
                         defaultValue="1"
                         className="col-span-3"
                         {...field}
@@ -116,13 +116,13 @@ export function DialogDemo({
             <div className="grid grid-cols-1 items-center gap-4">
               <FormField
                 control={form.control}
-                name="naziv"
+                name="name"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Naziv</FormLabel>
                     <FormControl>
                       <Input
-                        id="naziv"
+                        id="name"
                         defaultValue="2 sobno stanovanje"
                         className="col-span-3"
                         {...field}
@@ -136,13 +136,13 @@ export function DialogDemo({
             <div className="grid grid-cols-1 items-center gap-4">
               <FormField
                 control={form.control}
-                name="etaza"
+                name="floor"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Etaža</FormLabel>
                     <FormControl>
                       <Input
-                        id="etaza"
+                        id="floor"
                         defaultValue="3. nadstropje"
                         className="col-span-3"
                         {...field}
@@ -156,13 +156,13 @@ export function DialogDemo({
             <div className="grid grid-cols-1 items-center gap-4">
               <FormField
                 control={form.control}
-                name="kvadratura"
+                name="size"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Kvadratura</FormLabel>
                     <FormControl>
                       <Input
-                        id="kvadratura"
+                        id="size"
                         defaultValue="3. nadstropje"
                         className="col-span-3"
                         {...field}
@@ -176,13 +176,13 @@ export function DialogDemo({
             <div className="grid grid-cols-1 items-center gap-4">
               <FormField
                 control={form.control}
-                name="cena-brez-ddv"
+                name="price"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Cena (brez ddv)</FormLabel>
                     <FormControl>
                       <Input
-                        id="cena-brez-ddv"
+                        id="price"
                         defaultValue="100.000 €"
                         className="col-span-3"
                         {...field}
@@ -196,13 +196,13 @@ export function DialogDemo({
             <div className="grid grid-cols-1 items-center gap-4">
               <FormField
                 control={form.control}
-                name="cena"
+                name="priceWithTax"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Cena</FormLabel>
                     <FormControl>
                       <Input
-                        id="cena"
+                        id="priceWithTax"
                         defaultValue="130.000 €"
                         className="col-span-3"
                         {...field}
@@ -273,11 +273,11 @@ const NovAktualniProjektPage = () => {
   const form = useForm<z.infer<typeof mainFormSchema>>({
     resolver: zodResolver(mainFormSchema),
     defaultValues: {
-      naziv: '',
-      opis: '',
-      mesto: '',
-      naslov: '',
-      stanovanja: apartments,
+      name: '',
+      description: '',
+      city: '',
+      address: '',
+      apartments: apartments,
     },
   });
 
@@ -288,7 +288,7 @@ const NovAktualniProjektPage = () => {
   };
 
   useEffect(() => {
-    setValue('stanovanja', apartments);
+    setValue('apartments', apartments);
   }, [apartments]);
 
   function onSubmit(values: z.infer<typeof mainFormSchema>) {
@@ -347,14 +347,14 @@ const NovAktualniProjektPage = () => {
                       <div className="grid gap-3">
                         <FormField
                           control={form.control}
-                          name="naziv"
+                          name="name"
                           render={({ field }) => (
                             <FormItem>
                               <FormLabel>Naziv</FormLabel>
                               <FormControl>
                                 <Input
                                   {...field}
-                                  id="naziv"
+                                  id="name"
                                   type="text"
                                   className="w-full"
                                   defaultValue="Več stanovanjski objekt"
@@ -368,14 +368,14 @@ const NovAktualniProjektPage = () => {
                       <div className="grid gap-3">
                         <FormField
                           control={form.control}
-                          name="opis"
+                          name="description"
                           render={({ field }) => (
                             <FormItem>
                               <FormLabel>Opis</FormLabel>
                               <FormControl>
                                 <Textarea
                                   {...field}
-                                  id="opis"
+                                  id="description"
                                   className="w-full min-h-32"
                                   defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl nec ultricies ultricies, nunc nisl ultricies nunc, nec ultricies nunc nisl nec nunc."
                                 />
@@ -388,14 +388,14 @@ const NovAktualniProjektPage = () => {
                       <div className="grid gap-3">
                         <FormField
                           control={form.control}
-                          name="mesto"
+                          name="city"
                           render={({ field }) => (
                             <FormItem>
                               <FormLabel>Mesto</FormLabel>
                               <FormControl>
                                 <Input
                                   {...field}
-                                  id="mesto"
+                                  id="city"
                                   type="text"
                                   className="w-full"
                                   defaultValue="Lenart"
@@ -409,14 +409,14 @@ const NovAktualniProjektPage = () => {
                       <div className="grid gap-3">
                         <FormField
                           control={form.control}
-                          name="naslov"
+                          name="address"
                           render={({ field }) => (
                             <FormItem>
                               <FormLabel>Naslov</FormLabel>
                               <FormControl>
                                 <Input
                                   {...field}
-                                  id="naslov"
+                                  id="address"
                                   type="text"
                                   className="w-full"
                                   defaultValue="Jurovska cesta 14"
@@ -452,18 +452,18 @@ const NovAktualniProjektPage = () => {
                         </TableRow>
                       </TableHeader>
                       <TableBody>
-                        {apartments.map((apartment, index) => (
-                          <TableRow key={apartment['stevilka-stanovanja']}>
+                        {apartments.map((apartment) => (
+                          <TableRow key={apartment.number}>
                             <TableCell className="font-semibold">
-                              {apartment['stevilka-stanovanja']}
+                              {apartment.number}
                             </TableCell>
-                            <TableCell>{apartment.naziv}</TableCell>
-                            <TableCell>{apartment.etaza}. nadstropje</TableCell>
-                            <TableCell>{apartment.kvadratura} m2</TableCell>
+                            <TableCell>{apartment.name}</TableCell>
+                            <TableCell>{apartment.floor}. nadstropje</TableCell>
+                            <TableCell>{apartment.size} m2</TableCell>
                             <TableCell>
-                              {apartment['cena-brez-ddv']} €
+                              {apartment.price} €
                             </TableCell>
-                            <TableCell>{apartment.cena} €</TableCell>
+                            <TableCell>{apartment.priceWithTax} €</TableCell>
                             <TableCell>
                               {apartment.status === StatusType.Prodaja && (
                                 <div className="rounded-full h-4 w-4 bg-green-400"></div>

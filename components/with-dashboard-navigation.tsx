@@ -73,7 +73,7 @@ const WithDashBoardNavigation = ({
                         className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
                         Nov vnos
                       </Link>
-                      {navItems.map((location) => (
+                      {navItems && navItems.map((location) => (
                         <Link
                           key={location.slug}
                           href={`/nadzorna-plosca/aktualni-projekt/${location.slug}`}

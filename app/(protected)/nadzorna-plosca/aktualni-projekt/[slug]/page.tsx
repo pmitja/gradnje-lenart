@@ -45,7 +45,7 @@ import { z } from 'zod';
 import { ToggleGroup } from '@radix-ui/react-toggle-group';
 import { ToggleGroupItem } from '@/components/ui/toggle-group';
 import { Apartment, Location, StatusType } from '@/types/general';
-import { formSchema } from '@/schemas';
+import { formSchema, updateSchema } from '@/schemas';
 import { getLocationRealEstates } from '@/actions/get-location-real-esatates';
 import Project404 from '@/components/containers/404/project-404';
 import Link from 'next/link';
@@ -54,7 +54,7 @@ import { updateLocationRealEstate } from '@/actions/update-location-real-estates
 export function DialogDemo({
   saveFormValues,
 }: {
-  saveFormValues: (values: RealEstate) => void;
+  saveFormValues: (values: Apartment) => void;
 }) {
   const [open, setOpen] = useState(false);
 
@@ -64,9 +64,9 @@ export function DialogDemo({
       number: '',
       name: '',
       floor: '',
-      size: '',
-      price: '',
-      priceWithTax: '',
+      size: 0,
+      price: 0,
+      priceWithTax: 0,
       status: StatusType.Prodaja,
     },
   });
@@ -162,9 +162,11 @@ export function DialogDemo({
                     <FormControl>
                       <Input
                         id="size"
-                        defaultValue="3. nadstropje"
+                        defaultValue="3"
                         className="col-span-3"
+                        type='number'
                         {...field}
+                        onChange={event => field.onChange(+event.target.value)}
                       />
                     </FormControl>
                     <FormMessage />
@@ -182,9 +184,11 @@ export function DialogDemo({
                     <FormControl>
                       <Input
                         id="price"
-                        defaultValue="100.000 €"
+                        defaultValue="100000"
                         className="col-span-3"
+                        type='number'
                         {...field}
+                        onChange={event => field.onChange(+event.target.value)}
                       />
                     </FormControl>
                     <FormMessage />
@@ -202,9 +206,11 @@ export function DialogDemo({
                     <FormControl>
                       <Input
                         id="priceWithTax"
-                        defaultValue="130.000 €"
+                        defaultValue="130000"
                         className="col-span-3"
+                        type='number'
                         {...field}
+                        onChange={event => field.onChange(+event.target.value)}
                       />
                     </FormControl>
                     <FormMessage />
@@ -263,19 +269,12 @@ export function DialogDemo({
   );
 }
 
-export const updateSchema = z.object({
-  apartments: z.array(formSchema).min(1, {
-    message: 'Dodaj vsaj eno stanovanje.',
-  }),
-});
-
 const AktualniProjektPage = ({
   params: { slug },
 }: {
   params: { slug: string };
 }) => {
   const [apartments, setApartments] = useState<Apartment[]>([]);
-  const [newApartment, setNewApartment] = useState<Apartment[]>([]);
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
@@ -287,7 +286,7 @@ const AktualniProjektPage = ({
     startTransition(() => {
       getLocationRealEstates(slug).then((result) => {
         setLocation(result as Location | null);
-        setApartments(result?.realEstates as Apartment[] || []);
+        setApartments(result?.realEstates as unknown as Apartment[]);
         if (!result) {
           setIsError(true);
         }
@@ -298,28 +297,26 @@ const AktualniProjektPage = ({
   const form = useForm<z.infer<typeof updateSchema>>({
     resolver: zodResolver(updateSchema),
     defaultValues: {
-      apartments: [],
+      apartments: apartments,
     },
   });
 
   const { setValue } = form;
 
   const saveFormValues = (values: Apartment) => {
-    setNewApartment((prevApartments) => [...prevApartments, values]);
     setApartments((prevApartments) => [...prevApartments, values]);
   };
 
   useEffect(() => {
-    setValue('apartments', newApartment);
-  }, [newApartment]);
+    setValue('apartments', apartments);
+  }, [apartments]);
 
   function onSubmit(values: z.infer<typeof updateSchema>) {
     setError('');
     setSuccess('');
-    console.log(values)
     startTransition(() => {
-      updateLocationRealEstate({newApartments: values
-      }).then((result) => {
+      updateLocationRealEstate(values).then((result) => {
+        console.log(result)
           setError(result.error);
           setSuccess(result.success);
       });
@@ -348,7 +345,7 @@ const AktualniProjektPage = ({
                   size="sm"
                   variant={'primary'}
                   className="border border-body-200"
-                  onClick={() => onSubmit(newApartment)}>
+                  onClick={() => onSubmit({ apartments })}>
                   Dodaj lokacijo
                 </Button>
               </div>

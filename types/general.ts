@@ -24,9 +24,9 @@ export interface RealEstate {
   description?: string | null;
   number: string | null;
   floor: string | null;
-  size: string | null;
-  priceWithTax: string | null;
-  price: string | null;
+  size: number | null;
+  priceWithTax: number | null;
+  price: number | null;
   status?: string | null;
   images?: string[] | undefined;
   locationId?: string;
@@ -52,8 +52,9 @@ export type Apartment = {
   number: string;
   name: string;
   floor: string;
-  size: string;
-  price: string;
-  priceWithTax: string;
+  size: number;
+  price: number;
+  priceWithTax: number;
   status: StatusType;
+  images?: string[];
 };

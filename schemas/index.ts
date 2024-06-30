@@ -44,17 +44,18 @@ export const formSchema = z.object({
   floor: z.string().min(1, {
     message: 'Vnesi etazo ki je daljša od 3 znakov, to polje je obvezno.',
   }),
-  size: z.string().min(1, {
+  size: z.number().min(1, {
     message: 'Vnesi kvadraturo ki je daljša od 3 znakov, to polje je obvezno.',
   }),
-  price: z.string().min(1, {
+  price: z.number().min(1, {
     message:
       'Vnesi ceno brez ddv ki je daljša od 3 znakov, to polje je obvezno.',
   }),
-  priceWithTax: z.string().min(1, {
+  priceWithTax: z.number().min(1, {
     message: 'Vnesi ceno ki je daljša od 3 znakov, to polje je obvezno.',
   }),
   status: z.nativeEnum(StatusType),
+  id: z.string().optional(),
 });
 
 export const mainFormSchema = z.object({
@@ -71,6 +72,12 @@ export const mainFormSchema = z.object({
     message:
       'Vnesi ceno brez ddv ki je daljša od 3 znakov, to polje je obvezno.',
   }),
+  apartments: z.array(formSchema).min(1, {
+    message: 'Dodaj vsaj eno stanovanje.',
+  }),
+});
+
+export const updateSchema = z.object({
   apartments: z.array(formSchema).min(1, {
     message: 'Dodaj vsaj eno stanovanje.',
   }),

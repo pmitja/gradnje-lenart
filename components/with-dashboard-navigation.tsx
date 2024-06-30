@@ -145,7 +145,7 @@ const WithDashBoardNavigation = ({
                   </AccordionItem>
                 </Accordion>
                 <Link
-                  href="/nadzorna-plosca/dodaj-projekt"
+                  href="/nadzorna-plosca/aktualni-projekt/nov"
                   className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
                   <SquarePlusIcon className="h-6 w-6" />
                   Dodaj nov projekt

@@ -14,12 +14,14 @@ export const updateLocationRealEstate = async (
   if (!validatedFields.success) {
     return { error: 'Invalid fields' };
   }
+  console.log(values)
+  const { apartments, locationSlug } = values;
 
-  const { apartments } = values;
+  console.log(apartments, locationSlug)
 
   const location = await db.location.findUnique({
     where: {
-      slug: 'sv-ana-sv-ana'
+      slug: locationSlug
     }
   })
 

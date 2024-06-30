@@ -65,9 +65,9 @@ export function DialogDemo({
       number: '',
       name: '',
       floor: '',
-      size: '',
-      price: '',
-      priceWithTax: '',
+      size: 0,
+      price: 0,
+      priceWithTax: 0,
       status: StatusType.Prodaja,
     },
   });
@@ -163,9 +163,10 @@ export function DialogDemo({
                     <FormControl>
                       <Input
                         id="size"
-                        defaultValue="3. nadstropje"
+                        defaultValue="50"
                         className="col-span-3"
                         {...field}
+                        onChange={event => field.onChange(+event.target.value)}
                       />
                     </FormControl>
                     <FormMessage />
@@ -183,9 +184,10 @@ export function DialogDemo({
                     <FormControl>
                       <Input
                         id="price"
-                        defaultValue="100.000 €"
+                        defaultValue="100000"
                         className="col-span-3"
                         {...field}
+                        onChange={event => field.onChange(+event.target.value)}
                       />
                     </FormControl>
                     <FormMessage />
@@ -203,9 +205,10 @@ export function DialogDemo({
                     <FormControl>
                       <Input
                         id="priceWithTax"
-                        defaultValue="130.000 €"
+                        defaultValue="130000"
                         className="col-span-3"
                         {...field}
+                        onChange={event => field.onChange(+event.target.value)}
                       />
                     </FormControl>
                     <FormMessage />

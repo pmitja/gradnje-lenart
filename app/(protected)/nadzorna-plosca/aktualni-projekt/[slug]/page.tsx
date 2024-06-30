@@ -298,6 +298,7 @@ const AktualniProjektPage = ({
     resolver: zodResolver(updateSchema),
     defaultValues: {
       apartments: apartments,
+      locationSlug: slug,
     },
   });
 
@@ -345,7 +346,7 @@ const AktualniProjektPage = ({
                   size="sm"
                   variant={'primary'}
                   className="border border-body-200"
-                  onClick={() => onSubmit({ apartments })}>
+                  onClick={() => onSubmit({ apartments, locationSlug: location.slug })}>
                   Dodaj lokacijo
                 </Button>
               </div>

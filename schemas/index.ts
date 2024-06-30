@@ -81,4 +81,5 @@ export const updateSchema = z.object({
   apartments: z.array(formSchema).min(1, {
     message: 'Dodaj vsaj eno stanovanje.',
   }),
+  locationSlug: z.string(),
 });

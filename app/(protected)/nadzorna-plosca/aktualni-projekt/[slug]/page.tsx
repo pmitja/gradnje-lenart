@@ -347,7 +347,7 @@ const AktualniProjektPage = ({
                   variant={'primary'}
                   className="border border-body-200"
                   onClick={() => onSubmit({ apartments, locationSlug: location.slug })}>
-                  Dodaj lokacijo
+                  Posodobi lokacijo
                 </Button>
               </div>
           </div>
@@ -355,7 +355,7 @@ const AktualniProjektPage = ({
             <div className="grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-8">
               <Card x-chunk="dashboard-07-chunk-1" className="bg-primary-75">
                 <CardHeader>
-                  <CardTitle>apartments</CardTitle>
+                  <CardTitle>Stanovanja</CardTitle>
                   <CardDescription>
                     V tabeli so prikazana vsa apartments, ki so trenutno dodana
                     na lokacijo.
@@ -375,7 +375,7 @@ const AktualniProjektPage = ({
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {apartments.map((apartment, index) => (
+                      {apartments.sort((a, b) => Number(a.number) - Number(b.number)).map((apartment, index) => (
                         <TableRow key={apartment.number}>
                           <TableCell className="font-semibold">
                             {apartment.number}

@@ -454,7 +454,7 @@ const NovAktualniProjektPage = () => {
                         </TableRow>
                       </TableHeader>
                       <TableBody>
-                        {apartments.map((apartment) => (
+                        {apartments.sort((a, b) => Number(a.number) - Number(b.number)).map((apartment) => (
                           <TableRow key={apartment.number}>
                             <TableCell className="font-semibold">
                               {apartment.number}

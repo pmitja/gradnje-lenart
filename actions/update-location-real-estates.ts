@@ -10,22 +10,16 @@ export const updateLocationRealEstate = async (
 ) => {
   const validatedFields = updateSchema.safeParse(values);
 
-  console.log('Validated Fields:', validatedFields);
   if (!validatedFields.success) {
     return { error: 'Invalid fields' };
   }
-  console.log(values)
   const { apartments, locationSlug } = values;
-
-  console.log(apartments, locationSlug)
 
   const location = await db.location.findUnique({
     where: {
       slug: locationSlug
     }
   })
-
-  console.log(location)
 
   if (!location) {
     return { error: 'Location not found' };
@@ -35,7 +29,6 @@ export const updateLocationRealEstate = async (
     await Promise.all(
       apartments.map(async (apartment) => {
         if (apartment.id) {
-          console.log('Updating apartment:', apartment);
           await db.realEstate.update({
             where: { id: apartment.id },
             data: {
@@ -49,7 +42,6 @@ export const updateLocationRealEstate = async (
             },
           });
         } else {
-          console.log('Creating new apartment:', apartment);
           await db.realEstate.create({
             data: {
               name: apartment.name,
@@ -66,7 +58,7 @@ export const updateLocationRealEstate = async (
         }
       })
     );
-    return { success: 'Nova lokacija je dodana!' };
+    return { success: 'Lokacija je posodobljena!' };
   } catch (error) {
     console.error('Error updating/creating apartments:', error);
     return { error: 'An error occurred while updating/creating apartments' };

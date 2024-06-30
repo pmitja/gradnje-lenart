@@ -4,6 +4,7 @@ import { mainFormSchema } from "@/schemas"
 import { z } from "zod"
 import { db } from '@/lib/db'
 import { generateSlug, generateSlugWithNumber } from "@/lib/helpers"
+import { revalidatePath, revalidateTag } from "next/cache"
 
 export const newLocation = async (values: z.infer<typeof mainFormSchema>) => {
   const validatedFields = mainFormSchema.safeParse(values)
@@ -44,6 +45,8 @@ export const newLocation = async (values: z.infer<typeof mainFormSchema>) => {
       }
     })
   ))
+
+  revalidatePath('nadzorna-plosca')
 
   return { success: 'Nova lokacija je dodana!' }
 }

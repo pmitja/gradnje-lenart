@@ -91,7 +91,6 @@ export function DialogDemo({
         </DialogHeader>
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(onSubmit)}
             className="grid gap-4 py-4">
             <div className="grid grid-cols-1 items-center gap-4">
               <FormField
@@ -258,7 +257,7 @@ export function DialogDemo({
               />
             </div>
             <DialogFooter>
-              <Button type="submit">Dodaj stanovanje</Button>
+              <Button onClick={form.handleSubmit(onSubmit)}>Dodaj stanovanje</Button>
             </DialogFooter>
           </form>
         </Form>

@@ -48,19 +48,12 @@ export interface Location {
   updatedAt: Date;
 }
 
-export interface Apartment {
-  id: string;
+export type Apartment = {
+  number: string;
   name: string;
-  description: string | null;
-  number: string | null;
-  floor: string | null;
-  size: string | null;
-  priceWithTax: string | null;
-  price: string | null;
-  status: string | null;
-  images: string[] | undefined;
-  locationId: string;
-  slug: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
+  floor: string;
+  size: string;
+  price: string;
+  priceWithTax: string;
+  status: StatusType;
+};

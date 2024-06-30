@@ -294,7 +294,7 @@ const NovAktualniProjektPage = () => {
   function onSubmit(values: z.infer<typeof mainFormSchema>) {
     setError('');
     setSuccess('');
-
+    
     startTransition(() => {
       newLocation(values).then((data) => {
         setError(data.error);

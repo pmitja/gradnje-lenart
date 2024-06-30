@@ -44,9 +44,8 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { ToggleGroup } from '@radix-ui/react-toggle-group';
 import { ToggleGroupItem } from '@/components/ui/toggle-group';
-import { newLocation } from '@/actions/new-location';
-import { Location, RealEstate, StatusType } from '@/types/general';
-import { formSchema, mainFormSchema } from '@/schemas';
+import { Apartment, Location, StatusType } from '@/types/general';
+import { formSchema } from '@/schemas';
 import { getLocationRealEstates } from '@/actions/get-location-real-esatates';
 import Project404 from '@/components/containers/404/project-404';
 import Link from 'next/link';
@@ -275,7 +274,8 @@ const AktualniProjektPage = ({
 }: {
   params: { slug: string };
 }) => {
-  const [apartments, setApartments] = useState<RealEstate[]>([]);
+  const [apartments, setApartments] = useState<Apartment[]>([]);
+  const [newApartment, setNewApartment] = useState<Apartment[]>([]);
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
@@ -287,6 +287,7 @@ const AktualniProjektPage = ({
     startTransition(() => {
       getLocationRealEstates(slug).then((result) => {
         setLocation(result as Location | null);
+        setApartments(result?.realEstates as Apartment[] || []);
         if (!result) {
           setIsError(true);
         }
@@ -294,40 +295,33 @@ const AktualniProjektPage = ({
     });
   }, []);
 
-  useEffect(() => {
-    if (location) {
-      setApartments((prev) => [...prev, ...(location.realEstates)]);
-    }
-  }, [location])
-
   const form = useForm<z.infer<typeof updateSchema>>({
     resolver: zodResolver(updateSchema),
     defaultValues: {
-      apartments: apartments,
+      apartments: [],
     },
   });
 
   const { setValue } = form;
 
-  const saveFormValues = (values: RealEstate) => {
+  const saveFormValues = (values: Apartment) => {
+    setNewApartment((prevApartments) => [...prevApartments, values]);
     setApartments((prevApartments) => [...prevApartments, values]);
   };
 
   useEffect(() => {
-    setValue('apartments', apartments);
-  }, [apartments]);
+    setValue('apartments', newApartment);
+  }, [newApartment]);
 
   function onSubmit(values: z.infer<typeof updateSchema>) {
     setError('');
     setSuccess('');
-    
+    console.log(values)
     startTransition(() => {
-      updateLocationRealEstate({apartments: values}).then((result) => {
-        if ('error' in result) {
+      updateLocationRealEstate({newApartments: values
+      }).then((result) => {
           setError(result.error);
-        } else {
           setSuccess(result.success);
-        }
       });
     })
   }
@@ -354,7 +348,7 @@ const AktualniProjektPage = ({
                   size="sm"
                   variant={'primary'}
                   className="border border-body-200"
-                  onClick={() => onSubmit(apartments)}>
+                  onClick={() => onSubmit(newApartment)}>
                   Dodaj lokacijo
                 </Button>
               </div>

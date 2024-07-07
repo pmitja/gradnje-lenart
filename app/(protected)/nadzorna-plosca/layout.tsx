@@ -20,7 +20,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const session = await auth();
-  const location = await getLocations();
+  const location = await getLocations() || [];
 
 
   return (

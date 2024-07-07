@@ -37,9 +37,7 @@ export const NewVerificationForm = () => {
 
   return (
     <CardWrapper
-      headerLabel="Verify your email"
-      backButtonHref="/auth/login"
-      backButtonLabel="Back to login">
+      headerLabel="Verify your email">
       <div className="flex items-center w-full justify-center flex-col gap-4">
         {!success && !error && <BeatLoader color="#2563EB" />}
         <FormError message={error} />

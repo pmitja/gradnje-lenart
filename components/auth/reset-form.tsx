@@ -47,8 +47,6 @@ function ResetForm() {
   return (
     <CardWrapper
       headerLabel="Forgot your password?"
-      backButtonLabel="Back to login"
-      backButtonHref="/auth/login"
       >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">

@@ -53,7 +53,7 @@ import { FormSuccess } from '@/components/form-success';
 import Link from 'next/link';
 import { UploadButton } from '@/lib/utils/uploadthing';
 
-export function DialogDemo({
+function DialogDemo({
   saveFormValues,
 }: {
   saveFormValues: (values: Apartment) => void;

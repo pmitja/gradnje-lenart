@@ -6,9 +6,7 @@ import { TriangleAlert } from 'lucide-react';
 export const ErrorCard = () => {
   return (
     <CardWrapper
-      headerLabel="Oops! Something went wrong!"
-      backButtonHref="/auth/login"
-      backButtonLabel="Back to login">
+      headerLabel="Oops! Something went wrong!">
       <div className="w-full items-center flex justify-center text-red-500">
         <TriangleAlert size={48} />
       </div>

@@ -52,7 +52,7 @@ import Link from 'next/link';
 import { updateLocationRealEstate } from '@/actions/update-location-real-estates';
 import { UploadButton } from '@/lib/utils/uploadthing';
 
-export function DialogDemo({
+function DialogDemo({
   saveFormValues,
 }: {
   saveFormValues: (values: Apartment) => void;

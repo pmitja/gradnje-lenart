@@ -7,6 +7,7 @@ export const publicRoutes = [
   "/",
   '/auth',
   "/auth/new-verification",
+  '/api/uploadthing?slug=imageUploader'
 ];
 
 /**
@@ -28,6 +29,13 @@ export const authRoutes = [
  * @type {string}
  */
 export const apiAuthPrefix = "/api/auth";
+
+/**
+ * The prefix for API uploadthing routes
+ * Routes that start with this prefix are used for API uploadthing purposes
+ * @type {string}
+ */
+export const apiUploadThingPrefix = "/api/uploadthing";
 
 /**
  * The default redirect path after logging in

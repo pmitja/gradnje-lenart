@@ -56,6 +56,7 @@ export const formSchema = z.object({
   }),
   status: z.nativeEnum(StatusType),
   id: z.string().optional(),
+  images: z.array(z.string()).optional(),
 });
 
 export const mainFormSchema = z.object({

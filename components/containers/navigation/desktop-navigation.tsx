@@ -20,8 +20,8 @@ const DesktopNavigation = ({ navItems }: NavbarProps) => {
       </aside>
       <nav className="hidden md:block absolute left-[50%] top-[50%] transform translate-x-[-50%] translate-y-[-50%]">
         <ul className="flex items-center justify-center gap-8 text-secondary-300 text-base leading-5 lg:text-lg lg:leading-6 font-semibold">
-          {navItems.map((navItem) => (
-          <Link href={navItem.link} key={navItem.link}>
+          {navItems.map((navItem, index) => (
+          <Link href={navItem.link} key={index}>
             {navItem.text}
           </Link>
         ))}

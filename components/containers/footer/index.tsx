@@ -13,7 +13,7 @@ const Footer = ({ navItems }: NavbarProps) => {
         height={100}
       />
       <nav className="flex flex-wrap justify-around gap-4 font-semibold text-base leading-6">
-        {navItems.map((navItem) => <Link href={navItem.link} className="link link-hover">{navItem.text}</Link>)}
+        {navItems.map((navItem) => <Link href={navItem.link} key={navItem.link} className="link link-hover">{navItem.text}</Link>)}
       </nav>
       <nav>
         <div className="grid grid-flow-col gap-4">

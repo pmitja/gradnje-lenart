@@ -6,6 +6,7 @@ import authConfig from "@/auth-config"
 import {
   DEFAULT_LOGIN_REDIRECT,
   apiAuthPrefix,
+  apiUploadThingPrefix,
   authRoutes,
   publicRoutes,
 } from "@/routes";
@@ -16,9 +17,16 @@ export default auth((req) => {
   const { nextUrl } = req;
   const isLoggedIn = !!req.auth;
 
+  console.log(req)
+
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
+  const isUploadThingRoute = nextUrl.pathname.startsWith(apiUploadThingPrefix);
+
+  if (isUploadThingRoute) {
+    return NextResponse.next();
+  }
 
   if (isApiAuthRoute) {
     return NextResponse.next();

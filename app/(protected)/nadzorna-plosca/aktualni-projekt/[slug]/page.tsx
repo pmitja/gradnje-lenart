@@ -50,6 +50,7 @@ import { getLocationRealEstates } from '@/actions/get-location-real-esatates';
 import Project404 from '@/components/containers/404/project-404';
 import Link from 'next/link';
 import { updateLocationRealEstate } from '@/actions/update-location-real-estates';
+import { UploadButton } from '@/lib/utils/uploadthing';
 
 export function DialogDemo({
   saveFormValues,
@@ -57,6 +58,7 @@ export function DialogDemo({
   saveFormValues: (values: Apartment) => void;
 }) {
   const [open, setOpen] = useState(false);
+  const [imagesBeginUploading, setImagesBeginUploading] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -68,6 +70,7 @@ export function DialogDemo({
       price: 0,
       priceWithTax: 0,
       status: StatusType.Prodaja,
+      images: [],
     },
   });
 
@@ -75,6 +78,8 @@ export function DialogDemo({
     saveFormValues(values);
     setOpen(false);
   }
+
+  const { setValue } = form;
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -95,13 +100,13 @@ export function DialogDemo({
             <div className="grid grid-cols-1 items-center gap-4">
               <FormField
                 control={form.control}
-                name='number'
+                name="number"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Št. apartments</FormLabel>
                     <FormControl>
                       <Input
-                        id='number'
+                        id="number"
                         defaultValue="1"
                         className="col-span-3"
                         {...field}
@@ -118,7 +123,7 @@ export function DialogDemo({
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>name</FormLabel>
+                    <FormLabel>Naziv</FormLabel>
                     <FormControl>
                       <Input
                         id="name"
@@ -164,9 +169,11 @@ export function DialogDemo({
                         id="size"
                         defaultValue="3"
                         className="col-span-3"
-                        type='number'
+                        type="number"
                         {...field}
-                        onChange={event => field.onChange(+event.target.value)}
+                        onChange={(event) =>
+                          field.onChange(+event.target.value)
+                        }
                       />
                     </FormControl>
                     <FormMessage />
@@ -186,9 +193,11 @@ export function DialogDemo({
                         id="price"
                         defaultValue="100000"
                         className="col-span-3"
-                        type='number'
+                        type="number"
                         {...field}
-                        onChange={event => field.onChange(+event.target.value)}
+                        onChange={(event) =>
+                          field.onChange(+event.target.value)
+                        }
                       />
                     </FormControl>
                     <FormMessage />
@@ -208,9 +217,11 @@ export function DialogDemo({
                         id="priceWithTax"
                         defaultValue="130000"
                         className="col-span-3"
-                        type='number'
+                        type="number"
                         {...field}
-                        onChange={event => field.onChange(+event.target.value)}
+                        onChange={(event) =>
+                          field.onChange(+event.target.value)
+                        }
                       />
                     </FormControl>
                     <FormMessage />
@@ -259,8 +270,24 @@ export function DialogDemo({
                 )}
               />
             </div>
+            <div className="grid grid-cols-1 gap-4">
+              <UploadButton
+                endpoint="imageUploader"
+                onUploadProgress={() => setImagesBeginUploading(true)}
+                onClientUploadComplete={(res) => {
+                  const array = res.map((file) => file.key);
+                  setValue('images', array);
+                  setImagesBeginUploading(false);
+                }}
+                onUploadError={(error: Error) => {
+                  setImagesBeginUploading(false);
+                  // Do something with the error.
+                  alert(`ERROR! ${error.message}`);
+                }}
+              />
+            </div>
             <DialogFooter>
-              <Button type="submit">Dodaj stanovanje</Button>
+              <Button type="submit" disabled={imagesBeginUploading}>Dodaj stanovanje</Button>
             </DialogFooter>
           </form>
         </Form>
@@ -317,11 +344,10 @@ const AktualniProjektPage = ({
     setSuccess('');
     startTransition(() => {
       updateLocationRealEstate(values).then((result) => {
-        console.log(result)
-          setError(result.error);
-          setSuccess(result.success);
+        setError(result.error);
+        setSuccess(result.success);
       });
-    })
+    });
   }
 
   return (
@@ -339,17 +365,19 @@ const AktualniProjektPage = ({
               {location.name}
             </h1>
             <div className="hidden items-center gap-2 md:ml-auto md:flex">
-                <Button variant="outline" size="sm">
-                  Prekliči
-                </Button>
-                <Button
-                  size="sm"
-                  variant={'primary'}
-                  className="border border-body-200"
-                  onClick={() => onSubmit({ apartments, locationSlug: location.slug })}>
-                  Posodobi lokacijo
-                </Button>
-              </div>
+              <Button variant="outline" size="sm">
+                Prekliči
+              </Button>
+              <Button
+                size="sm"
+                variant={'primary'}
+                className="border border-body-200"
+                onClick={() =>
+                  onSubmit({ apartments, locationSlug: location.slug })
+                }>
+                Posodobi lokacijo
+              </Button>
+            </div>
           </div>
           <div className="grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-2 lg:gap-8">
             <div className="grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-8">
@@ -366,7 +394,7 @@ const AktualniProjektPage = ({
                     <TableHeader>
                       <TableRow>
                         <TableHead>Št. apartments</TableHead>
-                        <TableHead>name</TableHead>
+                        <TableHead>Naziv</TableHead>
                         <TableHead>Etaža</TableHead>
                         <TableHead>Kvadratura</TableHead>
                         <TableHead>Cena (brez ddv)</TableHead>
@@ -375,29 +403,31 @@ const AktualniProjektPage = ({
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {apartments.sort((a, b) => Number(a.number) - Number(b.number)).map((apartment, index) => (
-                        <TableRow key={apartment.number}>
-                          <TableCell className="font-semibold">
-                            {apartment.number}
-                          </TableCell>
-                          <TableCell>{apartment.name}</TableCell>
-                          <TableCell>{apartment.floor}. nadstropje</TableCell>
-                          <TableCell>{apartment.size} m2</TableCell>
-                          <TableCell>{apartment.price} €</TableCell>
-                          <TableCell>{apartment.priceWithTax} €</TableCell>
-                          <TableCell>
-                            {apartment.status === StatusType.Prodaja && (
-                              <div className="rounded-full h-4 w-4 bg-green-400"></div>
-                            )}
-                            {apartment.status === StatusType.Rezervirano && (
-                              <div className="rounded-full h-4 w-4 bg-yellow-400"></div>
-                            )}
-                            {apartment.status === StatusType.Prodano && (
-                              <div className="rounded-full h-4 w-4 bg-red-400"></div>
-                            )}
-                          </TableCell>
-                        </TableRow>
-                      ))}
+                      {apartments
+                        .sort((a, b) => Number(a.number) - Number(b.number))
+                        .map((apartment, index) => (
+                          <TableRow key={apartment.number}>
+                            <TableCell className="font-semibold">
+                              {apartment.number}
+                            </TableCell>
+                            <TableCell>{apartment.name}</TableCell>
+                            <TableCell>{apartment.floor}. nadstropje</TableCell>
+                            <TableCell>{apartment.size} m2</TableCell>
+                            <TableCell>{apartment.price} €</TableCell>
+                            <TableCell>{apartment.priceWithTax} €</TableCell>
+                            <TableCell>
+                              {apartment.status === StatusType.Prodaja && (
+                                <div className="rounded-full h-4 w-4 bg-green-400"></div>
+                              )}
+                              {apartment.status === StatusType.Rezervirano && (
+                                <div className="rounded-full h-4 w-4 bg-yellow-400"></div>
+                              )}
+                              {apartment.status === StatusType.Prodano && (
+                                <div className="rounded-full h-4 w-4 bg-red-400"></div>
+                              )}
+                            </TableCell>
+                          </TableRow>
+                        ))}
                     </TableBody>
                   </Table>
                 </CardContent>

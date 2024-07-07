@@ -51,6 +51,7 @@ import { formSchema, mainFormSchema } from '@/schemas';
 import { FormError } from '@/components/form-error';
 import { FormSuccess } from '@/components/form-success';
 import Link from 'next/link';
+import { UploadButton } from '@/lib/utils/uploadthing';
 
 export function DialogDemo({
   saveFormValues,
@@ -58,6 +59,7 @@ export function DialogDemo({
   saveFormValues: (values: Apartment) => void;
 }) {
   const [open, setOpen] = useState(false);
+  const [imagesBeginUploading, setImagesBeginUploading] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -69,6 +71,7 @@ export function DialogDemo({
       price: 0,
       priceWithTax: 0,
       status: StatusType.Prodaja,
+      images: [],
     },
   });
 
@@ -76,6 +79,8 @@ export function DialogDemo({
     saveFormValues(values);
     setOpen(false);
   }
+
+  const { setValue } = form;
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -91,6 +96,7 @@ export function DialogDemo({
         </DialogHeader>
         <Form {...form}>
           <form
+            onSubmit={form.handleSubmit(onSubmit)}
             className="grid gap-4 py-4">
             <div className="grid grid-cols-1 items-center gap-4">
               <FormField
@@ -98,7 +104,7 @@ export function DialogDemo({
                 name="number"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Št. stanovanja</FormLabel>
+                    <FormLabel>Št. apartments</FormLabel>
                     <FormControl>
                       <Input
                         id="number"
@@ -162,10 +168,13 @@ export function DialogDemo({
                     <FormControl>
                       <Input
                         id="size"
-                        defaultValue="50"
+                        defaultValue="3"
                         className="col-span-3"
+                        type="number"
                         {...field}
-                        onChange={event => field.onChange(+event.target.value)}
+                        onChange={(event) =>
+                          field.onChange(+event.target.value)
+                        }
                       />
                     </FormControl>
                     <FormMessage />
@@ -185,8 +194,11 @@ export function DialogDemo({
                         id="price"
                         defaultValue="100000"
                         className="col-span-3"
+                        type="number"
                         {...field}
-                        onChange={event => field.onChange(+event.target.value)}
+                        onChange={(event) =>
+                          field.onChange(+event.target.value)
+                        }
                       />
                     </FormControl>
                     <FormMessage />
@@ -206,8 +218,11 @@ export function DialogDemo({
                         id="priceWithTax"
                         defaultValue="130000"
                         className="col-span-3"
+                        type="number"
                         {...field}
-                        onChange={event => field.onChange(+event.target.value)}
+                        onChange={(event) =>
+                          field.onChange(+event.target.value)
+                        }
                       />
                     </FormControl>
                     <FormMessage />
@@ -256,8 +271,24 @@ export function DialogDemo({
                 )}
               />
             </div>
+            <div className="grid grid-cols-1 gap-4">
+              <UploadButton
+                endpoint="imageUploader"
+                onUploadProgress={() => setImagesBeginUploading(true)}
+                onClientUploadComplete={(res) => {
+                  const array = res.map((file) => file.key);
+                  setValue('images', array);
+                  setImagesBeginUploading(false);
+                }}
+                onUploadError={(error: Error) => {
+                  setImagesBeginUploading(false);
+                  // Do something with the error.
+                  alert(`ERROR! ${error.message}`);
+                }}
+              />
+            </div>
             <DialogFooter>
-              <Button onClick={form.handleSubmit(onSubmit)}>Dodaj stanovanje</Button>
+              <Button type="submit" disabled={imagesBeginUploading}>Dodaj stanovanje</Button>
             </DialogFooter>
           </form>
         </Form>

@@ -1,30 +1,30 @@
-import type { Config } from "tailwindcss"
-import { withUt } from "uploadthing/tw"
+import type { Config } from 'tailwindcss';
+import { withUt } from 'uploadthing/tw';
 
 const config = {
-  darkMode: ["class"],
+  darkMode: ['class'],
   content: [
     './pages/**/*.{ts,tsx}',
     './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}',
-	],
-  prefix: "",
+  ],
+  prefix: '',
   theme: {
     container: {
       center: true,
-      padding: "2rem",
+      padding: '2rem',
       screens: {
-        "2xl": "1400px",
+        '2xl': '1400px',
       },
     },
     extend: {
       colors: {
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
+        border: 'hsl(var(--border))',
+        input: 'hsl(var(--input))',
+        ring: 'hsl(var(--ring))',
+        background: 'hsl(var(--background))',
+        foreground: 'hsl(var(--foreground))',
         primary: {
           DEFAULT: 'hsl(var(--primary))',
           foreground: 'hsl(var(--primary-foreground))',
@@ -34,7 +34,7 @@ const config = {
           200: '#85a46c',
           300: '#6c914e',
           400: '#4c6637',
-          500: '#425830'
+          500: '#425830',
         },
         secondary: {
           DEFAULT: 'hsl(var(--secondary))',
@@ -45,7 +45,7 @@ const config = {
           200: '#3e5566',
           300: '#173247',
           400: '#102332',
-          500: '#0e1f2b'
+          500: '#0e1f2b',
         },
         body: {
           DEFAULT: '#FFFFF',
@@ -55,81 +55,84 @@ const config = {
           200: '#f9eed6',
           300: '#f8eace',
           400: '#aea490',
-          500: '#978f7e'
+          500: '#978f7e',
         },
         destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
+          DEFAULT: 'hsl(var(--destructive))',
+          foreground: 'hsl(var(--destructive-foreground))',
           50: '#fceae9',
           75: '#f1a9a4',
           100: '#eb857f',
           200: '#e25148',
           300: '#dc2d22',
           400: '#9a1f18',
-          500: '#861b15'
+          500: '#861b15',
         },
         success: {
-          DEFAULT: "#ffff",
+          DEFAULT: '#ffff',
           50: '#e9fbeb',
           75: '#a6efae',
           100: '#82e88c',
           200: '#4cde5b',
           300: '#27d739',
           400: '#1b9728',
-          500: '#188323'
+          500: '#188323',
         },
         informative: {
-          DEFAULT: "#ffff",
+          DEFAULT: '#ffff',
           50: '#e9fafd',
           75: '#a6ecf6',
           100: '#81e4f2',
           200: '#4bd9ed',
           300: '#26d1e9',
           400: '#1b92a3',
-          500: '#177f8e'
+          500: '#177f8e',
         },
         muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
+          DEFAULT: 'hsl(var(--muted))',
+          foreground: 'hsl(var(--muted-foreground))',
         },
         accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
+          DEFAULT: 'hsl(var(--accent))',
+          foreground: 'hsl(var(--accent-foreground))',
         },
         popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
+          DEFAULT: 'hsl(var(--popover))',
+          foreground: 'hsl(var(--popover-foreground))',
         },
         card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
+          DEFAULT: 'hsl(var(--card))',
+          foreground: 'hsl(var(--card-foreground))',
         },
       },
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        lg: 'var(--radius)',
+        md: 'calc(var(--radius) - 2px)',
+        sm: 'calc(var(--radius) - 4px)',
       },
       keyframes: {
-        "accordion-down": {
-          from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" },
+        'accordion-down': {
+          from: { height: '0' },
+          to: { height: 'var(--radix-accordion-content-height)' },
         },
-        "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
+        'accordion-up': {
+          from: { height: 'var(--radix-accordion-content-height)' },
+          to: { height: '0' },
         },
       },
       animation: {
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
+        'accordion-down': 'accordion-down 0.2s ease-out',
+        'accordion-up': 'accordion-up 0.2s ease-out',
       },
       fontFamily: {
         archivo: 'var(--font-archivo)',
-      }
+      },
+      backgroundImage: {
+        'hero-page': "url('/page-hero.webp')",
+      },
     },
   },
-  plugins: [require("tailwindcss-animate"), require('daisyui')],
-} satisfies Config
+  plugins: [require('tailwindcss-animate'), require('daisyui')],
+} satisfies Config;
 
-export default withUt(config)
+export default withUt(config);

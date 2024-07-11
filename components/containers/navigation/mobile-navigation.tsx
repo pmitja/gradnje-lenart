@@ -89,8 +89,15 @@ const MobileNavigation = ({ navItems }: NavbarProps) => {
         </button>
         <ul className="flex items-center justify-center gap-8"></ul>
         {navItems.map((navItem, index) => (
-          <li className='list-none pb-4' key={index}>
-            <Link href={navItem.link} key={navItem.link} className='text-secondary-300 text-3xl leading-6 font-semibold'>
+          <li className="list-none pb-4" key={index}>
+            <Link
+              href={navItem.link}
+              key={navItem.link}
+              className={cn(
+                'text-secondary-300 text-3xl leading-6 font-semibold',
+                pathName === `${navItem.link}` &&
+                  'border-b-2 border-primary-300'
+              )}>
               {navItem.text}
             </Link>
           </li>

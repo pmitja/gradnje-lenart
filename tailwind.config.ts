@@ -130,6 +130,9 @@ const config = {
       backgroundImage: {
         'hero-page': "url('/page-hero.webp')",
       },
+      dropShadow: {
+        'primary-button': '0px 10px 20px rgba(189, 210, 172, 0.5)',
+      },
     },
   },
   plugins: [require('tailwindcss-animate'), require('daisyui')],

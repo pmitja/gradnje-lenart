@@ -20,7 +20,7 @@ const ProccesOfBuying = () => {
           <h3 className="text-secondary-400 text-3xl lg:text-[38px] lg:leading-[57px] font-bold">
             Postopek nakupa
           </h3>
-          <p>
+          <p className="text-sm lg:text-base text-secondary-100">
             Pri nas vam omogočamo najti domove, ki ustrezajo vašemu
             življenjskemu slogu in aspiracijam. Odkrijte brezhibno
             nepremičninsko izkušnjo.

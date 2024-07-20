@@ -1,5 +1,5 @@
 // Slug generation function
-export function generateSlug(name: string, city: string): string {
+export function generateSlug(name: string ): string {
   const slugify = (str: string) =>
     str
       .toLowerCase()
@@ -9,7 +9,7 @@ export function generateSlug(name: string, city: string): string {
       .replace(/^-+/, '') // Trim - from start of text
       .replace(/-+$/, ''); // Trim - from end of text
 
-  return `${slugify(name)}-${slugify(city)}`;
+  return `${slugify(name)}`;
 }
 
 export function generateSlugWithNumber(slug: string, number: string): string {

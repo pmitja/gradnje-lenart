@@ -288,7 +288,9 @@ function DialogDemo({
               />
             </div>
             <DialogFooter>
-              <Button type="submit" disabled={imagesBeginUploading}>Dodaj stanovanje</Button>
+              <Button type="submit" disabled={imagesBeginUploading}>
+                Dodaj stanovanje
+              </Button>
             </DialogFooter>
           </form>
         </Form>
@@ -302,6 +304,8 @@ const NovAktualniProjektPage = () => {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
+  const [imagesBeginUploading, setImagesBeginUploading] = useState(false);
+  const [uploadedImages, setUploadedImages] = useState<string[]>([]);
 
   const form = useForm<z.infer<typeof mainFormSchema>>({
     resolver: zodResolver(mainFormSchema),
@@ -310,6 +314,7 @@ const NovAktualniProjektPage = () => {
       description: '',
       city: '',
       address: '',
+      images: [],
       apartments: apartments,
     },
   });
@@ -327,7 +332,7 @@ const NovAktualniProjektPage = () => {
   function onSubmit(values: z.infer<typeof mainFormSchema>) {
     setError('');
     setSuccess('');
-    
+
     startTransition(() => {
       newLocation(values).then((data) => {
         setError(data.error);
@@ -460,6 +465,24 @@ const NovAktualniProjektPage = () => {
                           )}
                         />
                       </div>
+                      <div className="grid gap-3">
+                        <UploadButton
+                          endpoint="imageUploader"
+                          onUploadProgress={() => setImagesBeginUploading(true)}
+                          onClientUploadComplete={(res) => {
+                            const array = res.map((file) => file.key);
+                            setValue('images', array);
+                            setUploadedImages(array);
+                            setImagesBeginUploading(false);
+                          }}
+                          onUploadError={(error: Error) => {
+                            setImagesBeginUploading(false);
+                            // Do something with the error.
+                            alert(`ERROR! ${error.message}`);
+                          }}
+                        />
+                      </div>
+                      {uploadedImages.length > 0 && uploadedImages.map((image) => <div key={image}>{image}</div>)}
                     </div>
                   </CardContent>
                 </Card>
@@ -485,31 +508,34 @@ const NovAktualniProjektPage = () => {
                         </TableRow>
                       </TableHeader>
                       <TableBody>
-                        {apartments.sort((a, b) => Number(a.number) - Number(b.number)).map((apartment) => (
-                          <TableRow key={apartment.number}>
-                            <TableCell className="font-semibold">
-                              {apartment.number}
-                            </TableCell>
-                            <TableCell>{apartment.name}</TableCell>
-                            <TableCell>{apartment.floor}. nadstropje</TableCell>
-                            <TableCell>{apartment.size} m2</TableCell>
-                            <TableCell>
-                              {apartment.price} €
-                            </TableCell>
-                            <TableCell>{apartment.priceWithTax} €</TableCell>
-                            <TableCell>
-                              {apartment.status === StatusType.Prodaja && (
-                                <div className="rounded-full h-4 w-4 bg-green-400"></div>
-                              )}
-                              {apartment.status === StatusType.Rezervirano && (
-                                <div className="rounded-full h-4 w-4 bg-yellow-400"></div>
-                              )}
-                              {apartment.status === StatusType.Prodano && (
-                                <div className="rounded-full h-4 w-4 bg-red-400"></div>
-                              )}
-                            </TableCell>
-                          </TableRow>
-                        ))}
+                        {apartments
+                          .sort((a, b) => Number(a.number) - Number(b.number))
+                          .map((apartment) => (
+                            <TableRow key={apartment.number}>
+                              <TableCell className="font-semibold">
+                                {apartment.number}
+                              </TableCell>
+                              <TableCell>{apartment.name}</TableCell>
+                              <TableCell>
+                                {apartment.floor}. nadstropje
+                              </TableCell>
+                              <TableCell>{apartment.size} m2</TableCell>
+                              <TableCell>{apartment.price} €</TableCell>
+                              <TableCell>{apartment.priceWithTax} €</TableCell>
+                              <TableCell>
+                                {apartment.status === StatusType.Prodaja && (
+                                  <div className="rounded-full h-4 w-4 bg-green-400"></div>
+                                )}
+                                {apartment.status ===
+                                  StatusType.Rezervirano && (
+                                  <div className="rounded-full h-4 w-4 bg-yellow-400"></div>
+                                )}
+                                {apartment.status === StatusType.Prodano && (
+                                  <div className="rounded-full h-4 w-4 bg-red-400"></div>
+                                )}
+                              </TableCell>
+                            </TableRow>
+                          ))}
                       </TableBody>
                     </Table>
                   </CardContent>
@@ -518,22 +544,6 @@ const NovAktualniProjektPage = () => {
                   </CardFooter>
                 </Card>
               </div>
-              {/* <div className="grid auto-rows-max items-start gap-4 lg:gap-8">
-            <Card x-chunk="dashboard-07-chunk-5" className='bg-primary-75'>
-              <CardHeader>
-                <CardTitle>Status</CardTitle>
-                <CardDescription>
-                  Lipsum dolor sit amet, consectetur adipiscing elit.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div></div>
-                <Button size="sm" variant="secondary">
-                  Archive Product
-                </Button>
-              </CardContent>
-            </Card>
-          </div> */}
             </div>
             <div className="flex items-center justify-center gap-2 md:hidden">
               <Button variant="outline" size="sm">

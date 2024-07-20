@@ -26,6 +26,7 @@ const ProjectsSection = async () => {
                 key={project.id}
                 title={project.name}
                 link={project.slug}
+                images={project.images}
               />
             );
           } else {
@@ -34,6 +35,7 @@ const ProjectsSection = async () => {
                 key={project.id}
                 title={project.name}
                 link={project.slug}
+                images={project.images}
               />
             );
           }
@@ -45,10 +47,22 @@ const ProjectsSection = async () => {
 
 export default ProjectsSection;
 
-const ElementOdd = ({ title, link }: { title: string; link: string }) => (
+const ElementOdd = ({
+  title,
+  link,
+  images,
+}: {
+  title: string;
+  link: string;
+  images?: string[];
+}) => (
   <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-8 gap-5">
     <Image
-      src={'/apartment-image.webp'}
+      src={
+        images && images[0]
+          ? `${process.env.UPLOADTHING_BASE_URL}/f/${images[0]}`
+          : '/apartment-image.webp'
+      }
       alt="Image"
       width={733}
       height={500}
@@ -56,7 +70,11 @@ const ElementOdd = ({ title, link }: { title: string; link: string }) => (
     />
     <div className="flex flex-col gap-2 lg:gap-4">
       <Image
-        src={'/apartment-image.webp'}
+        src={
+          images && images[1]
+            ? `${process.env.UPLOADTHING_BASE_URL}/f/${images[1]}`
+            : '/apartment-image.webp'
+        }
         alt="Image"
         width={500}
         height={300}
@@ -80,7 +98,15 @@ const ElementOdd = ({ title, link }: { title: string; link: string }) => (
   </div>
 );
 
-const ElementEven = ({ title, link }: { title: string; link: string }) => (
+const ElementEven = ({
+  title,
+  link,
+  images,
+}: {
+  title: string;
+  link: string;
+  images?: string[];
+}) => (
   <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-8 gap-5">
     <div className="flex flex-col gap-2 lg:gap-4">
       <h4 className="text-primary-400 text-2xl font-bold lg:text-4xl">
@@ -98,7 +124,11 @@ const ElementEven = ({ title, link }: { title: string; link: string }) => (
         </ButtonWithIcon>
       </Link>
       <Image
-        src={'/apartment-image.webp'}
+        src={
+          images && images[1]
+            ? `${process.env.UPLOADTHING_BASE_URL}/f/${images[1]}`
+            : '/apartment-image.webp'
+        }
         alt="Image"
         width={500}
         height={300}
@@ -106,7 +136,11 @@ const ElementEven = ({ title, link }: { title: string; link: string }) => (
       />
     </div>
     <Image
-      src={'/apartment-image.webp'}
+      src={
+        images && images[0]
+          ? `${process.env.UPLOADTHING_BASE_URL}/f/${images[0]}`
+          : '/apartment-image.webp'
+      }
       alt="Image"
       width={733}
       height={500}

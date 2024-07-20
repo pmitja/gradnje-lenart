@@ -4,7 +4,7 @@ import { mainFormSchema } from "@/schemas"
 import { z } from "zod"
 import { db } from '@/lib/db'
 import { generateSlug, generateSlugWithNumber } from "@/lib/helpers"
-import { revalidatePath, revalidateTag } from "next/cache"
+import { revalidatePath } from "next/cache"
 
 export const newLocation = async (values: z.infer<typeof mainFormSchema>) => {
   const validatedFields = mainFormSchema.safeParse(values)
@@ -13,9 +13,23 @@ export const newLocation = async (values: z.infer<typeof mainFormSchema>) => {
     return { error: 'Invalid fields' }
   }
 
-  const { name, description, city, address, apartments } = validatedFields.data
+  const { name, description, city, address, apartments, images } = validatedFields.data
 
-  const slug = generateSlug(name, city)
+  let slug = `lokacija-${generateSlug(city)}`
+
+  console.log(slug)
+
+  const isCityTaken = await db.location.findMany({
+    where: { city: city }
+  })
+
+  console.log(isCityTaken, isCityTaken.at(-1)?.id)
+
+  if (isCityTaken.at(-1)?.id) {
+    slug = `${slug}-${isCityTaken.at(-1)?.id}`
+  }
+
+  console.log(slug)
 
   const location = await db.location.create({
     data: {
@@ -24,12 +38,20 @@ export const newLocation = async (values: z.infer<typeof mainFormSchema>) => {
       city: city,
       address: address,
       slug: slug,
+      images: images
     }
   })
 
+  console.log('Location created with ID:', location.id, 'and type:', typeof location.id)
+
+  // Ensure locationId is a number
+  const locationId: number = location.id as number;
+
   // Create the RealEstate entries associated with the created Location
-  await Promise.all(apartments.map((apartment, index) => 
-    db.realEstate.create({
+  await Promise.all(apartments.map((apartment, index) => {
+    console.log(`Creating RealEstate with locationId: ${locationId} and type: ${typeof locationId}`);
+    
+    return db.realEstate.create({
       data: {
         name: apartment.name,
         description: '',
@@ -38,13 +60,13 @@ export const newLocation = async (values: z.infer<typeof mainFormSchema>) => {
         size: apartment.size,
         priceWithTax: apartment.price,
         price: apartment.priceWithTax,
-        images: [],
-        locationId: location.id,
+        images: apartment.images,
+        locationId: locationId,
         slug: generateSlugWithNumber(location.slug, apartment.number),
         status: apartment.status
       }
     })
-  ))
+  }))
 
   revalidatePath('nadzorna-plosca')
 

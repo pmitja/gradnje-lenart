@@ -19,7 +19,7 @@ import { FormError } from '@/components/form-error';
 import { FormSuccess } from '@/components/form-success';
 import { login } from '@/actions/login';
 import { useState, useTransition } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { redirect, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 
 function LoginForm() {
@@ -44,8 +44,9 @@ function LoginForm() {
 
     startTransition(() => {
       login(values).then((data) => {
-        if (data.error) return setError(data.error);
-        setSuccess(data.success);
+        console.log(data);
+        if (data?.error) return setError(data.error);
+        if (data?.success) return setSuccess(data.success);
       });
     });
   };

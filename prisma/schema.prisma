@@ -69,12 +69,13 @@ model PasswordResetToken {
 }
 
 model Location {
-  id          String       @id @default(cuid())
+  id          Int          @id @default(autoincrement())
   name        String
   description String
   address     String
   city        String
   slug        String       @unique
+  images      String[]
   realEstates RealEstate[] @relation("LocationRealEstate")
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
@@ -90,7 +91,7 @@ model RealEstate {
   priceWithTax Float?
   price        Float?
   images       String[]
-  locationId   String
+  locationId   Int
   status       String?
   slug         String   @unique
   createdAt    DateTime @default(now())

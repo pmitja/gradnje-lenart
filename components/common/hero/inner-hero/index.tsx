@@ -1,5 +1,6 @@
 import { Sparkle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import ProjectsFilter from '@/components/common/filter/projects-filter';
 
 const InnerHero = () => {
   return (
@@ -17,6 +18,7 @@ const InnerHero = () => {
           ustrezajo vašemu življenjskemu slogu, ampak tudi uresničujejo vaše
           ambicije.
         </p>
+        <ProjectsFilter />
       </div>
     </div>
   );

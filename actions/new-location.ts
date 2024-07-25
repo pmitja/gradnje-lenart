@@ -15,7 +15,7 @@ export const newLocation = async (values: z.infer<typeof mainFormSchema>) => {
 
   const { name, description, city, address, apartments, images } = validatedFields.data
 
-  let slug = `lokacija-${generateSlug(city)}`
+  let slug = `${generateSlug(city)}`
 
   console.log(slug)
 

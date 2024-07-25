@@ -2,7 +2,7 @@
 
 import { db } from '@/lib/db'
 
-export const getLocations = async () => {
+export const getAllLocations = async () => {
   try {
     const locations = await db.location.findMany()
 

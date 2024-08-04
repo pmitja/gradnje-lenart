@@ -13,33 +13,41 @@ import Link from 'next/link';
 import { useEffect, useTransition } from 'react';
 
 const ProjectsSection = () => {
-  const { projectFilters, currentProjects, updateCurrentProjects, updateProjectFilters } = useAppStore();
+  const {
+    projectFilters,
+    currentProjects,
+    updateCurrentProjects,
+    updateProjectFilters,
+  } = useAppStore();
   const [isPending, startTransition] = useTransition();
 
   const handleFilterRemove = (filter: string) => {
-    updateProjectFilters({
-      location: projectFilters.location === filter ? '' : projectFilters.location,
-      type: projectFilters.type === filter ? '' : projectFilters.type
+    const newFilters = {
+      location:
+        projectFilters.location === filter ? '' : projectFilters.location,
+      type: projectFilters.type === filter ? '' : projectFilters.type,
+    };
+    updateProjectFilters(newFilters);
+    startTransition(async () => {
+      getLocationsByCity(newFilters).then((projects) => {
+        if (Array.isArray(projects)) {
+          updateCurrentProjects(projects);
+        } else {
+          updateCurrentProjects([]);
+        }
+      });
     });
   };
 
   useEffect(() => {
     startTransition(async () => {
-      if (projectFilters.location || projectFilters.type) {
-        getLocationsByCity(projectFilters).then((projects) => {
-          if (Array.isArray(projects)) {
-            updateCurrentProjects(projects);
-          } else {
-            updateCurrentProjects([]);
-          }
-        });
-      } else if (!projectFilters.location && !projectFilters.type) {
-        getAllLocations().then((projects) => {
-          if (projects) {
-            updateCurrentProjects(projects);
-          }
-        });
-      }
+      getLocationsByCity(projectFilters).then((projects) => {
+        if (Array.isArray(projects)) {
+          updateCurrentProjects(projects);
+        } else {
+          updateCurrentProjects([]);
+        }
+      });
     });
   }, [projectFilters, startTransition, updateCurrentProjects]);
 
@@ -48,24 +56,38 @@ const ProjectsSection = () => {
       <div className="py-12 text-secondary-400 sm:py-16 lg:py-20">
         <div className="mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
-            <p className="text-sm font-medium text-secondary-500">Gradnje Plus</p>
-            <h2 className="mt-2 text-3xl font-bold sm:text-4xl xl:text-5xl">Aktualni projekti</h2>
+            <p className="text-sm font-medium text-secondary-500">
+              Gradnje Plus
+            </p>
+            <h2 className="mt-2 text-3xl font-bold sm:text-4xl xl:text-5xl">
+              Aktualni projekti
+            </h2>
             <hr className="mx-auto mt-4 h-2 w-32 border-none bg-primary-200" />
           </div>
           {(projectFilters.location || projectFilters.type) && !isPending && (
             <div className="flex flex-wrap gap-3">
-              {projectFilters.location && (
+              {projectFilters.location && projectFilters.location !== 'all' && (
                 <Badge variant={'pills'}>
                   {projectFilters.location}
-                  <Button variant={'plain'} size={'plain'} onClick={() => handleFilterRemove(projectFilters.location ?? '')}>
+                  <Button
+                    variant={'plain'}
+                    size={'plain'}
+                    onClick={() =>
+                      handleFilterRemove(projectFilters.location ?? '')
+                    }>
                     <CloseIcon />
                   </Button>
                 </Badge>
               )}
-              {projectFilters.type && (
+              {projectFilters.type && projectFilters.type !== 'all' && (
                 <Badge variant={'pills'}>
                   {projectFilters.type}
-                  <Button variant={'plain'} size={'plain'} onClick={() => handleFilterRemove(projectFilters.type ?? '')}>
+                  <Button
+                    variant={'plain'}
+                    size={'plain'}
+                    onClick={() =>
+                      handleFilterRemove(projectFilters.type ?? '')
+                    }>
                     <CloseIcon />
                   </Button>
                 </Badge>
@@ -86,7 +108,9 @@ const ProjectsSection = () => {
             </div>
           )}
           {isPending && <Spinner />}
-          {currentProjects.length === 0 && !isPending && <div>There is no result try again!</div>}
+          {currentProjects.length === 0 && !isPending && (
+            <div>There is no result try again!</div>
+          )}
         </div>
       </div>
     </section>
@@ -111,7 +135,11 @@ const ProjectElement = ({
       className="h mx-auto object-cover md:ml-0 w-full max-h-[50%]"
       width={733}
       height={500}
-      src={images && images[0] ? `https://utfs.io/f/${images[0]}` : '/apartment-image.webp'}
+      src={
+        images && images[0]
+          ? `https://utfs.io/f/${images[0]}`
+          : '/apartment-image.webp'
+      }
       alt="Image"
     />
     <div className="flex flex-col place-content-start gap-4 md:justify-between p-4 h-full">
@@ -122,8 +150,7 @@ const ProjectElement = ({
       <Link href={link}>
         <ButtonWithIcon
           variant="primary"
-          className="text-xl px-6 py-4 max-w-fit drop-shadow-primary-button transition hover:translate-y-1"
-        >
+          className="text-xl px-6 py-4 max-w-fit drop-shadow-primary-button transition hover:translate-y-1">
           Pojdi na projekt
         </ButtonWithIcon>
       </Link>

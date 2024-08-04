@@ -30,15 +30,16 @@ import { LocationType } from '@/types/general';
 import Spinner from '@/components/common/spinner';
 
 const ProjectsFilter = () => {
+  const { projectFilters, updateProjectFilters } = useAppStore();
+
   const form = useForm<z.infer<typeof projectFilterSchema>>({
     resolver: zodResolver(projectFilterSchema),
     defaultValues: {
-      location: '',
-      type: '',
+      location: 'all',
+      type: 'all',
     },
   });
 
-  const { projectFilters, updateProjectFilters } = useAppStore();
 
   const [isPending, startTransition] = useTransition();
   const [location, setLocation] = useState<Location[] | null>(null);
@@ -77,7 +78,7 @@ const ProjectsFilter = () => {
                       <FormControl>
                         <Select
                           onValueChange={field.onChange}
-                          defaultValue={field.value}>
+                          defaultValue={projectFilters.type}>
                           <SelectTrigger
                             id="location"
                             className="flex gap-2 place-items-center items-start [&_[data-description]]:hidden bg-transparent border-0 !mt-0 min-w-[220px]">
@@ -91,6 +92,7 @@ const ProjectsFilter = () => {
                                 {location.city}
                               </SelectItem>
                             ))}
+                            <SelectItem value={'all'}>Vse lokacije</SelectItem>
                           </SelectContent>
                         </Select>
                       </FormControl>
@@ -110,7 +112,7 @@ const ProjectsFilter = () => {
                     <FormControl>
                       <Select
                         onValueChange={field.onChange}
-                        defaultValue={field.value}>
+                        defaultValue={projectFilters.location}>
                         <SelectTrigger
                           id="type"
                           className="flex gap-2 items-start [&_[data-description]]:hidden bg-transparent border-0 !mt-0 min-w-[220px]">
@@ -123,6 +125,7 @@ const ProjectsFilter = () => {
                             Več stanovanjski objekt
                           </SelectItem>
                           <SelectItem value={LocationType.House}>Hiša</SelectItem>
+                          <SelectItem value={'all'}>Vse lokacije</SelectItem>
                         </SelectContent>
                       </Select>
                     </FormControl>

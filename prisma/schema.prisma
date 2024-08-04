@@ -79,6 +79,7 @@ model Location {
   realEstates RealEstate[] @relation("LocationRealEstate")
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
+  type        String
 }
 
 model RealEstate {

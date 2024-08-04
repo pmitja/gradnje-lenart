@@ -18,6 +18,11 @@ export enum StatusType {
   Prodano = 'Prodano',
 }
 
+export enum LocationType {
+  House = 'Hiša',
+  Apartments = 'Več stanovanjski objekt',
+}
+
 export interface RealEstate {
   id?: string;
   name: string;

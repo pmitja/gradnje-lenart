@@ -13,7 +13,7 @@ export const newLocation = async (values: z.infer<typeof mainFormSchema>) => {
     return { error: 'Invalid fields' }
   }
 
-  const { name, description, city, address, apartments, images } = validatedFields.data
+  const { name, description, city, address, apartments, images, type } = validatedFields.data
 
   let slug = `${generateSlug(city)}`
 
@@ -38,7 +38,8 @@ export const newLocation = async (values: z.infer<typeof mainFormSchema>) => {
       city: city,
       address: address,
       slug: slug,
-      images: images
+      images: images,
+      type: type
     }
   })
 

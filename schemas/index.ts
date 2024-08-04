@@ -76,7 +76,8 @@ export const mainFormSchema = z.object({
   apartments: z.array(formSchema).min(1, {
     message: 'Dodaj vsaj eno stanovanje.',
   }),
-  images: z.array(z.string()).optional()
+  images: z.array(z.string()).optional(),
+  type: z.string()
 });
 
 export const updateSchema = z.object({

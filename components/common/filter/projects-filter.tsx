@@ -26,6 +26,8 @@ import {
 } from '@/components/ui/form';
 import { useAppStore } from '@/store/app';
 import { projectFilterSchema } from '@/validation-schemas/project-filters-schema';
+import { LocationType } from '@/types/general';
+import Spinner from '@/components/common/spinner';
 
 const ProjectsFilter = () => {
   const form = useForm<z.infer<typeof projectFilterSchema>>({
@@ -57,7 +59,7 @@ const ProjectsFilter = () => {
   return (
     <Form {...form}>
       <div className="relative flex-col items-start gap-8 md:flex">
-        {isPending && <div>Loading...</div>}
+        {isPending && <Spinner />}
         {!isPending && (
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -116,11 +118,11 @@ const ProjectsFilter = () => {
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem
-                            value="vec-stanovanjski-objekt"
+                            value={LocationType.Apartments}
                             className="hover:bg-primary-50">
-                            Več stanovanjski objekti
+                            Več stanovanjski objekt
                           </SelectItem>
-                          <SelectItem value="hisa">Hiše</SelectItem>
+                          <SelectItem value={LocationType.House}>Hiša</SelectItem>
                         </SelectContent>
                       </Select>
                     </FormControl>

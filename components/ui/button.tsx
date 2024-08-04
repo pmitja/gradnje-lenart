@@ -21,6 +21,7 @@ const buttonVariants = cva(
         primary: "bg-primary-300 px-6 py-4 text-body-100 text-base leading-5 font-bold font-archivo tracking-wide rounded-2xl cursor-pointer",
         rounded: "bg-primary-300 rounded-full",
         form: 'bg-primary-300 hover:bg-primary-300/50 text-base leading-5 font-bold font-archivo tracking-wide text-white cursor-pointer',
+        plain: 'bg-transparent text-inherit',
       },
       size: {
         default: "h-10 px-4 py-2",
@@ -29,6 +30,7 @@ const buttonVariants = cva(
         icon: "h-10 w-10",
         'large-bold': 'font-bold text-xl leading-6',
         rounded: "h-auto p-4",
+        plain: 'p-0'
       },
     },
     defaultVariants: {

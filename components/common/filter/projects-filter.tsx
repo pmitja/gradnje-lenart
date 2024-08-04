@@ -78,7 +78,7 @@ const ProjectsFilter = () => {
                           defaultValue={field.value}>
                           <SelectTrigger
                             id="location"
-                            className="flex gap-2 place-items-center items-start [&_[data-description]]:hidden bg-transparent border-0">
+                            className="flex gap-2 place-items-center items-start [&_[data-description]]:hidden bg-transparent border-0 !mt-0 min-w-[220px]">
                             <SelectValue placeholder="Izberi lokacijo" />
                           </SelectTrigger>
                           <SelectContent>
@@ -111,7 +111,7 @@ const ProjectsFilter = () => {
                         defaultValue={field.value}>
                         <SelectTrigger
                           id="type"
-                          className="flex gap-2 items-start [&_[data-description]]:hidden bg-transparent border-0">
+                          className="flex gap-2 items-start [&_[data-description]]:hidden bg-transparent border-0 !mt-0 min-w-[220px]">
                           <SelectValue placeholder="Izberi vrsto" />
                         </SelectTrigger>
                         <SelectContent>

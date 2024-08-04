@@ -51,6 +51,10 @@ import Project404 from '@/components/containers/404/project-404';
 import Link from 'next/link';
 import { updateLocationRealEstate } from '@/actions/update-location-real-estates';
 import { UploadButton } from '@/lib/utils/uploadthing';
+import { deleteUTFiles } from '@/actions/delete-from-uploadthing';
+import Image from 'next/image';
+import CloseIcon from '@/components/icons/close';
+import Spinner from '@/components/common/spinner';
 
 function DialogDemo({
   saveFormValues,
@@ -59,6 +63,8 @@ function DialogDemo({
 }) {
   const [open, setOpen] = useState(false);
   const [imagesBeginUploading, setImagesBeginUploading] = useState(false);
+  const [uploadedImages, setUploadedImages] = useState<string[]>([]);
+  const [isPending, startTransition] = useTransition();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -80,6 +86,18 @@ function DialogDemo({
   }
 
   const { setValue } = form;
+
+  const handleRemoveImage = (image: string) => async () => {
+    startTransition(() => {
+      deleteUTFiles([image]).then((res) => {
+        if (res.success) {
+          const filteredImages = uploadedImages.filter((img) => img !== image);
+          setUploadedImages(filteredImages);
+          setValue('images', filteredImages);
+        }
+      });
+    });
+  };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -284,8 +302,30 @@ function DialogDemo({
                   // Do something with the error.
                   alert(`ERROR! ${error.message}`);
                 }}
+                className="ut-button:bg-primary-500 ut-button:ut-readying:bg-primary-500/50"
               />
             </div>
+            {!isPending &&
+              uploadedImages.length > 0 &&
+              uploadedImages.map((image) => (
+                <div className="relative max-w-fit">
+                  <Image
+                    className="h-[200px] w-[200px] object-cover rounded-xl"
+                    width={200}
+                    height={200}
+                    key={image}
+                    src={`https://utfs.io/f/${image}`}
+                    alt={image}
+                  />
+                  <Button
+                    variant={'ghost'}
+                    className="max-w-fit absolute top-2 right-2 bg-white/50"
+                    onClick={handleRemoveImage(image)}>
+                    <CloseIcon />
+                  </Button>
+                </div>
+              ))}
+            {isPending && <Spinner />}
             <DialogFooter>
               <Button type="submit" disabled={imagesBeginUploading}>Dodaj stanovanje</Button>
             </DialogFooter>

@@ -390,6 +390,7 @@ const NovAktualniProjektPage = () => {
         setSuccess(data.success);
       });
     });
+    form.reset()
   }
 
   const handleRemoveImage = (image: string) => async () => {

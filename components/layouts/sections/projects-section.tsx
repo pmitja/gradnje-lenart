@@ -40,10 +40,8 @@ const ProjectsSection = () => {
   };
 
   useEffect(() => {
-    console.log(projectFilters)
     startTransition(async () => {
       getLocationsByCity(projectFilters).then((projects) => {
-        console.log(projects)
         if (Array.isArray(projects)) {
           updateCurrentProjects(projects);
         } else {
@@ -149,7 +147,7 @@ const ProjectElement = ({
         {title}
       </h3>
       <p className="text-sm lg:text-base">{description}</p>
-      <Link href={link}>
+      <Link href={`projekt/${link}`}>
         <ButtonWithIcon
           variant="primary"
           className="text-xl px-6 py-4 max-w-fit drop-shadow-primary-button transition hover:translate-y-1">

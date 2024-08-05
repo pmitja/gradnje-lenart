@@ -24,3 +24,7 @@ export function generateSlugWithNumber(slug: string, number: string): string {
 
   return `${slug}/${slugify(number)}`;
 }
+
+export function formatNumber(num: number) {
+  return new Intl.NumberFormat('de-DE', { minimumFractionDigits: 0 }).format(num);
+}

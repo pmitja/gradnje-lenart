@@ -11,14 +11,16 @@ body {
 }
 
 html, body {
-  margin: 0;
   height: 100%;
-  min-height: 100%;
-}
-
-body {
+  margin: 0px;
+  padding: 0px;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+}
+
+main {
+  flex-grow: 1;
 }
 
 footer {

@@ -1,6 +1,0 @@
-node_modules
-out
-!.storybook
-__tests__
-__mocks__
-types/graphql-types.ts

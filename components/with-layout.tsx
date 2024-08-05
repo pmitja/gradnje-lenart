@@ -15,11 +15,13 @@ const WithLayout: FC<WithLayoutProps<Layouts>> = ({ layout, children }) => {
   const LayoutComponent = layouts[layout] ?? CenteredLayout;
 
   return (
-    <LayoutComponent>
+    <>
       <WithNavigation />
-      {children}
+        <LayoutComponent>
+          {children}
+        </LayoutComponent>
       <WithFooter />
-    </LayoutComponent>
+    </>
   );
 };
 

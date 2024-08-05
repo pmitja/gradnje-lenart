@@ -12,7 +12,6 @@ import {
 import { Location } from '@prisma/client';
 import { Search } from 'lucide-react';
 import { useEffect, useState, useTransition } from 'react';
-
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -40,7 +39,6 @@ const ProjectsFilter = () => {
     },
   });
 
-
   const [isPending, startTransition] = useTransition();
   const [location, setLocation] = useState<Location[] | null>(null);
 
@@ -52,6 +50,14 @@ const ProjectsFilter = () => {
       }
     });
   }, []);
+
+  // Reset selection when projectFilters changes
+  useEffect(() => {
+    form.reset({
+      location: projectFilters.location || 'all',
+      type: projectFilters.type || 'all',
+    });
+  }, [projectFilters, form]);
 
   function onSubmit(values: z.infer<typeof projectFilterSchema>) {
     updateProjectFilters(values);
@@ -78,7 +84,7 @@ const ProjectsFilter = () => {
                       <FormControl>
                         <Select
                           onValueChange={field.onChange}
-                          defaultValue={projectFilters.type}>
+                          value={field.value}>
                           <SelectTrigger
                             id="location"
                             className="flex gap-2 place-items-center items-start [&_[data-description]]:hidden bg-transparent border-0 !mt-0 min-w-[220px]">
@@ -92,7 +98,7 @@ const ProjectsFilter = () => {
                                 {location.city}
                               </SelectItem>
                             ))}
-                            <SelectItem value={'all'}>Vse lokacije</SelectItem>
+                            <SelectItem value="all">Vse lokacije</SelectItem>
                           </SelectContent>
                         </Select>
                       </FormControl>
@@ -107,12 +113,12 @@ const ProjectsFilter = () => {
                 render={({ field }) => (
                   <FormItem className="flex flex-col gap-2 pr-2 md:pr-4 lg:pr-6 lg:border-r-2 border-secondary-200">
                     <FormLabel className="text-text text-base font-bold lg:text-xl px-3">
-                      Lokacija
+                      Vrsta
                     </FormLabel>
                     <FormControl>
                       <Select
                         onValueChange={field.onChange}
-                        defaultValue={projectFilters.location}>
+                        value={field.value}>
                         <SelectTrigger
                           id="type"
                           className="flex gap-2 items-start [&_[data-description]]:hidden bg-transparent border-0 !mt-0 min-w-[220px]">
@@ -124,8 +130,10 @@ const ProjectsFilter = () => {
                             className="hover:bg-primary-50">
                             Več stanovanjski objekt
                           </SelectItem>
-                          <SelectItem value={LocationType.House}>Hiša</SelectItem>
-                          <SelectItem value={'all'}>Vse lokacije</SelectItem>
+                          <SelectItem value={LocationType.House}>
+                            Hiša
+                          </SelectItem>
+                          <SelectItem value="all">Vse vrste</SelectItem>
                         </SelectContent>
                       </Select>
                     </FormControl>
@@ -136,7 +144,7 @@ const ProjectsFilter = () => {
 
               <Button
                 type="submit"
-                variant={'primary'}
+                variant="primary"
                 className="w-full lg:w-auto flex gap-2 py-2 px-6 lg:py-3 lg:px-8">
                 <Search />
                 Filter

@@ -14,7 +14,10 @@ interface AppStoreState {
 }
 
 export const useAppStore = create<AppStoreState>((set) => ({
-  projectFilters: {},
+  projectFilters: {
+    location: 'all',
+    type: 'all',
+  },
   updateProjectFilters: (filter) => set({
     projectFilters: {
       ...filter,

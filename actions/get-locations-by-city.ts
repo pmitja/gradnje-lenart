@@ -13,9 +13,15 @@ export const getLocationsByCity = async (
     if (!validatedFields.success) {
       return { error: 'Invalid fields' };
     }
+
     const { location, type } = values;
 
     let locations: any[] = [];
+
+    if (location === 'all' && type === 'all') {
+      locations = await db.location.findMany();
+      return locations;
+    }
 
     if (location === 'all' && !type) {
       locations = await db.location.findMany();
@@ -28,6 +34,7 @@ export const getLocationsByCity = async (
       });
       return locations;
     }
+
     if (type === 'all' && location) {
       locations = await db.location.findMany({
         where: {
@@ -43,6 +50,8 @@ export const getLocationsByCity = async (
       });
       return locations;
     }
+    
+
     if (type) {
       locations = await db.location.findMany({
         where: {

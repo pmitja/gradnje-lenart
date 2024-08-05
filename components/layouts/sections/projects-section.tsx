@@ -24,8 +24,8 @@ const ProjectsSection = () => {
   const handleFilterRemove = (filter: string) => {
     const newFilters = {
       location:
-        projectFilters.location === filter ? '' : projectFilters.location,
-      type: projectFilters.type === filter ? '' : projectFilters.type,
+        projectFilters.location === filter ? 'all' : projectFilters.location,
+      type: projectFilters.type === filter ? 'all' : projectFilters.type,
     };
     updateProjectFilters(newFilters);
     startTransition(async () => {
@@ -40,8 +40,10 @@ const ProjectsSection = () => {
   };
 
   useEffect(() => {
+    console.log(projectFilters)
     startTransition(async () => {
       getLocationsByCity(projectFilters).then((projects) => {
+        console.log(projects)
         if (Array.isArray(projects)) {
           updateCurrentProjects(projects);
         } else {

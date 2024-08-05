@@ -6,7 +6,7 @@ import Image from "next/image";
 
 const RealEstateCard = ({ realEstate, city, address }: { realEstate: RealEstate, city: string, address: string}) => {
   return (
-    <div className="bg-primary-50 shadow-md rounded-xl p-4 flex gap-4 min-w-fit">
+    <div className="bg-primary-50 shadow-md rounded-xl p-4 flex gap-4 min-w-fit flex-col lg:flex-row">
       <Image 
         src={`https://utfs.io/f/${realEstate.images[0]}`} 
         alt={realEstate.name} 

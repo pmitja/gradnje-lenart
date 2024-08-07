@@ -93,6 +93,9 @@ export type Apartment = {
   spaces?: string[];
   energyLevel?: string;
   parkingSpaces?: number;
-  technicalData?: string[];
+  technicalData?: {
+    id: string;
+    text: string;
+  }[];
   files?: string[];
 };

@@ -66,7 +66,12 @@ export const formSchema = z.object({
   spaces: z.array(z.string()).optional(),
   energyLevel: z.string().optional(),
   parkingSpaces: z.number().optional(),
-  technicalData: z.array(z.string()).optional(),
+  technicalData: z.array(
+    z.object({
+      id: z.string(),
+      text: z.string(),
+    }),
+  ).optional(),
   files: z.array(z.string()).optional(),
 });
 

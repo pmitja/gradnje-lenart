@@ -45,7 +45,15 @@ export const updateLocationRealEstate = async (
               spaces: apartment.spaces,
               energyLevel: apartment.energyLevel,
               parkingSpaces: apartment.parkingSpaces,
-              technicalData: apartment.technicalData,
+              technicalData: apartment.technicalData
+                ? {
+                    upsert: apartment.technicalData.map(td => ({
+                      where: { id: td.id },
+                      update: { text: td.text },
+                      create: { id: td.id, text: td.text },
+                    })),
+                  }
+                : undefined,
               files: apartment.files
             },
           });
@@ -67,7 +75,14 @@ export const updateLocationRealEstate = async (
               spaces: apartment.spaces,
               energyLevel: apartment.energyLevel,
               parkingSpaces: apartment.parkingSpaces,
-              technicalData: apartment.technicalData,
+              technicalData: apartment.technicalData
+                ? {
+                    create: apartment.technicalData.map(td => ({
+                      id: td.id,
+                      text: td.text,
+                    })),
+                  }
+                : undefined,
               files: apartment.files
             },
           });

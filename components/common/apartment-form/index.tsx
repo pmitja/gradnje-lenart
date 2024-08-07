@@ -11,7 +11,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { useState, useTransition } from 'react';
+import { SetStateAction, useState, useTransition } from 'react';
 import {
   Form,
   FormControl,
@@ -33,6 +33,7 @@ import CloseIcon from '@/components/icons/close';
 import { deleteUTFiles } from '@/actions/delete-from-uploadthing';
 import Spinner from '@/components/common/spinner';
 import { Textarea } from '@/components/ui/textarea';
+import { Tag, TagInput } from 'emblor';
 
 const ApartmentForm = ({
   saveFormValues,
@@ -44,6 +45,8 @@ const ApartmentForm = ({
   const [filesBeginUploading, setFilesBeginUploading] = useState(false);
   const [uploadedImages, setUploadedImages] = useState<string[]>([]);
   const [uploadedFiles, setUploadedFiles] = useState<string[]>([]);
+  const [technicalData, setTechnicalData] = useState<Tag[]>([]);
+  const [activeTagIndex, setActiveTagIndex] = useState<number | null>(null);
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -68,6 +71,7 @@ const ApartmentForm = ({
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log(values)
     saveFormValues(values);
     setOpen(false);
   }
@@ -104,7 +108,7 @@ const ApartmentForm = ({
       <DialogTrigger asChild>
         <Button variant="outline">Dodaj stanovanje</Button>
       </DialogTrigger>
-      <DialogContent className="w-full max-w-3xl">
+      <DialogContent className="w-full max-w-3xl overflow-y-scroll max-h-screen">
         <DialogHeader>
           <DialogTitle>Dodaj stanovanje</DialogTitle>
           <DialogDescription>
@@ -357,7 +361,14 @@ const ApartmentForm = ({
                   <FormItem>
                     <FormLabel>Število parkirnih mest</FormLabel>
                     <FormControl>
-                      <Input type='number' min={0} id="parkingSpaces" className="col-span-3" {...field} />
+                      <Input 
+                        type='number'
+                        min={0}
+                        id="parkingSpaces"
+                        className="col-span-3"
+                        {...field}
+                        onChange={event => field.onChange(+event.target.value)}
+                        />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -372,7 +383,25 @@ const ApartmentForm = ({
                   <FormItem>
                     <FormLabel>Število parkirnih mest</FormLabel>
                     <FormControl>
-                      <Input type='text' min={0} id="parkingSpaces" className="col-span-3" {...field} />
+                    <TagInput
+                      activeTagIndex={activeTagIndex}
+                      setActiveTagIndex={setActiveTagIndex}
+                      placeholder="Vnesi tehnične podatke"
+                      tags={technicalData}
+                      className="sm:min-w-[450px]"
+                      styleClasses = {
+                        {
+                          tag: 
+                          {
+                            body: 'bg-primary-300 rounded-md text-white hover:bg-primary-300/50',
+                            closeButton: 'text-white hover:text-white',
+                          }
+                        }
+                      }
+                      setTags={(newTags) => {
+                        setTechnicalData(newTags);
+                        setValue('technicalData', newTags as [Tag, ...Tag[]]);
+                      } }                        />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -472,11 +501,11 @@ const ApartmentForm = ({
             {!isPending &&
               uploadedFiles.length > 0 &&
               uploadedFiles.map((file) => (
-                <div className="relative max-w-fit">
+                <div className="relative max-w-fit flex gap-3 items-center bg-primary-300 text-white rounded-md p-2">
                   <div>{file}</div>
                   <Button
                     variant={'ghost'}
-                    className="max-w-fit absolute top-2 right-2 bg-white/50"
+                    className="max-w-fit"
                     onClick={handleRemoveFile(file)}>
                     <CloseIcon />
                   </Button>

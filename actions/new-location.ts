@@ -13,7 +13,7 @@ export const newLocation = async (values: z.infer<typeof mainFormSchema>) => {
     return { error: 'Invalid fields' }
   }
 
-  const { name, description, city, address, apartments, images, type } = validatedFields.data
+  const { name, description, city, address, apartments, images, type, isActive } = validatedFields.data
 
   let slug = `${generateSlug(city)}`
 
@@ -39,7 +39,8 @@ export const newLocation = async (values: z.infer<typeof mainFormSchema>) => {
       address: address,
       slug: slug,
       images: images,
-      type: type
+      type: type,
+      isActive: isActive
     }
   })
 
@@ -55,16 +56,29 @@ export const newLocation = async (values: z.infer<typeof mainFormSchema>) => {
     return db.realEstate.create({
       data: {
         name: apartment.name,
-        description: '',
         number: apartment.number,
         floor: apartment.floor,
         size: apartment.size,
-        priceWithTax: apartment.price,
-        price: apartment.priceWithTax,
-        images: apartment.images,
-        locationId: locationId,
+        priceWithTax: apartment.priceWithTax,
+        price: apartment.price,
+        locationId: location.id,
         slug: generateSlugWithNumber(location.slug, apartment.number),
-        status: apartment.status
+        status: apartment.status,
+        images: apartment.images,
+        description: apartment.description,
+        shortDescription: apartment.shortDescription,
+        spaces: apartment.spaces,
+        energyLevel: apartment.energyLevel,
+        parkingSpaces: apartment.parkingSpaces,
+        technicalData: apartment.technicalData
+          ? {
+              create: apartment.technicalData.map(td => ({
+                id: td.id,
+                text: td.text,
+              })),
+            }
+          : undefined,
+        files: apartment.files
       }
     })
   }))

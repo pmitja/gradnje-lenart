@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,22 +8,17 @@ datasource db {
   directUrl = env("DATABASE_URL_UNPOOLED")
 }
 
-enum UserRole {
-  USER
-  ADMIN
-}
-
 model User {
   id            String    @id @default(cuid())
   name          String?
   email         String    @unique
   emailVerified DateTime?
   image         String?
-  accounts      Account[]
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   password      String?
   role          UserRole  @default(USER)
+  accounts      Account[]
 }
 
 model Account {
@@ -41,11 +33,9 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([provider, providerAccountId])
 }
@@ -76,17 +66,17 @@ model Location {
   city        String
   slug        String       @unique
   images      String[]
-  realEstates RealEstate[] @relation("LocationRealEstate")
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
   type        String
+  realEstates RealEstate[] @relation("LocationRealEstate")
+  isActive    Boolean      @default(true)
 }
 
 model RealEstate {
   id               String   @id @default(cuid())
   name             String
   description      String?
-  shortDescription String?
   number           String?
   floor            String?
   size             Float?
@@ -98,10 +88,16 @@ model RealEstate {
   slug             String   @unique
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
-  location         Location @relation(fields: [locationId], references: [id], onDelete: Cascade, name: "LocationRealEstate")
-  spaces           String[]
-  parkingSpaces    Int?
-  technicalData    String[]
   files            String[]
+  parkingSpaces    Float?
+  shortDescription String?
+  spaces           String[]
   energyLevel      String?
+  technicalData    Json?
+  location         Location @relation("LocationRealEstate", fields: [locationId], references: [id], onDelete: Cascade)
+}
+
+enum UserRole {
+  USER
+  ADMIN
 }

@@ -29,8 +29,6 @@ export const newLocation = async (values: z.infer<typeof mainFormSchema>) => {
     slug = `${slug}-${isCityTaken.at(-1)?.id}`
   }
 
-  console.log(slug)
-
   const location = await db.location.create({
     data: {
       name: name,

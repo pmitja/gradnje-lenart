@@ -39,7 +39,14 @@ export const updateLocationRealEstate = async (
               price: apartment.price,
               priceWithTax: apartment.priceWithTax,
               status: apartment.status,
-              images: apartment.images
+              images: apartment.images,
+              description: apartment.description,
+              shortDescription: apartment.shortDescription,
+              spaces: apartment.spaces,
+              energyLevel: apartment.energyLevel,
+              parkingSpaces: apartment.parkingSpaces,
+              technicalData: apartment.technicalData,
+              files: apartment.files
             },
           });
         } else {
@@ -54,7 +61,14 @@ export const updateLocationRealEstate = async (
               locationId: location.id,
               slug: generateSlugWithNumber(location.slug, apartment.number),
               status: apartment.status,
-              images: apartment.images
+              images: apartment.images,
+              description: apartment.description,
+              shortDescription: apartment.shortDescription,
+              spaces: apartment.spaces,
+              energyLevel: apartment.energyLevel,
+              parkingSpaces: apartment.parkingSpaces,
+              technicalData: apartment.technicalData,
+              files: apartment.files
             },
           });
         }

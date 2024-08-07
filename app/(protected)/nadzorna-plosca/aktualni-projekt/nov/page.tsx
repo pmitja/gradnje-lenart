@@ -22,15 +22,6 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Textarea } from '@/components/ui/textarea';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
 import { useEffect, useState, useTransition } from 'react';
 import {
   Form,
@@ -56,298 +47,8 @@ import Image from 'next/image';
 import CloseIcon from '@/components/icons/close';
 import { deleteUTFiles } from '@/actions/delete-from-uploadthing';
 import Spinner from '@/components/common/spinner';
+import ApartmentForm from '@/components/common/apartment-form';
 
-function DialogDemo({
-  saveFormValues,
-}: {
-  saveFormValues: (values: Apartment) => void;
-}) {
-  const [open, setOpen] = useState(false);
-  const [imagesBeginUploading, setImagesBeginUploading] = useState(false);
-  const [uploadedImages, setUploadedImages] = useState<string[]>([]);
-  const [isPending, startTransition] = useTransition();
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      number: '',
-      name: '',
-      floor: '',
-      size: 0,
-      price: 0,
-      priceWithTax: 0,
-      status: StatusType.Prodaja,
-      images: [],
-    },
-  });
-
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    saveFormValues(values);
-    setOpen(false);
-  }
-
-  const handleRemoveImage = (image: string) => async () => {
-    startTransition(() => {
-      deleteUTFiles([image]).then((res) => {
-        if (res.success) {
-          const filteredImages = uploadedImages.filter((img) => img !== image);
-          setUploadedImages(filteredImages);
-          setValue('images', filteredImages);
-        }
-      });
-    });
-  };
-
-  const { setValue } = form;
-
-  return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button variant="outline">Dodaj stanovanje</Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Dodaj stanovanje</DialogTitle>
-          <DialogDescription>
-            Prosim vnesite točne podatke o stanovanju.
-          </DialogDescription>
-        </DialogHeader>
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="grid gap-4 py-4">
-            <div className="grid grid-cols-1 items-center gap-4">
-              <FormField
-                control={form.control}
-                name="number"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Št. apartments</FormLabel>
-                    <FormControl>
-                      <Input
-                        id="number"
-                        defaultValue="1"
-                        className="col-span-3"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="grid grid-cols-1 items-center gap-4">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Naziv</FormLabel>
-                    <FormControl>
-                      <Input
-                        id="name"
-                        defaultValue="2 sobno stanovanje"
-                        className="col-span-3"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="grid grid-cols-1 items-center gap-4">
-              <FormField
-                control={form.control}
-                name="floor"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Etaža</FormLabel>
-                    <FormControl>
-                      <Input
-                        id="floor"
-                        defaultValue="3. nadstropje"
-                        className="col-span-3"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="grid grid-cols-1 items-center gap-4">
-              <FormField
-                control={form.control}
-                name="size"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Kvadratura</FormLabel>
-                    <FormControl>
-                      <Input
-                        id="size"
-                        defaultValue="3"
-                        className="col-span-3"
-                        type="number"
-                        {...field}
-                        onChange={(event) =>
-                          field.onChange(+event.target.value)
-                        }
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="grid grid-cols-1 items-center gap-4">
-              <FormField
-                control={form.control}
-                name="price"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Cena (brez ddv)</FormLabel>
-                    <FormControl>
-                      <Input
-                        id="price"
-                        defaultValue="100000"
-                        className="col-span-3"
-                        type="number"
-                        {...field}
-                        onChange={(event) =>
-                          field.onChange(+event.target.value)
-                        }
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="grid grid-cols-1 items-center gap-4">
-              <FormField
-                control={form.control}
-                name="priceWithTax"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Cena</FormLabel>
-                    <FormControl>
-                      <Input
-                        id="priceWithTax"
-                        defaultValue="130000"
-                        className="col-span-3"
-                        type="number"
-                        {...field}
-                        onChange={(event) =>
-                          field.onChange(+event.target.value)
-                        }
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="grid grid-cols-1 items-center gap-4">
-              <FormField
-                control={form.control}
-                name="status"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Status</FormLabel>
-                    <FormControl>
-                      <ToggleGroup
-                        type="single"
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}>
-                        <FormItem>
-                          <FormControl>
-                            <ToggleGroupItem
-                              value={StatusType.Prodaja}
-                              className="data-[state=on]:bg-primary-300 data-[state=on]:text-white hover:bg-primary-50 hover:text-primary-500">
-                              {StatusType.Prodaja}
-                            </ToggleGroupItem>
-                          </FormControl>
-                        </FormItem>
-                        <FormItem>
-                          <FormControl>
-                            <ToggleGroupItem
-                              value={StatusType.Rezervirano}
-                              className="data-[state=on]:bg-primary-300 data-[state=on]:text-white hover:bg-primary-50 hover:text-primary-500">
-                              {StatusType.Rezervirano}
-                            </ToggleGroupItem>
-                          </FormControl>
-                        </FormItem>
-
-                        <FormItem>
-                          <FormControl>
-                            <ToggleGroupItem
-                              value={StatusType.Prodano}
-                              className="data-[state=on]:bg-primary-300 data-[state=on]:text-white hover:bg-primary-50 hover:text-primary-500">
-                              {StatusType.Prodano}
-                            </ToggleGroupItem>
-                          </FormControl>
-                        </FormItem>
-                      </ToggleGroup>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="grid grid-cols-1 gap-4">
-              <UploadButton
-                endpoint="imageUploader"
-                onUploadProgress={() => setImagesBeginUploading(true)}
-                onClientUploadComplete={(res) => {
-                  const array = res.map((file) => file.key);
-                  setValue('images', array);
-                  setUploadedImages(array);
-                  setImagesBeginUploading(false);
-                }}
-                onUploadError={(error: Error) => {
-                  setImagesBeginUploading(false);
-                  // Do something with the error.
-                  alert(`ERROR! ${error.message}`);
-                }}
-                className="ut-button:bg-primary-500 ut-button:ut-readying:bg-primary-500/50"
-              />
-            </div>
-            {!isPending &&
-              uploadedImages.length > 0 &&
-              uploadedImages.map((image) => (
-                <div className="relative max-w-fit">
-                  <Image
-                    className="h-[200px] w-[200px] object-cover rounded-xl"
-                    width={200}
-                    height={200}
-                    key={image}
-                    src={`https://utfs.io/f/${image}`}
-                    alt={image}
-                  />
-                  <Button
-                    variant={'ghost'}
-                    className="max-w-fit absolute top-2 right-2 bg-white/50"
-                    onClick={handleRemoveImage(image)}>
-                    <CloseIcon />
-                  </Button>
-                </div>
-              ))}
-            {isPending && <Spinner />}
-            <DialogFooter>
-              <Button
-                type="submit"
-                disabled={imagesBeginUploading}
-                variant={'form'}>
-                Dodaj stanovanje
-              </Button>
-            </DialogFooter>
-          </form>
-        </Form>
-      </DialogContent>
-    </Dialog>
-  );
-}
 
 const NovAktualniProjektPage = () => {
   const [apartments, setApartments] = useState<Apartment[]>([]);
@@ -367,6 +68,7 @@ const NovAktualniProjektPage = () => {
       images: [],
       apartments: apartments,
       type: LocationType.Apartments,
+      isActive: true,
     },
   });
 
@@ -605,6 +307,50 @@ const NovAktualniProjektPage = () => {
                         ))}
                       {isPending && <Spinner />}
                     </div>
+                    <div className="grid gap-3">
+                      <FormField
+                        control={form.control}
+                        name="isActive"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Tip</FormLabel>
+                            <FormControl>
+                              <ToggleGroup
+                                type="single"
+                                onValueChange={(value) =>{
+                                  if (value === 'Aktiven') {
+                                    field.onChange(true)
+                                  } else {
+                                    field.onChange(false)
+                                  }
+                                }}
+                                defaultValue={field.value === true ? 'Aktiven' : 'Neaktiven'}
+                                className='flex flex-wrap gap-3'>
+                                <FormItem className='border border-primary-100 rounded-md'>
+                                  <FormControl>
+                                    <ToggleGroupItem
+                                      value={'Aktiven'}
+                                      className="bg-primary-50 data-[state=on]:bg-body-300 data-[state=on]:text-primary-500 hover:bg-body-50 hover:text-body-500">
+                                        Aktiven
+                                    </ToggleGroupItem>
+                                  </FormControl>
+                                </FormItem>
+                                <FormItem className='border border-primary-100 rounded-md'>
+                                  <FormControl>
+                                    <ToggleGroupItem
+                                      value={'Neaktiven'}
+                                      className="bg-primary-50 data-[state=on]:bg-body-300 data-[state=on]:text-primary-500 hover:bg-body-50 hover:text-body-500">
+                                        Neaktiven
+                                    </ToggleGroupItem>
+                                  </FormControl>
+                                </FormItem>
+                              </ToggleGroup>
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
                   </CardContent>
                 </Card>
                 <Card x-chunk="dashboard-07-chunk-1" className="bg-primary-75">
@@ -661,7 +407,7 @@ const NovAktualniProjektPage = () => {
                     </Table>
                   </CardContent>
                   <CardFooter className="justify-center border-t p-4">
-                    <DialogDemo saveFormValues={saveFormValues} />
+                    <ApartmentForm saveFormValues={saveFormValues} />
                   </CardFooter>
                 </Card>
               </div>

@@ -57,6 +57,17 @@ export const formSchema = z.object({
   status: z.nativeEnum(StatusType),
   id: z.string().optional(),
   images: z.array(z.string()).optional(),
+  shortDescription: z.string().min(1, {
+    message: 'Vnesi opis ki je daljši od 3 znakov, to polje je obvezno.',
+  }),
+  description: z.string().min(1, {
+    message: 'Vnesi opis ki je daljši od 3 znakov, to polje je obvezno.',
+  }),
+  spaces: z.array(z.string()).optional(),
+  energyLevel: z.string().optional(),
+  parkingSpaces: z.number().optional(),
+  technicalData: z.array(z.string()).optional(),
+  files: z.array(z.string()).optional(),
 });
 
 export const mainFormSchema = z.object({
@@ -77,7 +88,8 @@ export const mainFormSchema = z.object({
     message: 'Dodaj vsaj eno stanovanje.',
   }),
   images: z.array(z.string()).optional(),
-  type: z.string()
+  type: z.string(),
+  isActive: z.boolean().optional(),
 });
 
 export const updateSchema = z.object({

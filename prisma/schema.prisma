@@ -83,19 +83,25 @@ model Location {
 }
 
 model RealEstate {
-  id           String   @id @default(cuid())
-  name         String
-  description  String?
-  number       String?
-  floor        String?
-  size         Float?
-  priceWithTax Float?
-  price        Float?
-  images       String[]
-  locationId   Int
-  status       String?
-  slug         String   @unique
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  location     Location @relation(fields: [locationId], references: [id], onDelete: Cascade, name: "LocationRealEstate")
+  id               String   @id @default(cuid())
+  name             String
+  description      String?
+  shortDescription String?
+  number           String?
+  floor            String?
+  size             Float?
+  priceWithTax     Float?
+  price            Float?
+  images           String[]
+  locationId       Int
+  status           String?
+  slug             String   @unique
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  location         Location @relation(fields: [locationId], references: [id], onDelete: Cascade, name: "LocationRealEstate")
+  spaces           String[]
+  parkingSpaces    Int?
+  technicalData    String[]
+  files            String[]
+  energyLevel      String?
 }

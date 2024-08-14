@@ -133,6 +133,23 @@ const config = {
       dropShadow: {
         'primary-button': '0px 10px 20px rgba(189, 210, 172, 0.5)',
       },
+      lineHeight: {
+        2: '0.5rem',
+        3.5: '0.875rem',
+        4.5: '1.125rem',
+        5.5: '1.375rem',
+        6.5: '1.625rem',
+        7.5: '1.875rem',
+        8.5: '2.125rem',
+        9.5: '2.375rem',
+      },
+      fontSize: {
+        xxs: '0.625rem',
+        xs: '0.75rem',
+        '1.5xl': '1.375rem',
+        '2.5xl': '1.625rem',
+        '3.5xl': '2rem',
+      },
     },
   },
   plugins: [require('tailwindcss-animate'), require('daisyui')],

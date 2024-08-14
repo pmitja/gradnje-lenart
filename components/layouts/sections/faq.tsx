@@ -8,7 +8,7 @@ import {
 
 const Faq = () => {
   return (
-    <section className='flex flex-col lg:flex-row gap-[72px] lg:gap-8 justify-between'>
+    <section className='flex flex-col lg:flex-row gap-[72px] lg:gap-8 justify-between mb-16 md:mb-20 lg:mb-[140px]'>
       <div className="flex flex-col gap-6 basis-1/3">
         <h2 className="text-4xl leading-[120%] md:leading-[57px] font-bold md:text-[51px] lg:leading-[76.5px] text-secondary-400">
           Pogosta vprašanja

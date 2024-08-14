@@ -2,7 +2,7 @@ import { Sparkle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import ProjectsFilter from '@/components/common/filter/projects-filter';
 
-const InnerHero = () => {
+const ProjectFilterHero = () => {
   return (
     <div className="min-w-[100vw] bg-hero-page bg-cover w-[100vw] relative left-1/2 right-1/2 ml-[-50vw] mr-[-50vw] pt-10 md:pt-16 lg:pt-0">
       <div className="container w-full flex flex-col items-center lg:grid-cols-2 justify-center relative lg:gap-5 gap-8 lg:w-full lg:pt-20 lg:pb-28 pb-8">
@@ -24,4 +24,4 @@ const InnerHero = () => {
   );
 };
 
-export default InnerHero;
+export default ProjectFilterHero;

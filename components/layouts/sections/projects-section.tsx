@@ -3,6 +3,7 @@
 import { getAllLocations } from '@/actions/get-all-locations';
 import { getLocationsByCity } from '@/actions/get-locations-by-city';
 import ButtonWithIcon from '@/components/common/button-with-icon';
+import NoResultsBanner from '@/components/common/no-results-banner';
 import Spinner from '@/components/common/spinner';
 import CloseIcon from '@/components/icons/close';
 import { Badge } from '@/components/ui/badge';
@@ -109,7 +110,7 @@ const ProjectsSection = () => {
           )}
           {isPending && <Spinner />}
           {currentProjects.length === 0 && !isPending && (
-            <div>There is no result try again!</div>
+            <NoResultsBanner />
           )}
         </div>
       </div>

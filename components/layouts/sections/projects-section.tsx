@@ -3,6 +3,7 @@
 import { getAllLocations } from '@/actions/get-all-locations'
 import { getLocationsByCity } from '@/actions/get-locations-by-city'
 import ButtonWithIcon from '@/components/common/button-with-icon'
+import NoResultsBanner from '@/components/common/no-results-banner'
 import Spinner from '@/components/common/spinner'
 import CloseIcon from '@/components/icons/close'
 import { Badge } from '@/components/ui/badge'
@@ -13,8 +14,13 @@ import Link from 'next/link'
 import { useEffect, useTransition } from 'react'
 
 const ProjectsSection = () => {
-  const { projectFilters, currentProjects, updateCurrentProjects, updateProjectFilters } =
-    useAppStore()
+  const {
+    projectFilters,
+    currentProjects,
+    updateCurrentProjects,
+    updateProjectFilters,
+    resetFilters
+  } = useAppStore()
   const [isPending, startTransition] = useTransition()
 
   const handleFilterRemove = (filter: string) => {
@@ -50,7 +56,7 @@ const ProjectsSection = () => {
     <section className='flex flex-col gap-3 lg:gap-5'>
       <div className='py-12 text-secondary-400 sm:py-16 lg:py-20'>
         <div className='mx-auto px-4 sm:px-6 lg:px-8'>
-          <div className='mx-auto max-w-2xl text-center'>
+          <div className='mx-auto mb-4 max-w-2xl text-center lg:mb-0'>
             <p className='text-sm font-medium text-secondary-500'>Gradnje Plus</p>
             <h2 className='mt-2 text-3xl font-bold sm:text-4xl xl:text-5xl'>Aktualni projekti</h2>
             <hr className='mx-auto mt-4 h-2 w-32 border-none bg-primary-200' />
@@ -97,7 +103,9 @@ const ProjectsSection = () => {
             </div>
           )}
           {isPending && <Spinner />}
-          {currentProjects.length === 0 && !isPending && <div>There is no result try again!</div>}
+          {currentProjects.length === 0 && !isPending && (
+            <NoResultsBanner resetFilters={resetFilters} />
+          )}
         </div>
       </div>
     </section>

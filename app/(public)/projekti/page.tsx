@@ -1,7 +1,7 @@
-import ProjectFilterHero from '@/components/common/hero/project-filter-hero';
-import ProccesOfBuying from '@/components/common/procces-of-buying';
-import Faq from '@/components/layouts/sections/faq';
-import ProjectsSection from '@/components/layouts/sections/projects-section';
+import ProjectFilterHero from '@/components/common/hero/project-filter-hero'
+import ProccesOfBuying from '@/components/common/procces-of-buying'
+import Faq from '@/components/layouts/sections/faq'
+import ProjectsSection from '@/components/layouts/sections/projects-section'
 
 const ActualProjectPage = () => {
   return (
@@ -11,7 +11,7 @@ const ActualProjectPage = () => {
       <ProccesOfBuying />
       <Faq />
     </>
-  );
-};
+  )
+}
 
-export default ActualProjectPage;
+export default ActualProjectPage

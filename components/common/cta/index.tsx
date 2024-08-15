@@ -1,45 +1,47 @@
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Mail, MoveUpRight } from 'lucide-react';
-import Image from 'next/image';
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Mail, MoveUpRight } from 'lucide-react'
+import Image from 'next/image'
 
 const Cta = () => {
   return (
-    <section className="min-w-[100vw] bg-primary-100 w-[100vw] relative left-1/2 right-1/2 ml-[-50vw] mr-[-50vw] pb-3 md:pb-0">
-      <div className="container w-full grid grid-cols-1 md:grid-cols-2 md:gap-16 md:justify-between">
+    <section className='relative left-1/2 right-1/2 ml-[-50vw] mr-[-50vw] w-[100vw] min-w-[100vw] bg-primary-100 pb-3 md:pb-0'>
+      <div className='container grid w-full grid-cols-1 md:grid-cols-2 md:justify-between md:gap-16'>
         <Image
           src={'/cta-image.webp'}
-          alt="Cta"
+          alt='Cta'
           width={1920}
           height={1080}
-          className="max-h-[300px] md:max-h-auto aspect-square object-cover min-w-[100vw] relative left-1/2 right-1/2 ml-[-50vw] mr-[-50vw] md:min-w-0 md:left-auto md:right-auto md:ml-auto md:mr-auto md:min-h-[460px]"
+          className='md:max-h-auto relative left-1/2 right-1/2 ml-[-50vw] mr-[-50vw] aspect-square max-h-[300px] min-w-[100vw] object-cover md:left-auto md:right-auto md:ml-auto md:mr-auto md:min-h-[460px] md:min-w-0'
         />
-        <div className='flex flex-col md:flex-col-reverse mt-8 gap-6 justify-center'>
-          <div className="rounded-2xl border-4 border-secondary-100 py-2 px-3 flex justify-between items-center gap-3 md:max-w-[75%] md:row-start-3 max-h-[60px]">
-            <Mail className="text-body-200" />
+        <div className='mt-8 flex flex-col justify-center gap-6 md:flex-col-reverse'>
+          <div className='flex max-h-[60px] items-center justify-between gap-3 rounded-2xl border-4 border-secondary-100 px-3 py-2 md:row-start-3 md:max-w-[75%]'>
+            <Mail className='text-body-200' />
             <Input
-              placeholder="Vaš elektronski naslov"
-              className="bg-primary-100 border-none"
+              placeholder='Vaš elektronski naslov'
+              className='border-none bg-primary-100'
             />
             <Button
               variant={'rounded'}
               size={'rounded'}
-              className="text-secondary-300 w-6 h-6 bg-body-300">
-              <MoveUpRight className='w-6 h-6 min-w-6' />
+              className='h-6 w-6 bg-body-300 text-secondary-300'
+            >
+              <MoveUpRight className='h-6 w-6 min-w-6' />
             </Button>
           </div>
           <div className='flex flex-col gap-6'>
-          <h2 className='text-3xl lg:text-[38px] lg:leading-[57px] font-bold text-body-200 self-center'>Prijavite se za najnovejše projekte</h2>
-          <p className='text-base leading-5 text-secondary-300'>
-            Nikar ne zamudite prihodnjih projektov! Prijavite se na našo listo
-            obveščanja in bodite med prvimi, ki bodo izvedeli o naših novih
-            nepremičninskih projektih.
-          </p>
+            <h2 className='self-center text-3xl font-bold text-body-200 lg:text-[38px] lg:leading-[57px]'>
+              Prijavite se za najnovejše projekte
+            </h2>
+            <p className='text-base leading-5 text-secondary-300'>
+              Nikar ne zamudite prihodnjih projektov! Prijavite se na našo listo obveščanja in
+              bodite med prvimi, ki bodo izvedeli o naših novih nepremičninskih projektih.
+            </p>
           </div>
         </div>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default Cta;
+export default Cta

@@ -1,65 +1,70 @@
-'use client';
+'use client'
 
-import { CardWrapper } from './card-wrapper';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
-import { LoginSchema } from '@/schemas';
+import { CardWrapper } from './card-wrapper'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import * as z from 'zod'
+import { LoginSchema } from '@/schemas'
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { FormError } from '@/components/form-error';
-import { FormSuccess } from '@/components/form-success';
-import { login } from '@/actions/login';
-import { useState, useTransition } from 'react';
-import { redirect, useSearchParams } from 'next/navigation';
-import Link from 'next/link';
+  FormMessage
+} from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+import { FormError } from '@/components/form-error'
+import { FormSuccess } from '@/components/form-success'
+import { login } from '@/actions/login'
+import { useState, useTransition } from 'react'
+import { redirect, useSearchParams } from 'next/navigation'
+import Link from 'next/link'
 
 function LoginForm() {
-  const searchParams = useSearchParams();
-  const urlError = searchParams.get('error') === 'OAuthAccountNotLinked' ? 'Email already in use with different provider!' : "";
+  const searchParams = useSearchParams()
+  const urlError =
+    searchParams.get('error') === 'OAuthAccountNotLinked'
+      ? 'Email already in use with different provider!'
+      : ''
 
-  const [isPending, startTransition] = useTransition();
-  const [error, setError] = useState<string | undefined>('');
-  const [success, setSuccess] = useState<string | undefined>('');
+  const [isPending, startTransition] = useTransition()
+  const [error, setError] = useState<string | undefined>('')
+  const [success, setSuccess] = useState<string | undefined>('')
 
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
       email: '',
-      password: '',
-    },
-  });
+      password: ''
+    }
+  })
 
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
-    setError('');
-    setSuccess('');
+    setError('')
+    setSuccess('')
 
     startTransition(() => {
       login(values).then((data) => {
-        console.log(data);
-        if (data?.error) return setError(data.error);
-        if (data?.success) return setSuccess(data.success);
-      });
-    });
-  };
+        console.log(data)
+        if (data?.error) return setError(data.error)
+        if (data?.success) return setSuccess(data.success)
+      })
+    })
+  }
 
   return (
-    <CardWrapper
-      headerLabel="Dobrodošli!">
+    <CardWrapper headerLabel='Dobrodošli!'>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <div className="space-y-4">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className='space-y-6'
+        >
+          <div className='space-y-4'>
             <FormField
               control={form.control}
-              name="email"
+              name='email'
               render={({ field }) => {
                 return (
                   <FormItem>
@@ -68,18 +73,18 @@ function LoginForm() {
                       <Input
                         {...field}
                         disabled={isPending}
-                        placeholder="john.wick@example.com"
-                        type="email"
+                        placeholder='john.wick@example.com'
+                        type='email'
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
-                );
+                )
               }}
             />
             <FormField
               control={form.control}
-              name="password"
+              name='password'
               render={({ field }) => {
                 return (
                   <FormItem>
@@ -88,28 +93,38 @@ function LoginForm() {
                       <Input
                         {...field}
                         disabled={isPending}
-                        placeholder="***********"
-                        type="password"
+                        placeholder='***********'
+                        type='password'
                       />
                     </FormControl>
-                    <Button size='sm' variant='link' asChild className='px-0'>
-                      <Link href="/auth/reset-password">Forgot password?</Link>
+                    <Button
+                      size='sm'
+                      variant='link'
+                      asChild
+                      className='px-0'
+                    >
+                      <Link href='/auth/reset-password'>Forgot password?</Link>
                     </Button>
                     <FormMessage />
                   </FormItem>
-                );
+                )
               }}
             />
           </div>
           <FormError message={error || urlError} />
           <FormSuccess message={success} />
-          <Button type="submit" className="w-full" disabled={isPending} variant={'primary'}>
+          <Button
+            type='submit'
+            className='w-full'
+            disabled={isPending}
+            variant={'primary'}
+          >
             Login
           </Button>
         </form>
       </Form>
     </CardWrapper>
-  );
+  )
 }
 
-export default LoginForm;
+export default LoginForm

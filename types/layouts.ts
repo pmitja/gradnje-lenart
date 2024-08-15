@@ -1,2 +1,1 @@
-export type Layouts =
-  | 'centered';
+export type Layouts = 'centered'

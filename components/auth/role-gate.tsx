@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import { UserRole } from '@prisma/client'
 
@@ -17,5 +17,5 @@ export const RoleGate = ({ children, allowedRoles }: RoleGateProps) => {
     return <>{children}</>
   }
 
-  return <FormError message="You are not authorized to view this page." />
+  return <FormError message='You are not authorized to view this page.' />
 }

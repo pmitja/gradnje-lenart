@@ -1,5 +1,5 @@
-import type { Config } from 'tailwindcss';
-import { withUt } from 'uploadthing/tw';
+import type { Config } from 'tailwindcss'
+import { withUt } from 'uploadthing/tw'
 
 const config = {
   darkMode: ['class'],
@@ -7,7 +7,7 @@ const config = {
     './pages/**/*.{ts,tsx}',
     './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
+    './src/**/*.{ts,tsx}'
   ],
   prefix: '',
   theme: {
@@ -15,8 +15,8 @@ const config = {
       center: true,
       padding: '2rem',
       screens: {
-        '2xl': '1400px',
-      },
+        '2xl': '1400px'
+      }
     },
     extend: {
       colors: {
@@ -34,7 +34,7 @@ const config = {
           200: '#85a46c',
           300: '#6c914e',
           400: '#4c6637',
-          500: '#425830',
+          500: '#425830'
         },
         secondary: {
           DEFAULT: 'hsl(var(--secondary))',
@@ -45,7 +45,7 @@ const config = {
           200: '#3e5566',
           300: '#173247',
           400: '#102332',
-          500: '#0e1f2b',
+          500: '#0e1f2b'
         },
         body: {
           DEFAULT: '#FFFFF',
@@ -55,7 +55,7 @@ const config = {
           200: '#f9eed6',
           300: '#f8eace',
           400: '#aea490',
-          500: '#978f7e',
+          500: '#978f7e'
         },
         destructive: {
           DEFAULT: 'hsl(var(--destructive))',
@@ -66,7 +66,7 @@ const config = {
           200: '#e25148',
           300: '#dc2d22',
           400: '#9a1f18',
-          500: '#861b15',
+          500: '#861b15'
         },
         success: {
           DEFAULT: '#ffff',
@@ -76,7 +76,7 @@ const config = {
           200: '#4cde5b',
           300: '#27d739',
           400: '#1b9728',
-          500: '#188323',
+          500: '#188323'
         },
         informative: {
           DEFAULT: '#ffff',
@@ -86,52 +86,52 @@ const config = {
           200: '#4bd9ed',
           300: '#26d1e9',
           400: '#1b92a3',
-          500: '#177f8e',
+          500: '#177f8e'
         },
         muted: {
           DEFAULT: 'hsl(var(--muted))',
-          foreground: 'hsl(var(--muted-foreground))',
+          foreground: 'hsl(var(--muted-foreground))'
         },
         accent: {
           DEFAULT: 'hsl(var(--accent))',
-          foreground: 'hsl(var(--accent-foreground))',
+          foreground: 'hsl(var(--accent-foreground))'
         },
         popover: {
           DEFAULT: 'hsl(var(--popover))',
-          foreground: 'hsl(var(--popover-foreground))',
-        },  
+          foreground: 'hsl(var(--popover-foreground))'
+        },
         card: {
           DEFAULT: 'hsl(var(--card))',
-          foreground: 'hsl(var(--card-foreground))',
-        },
+          foreground: 'hsl(var(--card-foreground))'
+        }
       },
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
-        sm: 'calc(var(--radius) - 4px)',
+        sm: 'calc(var(--radius) - 4px)'
       },
       keyframes: {
         'accordion-down': {
           from: { height: '0' },
-          to: { height: 'var(--radix-accordion-content-height)' },
+          to: { height: 'var(--radix-accordion-content-height)' }
         },
         'accordion-up': {
           from: { height: 'var(--radix-accordion-content-height)' },
-          to: { height: '0' },
-        },
+          to: { height: '0' }
+        }
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
-        'accordion-up': 'accordion-up 0.2s ease-out',
+        'accordion-up': 'accordion-up 0.2s ease-out'
       },
       fontFamily: {
-        archivo: 'var(--font-archivo)',
+        archivo: 'var(--font-archivo)'
       },
       backgroundImage: {
-        'hero-page': "url('/page-hero.webp')",
+        'hero-page': "url('/page-hero.webp')"
       },
       dropShadow: {
-        'primary-button': '0px 10px 20px rgba(189, 210, 172, 0.5)',
+        'primary-button': '0px 10px 20px rgba(189, 210, 172, 0.5)'
       },
       lineHeight: {
         2: '0.5rem',
@@ -141,18 +141,18 @@ const config = {
         6.5: '1.625rem',
         7.5: '1.875rem',
         8.5: '2.125rem',
-        9.5: '2.375rem',
+        9.5: '2.375rem'
       },
       fontSize: {
         xxs: '0.625rem',
         xs: '0.75rem',
         '1.5xl': '1.375rem',
         '2.5xl': '1.625rem',
-        '3.5xl': '2rem',
-      },
-    },
+        '3.5xl': '2rem'
+      }
+    }
   },
-  plugins: [require('tailwindcss-animate'), require('daisyui')],
-} satisfies Config;
+  plugins: [require('tailwindcss-animate'), require('daisyui')]
+} satisfies Config
 
-export default withUt(config);
+export default withUt(config)

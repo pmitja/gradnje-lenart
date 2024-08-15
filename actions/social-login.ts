@@ -1,8 +1,8 @@
-"use server"
+'use server'
 
-import { signIn } from "@/auth"
-import { DEFAULT_LOGIN_REDIRECT } from "@/routes"
-import { AuthError } from "next-auth"
+import { signIn } from '@/auth'
+import { DEFAULT_LOGIN_REDIRECT } from '@/routes'
+import { AuthError } from 'next-auth'
 
 export const socialLogin = async (provider: string) => {
   try {
@@ -14,10 +14,10 @@ export const socialLogin = async (provider: string) => {
     if (error instanceof AuthError) {
       switch (error.type) {
         case 'CredentialsSignin': {
-          return { error: 'Invalid credentials'}
+          return { error: 'Invalid credentials' }
         }
         default: {
-          return { error: 'An error occurred'}
+          return { error: 'An error occurred' }
         }
       }
     }

@@ -1,60 +1,56 @@
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server'
 
-import NextAuth from "next-auth"
-import authConfig from "@/auth-config"
+import NextAuth from 'next-auth'
+import authConfig from '@/auth-config'
 
 import {
   DEFAULT_LOGIN_REDIRECT,
   apiAuthPrefix,
   apiUploadThingPrefix,
   authRoutes,
-  publicRoutes,
-} from "@/routes";
+  publicRoutes
+} from '@/routes'
 
 const { auth } = NextAuth(authConfig)
 
 export default auth((req) => {
-  const { nextUrl } = req;
-  const isLoggedIn = !!req.auth;
+  const { nextUrl } = req
+  const isLoggedIn = !!req.auth
 
-  const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
-  const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
-  const isAuthRoute = authRoutes.includes(nextUrl.pathname);
-  const isUploadThingRoute = nextUrl.pathname.startsWith(apiUploadThingPrefix);
+  const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix)
+  const isPublicRoute = publicRoutes.includes(nextUrl.pathname)
+  const isAuthRoute = authRoutes.includes(nextUrl.pathname)
+  const isUploadThingRoute = nextUrl.pathname.startsWith(apiUploadThingPrefix)
 
   if (isUploadThingRoute) {
-    return NextResponse.next();
+    return NextResponse.next()
   }
 
   if (isApiAuthRoute) {
-    return NextResponse.next();
+    return NextResponse.next()
   }
 
   if (isAuthRoute) {
     if (isLoggedIn) {
       return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl))
     }
-    return NextResponse.next();
+    return NextResponse.next()
   }
 
   if (!isLoggedIn && !isPublicRoute) {
-    let callbackUrl = nextUrl.pathname;
+    let callbackUrl = nextUrl.pathname
     if (nextUrl.search) {
-      callbackUrl += nextUrl.search;
+      callbackUrl += nextUrl.search
     }
 
-    const encodedCallbackUrl = encodeURIComponent(callbackUrl);
+    const encodedCallbackUrl = encodeURIComponent(callbackUrl)
 
-    return Response.redirect(new URL(
-      `/auth/login?callbackUrl=${encodedCallbackUrl}`,
-      nextUrl
-    ));
+    return Response.redirect(new URL(`/auth/login?callbackUrl=${encodedCallbackUrl}`, nextUrl))
   }
 
-  return NextResponse.next();
-  
+  return NextResponse.next()
 })
 
 export const config = {
-  matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
+  matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/', '/(api|trpc)(.*)']
 }

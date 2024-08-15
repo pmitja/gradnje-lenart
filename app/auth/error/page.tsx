@@ -1,13 +1,13 @@
-import { ErrorCard } from '@/components/auth/error-card';
+import { ErrorCard } from '@/components/auth/error-card'
 
 const AuthErrorPage = () => {
   return (
     <main>
-      <div className="space-y-6">
+      <div className='space-y-6'>
         <ErrorCard />
       </div>
     </main>
-  );
-};
+  )
+}
 
-export default AuthErrorPage;
+export default AuthErrorPage

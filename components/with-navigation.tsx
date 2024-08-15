@@ -1,38 +1,37 @@
-"use client"
+'use client'
 
-import { useState, type FC, useEffect } from 'react';
-import { useMediaQuery } from '@/hooks/use-media-query';
-import MobileNavigation from './containers/navigation/mobile-navigation';
-import DesktopNavigation from '@/components/containers/navigation/desktop-navigation';
+import { useState, type FC, useEffect } from 'react'
+import { useMediaQuery } from '@/hooks/use-media-query'
+import MobileNavigation from './containers/navigation/mobile-navigation'
+import DesktopNavigation from '@/components/containers/navigation/desktop-navigation'
 
 const navItems = [
   {
     text: 'Projekti',
-    link: '/projekti',
+    link: '/projekti'
   },
   {
     text: 'Podjetje',
-    link: '/podjetje',
+    link: '/podjetje'
   },
   {
     text: 'Reference',
-    link: '/reference',
+    link: '/reference'
   },
   {
     text: 'Kontakt',
-    link: '/kontakt',
+    link: '/kontakt'
   },
   {
     text: 'Blog',
-    link: '/blog',
-  },
+    link: '/blog'
+  }
 ]
 
 const WithNavigation: FC = () => {
-
   const isDesktop = useMediaQuery('(min-width: 1120px)')
 
-  const [ isMounted, setIsMounted ] = useState(false)
+  const [isMounted, setIsMounted] = useState(false)
 
   useEffect(() => {
     setIsMounted(true)
@@ -52,6 +51,6 @@ const WithNavigation: FC = () => {
       )}
     </>
   )
-};
+}
 
-export default WithNavigation;
+export default WithNavigation

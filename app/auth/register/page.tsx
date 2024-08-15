@@ -1,13 +1,13 @@
-import RegisterForm from '@/components/auth/register-form';
+import RegisterForm from '@/components/auth/register-form'
 
 const RegisterPage = () => {
   return (
     <main>
-      <div className="space-y-6">
+      <div className='space-y-6'>
         <RegisterForm />
       </div>
     </main>
-  );
-};
+  )
+}
 
-export default RegisterPage;
+export default RegisterPage

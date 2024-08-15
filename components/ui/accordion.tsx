@@ -1,41 +1,45 @@
-'use client';
+'use client'
 
-import * as React from 'react';
-import * as AccordionPrimitive from '@radix-ui/react-accordion';
-import { CirclePlus, CircleMinus } from 'lucide-react';
+import * as React from 'react'
+import * as AccordionPrimitive from '@radix-ui/react-accordion'
+import { CirclePlus, CircleMinus } from 'lucide-react'
 
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/utils'
 
-const Accordion = AccordionPrimitive.Root;
+const Accordion = AccordionPrimitive.Root
 
 const AccordionItem = React.forwardRef<
   React.ElementRef<typeof AccordionPrimitive.Item>,
   React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Item>
 >(({ className, ...props }, ref) => (
-  <AccordionPrimitive.Item ref={ref} className={cn('border-b', className)} {...props} />
-));
-AccordionItem.displayName = 'AccordionItem';
+  <AccordionPrimitive.Item
+    ref={ref}
+    className={cn('border-b', className)}
+    {...props}
+  />
+))
+AccordionItem.displayName = 'AccordionItem'
 
 const AccordionTrigger = React.forwardRef<
   React.ElementRef<typeof AccordionPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger>
 >(({ className, children, ...props }, ref) => (
-  <AccordionPrimitive.Header className="flex">
+  <AccordionPrimitive.Header className='flex'>
     <AccordionPrimitive.Trigger
       ref={ref}
       className={cn(
-        'text-start flex flex-1 items-center justify-between py-4 font-medium transition-all group data-[state=open]:bg-[#AEA490]/30 px-3 data-[state=open]:border-none data-[state=open]:rounded-t-lg data-[state=open]:font-bold',
+        'group flex flex-1 items-center justify-between px-3 py-4 text-start font-medium transition-all data-[state=open]:rounded-t-lg data-[state=open]:border-none data-[state=open]:bg-[#AEA490]/30 data-[state=open]:font-bold',
         className
       )}
       {...props}
     >
       {children}
-      <CirclePlus className="h-6 w-6 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden" />
-      <CircleMinus className="h-6 w-6 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden" />
+      <CirclePlus className='h-6 w-6 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden' />
+      <CircleMinus className='h-6 w-6 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden' />
     </AccordionPrimitive.Trigger>
   </AccordionPrimitive.Header>
-));
-AccordionTrigger.displayName = AccordionPrimitive.Trigger.displayName;
+))
+AccordionTrigger.displayName = AccordionPrimitive.Trigger.displayName
 
 const AccordionContent = React.forwardRef<
   React.ElementRef<typeof AccordionPrimitive.Content>,
@@ -44,14 +48,14 @@ const AccordionContent = React.forwardRef<
   <AccordionPrimitive.Content
     ref={ref}
     className={cn(
-      'overflow-hidden text-sm transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down px-3 pt-3 data-[state=open]:bg-[#AEA490]/30 data-[state=open]:rounded-b-lg',
+      'overflow-hidden px-3 pt-3 text-sm transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down data-[state=open]:rounded-b-lg data-[state=open]:bg-[#AEA490]/30',
       className
     )}
     {...props}
   >
-    <div className="pb-4 pt-0">{children}</div>
+    <div className='pb-4 pt-0'>{children}</div>
   </AccordionPrimitive.Content>
-));
-AccordionContent.displayName = AccordionPrimitive.Content.displayName;
+))
+AccordionContent.displayName = AccordionPrimitive.Content.displayName
 
-export { Accordion, AccordionItem, AccordionTrigger, AccordionContent };
+export { Accordion, AccordionItem, AccordionTrigger, AccordionContent }

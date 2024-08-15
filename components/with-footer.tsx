@@ -1,36 +1,33 @@
-"use client"
+'use client'
 
-import { type FC } from 'react';
-import Footer from './containers/footer';
+import { type FC } from 'react'
+import Footer from './containers/footer'
 
 const navItems = [
   {
     text: 'Projekti',
-    link: '/projekti',
+    link: '/projekti'
   },
   {
     text: 'Podjetje',
-    link: '/podjetje',
+    link: '/podjetje'
   },
   {
     text: 'Reference',
-    link: '/reference',
+    link: '/reference'
   },
   {
     text: 'Kontakt',
-    link: '/kontakt',
+    link: '/kontakt'
   },
   {
     text: 'Blog',
-    link: '/blog',
-  },
+    link: '/blog'
+  }
 ]
 
 const WithFooter: FC = () => {
+  return <Footer navItems={navItems} />
+}
 
-  return (
-    <Footer navItems={navItems} />
-  )
-};
-
-export default WithFooter;
+export default WithFooter

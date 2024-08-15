@@ -1,12 +1,12 @@
-import LoginForm from '@/components/auth/login-form';
-import CenteredLayout from '@/components/layouts/centered';
+import LoginForm from '@/components/auth/login-form'
+import CenteredLayout from '@/components/layouts/centered'
 
 const LoginPage = () => {
   return (
     <CenteredLayout className='items-center'>
-        <LoginForm />
+      <LoginForm />
     </CenteredLayout>
-  );
-};
+  )
+}
 
-export default LoginPage;
+export default LoginPage

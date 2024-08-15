@@ -6,7 +6,7 @@ export const pricingCards = [
     duration: '',
     highlight: 'Key features',
     features: ['3 Sub accounts', '2 Team members', 'Unlimited pipelines'],
-    priceId: '',
+    priceId: ''
   },
   {
     title: 'Unlimited Saas',
@@ -15,7 +15,7 @@ export const pricingCards = [
     duration: 'month',
     highlight: 'Key features',
     features: ['Rebilling', '24/7 Support team'],
-    priceId: 'price_1OYxkqFj9oKEERu1KfJGWxgN',
+    priceId: 'price_1OYxkqFj9oKEERu1KfJGWxgN'
   },
   {
     title: 'Basic',
@@ -24,6 +24,6 @@ export const pricingCards = [
     duration: 'month',
     highlight: 'Everything in Starter, plus',
     features: ['Unlimited Sub accounts', 'Unlimited Team members'],
-    priceId: 'price_1OYxkqFj9oKEERu1NbKUxXxN',
-  },
+    priceId: 'price_1OYxkqFj9oKEERu1NbKUxXxN'
+  }
 ]

@@ -1,104 +1,108 @@
-'use client';
+'use client'
 
-import { getAllLocations } from '@/actions/get-all-locations';
-import { Button } from '@/components/ui/button';
+import { getAllLocations } from '@/actions/get-all-locations'
+import { Button } from '@/components/ui/button'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { Location } from '@prisma/client';
-import { Search } from 'lucide-react';
-import { useEffect, useState, useTransition } from 'react';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
+  SelectValue
+} from '@/components/ui/select'
+import { Location } from '@prisma/client'
+import { Search } from 'lucide-react'
+import { useEffect, useState, useTransition } from 'react'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
-import { useAppStore } from '@/store/app';
-import { projectFilterSchema } from '@/validation-schemas/project-filters-schema';
-import { LocationType } from '@/types/general';
-import Spinner from '@/components/common/spinner';
+  FormMessage
+} from '@/components/ui/form'
+import { useAppStore } from '@/store/app'
+import { projectFilterSchema } from '@/validation-schemas/project-filters-schema'
+import { LocationType } from '@/types/general'
+import Spinner from '@/components/common/spinner'
 
 const ProjectsFilter = () => {
-  const { projectFilters, updateProjectFilters } = useAppStore();
+  const { projectFilters, updateProjectFilters } = useAppStore()
 
   const form = useForm<z.infer<typeof projectFilterSchema>>({
     resolver: zodResolver(projectFilterSchema),
     defaultValues: {
       location: 'all',
-      type: 'all',
-    },
-  });
+      type: 'all'
+    }
+  })
 
-  const [isPending, startTransition] = useTransition();
-  const [location, setLocation] = useState<Location[] | null>(null);
+  const [isPending, startTransition] = useTransition()
+  const [location, setLocation] = useState<Location[] | null>(null)
 
   useEffect(() => {
     startTransition(async () => {
-      const location = await getAllLocations();
+      const location = await getAllLocations()
       if (location) {
-        setLocation(location);
+        setLocation(location)
       }
-    });
-  }, []);
+    })
+  }, [])
 
   // Reset selection when projectFilters changes
   useEffect(() => {
     form.reset({
       location: projectFilters.location || 'all',
-      type: projectFilters.type || 'all',
-    });
-  }, [projectFilters, form]);
+      type: projectFilters.type || 'all'
+    })
+  }, [projectFilters, form])
 
   function onSubmit(values: z.infer<typeof projectFilterSchema>) {
-    updateProjectFilters(values);
+    updateProjectFilters(values)
   }
 
   return (
     <Form {...form}>
-      <div className="relative flex-col items-start gap-8 md:flex">
+      <div className='relative flex-col items-start gap-8 md:flex'>
         {isPending && <Spinner />}
         {!isPending && (
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="grid w-full items-start gap-6">
-            <fieldset className="grid grid-col-1 lg:grid-cols-3 items-center gap-4 lg:gap-9 rounded-lg lg:rounded-full border bg-body-200 p-4 lg:py-5 lg:px-10 shadow-sm max-w-fit">
+            className='grid w-full items-start gap-6'
+          >
+            <fieldset className='grid-col-1 grid max-w-fit items-center gap-4 rounded-lg border bg-body-200 p-4 shadow-sm lg:grid-cols-3 lg:gap-9 lg:rounded-full lg:px-10 lg:py-5'>
               {location && (
                 <FormField
                   control={form.control}
-                  name="location"
+                  name='location'
                   render={({ field }) => (
-                    <FormItem className="flex flex-col gap-2 pr-2 md:pr-4 lg:pr-6 lg:border-r-2 border-secondary-200">
-                      <FormLabel className="text-text text-base font-bold lg:text-xl px-3">
+                    <FormItem className='flex flex-col gap-2 border-secondary-200 pr-2 md:pr-4 lg:border-r-2 lg:pr-6'>
+                      <FormLabel className='text-text px-3 text-base font-bold lg:text-xl'>
                         Lokacija
                       </FormLabel>
                       <FormControl>
                         <Select
                           onValueChange={field.onChange}
-                          value={field.value}>
+                          value={field.value}
+                        >
                           <SelectTrigger
-                            id="location"
-                            className="flex gap-2 place-items-center items-start [&_[data-description]]:hidden bg-transparent border-0 !mt-0 min-w-[220px]">
-                            <SelectValue placeholder="Izberi lokacijo" />
+                            id='location'
+                            className='!mt-0 flex min-w-[220px] place-items-center items-start gap-2 border-0 bg-transparent [&_[data-description]]:hidden'
+                          >
+                            <SelectValue placeholder='Izberi lokacijo' />
                           </SelectTrigger>
                           <SelectContent>
                             {location.map((location) => (
                               <SelectItem
                                 value={location.city}
-                                key={location.id}>
+                                key={location.id}
+                              >
                                 {location.city}
                               </SelectItem>
                             ))}
-                            <SelectItem value="all">Vse lokacije</SelectItem>
+                            <SelectItem value='all'>Vse lokacije</SelectItem>
                           </SelectContent>
                         </Select>
                       </FormControl>
@@ -109,31 +113,32 @@ const ProjectsFilter = () => {
               )}
               <FormField
                 control={form.control}
-                name="type"
+                name='type'
                 render={({ field }) => (
-                  <FormItem className="flex flex-col gap-2 pr-2 md:pr-4 lg:pr-6 lg:border-r-2 border-secondary-200">
-                    <FormLabel className="text-text text-base font-bold lg:text-xl px-3">
+                  <FormItem className='flex flex-col gap-2 border-secondary-200 pr-2 md:pr-4 lg:border-r-2 lg:pr-6'>
+                    <FormLabel className='text-text px-3 text-base font-bold lg:text-xl'>
                       Vrsta
                     </FormLabel>
                     <FormControl>
                       <Select
                         onValueChange={field.onChange}
-                        value={field.value}>
+                        value={field.value}
+                      >
                         <SelectTrigger
-                          id="type"
-                          className="flex gap-2 items-start [&_[data-description]]:hidden bg-transparent border-0 !mt-0 min-w-[220px]">
-                          <SelectValue placeholder="Izberi vrsto" />
+                          id='type'
+                          className='!mt-0 flex min-w-[220px] items-start gap-2 border-0 bg-transparent [&_[data-description]]:hidden'
+                        >
+                          <SelectValue placeholder='Izberi vrsto' />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem
                             value={LocationType.Apartments}
-                            className="hover:bg-primary-50">
+                            className='hover:bg-primary-50'
+                          >
                             Več stanovanjski objekt
                           </SelectItem>
-                          <SelectItem value={LocationType.House}>
-                            Hiša
-                          </SelectItem>
-                          <SelectItem value="all">Vse vrste</SelectItem>
+                          <SelectItem value={LocationType.House}>Hiša</SelectItem>
+                          <SelectItem value='all'>Vse vrste</SelectItem>
                         </SelectContent>
                       </Select>
                     </FormControl>
@@ -143,9 +148,10 @@ const ProjectsFilter = () => {
               />
 
               <Button
-                type="submit"
-                variant="primary"
-                className="w-full lg:w-auto flex gap-2 py-2 px-6 lg:py-3 lg:px-8">
+                type='submit'
+                variant='primary'
+                className='flex w-full gap-2 px-6 py-2 lg:w-auto lg:px-8 lg:py-3'
+              >
                 <Search />
                 Filter
               </Button>
@@ -154,7 +160,7 @@ const ProjectsFilter = () => {
         )}
       </div>
     </Form>
-  );
-};
+  )
+}
 
-export default ProjectsFilter;
+export default ProjectsFilter

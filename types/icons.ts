@@ -1,7 +1,1 @@
-export type Icons =
-  | 'car'
-  | 'shield'
-  | 'markHouse'
-  | 'brickWall'
-  | 'energySaving'
-  | 'mainBuilding';
+export type Icons = 'car' | 'shield' | 'markHouse' | 'brickWall' | 'energySaving' | 'mainBuilding'

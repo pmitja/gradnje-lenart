@@ -1,5 +1,5 @@
 // Slug generation function
-export function generateSlug(name: string ): string {
+export function generateSlug(name: string): string {
   const slugify = (str: string) =>
     str
       .toLowerCase()
@@ -7,9 +7,9 @@ export function generateSlug(name: string ): string {
       .replace(/[^\w\-]+/g, '') // Remove all non-word characters
       .replace(/\-\-+/g, '-') // Replace multiple - with single -
       .replace(/^-+/, '') // Trim - from start of text
-      .replace(/-+$/, ''); // Trim - from end of text
+      .replace(/-+$/, '') // Trim - from end of text
 
-  return `${slugify(name)}`;
+  return `${slugify(name)}`
 }
 
 export function generateSlugWithNumber(slug: string, number: string): string {
@@ -20,11 +20,11 @@ export function generateSlugWithNumber(slug: string, number: string): string {
       .replace(/[^\w\-]+/g, '') // Remove all non-word characters
       .replace(/\-\-+/g, '-') // Replace multiple - with single -
       .replace(/^-+/, '') // Trim - from start of text
-      .replace(/-+$/, ''); // Trim - from end of text
+      .replace(/-+$/, '') // Trim - from end of text
 
-  return `${slug}/${slugify(number)}`;
+  return `${slug}/${slugify(number)}`
 }
 
 export function formatNumber(num: number) {
-  return new Intl.NumberFormat('de-DE', { minimumFractionDigits: 0 }).format(num);
+  return new Intl.NumberFormat('de-DE', { minimumFractionDigits: 0 }).format(num)
 }

@@ -128,7 +128,8 @@ const config = {
         archivo: 'var(--font-archivo)'
       },
       backgroundImage: {
-        'hero-page': "url('/page-hero.webp')"
+        'hero-page': "url('/page-hero.webp')",
+        'image-gradient': 'linear-gradient(0, rgba(0, 0, 0, 0.5) 10%, rgba(102, 102, 102, 0) 100%)'
       },
       dropShadow: {
         'primary-button': '0px 10px 20px rgba(189, 210, 172, 0.5)'

@@ -94,6 +94,7 @@ model RealEstate {
   spaces           String[]
   energyLevel      String?
   technicalData    Json?
+  isExposed        Boolean  @default(false)
   location         Location @relation("LocationRealEstate", fields: [locationId], references: [id], onDelete: Cascade)
 }
 

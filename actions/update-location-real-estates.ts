@@ -7,7 +7,7 @@ import { z } from 'zod'
 
 export const updateLocationRealEstate = async (values: z.infer<typeof updateSchema>) => {
   const validatedFields = updateSchema.safeParse(values)
-
+  console.log(validatedFields)
   if (!validatedFields.success) {
     return { error: 'Invalid fields' }
   }
@@ -44,15 +44,12 @@ export const updateLocationRealEstate = async (values: z.infer<typeof updateSche
               energyLevel: apartment.energyLevel,
               parkingSpaces: apartment.parkingSpaces,
               technicalData: apartment.technicalData
-                ? {
-                    upsert: apartment.technicalData.map((td) => ({
-                      where: { id: td.id },
-                      update: { text: td.text },
-                      create: { id: td.id, text: td.text }
+                ? apartment.technicalData.map((td) => ({
+                     id: td.id, text: td.text
                     }))
-                  }
                 : undefined,
-              files: apartment.files
+              files: apartment.files,
+              isExposed: apartment.isExposed
             }
           })
         } else {
@@ -74,14 +71,13 @@ export const updateLocationRealEstate = async (values: z.infer<typeof updateSche
               energyLevel: apartment.energyLevel,
               parkingSpaces: apartment.parkingSpaces,
               technicalData: apartment.technicalData
-                ? {
-                    create: apartment.technicalData.map((td) => ({
+                ? apartment.technicalData.map((td) => ({
                       id: td.id,
                       text: td.text
                     }))
-                  }
                 : undefined,
-              files: apartment.files
+              files: apartment.files,
+              isExposed: apartment.isExposed
             }
           })
         }

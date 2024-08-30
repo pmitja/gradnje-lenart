@@ -12,6 +12,11 @@ export type ImageType = {
   alt: string
 }
 
+export enum ExposedType {
+  Expose = 1,
+  Hide = 0
+}
+
 export enum StatusType {
   Prodaja = 'Na prodaj',
   Rezervirano = 'Rezervirano',
@@ -98,4 +103,5 @@ export type Apartment = {
     text: string
   }[]
   files?: string[]
+  isExposed: boolean
 }

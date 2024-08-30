@@ -11,7 +11,7 @@ import {
   DialogTitle,
   DialogTrigger
 } from '@/components/ui/dialog'
-import { SetStateAction, useState, useTransition } from 'react'
+import { useState, useTransition } from 'react'
 import {
   Form,
   FormControl,
@@ -25,7 +25,7 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { ToggleGroup } from '@radix-ui/react-toggle-group'
 import { ToggleGroupItem } from '@/components/ui/toggle-group'
-import { Apartment, EnergyClass, SpacesType, StatusType } from '@/types/general'
+import { Apartment, EnergyClass, ExposedType, SpacesType, StatusType } from '@/types/general'
 import { formSchema } from '@/schemas'
 import { UploadButton } from '@/lib/utils/uploadthing'
 import Image from 'next/image'
@@ -62,12 +62,14 @@ const ApartmentForm = ({ saveFormValues }: { saveFormValues: (values: Apartment)
       energyLevel: '',
       parkingSpaces: 0,
       technicalData: [],
-      files: []
+      files: [],
+      isExposed: false
     }
   })
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values)
+    console.log('here')
     saveFormValues(values)
     setOpen(false)
   }
@@ -381,7 +383,7 @@ const ApartmentForm = ({ saveFormValues }: { saveFormValues: (values: Apartment)
                 name='technicalData'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Število parkirnih mest</FormLabel>
+                    <FormLabel>Tehnični podatki</FormLabel>
                     <FormControl>
                       <TagInput
                         activeTagIndex={activeTagIndex}
@@ -397,7 +399,7 @@ const ApartmentForm = ({ saveFormValues }: { saveFormValues: (values: Apartment)
                         }}
                         setTags={(newTags) => {
                           setTechnicalData(newTags)
-                          setValue('technicalData', newTags as [Tag, ...Tag[]])
+                          setValue('technicalData', newTags as Array<Tag>)
                         }}
                       />
                     </FormControl>
@@ -435,6 +437,56 @@ const ApartmentForm = ({ saveFormValues }: { saveFormValues: (values: Apartment)
                             </FormControl>
                           </FormItem>
                         ))}
+                      </ToggleGroup>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className='grid grid-cols-1 items-center gap-4'>
+              <FormField
+                control={form.control}
+                name='isExposed'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Izpostavi v posebni sekciji?</FormLabel>
+                    <FormControl>
+                      <ToggleGroup
+                        type='single'
+                        onValueChange={(e) => {
+                          if (e === ExposedType.Expose.toString()) {
+                            field.onChange(true)
+                          } else {
+                            field.onChange(false)
+                          }
+                        }}
+                        className='flex flex-wrap gap-3'
+                      >
+                          <FormItem
+                            className='rounded-md border border-primary-100'
+                          >
+                            <FormControl>
+                              <ToggleGroupItem
+                                value={ExposedType.Expose.toString()}
+                                className='hover:bg-primary-50 hover:text-primary-500 data-[state=on]:bg-primary-300 data-[state=on]:text-white'
+                              >
+                                Izpostavi
+                              </ToggleGroupItem>
+                            </FormControl>
+                          </FormItem>
+                          <FormItem
+                            className='rounded-md border border-primary-100'
+                          >
+                            <FormControl>
+                              <ToggleGroupItem
+                                value={ExposedType.Hide.toString()}
+                                className='hover:bg-primary-50 hover:text-primary-500 data-[state=on]:bg-primary-300 data-[state=on]:text-white'
+                              >
+                                Ne izpostavi
+                              </ToggleGroupItem>
+                            </FormControl>
+                          </FormItem>
                       </ToggleGroup>
                     </FormControl>
                     <FormMessage />

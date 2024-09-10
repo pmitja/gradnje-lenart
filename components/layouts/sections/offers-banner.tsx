@@ -1,12 +1,6 @@
 import ButtonWithIcon from '@/components/common/button-with-icon'
 import ImageGallery from '@/components/common/image-gallery'
-
-export interface OfferInfo {
-  title: string
-  description: string
-  linkLabel?: string
-  linkHref: string
-}
+import { OfferInfo } from '@/types/general'
 
 interface OffersBannerProps {
   title: string

@@ -4,8 +4,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect } from 'react'
 
-import { OfferInfo } from '@/app/(public)/projekti/page'
 import ArrowRightIcon from '@/components/icons/arrow-right'
+import { OfferInfo } from '@/types/general'
 
 interface ImageGalleryProps {
   images: string[]

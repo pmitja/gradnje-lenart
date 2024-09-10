@@ -1,10 +1,10 @@
-export type NavbarProps = {
-  navItems: NavbarItem[]
-}
-
 export type NavbarItem = {
   text: string
   link: string
+}
+
+export type NavbarProps = {
+  navItems: NavbarItem[]
 }
 
 export type ImageType = {
@@ -104,4 +104,11 @@ export type Apartment = {
   }[]
   files?: string[]
   isExposed: boolean
+}
+
+export interface OfferInfo {
+  title: string
+  description: string
+  linkLabel?: string
+  linkHref: string
 }

@@ -14,10 +14,14 @@ export default function Home() {
     <>
       <Hero />
       <ImageLeftTextRight
-        image={{ src: '/trio-cards.webp', alt: 'Hero' }}
-        mobileImage={{ src: '/gradnje-plus-logo-card.webp', alt: 'Hero' }}
+        image={{
+          src: '/trio-cards.webp', alt: 'Hero',
+        }}
+        mobileImage={{
+          src: '/gradnje-plus-logo-card.webp', alt: 'Hero',
+        }}
         heading='Nepremičnine niso zgolj nakup. So nepogrešljiv del vsakega izmed nas.'
-        text='Odkrijte edinstvene nepremičnine z našimi storitvami. Gradnje 
+        text='Odkrijte edinstvene nepremičnine z našimi storitvami. Gradnje
         Plus vam pomagajo pri svetovanju, prodaji in odkup nepremičnin.'
       />
       <Partners />
@@ -29,7 +33,9 @@ export default function Home() {
           'Naj bo vaš dom oaza dobrega počutja. Znižaj stres, povečaj zadovoljstvo in izboljšaj spanec s pozitivnim in udobnim okoljem.'
         }
         title='Najdimo vam dom, o katerem sanjate. Na vas je, da spišete najlepšo zgodbo.'
-        image={{ src: '/apartment-image.webp', alt: 'Image' }}
+        image={{
+          src: '/apartment-image.webp', alt: 'Image',
+        }}
       />
       <Testimonials />
       <Cta />

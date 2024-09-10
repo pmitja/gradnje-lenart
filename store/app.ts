@@ -17,18 +17,20 @@ interface AppStoreState {
 export const useAppStore = create<AppStoreState>((set) => ({
   projectFilters: {
     location: 'all',
-    type: 'all'
+    type: 'all',
   },
-  updateProjectFilters: (filter) =>
-    set({
-      projectFilters: {
-        ...filter
-      }
-    }),
+  updateProjectFilters: (filter) => set({
+    projectFilters: {
+      ...filter,
+    },
+  }),
   currentProjects: [],
-  updateCurrentProjects: (projects) =>
-    set({
-      currentProjects: projects
-    }),
-  resetFilters: () => set({ projectFilters: { location: 'all', type: 'all' } })
+  updateCurrentProjects: (projects) => set({
+    currentProjects: projects,
+  }),
+  resetFilters: () => set({
+    projectFilters: {
+      location: 'all', type: 'all',
+    },
+  }),
 }))

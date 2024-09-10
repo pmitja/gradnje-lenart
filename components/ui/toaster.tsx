@@ -1,13 +1,11 @@
 'use client'
 
-import {
-  Toast,
+import { Toast,
   ToastClose,
   ToastDescription,
   ToastProvider,
   ToastTitle,
-  ToastViewport
-} from '@/components/ui/toast'
+  ToastViewport } from '@/components/ui/toast'
 import { useToast } from '@/components/ui/use-toast'
 
 export function Toaster() {
@@ -15,8 +13,7 @@ export function Toaster() {
 
   return (
     <ToastProvider>
-      {toasts.map(function ({ id, title, description, action, ...props }) {
-        return (
+      {toasts.map(({ id, title, description, action, ...props }) => (
           <Toast
             key={id}
             {...props}
@@ -28,8 +25,7 @@ export function Toaster() {
             {action}
             <ToastClose />
           </Toast>
-        )
-      })}
+      ))}
       <ToastViewport />
     </ToastProvider>
   )

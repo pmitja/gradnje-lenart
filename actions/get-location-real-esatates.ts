@@ -5,11 +5,11 @@ import { db } from '@/lib/db'
 export const getLocationRealEstates = async (slug: string) => {
   const location = await db.location.findUnique({
     where: {
-      slug: slug
+      slug,
     },
     include: {
-      realEstates: true
-    }
+      realEstates: true,
+    },
   })
 
   return location

@@ -8,7 +8,9 @@ export const publicRoutes = [
   '/auth',
   '/auth/new-verification',
   '/api/uploadthing?slug=imageUploader',
-  '/projekti'
+  '/projekti',
+  '/projekt/lenart-v-slovenskih-goricah',
+  '/projekt/lenart-v-slov-goricah',
 ]
 
 /**
@@ -21,7 +23,7 @@ export const authRoutes = [
   '/auth/register',
   '/auth/error',
   '/auth/reset-password',
-  '/auth/new-password'
+  '/auth/new-password',
 ]
 
 /**

@@ -1,5 +1,8 @@
-import { cn } from '@/lib/utils'
 import Image from 'next/image'
+import React from 'react'
+
+import { cn } from '@/lib/utils'
+
 import ButtonWithIcon from '../common/button-with-icon'
 
 interface ImageLeftTextRightProps extends React.HTMLAttributes<HTMLElement> {
@@ -20,13 +23,12 @@ const ImageLeftTextRight = ({
   mobileImage,
   heading,
   text,
-  className
-}: ImageLeftTextRightProps) => {
-  return (
+  className,
+}: ImageLeftTextRightProps) => (
     <section
       className={cn(
         'grid grid-cols-1 items-center gap-10 lg:grid-cols-[1fr_1fr] lg:gap-16',
-        className
+        className,
       )}
     >
       <div className='flex w-full items-center justify-center'>
@@ -60,7 +62,6 @@ const ImageLeftTextRight = ({
         </ButtonWithIcon>
       </div>
     </section>
-  )
-}
+)
 
 export default ImageLeftTextRight

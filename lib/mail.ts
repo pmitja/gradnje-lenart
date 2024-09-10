@@ -9,7 +9,7 @@ export const sendVerificationEmail = async (email: string, token: string) => {
     from: 'onboarding@resend.dev',
     to: email,
     subject: 'Verify your email address',
-    html: `<p>Click <a href="${confirmationUrl}">here</a> to verify your email address.</p>`
+    html: `<p>Click <a href="${confirmationUrl}">here</a> to verify your email address.</p>`,
   })
 }
 
@@ -20,6 +20,6 @@ export const sendPasswordResetEmail = async (email: string, token: string) => {
     from: 'onboarding@resend.dev',
     to: email,
     subject: 'Reset your password',
-    html: `<p>Click <a href="${resetPasswordUrl}">here</a> to reset your password.</p>`
+    html: `<p>Click <a href="${resetPasswordUrl}">here</a> to reset your password.</p>`,
   })
 }

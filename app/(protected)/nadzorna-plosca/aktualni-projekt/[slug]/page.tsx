@@ -63,7 +63,6 @@ const AktualniProjektPage = ({ params: { slug } }: { params: { slug: string } })
   const { setValue } = form
 
   const saveFormValues = (values: Apartment) => {
-    console.log(values)
     setApartments((prevApartments) => [...prevApartments, values])
   }
 
@@ -75,7 +74,6 @@ const AktualniProjektPage = ({ params: { slug } }: { params: { slug: string } })
     setError('')
     setSuccess('')
     startTransition(() => {
-      console.log(values)
       updateLocationRealEstate(values).then((result) => {
         setError(result.error)
         setSuccess(result.success)

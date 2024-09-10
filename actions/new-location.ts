@@ -1,27 +1,34 @@
 'use server'
 
-import { mainFormSchema } from '@/schemas'
+import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
+
 import { db } from '@/lib/db'
 import { generateSlug, generateSlugWithNumber } from '@/lib/helpers'
-import { revalidatePath } from 'next/cache'
+import { mainFormSchema } from '@/schemas'
 
 export const newLocation = async (values: z.infer<typeof mainFormSchema>) => {
   const validatedFields = mainFormSchema.safeParse(values)
 
   if (!validatedFields.success) {
-    return { error: 'Invalid fields' }
+    return {
+      error: 'Invalid fields',
+    }
   }
 
-  const { name, description, city, address, apartments, images, type, isActive } =
-    validatedFields.data
+  const {
+    name, description, city, address,
+    apartments, images, type, isActive,
+  } = validatedFields.data
 
   let slug = `${generateSlug(city)}`
 
   console.log(slug)
 
   const isCityTaken = await db.location.findMany({
-    where: { city: city }
+    where: {
+      city,
+    },
   })
 
   console.log(isCityTaken, isCityTaken.at(-1)?.id)
@@ -32,15 +39,15 @@ export const newLocation = async (values: z.infer<typeof mainFormSchema>) => {
 
   const location = await db.location.create({
     data: {
-      name: name,
-      description: description,
-      city: city,
-      address: address,
-      slug: slug,
-      images: images,
-      type: type,
-      isActive: isActive
-    }
+      name,
+      description,
+      city,
+      address,
+      slug,
+      images,
+      type,
+      isActive,
+    },
   })
 
   console.log('Location created with ID:', location.id, 'and type:', typeof location.id)
@@ -50,9 +57,9 @@ export const newLocation = async (values: z.infer<typeof mainFormSchema>) => {
 
   // Create the RealEstate entries associated with the created Location
   await Promise.all(
-    apartments.map((apartment, index) => {
+    apartments.map((apartment) => {
       console.log(
-        `Creating RealEstate with locationId: ${locationId} and type: ${typeof locationId}`
+        `Creating RealEstate with locationId: ${locationId} and type: ${typeof locationId}`,
       )
 
       return db.realEstate.create({
@@ -74,19 +81,21 @@ export const newLocation = async (values: z.infer<typeof mainFormSchema>) => {
           parkingSpaces: apartment.parkingSpaces,
           technicalData: apartment.technicalData
             ? {
-                create: apartment.technicalData.map((td) => ({
-                  id: td.id,
-                  text: td.text
-                }))
-              }
+              create: apartment.technicalData.map((td) => ({
+                id: td.id,
+                text: td.text,
+              })),
+            }
             : undefined,
-          files: apartment.files
-        }
+          files: apartment.files,
+        },
       })
-    })
+    }),
   )
 
   revalidatePath('nadzorna-plosca')
 
-  return { success: 'Nova lokacija je dodana!' }
+  return {
+    success: 'Nova lokacija je dodana!',
+  }
 }

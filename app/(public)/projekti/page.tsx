@@ -1,14 +1,14 @@
 import ProjectFilterHero from '@/components/common/hero/project-filter-hero'
 import ProccesOfBuying from '@/components/common/procces-of-buying'
 import Faq from '@/components/layouts/sections/faq'
-import ProjectsSection from '@/components/layouts/sections/projects-section'
 import OffersBanner from '@/components/layouts/sections/offers-banner'
+import ProjectsSection from '@/components/layouts/sections/projects-section'
 
 const OffersBannerImages = [
   '/stanovanje.jpg',
   '/stanovanje2.jpg',
   '/stanovanje3.jpg',
-  '/stanovanje4.jpg'
+  '/stanovanje4.jpg',
 ]
 
 export interface OfferInfo {
@@ -21,11 +21,10 @@ export interface OfferInfo {
 const offersInfo: OfferInfo = {
   title: '2 sobno stanovanje',
   description: 'Velik skupni prostor s kuhinjo, spalnica, otroška soba in kopalnica.',
-  linkHref: '#'
+  linkHref: '#',
 }
 
-const ActualProjectPage = () => {
-  return (
+const ActualProjectPage = () => (
     <>
       <ProjectFilterHero />
       <ProjectsSection />
@@ -38,7 +37,6 @@ const ActualProjectPage = () => {
       />
       <Faq />
     </>
-  )
-}
+)
 
 export default ActualProjectPage

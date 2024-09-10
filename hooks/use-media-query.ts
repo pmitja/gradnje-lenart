@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 export function useMediaQuery(query: string) {
-  const [value, setValue] = React.useState(false)
+  const [ value, setValue ] = React.useState(false)
 
   React.useEffect(() => {
     function onChange(event: MediaQueryListEvent) {
@@ -14,7 +14,7 @@ export function useMediaQuery(query: string) {
     setValue(result.matches)
 
     return () => result.removeEventListener('change', onChange)
-  }, [query])
+  }, [ query ])
 
   return value
 }

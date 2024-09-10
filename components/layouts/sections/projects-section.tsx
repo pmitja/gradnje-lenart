@@ -1,6 +1,9 @@
 'use client'
 
-import { getAllLocations } from '@/actions/get-all-locations'
+import Image from 'next/image'
+import Link from 'next/link'
+import { useEffect, useTransition } from 'react'
+
 import { getLocationsByCity } from '@/actions/get-locations-by-city'
 import ButtonWithIcon from '@/components/common/button-with-icon'
 import NoResultsBanner from '@/components/common/no-results-banner'
@@ -9,9 +12,42 @@ import CloseIcon from '@/components/icons/close'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { useAppStore } from '@/store/app'
-import Image from 'next/image'
-import Link from 'next/link'
-import { useEffect, useTransition } from 'react'
+
+const ProjectElement = ({
+  title,
+  link,
+  images,
+  description,
+}: {
+  title: string
+  link: string
+  images?: string[]
+  description: string
+}) => (
+  <div className='row-span-3 flex flex-col rounded-lg bg-[#AEA490]/30 shadow-md md:px-8'>
+    <Image
+      className='mx-auto max-h-[50%] w-full object-cover md:ml-0'
+      width={733}
+      height={500}
+      src={images && images[0] ? `https://utfs.io/f/${images[0]}` : '/apartment-image.webp'}
+      alt='Image'
+    />
+    <div className='flex h-full flex-col place-content-start gap-4 p-4 md:justify-between'>
+      <h3 className='text-start text-3xl font-bold text-primary-400 md:text-2xl lg:text-4xl'>
+        {title}
+      </h3>
+      <p className='text-sm lg:text-base'>{description}</p>
+      <Link href={`projekt/${link}`}>
+        <ButtonWithIcon
+          variant='primary'
+          className='max-w-fit px-6 py-4 text-xl drop-shadow-primary-button transition hover:translate-y-1'
+        >
+          Pojdi na projekt
+        </ButtonWithIcon>
+      </Link>
+    </div>
+  </div>
+)
 
 const ProjectsSection = () => {
   const {
@@ -19,15 +55,17 @@ const ProjectsSection = () => {
     currentProjects,
     updateCurrentProjects,
     updateProjectFilters,
-    resetFilters
+    resetFilters,
   } = useAppStore()
-  const [isPending, startTransition] = useTransition()
+
+  const [ isPending, startTransition ] = useTransition()
 
   const handleFilterRemove = (filter: string) => {
     const newFilters = {
       location: projectFilters.location === filter ? 'all' : projectFilters.location,
-      type: projectFilters.type === filter ? 'all' : projectFilters.type
+      type: projectFilters.type === filter ? 'all' : projectFilters.type,
     }
+
     updateProjectFilters(newFilters)
     startTransition(async () => {
       getLocationsByCity(newFilters).then((projects) => {
@@ -50,7 +88,7 @@ const ProjectsSection = () => {
         }
       })
     })
-  }, [projectFilters, startTransition, updateCurrentProjects])
+  }, [ projectFilters, startTransition, updateCurrentProjects ])
 
   return (
     <section className='flex flex-col gap-3 lg:gap-5'>
@@ -91,7 +129,7 @@ const ProjectsSection = () => {
           )}
           {!isPending && (
             <div className='mt-10 grid grid-cols-1 gap-10 text-center sm:mx-auto sm:max-w-sm md:mt-20 md:max-w-full md:grid-cols-2 md:text-left'>
-              {currentProjects.map((project, index) => (
+              {currentProjects.map((project) => (
                 <ProjectElement
                   key={project.id}
                   title={project.name}
@@ -113,39 +151,3 @@ const ProjectsSection = () => {
 }
 
 export default ProjectsSection
-
-const ProjectElement = ({
-  title,
-  link,
-  images,
-  description
-}: {
-  title: string
-  link: string
-  images?: string[]
-  description: string
-}) => (
-  <div className='row-span-3 flex flex-col rounded-lg bg-[#AEA490]/30 shadow-md md:px-8'>
-    <Image
-      className='h mx-auto max-h-[50%] w-full object-cover md:ml-0'
-      width={733}
-      height={500}
-      src={images && images[0] ? `https://utfs.io/f/${images[0]}` : '/apartment-image.webp'}
-      alt='Image'
-    />
-    <div className='flex h-full flex-col place-content-start gap-4 p-4 md:justify-between'>
-      <h3 className='text-start text-3xl font-bold text-primary-400 md:text-2xl lg:text-4xl'>
-        {title}
-      </h3>
-      <p className='text-sm lg:text-base'>{description}</p>
-      <Link href={`projekt/${link}`}>
-        <ButtonWithIcon
-          variant='primary'
-          className='max-w-fit px-6 py-4 text-xl drop-shadow-primary-button transition hover:translate-y-1'
-        >
-          Pojdi na projekt
-        </ButtonWithIcon>
-      </Link>
-    </div>
-  </div>
-)

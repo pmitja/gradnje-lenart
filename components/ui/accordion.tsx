@@ -1,8 +1,8 @@
 'use client'
 
-import * as React from 'react'
 import * as AccordionPrimitive from '@radix-ui/react-accordion'
-import { CirclePlus, CircleMinus } from 'lucide-react'
+import { CircleMinus, CirclePlus } from 'lucide-react'
+import * as React from 'react'
 
 import { cn } from '@/lib/utils'
 
@@ -18,6 +18,7 @@ const AccordionItem = React.forwardRef<
     {...props}
   />
 ))
+
 AccordionItem.displayName = 'AccordionItem'
 
 const AccordionTrigger = React.forwardRef<
@@ -29,16 +30,17 @@ const AccordionTrigger = React.forwardRef<
       ref={ref}
       className={cn(
         'group flex flex-1 items-center justify-between px-3 py-4 text-start font-medium transition-all data-[state=open]:rounded-t-lg data-[state=open]:border-none data-[state=open]:bg-[#AEA490]/30 data-[state=open]:font-bold',
-        className
+        className,
       )}
       {...props}
     >
       {children}
-      <CirclePlus className='h-6 w-6 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden' />
-      <CircleMinus className='h-6 w-6 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden' />
+      <CirclePlus className='size-6 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden' />
+      <CircleMinus className='size-6 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden' />
     </AccordionPrimitive.Trigger>
   </AccordionPrimitive.Header>
 ))
+
 AccordionTrigger.displayName = AccordionPrimitive.Trigger.displayName
 
 const AccordionContent = React.forwardRef<
@@ -49,13 +51,16 @@ const AccordionContent = React.forwardRef<
     ref={ref}
     className={cn(
       'overflow-hidden px-3 pt-3 text-sm transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down data-[state=open]:rounded-b-lg data-[state=open]:bg-[#AEA490]/30',
-      className
+      className,
     )}
     {...props}
   >
     <div className='pb-4 pt-0'>{children}</div>
   </AccordionPrimitive.Content>
 ))
+
 AccordionContent.displayName = AccordionPrimitive.Content.displayName
 
-export { Accordion, AccordionItem, AccordionTrigger, AccordionContent }
+export {
+  Accordion, AccordionContent, AccordionItem, AccordionTrigger,
+}

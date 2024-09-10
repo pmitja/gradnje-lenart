@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { cn } from '@/lib/utils'
 
 interface SectionWithTitleInMiddleProps extends React.HTMLAttributes<HTMLElement> {
@@ -10,8 +12,7 @@ const SectionWithTitleInMiddle = ({
   children,
   className,
   ...props
-}: SectionWithTitleInMiddleProps) => {
-  return (
+}: SectionWithTitleInMiddleProps) => (
     <section
       className={cn('flex w-full flex-col gap-16 lg:gap-20', className)}
       {...props}
@@ -21,7 +22,6 @@ const SectionWithTitleInMiddle = ({
       </h2>
       <div>{children}</div>
     </section>
-  )
-}
+)
 
 export default SectionWithTitleInMiddle

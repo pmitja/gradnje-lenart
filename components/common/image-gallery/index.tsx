@@ -1,10 +1,11 @@
 'use client'
 
-import { useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import ArrowRightIcon from '@/components/icons/arrow-right'
+import { useEffect } from 'react'
+
 import { OfferInfo } from '@/app/(public)/projekti/page'
+import ArrowRightIcon from '@/components/icons/arrow-right'
 
 interface ImageGalleryProps {
   images: string[]
@@ -16,7 +17,7 @@ const ImageGallery = ({ images, offerInfo }: ImageGalleryProps) => {
     if (images.length < 3 || images.length > 4) {
       console.error('OffersBanner component requires exactly 3 or 4 images.')
     }
-  }, [images])
+  }, [ images ])
 
   const validImages = images.slice(0, 4)
 
@@ -34,11 +35,11 @@ const ImageGallery = ({ images, offerInfo }: ImageGalleryProps) => {
           sizes='(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 33vw'
           className='object-cover'
         />
-        <div className='bg-image-gradient absolute inset-0' />
-        <div className='absolute bottom-5 left-8 right-8 flex flex-col gap-2'>
+        <div className='absolute inset-0 bg-image-gradient' />
+        <div className='absolute inset-x-8 bottom-5 flex flex-col gap-2'>
           <h4 className='text-xl font-bold text-body-50 md:text-2xl'>{offerInfo.title}</h4>
           <p className='text-lg text-body-75 md:text-xl'>{offerInfo.description}</p>
-          <div className='inline-flex w-fit items-center gap-2 border-b-[1px] border-primary-100 text-lg md:text-xl'>
+          <div className='inline-flex w-fit items-center gap-2 border-b border-primary-100 text-lg md:text-xl'>
             <Link
               href={offerInfo.linkHref}
               target='_blank'

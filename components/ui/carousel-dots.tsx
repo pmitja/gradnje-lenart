@@ -1,13 +1,19 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable unused-imports/no-unused-vars */
 import React from 'react'
+
 import { Button } from './button'
 import { useCarousel } from './carousel'
 
 export const CarouselDots = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   (props, ref) => {
     const { api } = useCarousel()
-    const [updateState, setUpdateState] = React.useState(false)
+
+    const [ updateState, setUpdateState ] = React.useState(false)
+
     const toggleUpdateState = React.useCallback(() => setUpdateState((prevState) => !prevState), [])
 
+    // eslint-disable-next-line consistent-return
     React.useEffect(() => {
       if (api) {
         api.on('select', toggleUpdateState)
@@ -18,9 +24,10 @@ export const CarouselDots = React.forwardRef<HTMLDivElement, React.HTMLAttribute
           api.off('reInit', toggleUpdateState)
         }
       }
-    }, [api, toggleUpdateState])
+    }, [ api, toggleUpdateState ])
 
     const numberOfSlides = api?.scrollSnapList().length || 0
+
     const currentSlide = api?.selectedScrollSnap() || 0
 
     if (numberOfSlides > 1) {
@@ -29,12 +36,14 @@ export const CarouselDots = React.forwardRef<HTMLDivElement, React.HTMLAttribute
           ref={ref}
           className={`flex justify-center ${props.className}`}
         >
-          {Array.from({ length: numberOfSlides }, (_, i) => (
+          {Array.from({
+            length: numberOfSlides,
+          }, (_, i) => (
             <Button
               key={i}
-              className={`mx-1 h-3 w-3 rounded-full p-0 ${
+              className={`mx-1 size-3 rounded-full p-0 ${
                 i === currentSlide
-                  ? 'scale-125 transform bg-primary-200 hover:bg-primary-200'
+                  ? 'scale-125 bg-primary-200 hover:bg-primary-200'
                   : 'bg-[#D9D9D9] hover:bg-gray-300'
               }`}
               aria-label={`Go to slide ${i + 1}`}
@@ -43,9 +52,9 @@ export const CarouselDots = React.forwardRef<HTMLDivElement, React.HTMLAttribute
           ))}
         </div>
       )
-    } else {
-      return <></>
     }
-  }
+    return <></>
+  },
 )
+
 CarouselDots.displayName = 'CarouselDots'

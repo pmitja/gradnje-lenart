@@ -1,15 +1,18 @@
 'use server'
 
+import { z } from 'zod'
+
 import { db } from '@/lib/db'
 import { projectFilterSchema } from '@/validation-schemas/project-filters-schema'
-import { z } from 'zod'
 
 export const getLocationsByCity = async (values: z.infer<typeof projectFilterSchema>) => {
   try {
     const validatedFields = projectFilterSchema.safeParse(values)
 
     if (!validatedFields.success) {
-      return { error: 'Invalid fields' }
+      return {
+        error: 'Invalid fields',
+      }
     }
 
     const { location, type } = values
@@ -24,11 +27,11 @@ export const getLocationsByCity = async (values: z.infer<typeof projectFilterSch
     if (location === 'all' && !type) {
       locations = await db.location.findMany()
       return locations
-    } else if (location === 'all' && type) {
+    } if (location === 'all' && type) {
       locations = await db.location.findMany({
         where: {
-          type: type
-        }
+          type,
+        },
       })
       return locations
     }
@@ -36,15 +39,15 @@ export const getLocationsByCity = async (values: z.infer<typeof projectFilterSch
     if (type === 'all' && location) {
       locations = await db.location.findMany({
         where: {
-          city: location
-        }
+          city: location,
+        },
       })
       return locations
-    } else if (type === 'all' && location) {
+    } if (type === 'all' && location) {
       locations = await db.location.findMany({
         where: {
-          city: location
-        }
+          city: location,
+        },
       })
       return locations
     }
@@ -52,28 +55,27 @@ export const getLocationsByCity = async (values: z.infer<typeof projectFilterSch
     if (type) {
       locations = await db.location.findMany({
         where: {
-          type: type
-        }
+          type,
+        },
       })
       return locations
-    } else if (location) {
-      locations = await db.location.findMany({
-        where: {
-          city: location
-        }
-      })
-      return locations
-    } else if (location && type) {
+    } if (location) {
       locations = await db.location.findMany({
         where: {
           city: location,
-          type: type
-        }
+        },
       })
       return locations
-    } else {
-      locations = await db.location.findMany()
+    } if (location && type) {
+      locations = await db.location.findMany({
+        where: {
+          city: location,
+          type,
+        },
+      })
+      return locations
     }
+    locations = await db.location.findMany()
 
     if (locations.length === 0) {
       return null

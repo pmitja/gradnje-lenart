@@ -1,26 +1,32 @@
 'use server'
 
+import { z } from 'zod'
+
 import { db } from '@/lib/db'
 import { generateSlugWithNumber } from '@/lib/helpers'
 import { updateSchema } from '@/schemas'
-import { z } from 'zod'
 
 export const updateLocationRealEstate = async (values: z.infer<typeof updateSchema>) => {
   const validatedFields = updateSchema.safeParse(values)
+
   console.log(validatedFields)
   if (!validatedFields.success) {
-    return { error: 'Invalid fields' }
+    return {
+      error: 'Invalid fields',
+    }
   }
   const { apartments, locationSlug } = values
 
   const location = await db.location.findUnique({
     where: {
-      slug: locationSlug
-    }
+      slug: locationSlug,
+    },
   })
 
   if (!location) {
-    return { error: 'Location not found' }
+    return {
+      error: 'Location not found',
+    }
   }
 
   try {
@@ -28,7 +34,9 @@ export const updateLocationRealEstate = async (values: z.infer<typeof updateSche
       apartments.map(async (apartment) => {
         if (apartment.id) {
           await db.realEstate.update({
-            where: { id: apartment.id },
+            where: {
+              id: apartment.id,
+            },
             data: {
               name: apartment.name,
               number: apartment.number,
@@ -45,12 +53,12 @@ export const updateLocationRealEstate = async (values: z.infer<typeof updateSche
               parkingSpaces: apartment.parkingSpaces,
               technicalData: apartment.technicalData
                 ? apartment.technicalData.map((td) => ({
-                     id: td.id, text: td.text
-                    }))
+                  id: td.id, text: td.text,
+                }))
                 : undefined,
               files: apartment.files,
-              isExposed: apartment.isExposed
-            }
+              isExposed: apartment.isExposed,
+            },
           })
         } else {
           await db.realEstate.create({
@@ -72,20 +80,24 @@ export const updateLocationRealEstate = async (values: z.infer<typeof updateSche
               parkingSpaces: apartment.parkingSpaces,
               technicalData: apartment.technicalData
                 ? apartment.technicalData.map((td) => ({
-                      id: td.id,
-                      text: td.text
-                    }))
+                  id: td.id,
+                  text: td.text,
+                }))
                 : undefined,
               files: apartment.files,
-              isExposed: apartment.isExposed
-            }
+              isExposed: apartment.isExposed,
+            },
           })
         }
-      })
+      }),
     )
-    return { success: 'Lokacija je posodobljena!' }
+    return {
+      success: 'Lokacija je posodobljena!',
+    }
   } catch (error) {
     console.error('Error updating/creating apartments:', error)
-    return { error: 'An error occurred while updating/creating apartments' }
+    return {
+      error: 'An error occurred while updating/creating apartments',
+    }
   }
 }

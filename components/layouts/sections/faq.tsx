@@ -1,13 +1,10 @@
 import ButtonWithIcon from '@/components/common/button-with-icon'
-import {
-  Accordion,
+import { Accordion,
   AccordionContent,
   AccordionItem,
-  AccordionTrigger
-} from '@/components/ui/accordion'
+  AccordionTrigger } from '@/components/ui/accordion'
 
-const Faq = () => {
-  return (
+const Faq = () => (
     <section className='mb-16 flex flex-col justify-between gap-[72px] md:mb-20 lg:mb-[140px] lg:flex-row lg:gap-8'>
       <div className='flex basis-1/3 flex-col gap-6'>
         <h2 className='text-4xl font-bold leading-[120%] text-secondary-400 md:text-[51px] md:leading-[57px] lg:leading-[76.5px]'>
@@ -99,7 +96,6 @@ const Faq = () => {
         </AccordionItem>
       </Accordion>
     </section>
-  )
-}
+)
 
 export default Faq

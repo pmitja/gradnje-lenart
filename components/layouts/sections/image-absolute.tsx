@@ -1,7 +1,9 @@
-import ButtonWithIcon from '@/components/common/button-with-icon'
-import { cn } from '@/lib/utils'
 import { HomeIcon } from 'lucide-react'
 import Image from 'next/image'
+import React from 'react'
+
+import ButtonWithIcon from '@/components/common/button-with-icon'
+import { cn } from '@/lib/utils'
 
 interface SectionWithImageAbsoluteProps extends React.HTMLAttributes<HTMLElement> {
   title: string
@@ -18,8 +20,7 @@ const SectionWithImageAbsolute = ({
   image,
   className,
   ...props
-}: SectionWithImageAbsoluteProps) => {
-  return (
+}: SectionWithImageAbsoluteProps) => (
     <section
       className={cn('relative flex flex-col-reverse gap-5', className)}
       {...props}
@@ -43,7 +44,7 @@ const SectionWithImageAbsolute = ({
           Vstopite v stik
         </ButtonWithIcon>
       </div>
-      <div className='absolute bottom-0 flex w-full grow-0 flex-row items-center justify-center gap-4 rounded-tl-2xl rounded-tr-2xl bg-body-75 md:right-0 md:flex md:max-w-[330px] md:rounded-tr-none md:p-2 lg:p-3'>
+      <div className='absolute bottom-0 flex w-full grow-0 flex-row items-center justify-center gap-4 rounded-t-2xl bg-body-75 md:right-0 md:flex md:max-w-[330px] md:rounded-tr-none md:p-2 lg:p-3'>
         <HomeIcon
           size={64}
           className='max-h-8 max-w-8 md:min-h-12 md:min-w-12 lg:min-h-16 lg:min-w-16'
@@ -53,7 +54,6 @@ const SectionWithImageAbsolute = ({
         </p>
       </div>
     </section>
-  )
-}
+)
 
 export default SectionWithImageAbsolute

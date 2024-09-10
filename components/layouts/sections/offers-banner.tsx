@@ -1,6 +1,12 @@
-import { OfferInfo } from '@/app/(public)/projekti/page'
 import ButtonWithIcon from '@/components/common/button-with-icon'
 import ImageGallery from '@/components/common/image-gallery'
+
+export interface OfferInfo {
+  title: string
+  description: string
+  linkLabel?: string
+  linkHref: string
+}
 
 interface OffersBannerProps {
   title: string
@@ -15,9 +21,8 @@ const OffersBanner = ({
   description,
   buttonLabel,
   images,
-  offerInfo
-}: OffersBannerProps) => {
-  return (
+  offerInfo,
+}: OffersBannerProps) => (
     <section className='mb-16 flex flex-col gap-8'>
       <div className='flex w-full flex-row justify-between'>
         <h3 className='text-4xl font-bold text-secondary-400'>{title}</h3>
@@ -36,7 +41,6 @@ const OffersBanner = ({
         offerInfo={offerInfo}
       />
     </section>
-  )
-}
+)
 
 export default OffersBanner

@@ -1,25 +1,26 @@
 import { NextResponse } from 'next/server'
-
 import NextAuth from 'next-auth'
-import authConfig from '@/auth-config'
 
-import {
-  DEFAULT_LOGIN_REDIRECT,
-  apiAuthPrefix,
+import authConfig from '@/auth-config'
+import { apiAuthPrefix,
   apiUploadThingPrefix,
   authRoutes,
-  publicRoutes
-} from '@/routes'
+  DEFAULT_LOGIN_REDIRECT,
+  publicRoutes } from '@/routes'
 
 const { auth } = NextAuth(authConfig)
 
 export default auth((req) => {
   const { nextUrl } = req
+
   const isLoggedIn = !!req.auth
 
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix)
+
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname)
+
   const isAuthRoute = authRoutes.includes(nextUrl.pathname)
+
   const isUploadThingRoute = nextUrl.pathname.startsWith(apiUploadThingPrefix)
 
   if (isUploadThingRoute) {
@@ -38,7 +39,9 @@ export default auth((req) => {
   }
 
   if (!isLoggedIn && !isPublicRoute) {
+    console.log('here', nextUrl)
     let callbackUrl = nextUrl.pathname
+
     if (nextUrl.search) {
       callbackUrl += nextUrl.search
     }
@@ -52,5 +55,5 @@ export default auth((req) => {
 })
 
 export const config = {
-  matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/', '/(api|trpc)(.*)']
+  matcher: [ '/((?!.+\\.[\\w]+$|_next).*)', '/', '/(api|trpc)(.*)' ],
 }

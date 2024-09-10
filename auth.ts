@@ -1,21 +1,27 @@
-import NextAuth from 'next-auth'
-import authConfig from '@/auth-config'
 import { PrismaAdapter } from '@auth/prisma-adapter'
-import { db } from './lib/db'
+import NextAuth from 'next-auth'
+
+import authConfig from '@/auth-config'
 import { getUserById } from '@/data/user'
+
+import { db } from './lib/db'
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   pages: {
     signIn: '/auth/login',
-    error: '/auth/error'
+    error: '/auth/error',
   },
   events: {
     async linkAccount({ user }) {
       await db.user.update({
-        where: { id: user.id },
-        data: { emailVerified: new Date() }
+        where: {
+          id: user.id,
+        },
+        data: {
+          emailVerified: new Date(),
+        },
       })
-    }
+    },
   },
   callbacks: {
     async signIn({ user, account }) {
@@ -52,11 +58,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       }
 
       return session
-    }
+    },
   },
   adapter: PrismaAdapter(db),
-  session: { strategy: 'jwt' },
+  session: {
+    strategy: 'jwt',
+  },
   secret: process.env.AUTH_SECRET,
   trustHost: true,
-  ...authConfig
+  ...authConfig,
 })

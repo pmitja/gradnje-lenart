@@ -1,17 +1,22 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable unused-imports/no-unused-vars */
+
 'use client'
 
-import CardWithIcon from '@/components/common/cards/with-icon'
-import { Button } from '@/components/ui/button'
-import { Carousel, CarouselApi, CarouselContent, CarouselItem } from '@/components/ui/carousel'
-import { CarouselDots } from '@/components/ui/carousel-dots'
-import { useMediaQuery } from '@/hooks/use-media-query'
 import Autoplay from 'embla-carousel-autoplay'
 import React from 'react'
 
+import CardWithIcon from '@/components/common/cards/with-icon'
+import { Carousel, CarouselApi, CarouselContent, CarouselItem } from '@/components/ui/carousel'
+import { CarouselDots } from '@/components/ui/carousel-dots'
+import { useMediaQuery } from '@/hooks/use-media-query'
+
 const FeatureCards = () => {
-  const [api, setApi] = React.useState<CarouselApi>()
-  const [current, setCurrent] = React.useState(0)
-  const [count, setCount] = React.useState(8)
+  const [ api, setApi ] = React.useState<CarouselApi>()
+
+  const [ current, setCurrent ] = React.useState(0)
+
+  const [ count, setCount ] = React.useState(8)
 
   const isDesktop = useMediaQuery('(min-width: 768px)')
 
@@ -26,7 +31,7 @@ const FeatureCards = () => {
     api.on('select', () => {
       setCurrent(api.selectedScrollSnap() + 1)
     })
-  }, [api])
+  }, [ api ])
 
   if (isDesktop) {
     return (
@@ -75,8 +80,8 @@ const FeatureCards = () => {
     <Carousel
       plugins={[
         Autoplay({
-          delay: 2000
-        })
+          delay: 2000,
+        }),
       ]}
       setApi={setApi}
     >

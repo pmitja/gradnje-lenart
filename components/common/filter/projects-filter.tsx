@@ -1,32 +1,29 @@
 'use client'
 
-import { getAllLocations } from '@/actions/get-all-locations'
-import { Button } from '@/components/ui/button'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui/select'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Location } from '@prisma/client'
 import { Search } from 'lucide-react'
 import { useEffect, useState, useTransition } from 'react'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import {
-  Form,
+
+import { getAllLocations } from '@/actions/get-all-locations'
+import Spinner from '@/components/common/spinner'
+import { Button } from '@/components/ui/button'
+import { Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage
-} from '@/components/ui/form'
+  FormMessage } from '@/components/ui/form'
+import { Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue } from '@/components/ui/select'
 import { useAppStore } from '@/store/app'
-import { projectFilterSchema } from '@/validation-schemas/project-filters-schema'
 import { LocationType } from '@/types/general'
-import Spinner from '@/components/common/spinner'
+import { projectFilterSchema } from '@/validation-schemas/project-filters-schema'
 
 const ProjectsFilter = () => {
   const { projectFilters, updateProjectFilters } = useAppStore()
@@ -35,16 +32,18 @@ const ProjectsFilter = () => {
     resolver: zodResolver(projectFilterSchema),
     defaultValues: {
       location: 'all',
-      type: 'all'
-    }
+      type: 'all',
+    },
   })
 
-  const [isPending, startTransition] = useTransition()
-  const [location, setLocation] = useState<Location[] | null>(null)
+  const [ isPending, startTransition ] = useTransition()
+
+  const [ location, setLocation ] = useState<Location[] | null>(null)
 
   useEffect(() => {
     startTransition(async () => {
       const location = await getAllLocations()
+
       if (location) {
         setLocation(location)
       }
@@ -55,9 +54,9 @@ const ProjectsFilter = () => {
   useEffect(() => {
     form.reset({
       location: projectFilters.location || 'all',
-      type: projectFilters.type || 'all'
+      type: projectFilters.type || 'all',
     })
-  }, [projectFilters, form])
+  }, [ projectFilters, form ])
 
   function onSubmit(values: z.infer<typeof projectFilterSchema>) {
     updateProjectFilters(values)

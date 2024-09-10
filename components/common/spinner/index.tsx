@@ -1,15 +1,14 @@
 import { cn } from '@/lib/utils'
 
-const Spinner = ({ className }: { className?: string }) => {
-  return (
+const Spinner = ({ className }: { className?: string }) => (
     <div
       className={cn(
         'grid min-h-[140px] w-full place-items-center overflow-x-scroll rounded-lg p-6 lg:overflow-visible',
-        className
+        className,
       )}
     >
       <svg
-        className='h-16 w-16 animate-spin text-primary-500/50'
+        className='size-16 animate-spin text-primary-500/50'
         viewBox='0 0 64 64'
         fill='none'
         xmlns='http://www.w3.org/2000/svg'
@@ -33,7 +32,6 @@ const Spinner = ({ className }: { className?: string }) => {
         ></path>
       </svg>
     </div>
-  )
-}
+)
 
 export default Spinner

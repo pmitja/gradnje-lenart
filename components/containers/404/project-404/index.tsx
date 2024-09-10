@@ -1,11 +1,11 @@
-import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
 import { MoveLeft } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 
-const Project404 = ({ className }: { className?: string }) => {
-  return (
+import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
+
+const Project404 = ({ className }: { className?: string }) => (
     <section className={cn('flex min-h-[100dvh] items-center dark:bg-gray-900', className)}>
       <div className='lg:flex lg:items-center lg:gap-12'>
         <div className='wf-ull lg:w-1/2'>
@@ -47,7 +47,6 @@ const Project404 = ({ className }: { className?: string }) => {
         </div>
       </div>
     </section>
-  )
-}
+)
 
 export default Project404

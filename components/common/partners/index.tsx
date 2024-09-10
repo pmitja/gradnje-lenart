@@ -1,18 +1,18 @@
 'use client'
 
-import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
-import Image from 'next/image'
 import Autoplay from 'embla-carousel-autoplay'
+import Image from 'next/image'
 
-const Partners = () => {
-  return (
-    <div className='relative left-1/2 right-1/2 ml-[-50vw] mr-[-50vw] w-[100vw] min-w-[100vw] bg-primary-75'>
+import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
+
+const Partners = () => (
+    <div className='relative inset-x-1/2 mx-[-50vw] w-screen min-w-[100vw] bg-primary-75'>
       <section className='container flex w-full gap-12 overflow-hidden py-8 lg:py-[70px]'>
         <Carousel
           plugins={[
             Autoplay({
-              delay: 3500
-            })
+              delay: 3500,
+            }),
           ]}
         >
           <CarouselContent className='-ml-1'>
@@ -108,7 +108,6 @@ const Partners = () => {
         />
       </section>
     </div>
-  )
-}
+)
 
 export default Partners

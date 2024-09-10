@@ -1,49 +1,53 @@
 'use client'
 
+import { zodResolver } from '@hookform/resolvers/zod'
+import { ToggleGroup } from '@radix-ui/react-toggle-group'
+import { Tag, TagInput } from 'emblor'
+import Image from 'next/image'
+import { useState, useTransition } from 'react'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+
+import { deleteUTFiles } from '@/actions/delete-from-uploadthing'
+import Spinner from '@/components/common/spinner'
+import CloseIcon from '@/components/icons/close'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import {
-  Dialog,
+import { Dialog,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger
-} from '@/components/ui/dialog'
-import { useState, useTransition } from 'react'
-import {
-  Form,
+  DialogTrigger } from '@/components/ui/dialog'
+import { Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage
-} from '@/components/ui/form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
-import { ToggleGroup } from '@radix-ui/react-toggle-group'
-import { ToggleGroupItem } from '@/components/ui/toggle-group'
-import { Apartment, EnergyClass, ExposedType, SpacesType, StatusType } from '@/types/general'
-import { formSchema } from '@/schemas'
-import { UploadButton } from '@/lib/utils/uploadthing'
-import Image from 'next/image'
-import CloseIcon from '@/components/icons/close'
-import { deleteUTFiles } from '@/actions/delete-from-uploadthing'
-import Spinner from '@/components/common/spinner'
+  FormMessage } from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { Tag, TagInput } from 'emblor'
+import { ToggleGroupItem } from '@/components/ui/toggle-group'
+import { UploadButton } from '@/lib/utils/uploadthing'
+import { formSchema } from '@/schemas'
+import { Apartment, EnergyClass, ExposedType, SpacesType, StatusType } from '@/types/general'
 
 const ApartmentForm = ({ saveFormValues }: { saveFormValues: (values: Apartment) => void }) => {
-  const [open, setOpen] = useState(false)
-  const [imagesBeginUploading, setImagesBeginUploading] = useState(false)
-  const [filesBeginUploading, setFilesBeginUploading] = useState(false)
-  const [uploadedImages, setUploadedImages] = useState<string[]>([])
-  const [uploadedFiles, setUploadedFiles] = useState<string[]>([])
-  const [technicalData, setTechnicalData] = useState<Tag[]>([])
-  const [activeTagIndex, setActiveTagIndex] = useState<number | null>(null)
-  const [isPending, startTransition] = useTransition()
+  const [ open, setOpen ] = useState(false)
+
+  const [ imagesBeginUploading, setImagesBeginUploading ] = useState(false)
+
+  const [ filesBeginUploading, setFilesBeginUploading ] = useState(false)
+
+  const [ uploadedImages, setUploadedImages ] = useState<string[]>([])
+
+  const [ uploadedFiles, setUploadedFiles ] = useState<string[]>([])
+
+  const [ technicalData, setTechnicalData ] = useState<Tag[]>([])
+
+  const [ activeTagIndex, setActiveTagIndex ] = useState<number | null>(null)
+
+  const [ isPending, startTransition ] = useTransition()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -63,22 +67,23 @@ const ApartmentForm = ({ saveFormValues }: { saveFormValues: (values: Apartment)
       parkingSpaces: 0,
       technicalData: [],
       files: [],
-      isExposed: false
-    }
+      isExposed: false,
+    },
   })
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
-    console.log('here')
     saveFormValues(values)
     setOpen(false)
   }
 
+  const { setValue } = form
+
   const handleRemoveImage = (image: string) => async () => {
     startTransition(() => {
-      deleteUTFiles([image]).then((res) => {
+      deleteUTFiles([ image ]).then((res) => {
         if (res.success) {
           const filteredImages = uploadedImages.filter((img) => img !== image)
+
           setUploadedImages(filteredImages)
           setValue('images', filteredImages)
         }
@@ -88,17 +93,16 @@ const ApartmentForm = ({ saveFormValues }: { saveFormValues: (values: Apartment)
 
   const handleRemoveFile = (file: string) => async () => {
     startTransition(() => {
-      deleteUTFiles([file]).then((res) => {
+      deleteUTFiles([ file ]).then((res) => {
         if (res.success) {
           const filteredFiles = uploadedFiles.filter((id) => id !== file)
+
           setUploadedFiles(filteredFiles)
           setValue('files', filteredFiles)
         }
       })
     })
   }
-
-  const { setValue } = form
 
   return (
     <Dialog
@@ -381,7 +385,7 @@ const ApartmentForm = ({ saveFormValues }: { saveFormValues: (values: Apartment)
               <FormField
                 control={form.control}
                 name='technicalData'
-                render={({ field }) => (
+                render={() => (
                   <FormItem>
                     <FormLabel>Tehnični podatki</FormLabel>
                     <FormControl>
@@ -394,8 +398,8 @@ const ApartmentForm = ({ saveFormValues }: { saveFormValues: (values: Apartment)
                         styleClasses={{
                           tag: {
                             body: 'bg-primary-300 rounded-md text-white hover:bg-primary-300/50',
-                            closeButton: 'text-white hover:text-white'
-                          }
+                            closeButton: 'text-white hover:text-white',
+                          },
                         }}
                         setTags={(newTags) => {
                           setTechnicalData(newTags)
@@ -501,6 +505,7 @@ const ApartmentForm = ({ saveFormValues }: { saveFormValues: (values: Apartment)
                 onUploadProgress={() => setImagesBeginUploading(true)}
                 onClientUploadComplete={(res) => {
                   const array = res.map((file) => file.key)
+
                   setValue('images', array)
                   setUploadedImages(array)
                   setImagesBeginUploading(false)
@@ -513,12 +518,12 @@ const ApartmentForm = ({ saveFormValues }: { saveFormValues: (values: Apartment)
                 className='ut-button:bg-primary-500 ut-button:ut-readying:bg-primary-500/50'
               />
             </div>
-            {!isPending &&
-              uploadedImages.length > 0 &&
-              uploadedImages.map((image) => (
-                <div className='relative max-w-fit'>
+            {!isPending
+              && uploadedImages.length > 0
+              && uploadedImages.map((image) => (
+                <div className='relative max-w-fit' key={image}>
                   <Image
-                    className='h-[200px] w-[200px] rounded-xl object-cover'
+                    className='size-[200px] rounded-xl object-cover'
                     width={200}
                     height={200}
                     key={image}
@@ -542,6 +547,7 @@ const ApartmentForm = ({ saveFormValues }: { saveFormValues: (values: Apartment)
                 onUploadProgress={() => setFilesBeginUploading(true)}
                 onClientUploadComplete={(res) => {
                   const array = res.map((file) => file.key)
+
                   setValue('files', array)
                   setUploadedFiles(array)
                   setFilesBeginUploading(false)
@@ -554,10 +560,10 @@ const ApartmentForm = ({ saveFormValues }: { saveFormValues: (values: Apartment)
                 className='ut-button:bg-primary-500 ut-button:ut-readying:bg-primary-500/50'
               />
             </div>
-            {!isPending &&
-              uploadedFiles.length > 0 &&
-              uploadedFiles.map((file) => (
-                <div className='relative flex max-w-fit items-center gap-3 rounded-md bg-primary-300 p-2 text-white'>
+            {!isPending
+              && uploadedFiles.length > 0
+              && uploadedFiles.map((file) => (
+                <div className='relative flex max-w-fit items-center gap-3 rounded-md bg-primary-300 p-2 text-white' key={file}>
                   <div>{file}</div>
                   <Button
                     variant={'ghost'}

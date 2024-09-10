@@ -1,6 +1,7 @@
 import { CircleCheck } from 'lucide-react'
-import ButtonWithIcon from '../button-with-icon'
 import Image from 'next/image'
+
+import ButtonWithIcon from '../button-with-icon'
 
 const listElements = [
   'Najdi svoje sanjsko stanovanje',
@@ -9,12 +10,11 @@ const listElements = [
   'Svetovanje, glede potreb in finančna zmogljivost',
   'Sestava pogodbe in pregled pogodbe',
   'Podpis pogodbe',
-  'Predaja nepremičnine in vselitev'
+  'Predaja nepremičnine in vselitev',
 ]
 
-const ProccesOfBuying = () => {
-  return (
-    <section className='relative left-1/2 right-1/2 ml-[-50vw] mr-[-50vw] w-[100vw] min-w-[100vw] bg-primary-50'>
+const ProccesOfBuying = () => (
+    <section className='relative inset-x-1/2 mx-[-50vw] w-screen min-w-[100vw] bg-primary-50'>
       <div className='container relative grid w-full grid-cols-1 items-center justify-center gap-10 py-4 lg:w-full lg:grid-cols-2 lg:gap-5 lg:p-8'>
         <div className='flex flex-col gap-4 lg:gap-8'>
           <h3 className='text-3xl font-bold text-secondary-400 lg:text-[38px] lg:leading-[57px]'>
@@ -51,11 +51,10 @@ const ProccesOfBuying = () => {
           alt='Postopek nakupa'
           width='400'
           height='400'
-          className='h-full max-h-[770px] w-full object-contain'
+          className='size-full max-h-[770px] object-contain'
         />
       </div>
     </section>
-  )
-}
+)
 
 export default ProccesOfBuying

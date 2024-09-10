@@ -1,16 +1,18 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
-import { NavbarProps } from '@/types/general'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
+import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
+import { NavbarProps } from '@/types/general'
+
 const DesktopNavigation = ({ navItems }: NavbarProps) => {
   const pathname = usePathname()
+
   return (
-    <div className='fixed left-0 right-0 top-0 z-10 flex items-center justify-between bg-body-75 py-5'>
+    <div className='fixed inset-x-0 top-0 z-10 flex items-center justify-between bg-body-75 py-5'>
       <div className='container mx-auto flex w-full justify-between'>
         <aside>
           <Link
@@ -26,7 +28,7 @@ const DesktopNavigation = ({ navItems }: NavbarProps) => {
             />
           </Link>
         </aside>
-        <nav className='absolute left-[50%] top-[50%] hidden translate-x-[-50%] translate-y-[-50%] transform md:block'>
+        <nav className='absolute left-[50%] top-[50%] hidden translate-x-[-50%] translate-y-[-50%] md:block'>
           <ul className='flex items-center justify-center gap-8 text-base font-semibold leading-5 text-secondary-300 lg:text-lg lg:leading-6'>
             {navItems.map((navItem, index) => (
               <Link
@@ -34,7 +36,7 @@ const DesktopNavigation = ({ navItems }: NavbarProps) => {
                 key={index}
                 className={cn(
                   '',
-                  pathname === `${navItem.link}` && 'border-b-2 border-primary-300'
+                  pathname === `${navItem.link}` && 'border-b-2 border-primary-300',
                 )}
               >
                 {navItem.text}

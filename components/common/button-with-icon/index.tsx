@@ -2,8 +2,7 @@ import ArrowRightIcon from '@/components/icons/arrow-right'
 import { Button, ButtonProps } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 
-const ButtonWithIcon = ({ variant, children, size, className, onClick }: ButtonProps) => {
-  return (
+const ButtonWithIcon = ({ variant, children, size, className, onClick }: ButtonProps) => (
     <Button
       variant={variant}
       size={size}
@@ -13,7 +12,6 @@ const ButtonWithIcon = ({ variant, children, size, className, onClick }: ButtonP
       {children}
       <ArrowRightIcon />
     </Button>
-  )
-}
+)
 
 export default ButtonWithIcon

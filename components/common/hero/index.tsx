@@ -1,12 +1,13 @@
+import { ArrowUpRight } from 'lucide-react'
 import Image from 'next/image'
-import ButtonWithIcon from '../button-with-icon'
+
 import DoubleChervonRightIcon from '@/components/icons/double-chervon-right'
 import { Button } from '@/components/ui/button'
-import { ArrowUpRight } from 'lucide-react'
 
-const Hero = () => {
-  return (
-    <div className='relative left-1/2 right-1/2 ml-[-50vw] mr-[-50vw] w-[100vw] min-w-[100vw] bg-primary-75 pt-10 md:pt-16 lg:pt-0'>
+import ButtonWithIcon from '../button-with-icon'
+
+const Hero = () => (
+    <div className='relative inset-x-1/2 mx-[-50vw] w-screen min-w-[100vw] bg-primary-75 pt-10 md:pt-16 lg:pt-0'>
       <div className='container relative grid w-full justify-center gap-10 lg:w-full lg:grid-cols-2 lg:gap-6'>
         <div className='relative flex flex-col justify-center gap-5'>
           <div className='flex max-w-fit gap-[10px] rounded-2xl bg-primary-500 px-5 py-2 font-archivo font-semibold text-body-200'>
@@ -39,10 +40,10 @@ const Hero = () => {
             alt='Pattern'
             width='260'
             height='230'
-            className='absolute bottom-[-1px] right-[-25px] hidden lg:block'
+            className='absolute -bottom-px right-[-25px] hidden lg:block'
           />
         </div>
-        <div className='relative left-1/2 right-1/2 ml-[-50vw] mr-[-50vw] flex w-[100vw] flex-col items-center lg:left-auto lg:right-auto lg:ml-auto lg:mr-auto lg:w-full'>
+        <div className='relative inset-x-1/2 mx-[-50vw] flex w-screen flex-col items-center lg:inset-x-auto lg:mx-auto lg:w-full'>
           <div className='relative md:flex md:w-full md:flex-col md:items-center'>
             <Image
               src='/hero-image.webp'
@@ -76,7 +77,7 @@ const Hero = () => {
             <Button
               variant={'rounded'}
               size={'rounded'}
-              className='h-[68px] w-[68px] min-w-[68px] self-end text-body-200 lg:self-auto'
+              className='size-[68px] min-w-[68px] self-end text-body-200 lg:self-auto'
             >
               <ArrowUpRight />
             </Button>
@@ -84,7 +85,6 @@ const Hero = () => {
         </div>
       </div>
     </div>
-  )
-}
+)
 
 export default Hero

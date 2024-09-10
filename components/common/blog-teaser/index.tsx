@@ -1,9 +1,11 @@
-import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
-import { ImageType } from '@/types/general'
 import { MoveUpRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import React from 'react'
+
+import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
+import { ImageType } from '@/types/general'
 
 type BlogTeaserProps = React.HTMLAttributes<HTMLDivElement> & {
   title: string
@@ -21,13 +23,12 @@ const BlogTeaser = ({
   isHighlighted,
   className,
   ...props
-}: BlogTeaserProps) => {
-  return (
+}: BlogTeaserProps) => (
     <div
       className={cn(
         'overflow-hidden rounded-xl bg-primary-75',
         className,
-        isHighlighted && 'bg-body-400'
+        isHighlighted && 'bg-body-400',
       )}
       {...props}
     >
@@ -42,7 +43,7 @@ const BlogTeaser = ({
         <h3
           className={cn(
             'text-xl font-bold leading-6 text-secondary-300',
-            isHighlighted && 'text-[28px] leading-8 text-secondary-400'
+            isHighlighted && 'text-[28px] leading-8 text-secondary-400',
           )}
         >
           {title}
@@ -51,7 +52,7 @@ const BlogTeaser = ({
           <p
             className={cn(
               'text-base leading-5 text-secondary-300',
-              isHighlighted && 'text-secondary-400'
+              isHighlighted && 'text-secondary-400',
             )}
           >
             {text}
@@ -65,7 +66,7 @@ const BlogTeaser = ({
               size={'rounded'}
               className={cn(
                 'h-6 w-6 bg-secondary-200 text-primary-75',
-                isHighlighted && 'h-12 w-12 bg-primary-200 text-body-200'
+                isHighlighted && 'h-12 w-12 bg-primary-200 text-body-200',
               )}
             >
               <MoveUpRight
@@ -76,7 +77,6 @@ const BlogTeaser = ({
         </div>
       </div>
     </div>
-  )
-}
+)
 
 export default BlogTeaser

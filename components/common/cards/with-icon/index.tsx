@@ -1,3 +1,5 @@
+import React, { FC, PropsWithChildren } from 'react'
+
 import BrickWallIcon from '@/components/icons/brick-wall'
 import CarIcon from '@/components/icons/car'
 import EnergySavingIcon from '@/components/icons/energy-saving'
@@ -6,13 +8,6 @@ import MarkHouseIcon from '@/components/icons/mark-house'
 import ShieldIcon from '@/components/icons/shield'
 import { cn } from '@/lib/utils'
 import { Icons } from '@/types/icons'
-import { FC, PropsWithChildren } from 'react'
-
-interface ImageLeftTextRightProps extends React.HTMLAttributes<HTMLElement> {
-  icon: string
-  title: string
-  text: string
-}
 
 const icons = {
   car: CarIcon,
@@ -20,7 +15,7 @@ const icons = {
   markHouse: MarkHouseIcon,
   mainBuilding: MainBuildingIcon,
   energySaving: EnergySavingIcon,
-  brickWall: BrickWallIcon
+  brickWall: BrickWallIcon,
 } satisfies Record<Icons, FC>
 
 type CardWithIconProps<L = Icons> = PropsWithChildren<
@@ -41,6 +36,7 @@ const CardWithIcon: FC<CardWithIconProps<Icons>> = ({
   ...props
 }) => {
   const IconComponent = icons[icon] ?? CarIcon
+
   return (
     <div
       className={cn('flex flex-col gap-6', className)}

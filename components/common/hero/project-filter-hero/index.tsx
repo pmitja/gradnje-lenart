@@ -1,10 +1,10 @@
 import { Sparkle } from 'lucide-react'
-import { Badge } from '@/components/ui/badge'
-import ProjectsFilter from '@/components/common/filter/projects-filter'
 
-const ProjectFilterHero = () => {
-  return (
-    <div className='relative left-1/2 right-1/2 ml-[-50vw] mr-[-50vw] w-[100vw] min-w-[100vw] bg-hero-page bg-cover pt-10 md:pt-16 lg:pt-0'>
+import ProjectsFilter from '@/components/common/filter/projects-filter'
+import { Badge } from '@/components/ui/badge'
+
+const ProjectFilterHero = () => (
+    <div className='relative inset-x-1/2 mx-[-50vw] w-screen min-w-[100vw] bg-hero-page bg-cover pt-10 md:pt-16 lg:pt-0'>
       <div className='container relative flex w-full flex-col items-center justify-center gap-8 pb-8 lg:w-full lg:grid-cols-2 lg:gap-5 lg:pb-28 lg:pt-20'>
         <Badge>
           <Sparkle />
@@ -20,7 +20,6 @@ const ProjectFilterHero = () => {
         <ProjectsFilter />
       </div>
     </div>
-  )
-}
+)
 
 export default ProjectFilterHero

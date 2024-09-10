@@ -1,13 +1,13 @@
 'use client'
 
-import Image from 'next/image'
-import ButtonWithIcon from '@/components/common/button-with-icon'
-import { Quote } from 'lucide-react'
-import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
 import Autoplay from 'embla-carousel-autoplay'
+import { Quote } from 'lucide-react'
+import Image from 'next/image'
 
-const Testimonials = () => {
-  return (
+import ButtonWithIcon from '@/components/common/button-with-icon'
+import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
+
+const Testimonials = () => (
     <>
       <section className='grid grid-cols-1 justify-between gap-8 lg:grid-cols-2'>
         <div className='flex flex-col gap-6'>
@@ -27,14 +27,14 @@ const Testimonials = () => {
           </ButtonWithIcon>
         </div>
         <Carousel
-          className='relative left-1/2 right-1/2 col-span-2 row-start-2 ml-[-50vw] mr-[-50vw] flex w-[100vw] min-w-[100vw] flex-row flex-wrap gap-6 md:left-auto md:right-auto md:ml-auto md:mr-auto md:w-full md:min-w-[auto]'
+          className='relative inset-x-1/2 col-span-2 row-start-2 mx-[-50vw] flex w-screen min-w-[100vw] flex-row flex-wrap gap-6 md:inset-x-auto md:mx-auto md:w-full md:min-w-[auto]'
           opts={{
-            align: 'start'
+            align: 'start',
           }}
           plugins={[
             Autoplay({
-              delay: 3500
-            })
+              delay: 3500,
+            }),
           ]}
         >
           <CarouselContent>
@@ -238,7 +238,6 @@ const Testimonials = () => {
         </div>
       </div> */}
     </>
-  )
-}
+)
 
 export default Testimonials

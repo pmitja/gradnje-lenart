@@ -6,8 +6,8 @@ import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 import { Container } from '@/components/containers/container'
-import { cn } from '@/lib/utils'
 import CloseIcon from '@/components/icons/close'
+import { cn } from '@/lib/utils'
 import { NavbarProps } from '@/types/general'
 
 type HamburgerButtonProps = {
@@ -19,7 +19,7 @@ const HamburgerButton = ({ isOpen, handleMenu }: HamburgerButtonProps) => (
   <button
     className={cn(
       'group flex size-12 max-h-10 max-w-10 flex-col items-center justify-center',
-      isOpen ? 'gap-0' : 'gap-[5px]'
+      isOpen ? 'gap-0' : 'gap-[5px]',
     )}
     onClick={handleMenu}
     role='button'
@@ -28,26 +28,26 @@ const HamburgerButton = ({ isOpen, handleMenu }: HamburgerButtonProps) => (
     <div
       className={cn(
         'ease h-1 w-6 transform rounded-full bg-secondary-500 transition duration-300',
-        isOpen ? 'translate-y-1 rotate-45 group-hover:opacity-100' : 'group-hover:opacity-100'
+        isOpen ? 'translate-y-1 rotate-45 group-hover:opacity-100' : 'group-hover:opacity-100',
       )}
     />
     <div
       className={cn(
         'ease h-1 w-6 transform rounded-full bg-secondary-500 transition duration-300',
-        isOpen ? 'opacity-0' : 'group-hover:opacity-100'
+        isOpen ? 'opacity-0' : 'group-hover:opacity-100',
       )}
     />
     <div
       className={cn(
         'ease h-1 w-6 transform rounded-full bg-secondary-500 transition duration-300',
-        isOpen ? '-translate-y-1 -rotate-45 group-hover:opacity-100' : 'group-hover:opacity-100'
+        isOpen ? '-translate-y-1 -rotate-45 group-hover:opacity-100' : 'group-hover:opacity-100',
       )}
     />
   </button>
 )
 
 const MobileNavigation = ({ navItems }: NavbarProps) => {
-  const [isOpen, setIsOpen] = useState(false)
+  const [ isOpen, setIsOpen ] = useState(false)
 
   const pathName = usePathname()
 
@@ -57,12 +57,12 @@ const MobileNavigation = ({ navItems }: NavbarProps) => {
 
   useEffect(() => {
     setIsOpen(false)
-  }, [pathName])
+  }, [ pathName ])
 
   return (
     <>
       <nav
-        className='fixed left-0 right-0 top-0 z-[21470000] flex items-center justify-between bg-body-75 px-5 py-5'
+        className='fixed inset-x-0 top-0 z-[21470000] flex items-center justify-between bg-body-75 p-5'
         aria-label='Mobile Menu'
       >
         <Link href={'/'}>
@@ -81,7 +81,7 @@ const MobileNavigation = ({ navItems }: NavbarProps) => {
       <Container
         className={cn(
           'fixed left-0 top-0 z-20 flex min-h-[100dvh] min-w-full flex-col gap-6 bg-body-75 p-6 text-xl transition-all duration-500',
-          isOpen ? 'animation-fadeAndSlideIn' : '-translate-y-full opacity-0'
+          isOpen ? 'animation-fadeAndSlideIn' : '-translate-y-full opacity-0',
         )}
         role='navigation'
         aria-label='Mobile menu navigation'
@@ -106,7 +106,7 @@ const MobileNavigation = ({ navItems }: NavbarProps) => {
               key={navItem.link}
               className={cn(
                 'text-3xl font-semibold leading-6 text-secondary-300',
-                pathName === `${navItem.link}` && 'border-b-2 border-primary-300'
+                pathName === `${navItem.link}` && 'border-b-2 border-primary-300',
               )}
             >
               {navItem.text}

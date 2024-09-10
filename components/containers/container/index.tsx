@@ -8,13 +8,13 @@ const containerVariants = cva('mx-auto px-2 sm:px-10 lg:px-20', {
     variant: {
       outer: 'max-w-8xl',
       inner: 'max-w-8xl px-6 lg:px-[172px]',
-      navigation: 'max-w-8xl bg-navigation-banner bg-left-top py-14s',
-      form: 'max-w-[848px]'
-    }
+      navigation: 'max-w-8xl bg-navigation-banner py-14s bg-left-top',
+      form: 'max-w-[848px]',
+    },
   },
   defaultVariants: {
-    variant: 'outer'
-  }
+    variant: 'outer',
+  },
 })
 
 export interface ContainerProps
@@ -36,9 +36,9 @@ const Container: React.FC<ContainerProps> = ({
 
   const containerClasses = cn(
     containerVariants({
-      variant
+      variant,
     }),
-    className
+    className,
   )
 
   return (
@@ -51,4 +51,6 @@ const Container: React.FC<ContainerProps> = ({
   )
 }
 
-export { Container, containerVariants }
+export {
+  Container, containerVariants,
+}

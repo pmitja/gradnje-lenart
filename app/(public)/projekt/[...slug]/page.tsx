@@ -1,8 +1,9 @@
 import { getLocationRealEstates } from '@/actions/get-location-real-esatates'
 import Cta from '@/components/common/cta'
 import InnerHero from '@/components/common/hero/inner-hero'
-import OffersBanner, { OfferInfo } from '@/components/layouts/sections/offers-banner'
+import OffersBanner from '@/components/layouts/sections/offers-banner'
 import RealEstateListing from '@/components/layouts/sections/single-project'
+import { OfferInfo } from '@/types/general'
 
 const OffersBannerImages = [
   '/stanovanje.jpg',
@@ -27,9 +28,9 @@ const SelectedProject = async ({ params }: { params: { slug: string } }) => {
   }
 
   return (
-    <>
+    <div>
       <InnerHero />
-      {/* <SingleProject location={location} /> */}
+      <div className='mt-5 flex flex-col gap-5 lg:mt-10 lg:gap-10'>
       <RealEstateListing location={location} />
       <Cta />
       <OffersBanner
@@ -38,7 +39,8 @@ const SelectedProject = async ({ params }: { params: { slug: string } }) => {
         images={OffersBannerImages}
         offerInfo={offersInfo}
       />
-    </>
+      </div>
+    </div>
   )
 }
 

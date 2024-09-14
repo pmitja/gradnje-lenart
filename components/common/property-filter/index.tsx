@@ -3,7 +3,6 @@
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 
-import ArrowSearchIcon from '@/components/icons/arrow-search'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
@@ -25,7 +24,7 @@ const PropertyFilter = ({ isDesktop = true }: PropertyFilterProps) => {
 
   const STEP = 500
 
-  const { propertyFilters, updatePropertyFilters } = useAppStore()
+  const { propertyFilters, updatePropertyFilters, resetFilters } = useAppStore()
 
   const form = useForm({
     defaultValues: {
@@ -35,6 +34,11 @@ const PropertyFilter = ({ isDesktop = true }: PropertyFilterProps) => {
       availability: propertyFilters.availability,
     },
   })
+
+  const onReset = () => {
+    form.reset()
+    resetFilters()
+  }
 
   useEffect(() => {
     const subscription = form.watch((value) => {
@@ -49,10 +53,14 @@ const PropertyFilter = ({ isDesktop = true }: PropertyFilterProps) => {
     return () => subscription.unsubscribe()
   }, [ form, updatePropertyFilters ])
 
-  const onSubmit = (data: any) => {
-    console.log(data)
-    // Handle form submission if needed
-  }
+  useEffect(() => {
+    if (propertyFilters.isReseted) {
+      form.reset()
+      updatePropertyFilters({
+        isReseted: false,
+      })
+    }
+  }, [ propertyFilters ])
 
   return (
     <Card className="mx-auto w-full border-none bg-transparent px-0 shadow-none">
@@ -63,7 +71,7 @@ const PropertyFilter = ({ isDesktop = true }: PropertyFilterProps) => {
       )}
       <CardContent className='px-0'>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <form className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <FormField
               control={form.control}
               name="floor"
@@ -201,13 +209,12 @@ const PropertyFilter = ({ isDesktop = true }: PropertyFilterProps) => {
             />
 
             <ButtonWithIcon
-              type="submit"
-              variant="primary"
-              className="max-w-fit rounded-xl px-10 py-3 text-lg font-semibold text-body-300 drop-shadow-primary-button md:col-span-2"
-              icon={<ArrowSearchIcon />}
-              iconPosition="left"
+              type="button"
+              variant="secondary"
+              className="max-w-fit rounded-xl px-10 py-3 text-lg font-semibold drop-shadow-primary-button md:col-span-2"
+              onClick={onReset}
             >
-              Išči
+              Poenostavi filtre
             </ButtonWithIcon>
           </form>
         </Form>

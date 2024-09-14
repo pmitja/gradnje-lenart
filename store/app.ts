@@ -6,6 +6,7 @@ type PropertyFilterOptions = {
   size?: string
   priceRange?: [number, number]
   availability?: string
+  isReseted?: boolean
 }
 
 interface AppStoreState {
@@ -27,6 +28,7 @@ export const useAppStore = create<AppStoreState>((set) => ({
     type: 'all',
   },
   propertyFilters: {
+    isReseted: false,
   },
   updateProjectFilters: (filter) => set((state) => ({
     projectFilters: {
@@ -50,6 +52,10 @@ export const useAppStore = create<AppStoreState>((set) => ({
       type: 'all',
     },
     propertyFilters: {
+      floor: undefined,
+      size: undefined,
+      priceRange: undefined,
+      availability: undefined,
     },
   }),
 }))

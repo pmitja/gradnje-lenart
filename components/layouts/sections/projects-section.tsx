@@ -142,7 +142,7 @@ const ProjectsSection = () => {
           )}
           {isPending && <Spinner />}
           {currentProjects.length === 0 && !isPending && (
-            <NoResultsBanner resetFilters={resetFilters} />
+            <NoResultsBanner onReset={resetFilters} />
           )}
         </div>
       </div>

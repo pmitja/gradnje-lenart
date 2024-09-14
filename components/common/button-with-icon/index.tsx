@@ -3,6 +3,7 @@ import { cn } from '@/lib/utils'
 
 const ButtonWithIcon = ({
   variant,
+  type,
   children,
   size,
   className,
@@ -11,6 +12,7 @@ const ButtonWithIcon = ({
   iconPosition = 'right',
 }: ButtonProps) => (
   <Button
+    type={type}
     variant={variant}
     size={size}
     onClick={onClick}

@@ -11,6 +11,7 @@ import { ArrowRight,
 import Image from 'next/image'
 import React, { useEffect, useMemo, useState } from 'react'
 
+import NoResultComponent from '@/components/common/no-results-banner'
 import PropertyFilter from '@/components/common/property-filter'
 import { Accordion,
   AccordionContent,
@@ -181,7 +182,7 @@ const DetailedPropertyView: React.FC<DetailedPropertyViewProps> = ({
 )
 
 const RealEstateListing = ({ location }: { location: LocationWithRealEstates }) => {
-  const { propertyFilters } = useAppStore()
+  const { propertyFilters, updatePropertyFilters } = useAppStore()
 
   const [ selectedProject, setSelectedProject ] = useState<RealEstate | null>(null)
 
@@ -204,6 +205,16 @@ const RealEstateListing = ({ location }: { location: LocationWithRealEstates }) 
     return floorMatch && sizeMatch && priceMatch && availabilityMatch
   }), [ location.realEstates, propertyFilters ])
 
+  const resetFilters = () => {
+    updatePropertyFilters({
+      floor: undefined,
+      size: undefined,
+      priceRange: undefined,
+      availability: undefined,
+      isReseted: true,
+    })
+  }
+
   useEffect(() => {
     if (filteredRealEstates.length > 0 && !selectedProject) {
       setSelectedProject(filteredRealEstates[0])
@@ -213,6 +224,15 @@ const RealEstateListing = ({ location }: { location: LocationWithRealEstates }) 
       setSelectedProject(filteredRealEstates[0])
     }
   }, [ filteredRealEstates, selectedProject ])
+
+  if (filteredRealEstates.length === 0) {
+    return (
+      <>
+        <PropertyFilter />
+        <NoResultComponent onReset={resetFilters} />
+      </>
+    )
+  }
 
   return (
     <>

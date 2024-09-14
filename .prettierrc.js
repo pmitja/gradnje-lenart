@@ -2,7 +2,7 @@ module.exports = {
   singleQuote: true,
   trailingComma: 'none',
   arrowParens: 'always',
-  semi: true,
+  semi: false,
   bracketSameLine: false,
   jsxSingleQuote: false,
   arrayBracketSpacing: true,
@@ -17,9 +17,10 @@ module.exports = {
       files: ['*.ts', '*.tsx'],
       options: {
         // Add the object-curly-newline option to match your ESLint rule
-        objectCurlyNewline: 'always'
-      }
-    }
+        objectCurlyNewline: 'always',
+        semi: false,
+      },
+    },
   ],
-  "plugins": ["prettier-plugin-tailwindcss"]
-}
+  plugins: ['prettier-plugin-tailwindcss'],
+};

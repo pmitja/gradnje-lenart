@@ -1,46 +1,55 @@
 'use client'
 
 import { Location, RealEstate } from '@prisma/client'
-import { ArrowRight,
+import {
+  ArrowRight,
   BadgeCheckIcon,
   Car,
   Expand,
   Home,
   Maximize2,
-  ParkingCircle } from 'lucide-react'
+  ParkingCircle,
+} from 'lucide-react'
 import Image from 'next/image'
 import React, { useState } from 'react'
+import { useMediaQuery } from '@/hooks/use-media-query'
 
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
-import { Label } from '@/components/ui/label'
-import { Slider } from '@/components/ui/slider'
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion'
 import { formatNumber } from '@/lib/helpers'
 import { cn } from '@/lib/utils'
 import { StatusType } from '@/types/general'
 
+import PropertyFilter from '@/components/common/property-filter'
+
 interface LocationWithRealEstates extends Location {
-  realEstates: RealEstate[];
+  realEstates: RealEstate[]
 }
 
 interface PropertyDetails {
-  price: string;
-  type: string;
-  location: string;
-  size: string;
-  hasBalcony: boolean;
-  hasParking: boolean;
-  hasGarage: boolean;
+  price: string
+  type: string
+  location: string
+  size: string
+  hasBalcony: boolean
+  hasParking: boolean
+  hasGarage: boolean
 }
 
 interface PropertyCardProps {
-  realEstate: RealEstate;
-  city: string;
-  address: string;
-  onClick: (realEstate: RealEstate) => void;
-  isActive: boolean;
+  realEstate: RealEstate
+  city: string
+  address: string
+  onClick: (realEstate: RealEstate) => void
+  isActive: boolean
 }
 
 const PropertyCard: React.FC<PropertyCardProps> = ({
@@ -54,7 +63,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
     variant="outline"
     className={cn(
       'flex h-full w-full min-w-fit flex-col gap-4 rounded-xl border-4 border-transparent bg-primary-50 p-4 shadow-md hover:bg-primary-75/25 lg:flex-row',
-      isActive && 'border-4 border-primary-400',
+      isActive && 'border-4 border-primary-400'
     )}
     onClick={() => onClick(realEstate)}
   >
@@ -102,9 +111,9 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
 )
 
 interface DetailedPropertyViewProps extends PropertyDetails {
-  imageSrc: string;
-  name: string;
-  description: string;
+  imageSrc: string
+  name: string
+  description: string
 }
 
 const DetailedPropertyView: React.FC<DetailedPropertyViewProps> = ({
@@ -175,133 +184,26 @@ const DetailedPropertyView: React.FC<DetailedPropertyViewProps> = ({
   </Card>
 )
 
-function PropertyFilter() {
-  const [ floor, setFloor ] = useState('3')
-
-  const [ size, setSize ] = useState('Dvosobno')
-
-  const [ additional, setAdditional ] = useState([ 'Parkirišče' ])
-
-  const [ availability, setAvailability ] = useState('Vsa')
-
-  const toggleAdditional = (value: string) => {
-    // eslint-disable-next-line max-len
-    setAdditional((prev) => (prev.includes(value) ? prev.filter((item) => item !== value) : [ ...prev, value ]))
-  }
-
-  return (
-    <Card className="mx-auto w-full">
-      <CardHeader>
-        <CardTitle className="text-2xl font-bold">Filtri</CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-6">
-        <div className="space-y-2">
-          <Label>Nadstropje:</Label>
-          <div className="flex flex-wrap gap-2">
-            {[ 'P', '1', '2', '3', '4', 'Vsa' ].map((value) => (
-              <Button
-                key={value}
-                variant="outline"
-                onClick={() => setFloor(value)}
-                className={cn(
-                  'rounded-full',
-                  floor === value && 'bg-primary text-primary-foreground',
-                )}
-              >
-                {value}
-              </Button>
-            ))}
-          </div>
-        </div>
-
-        <div className="space-y-2">
-          <Label>Velikost:</Label>
-          <div className="flex flex-wrap gap-2">
-            {[ 'Enosobno', 'Ena in pol sobno', 'Dvosobno', 'Trisobno' ].map((value) => (
-              <Button
-                key={value}
-                variant="outline"
-                onClick={() => setSize(value)}
-                className={cn(
-                  'rounded-full',
-                  size === value && 'bg-primary text-primary-foreground',
-                )}
-              >
-                {value}
-              </Button>
-            ))}
-          </div>
-        </div>
-
-        <div className="space-y-2">
-          <Label>Cena:</Label>
-          <Slider
-            defaultValue={[ 100000 ]}
-      max={500000}
-      step={500}
-          />
-          <div className="flex justify-between text-sm">
-            <span>od 4.000 €</span>
-            <span>do 300.000 €</span>
-          </div>
-          <div className="flex justify-between text-xs text-muted-foreground">
-            <span>min.</span>
-            <span>max.</span>
-          </div>
-        </div>
-
-        <div className="space-y-2">
-          <Label>Dodatno:</Label>
-          <div className="flex flex-wrap gap-2">
-            {[ 'Atri', 'Balkon', 'Parkirišče', 'Garažno mesto', 'Shramba v kletnih prostorih' ].map(
-              (value) => (
-                <Button
-                  key={value}
-                  variant="outline"
-                  onClick={() => toggleAdditional(value)}
-                  className={cn(
-                    'rounded-full',
-                    additional.includes(value) && 'bg-primary text-primary-foreground',
-                  )}
-                >
-                  {value}
-                </Button>
-              ),
-            )}
-          </div>
-        </div>
-
-        <div className="space-y-2">
-          <Label>Prosta:</Label>
-          <div className="flex gap-2">
-            {[ 'Vsa', 'Da', 'Ne' ].map((value) => (
-              <Button
-                key={value}
-                variant="outline"
-                onClick={() => setAvailability(value)}
-                className={cn(
-                  'rounded-full',
-                  availability === value && 'bg-primary text-primary-foreground',
-                )}
-              >
-                {value}
-              </Button>
-            ))}
-          </div>
-        </div>
-
-        <Button className="w-full bg-primary text-primary-foreground">Išči</Button>
-      </CardContent>
-    </Card>
-  )
-}
-
 const RealEstateListing = ({ location }: { location: LocationWithRealEstates }) => {
-  const [ selectedProject, setSelectedProject ] = useState<RealEstate>(location.realEstates[0])
+  const [selectedProject, setSelectedProject] = useState<RealEstate>(location.realEstates[0])
+  const isDesktop = useMediaQuery('(min-width: 1120px)')
 
   return (
     <>
-      <PropertyFilter />
+      {isDesktop ? (
+        <PropertyFilter />
+      ) : (
+        <Accordion type="single" collapsible>
+          <AccordionItem value="item-1">
+            <AccordionTrigger className="text-3xl font-bold data-[state=open]:bg-transparent">
+              Filtri
+            </AccordionTrigger>
+            <AccordionContent className="data-[state=open]:bg-transparent">
+              <PropertyFilter isDesktop={isDesktop} />
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+      )}
       <section className="flex w-full flex-col gap-3 lg:gap-5">
         <h2 className="flex items-center gap-2 text-2xl font-bold text-secondary-400 md:text-3xl lg:text-4xl">
           <Home size={32} /> Nepremičnine

@@ -4,3 +4,4 @@ out
 __tests__
 __mocks__
 types/graphql-types.ts
+tailwind.config.ts

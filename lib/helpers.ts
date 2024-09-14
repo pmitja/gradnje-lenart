@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 // Slug generation function
 export function generateSlug(name: string): string {
   const slugify = (str: string) => str

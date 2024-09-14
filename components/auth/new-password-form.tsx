@@ -1,39 +1,42 @@
 'use client'
 
-import { CardWrapper } from './card-wrapper'
-import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useSearchParams } from 'next/navigation'
+import { useState, useTransition } from 'react'
+import { useForm } from 'react-hook-form'
 import * as z from 'zod'
-import { NewPasswordSchema } from '@/schemas'
-import {
-  Form,
+
+import { newPassword } from '@/actions/new-password'
+import { FormError } from '@/components/form-error'
+import { FormSuccess } from '@/components/form-success'
+import { Button } from '@/components/ui/button'
+import { Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage
-} from '@/components/ui/form'
+  FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import { FormError } from '@/components/form-error'
-import { FormSuccess } from '@/components/form-success'
-import { useState, useTransition } from 'react'
-import { useSearchParams } from 'next/navigation'
-import { newPassword } from '@/actions/new-password'
+import { NewPasswordSchema } from '@/schemas'
+
+import { CardWrapper } from './card-wrapper'
 
 function NewPasswordForm() {
   const searchParams = useSearchParams()
+
   const token = searchParams.get('token')
 
-  const [isPending, startTransition] = useTransition()
-  const [error, setError] = useState<string | undefined>('')
-  const [success, setSuccess] = useState<string | undefined>('')
+  const [ isPending, startTransition ] = useTransition()
+
+  const [ error, setError ] = useState<string | undefined>('')
+
+  const [ success, setSuccess ] = useState<string | undefined>('')
 
   const form = useForm<z.infer<typeof NewPasswordSchema>>({
     resolver: zodResolver(NewPasswordSchema),
     defaultValues: {
-      password: ''
-    }
+      password: '',
+    },
   })
 
   const onSubmit = (values: z.infer<typeof NewPasswordSchema>) => {
@@ -59,8 +62,7 @@ function NewPasswordForm() {
             <FormField
               control={form.control}
               name='password'
-              render={({ field }) => {
-                return (
+              render={({ field }) => (
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
@@ -73,8 +75,7 @@ function NewPasswordForm() {
                     </FormControl>
                     <FormMessage />
                   </FormItem>
-                )
-              }}
+              )}
             />
           </div>
           <FormError message={error} />

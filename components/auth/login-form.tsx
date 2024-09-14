@@ -1,44 +1,48 @@
+/* eslint-disable consistent-return */
+
 'use client'
 
-import { CardWrapper } from './card-wrapper'
-import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
+import { useState, useTransition } from 'react'
+import { useForm } from 'react-hook-form'
 import * as z from 'zod'
-import { LoginSchema } from '@/schemas'
-import {
-  Form,
+
+import { login } from '@/actions/login'
+import { FormError } from '@/components/form-error'
+import { FormSuccess } from '@/components/form-success'
+import { Button } from '@/components/ui/button'
+import { Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage
-} from '@/components/ui/form'
+  FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import { FormError } from '@/components/form-error'
-import { FormSuccess } from '@/components/form-success'
-import { login } from '@/actions/login'
-import { useState, useTransition } from 'react'
-import { redirect, useSearchParams } from 'next/navigation'
-import Link from 'next/link'
+import { LoginSchema } from '@/schemas'
+
+import { CardWrapper } from './card-wrapper'
 
 function LoginForm() {
   const searchParams = useSearchParams()
-  const urlError =
-    searchParams.get('error') === 'OAuthAccountNotLinked'
-      ? 'Email already in use with different provider!'
-      : ''
 
-  const [isPending, startTransition] = useTransition()
-  const [error, setError] = useState<string | undefined>('')
-  const [success, setSuccess] = useState<string | undefined>('')
+  const urlError = searchParams.get('error') === 'OAuthAccountNotLinked'
+    ? 'Email already in use with different provider!'
+    : ''
+
+  const [ isPending, startTransition ] = useTransition()
+
+  const [ error, setError ] = useState<string | undefined>('')
+
+  const [ success, setSuccess ] = useState<string | undefined>('')
 
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
       email: '',
-      password: ''
-    }
+      password: '',
+    },
   })
 
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
@@ -65,8 +69,7 @@ function LoginForm() {
             <FormField
               control={form.control}
               name='email'
-              render={({ field }) => {
-                return (
+              render={({ field }) => (
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
@@ -79,14 +82,12 @@ function LoginForm() {
                     </FormControl>
                     <FormMessage />
                   </FormItem>
-                )
-              }}
+              )}
             />
             <FormField
               control={form.control}
               name='password'
-              render={({ field }) => {
-                return (
+              render={({ field }) => (
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
@@ -107,8 +108,7 @@ function LoginForm() {
                     </Button>
                     <FormMessage />
                   </FormItem>
-                )
-              }}
+              )}
             />
           </div>
           <FormError message={error || urlError} />

@@ -1,43 +1,44 @@
 'use client'
 
+import { zodResolver } from '@hookform/resolvers/zod'
 import { ChevronLeft } from 'lucide-react'
+import Link from 'next/link'
+import { useEffect, useState, useTransition } from 'react'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
 
+import { getLocationRealEstates } from '@/actions/get-location-real-esatates'
+import { updateLocationRealEstate } from '@/actions/update-location-real-estates'
+import ApartmentForm from '@/components/common/apartment-form'
+import Project404 from '@/components/containers/404/project-404'
 import { Button } from '@/components/ui/button'
-import {
-  Card,
+import { Card,
   CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle
-} from '@/components/ui/card'
-import {
-  Table,
+  CardTitle } from '@/components/ui/card'
+import { Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
-  TableRow
-} from '@/components/ui/table'
-import { useEffect, useState, useTransition } from 'react'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
-import { Apartment, Location, StatusType } from '@/types/general'
+  TableRow } from '@/components/ui/table'
 import { updateSchema } from '@/schemas'
-import { getLocationRealEstates } from '@/actions/get-location-real-esatates'
-import Project404 from '@/components/containers/404/project-404'
-import Link from 'next/link'
-import { updateLocationRealEstate } from '@/actions/update-location-real-estates'
-import ApartmentForm from '@/components/common/apartment-form'
+import { Apartment, Location, StatusType } from '@/types/general'
 
 const AktualniProjektPage = ({ params: { slug } }: { params: { slug: string } }) => {
-  const [apartments, setApartments] = useState<Apartment[]>([])
-  const [isPending, startTransition] = useTransition()
-  const [error, setError] = useState<string | undefined>('')
-  const [success, setSuccess] = useState<string | undefined>('')
-  const [location, setLocation] = useState<Location | null>(null)
-  const [isError, setIsError] = useState(false)
+  const [ apartments, setApartments ] = useState<Apartment[]>([])
+
+  const [ isPending, startTransition ] = useTransition()
+
+  const [ , setError ] = useState<string | undefined>('')
+
+  const [ , setSuccess ] = useState<string | undefined>('')
+
+  const [ location, setLocation ] = useState<Location | null>(null)
+
+  const [ isError, setIsError ] = useState(false)
 
   useEffect(() => {
     setIsError(false)
@@ -55,20 +56,20 @@ const AktualniProjektPage = ({ params: { slug } }: { params: { slug: string } })
   const form = useForm<z.infer<typeof updateSchema>>({
     resolver: zodResolver(updateSchema),
     defaultValues: {
-      apartments: apartments,
-      locationSlug: slug
-    }
+      apartments,
+      locationSlug: slug,
+    },
   })
 
   const { setValue } = form
 
   const saveFormValues = (values: Apartment) => {
-    setApartments((prevApartments) => [...prevApartments, values])
+    setApartments((prevApartments) => [ ...prevApartments, values ])
   }
 
   useEffect(() => {
     setValue('apartments', apartments)
-  }, [apartments])
+  }, [ apartments ])
 
   function onSubmit(values: z.infer<typeof updateSchema>) {
     setError('')
@@ -89,10 +90,10 @@ const AktualniProjektPage = ({ params: { slug } }: { params: { slug: string } })
             <Button
               variant='outline'
               size='icon'
-              className='h-7 w-7'
+              className='size-7'
             >
               <Link href={'/nadzorna-plosca'}>
-                <ChevronLeft className='h-4 w-4' />
+                <ChevronLeft className='size-4' />
                 <span className='sr-only'>Back</span>
               </Link>
             </Button>
@@ -110,7 +111,9 @@ const AktualniProjektPage = ({ params: { slug } }: { params: { slug: string } })
                 size='sm'
                 variant={'primary'}
                 className='border border-body-200'
-                onClick={() => onSubmit({ apartments, locationSlug: location.slug })}
+                onClick={() => onSubmit({
+                  apartments, locationSlug: location.slug,
+                })}
               >
                 Posodobi lokacijo
               </Button>
@@ -144,7 +147,7 @@ const AktualniProjektPage = ({ params: { slug } }: { params: { slug: string } })
                     <TableBody>
                       {apartments
                         .sort((a, b) => Number(a.number) - Number(b.number))
-                        .map((apartment, index) => (
+                        .map((apartment) => (
                           <TableRow key={apartment.number}>
                             <TableCell className='font-semibold'>{apartment.number}</TableCell>
                             <TableCell>{apartment.name}</TableCell>
@@ -154,13 +157,13 @@ const AktualniProjektPage = ({ params: { slug } }: { params: { slug: string } })
                             <TableCell>{apartment.priceWithTax} €</TableCell>
                             <TableCell>
                               {apartment.status === StatusType.Prodaja && (
-                                <div className='h-4 w-4 rounded-full bg-green-400'></div>
+                                <div className='size-4 rounded-full bg-green-400'></div>
                               )}
                               {apartment.status === StatusType.Rezervirano && (
-                                <div className='h-4 w-4 rounded-full bg-yellow-400'></div>
+                                <div className='size-4 rounded-full bg-yellow-400'></div>
                               )}
                               {apartment.status === StatusType.Prodano && (
-                                <div className='h-4 w-4 rounded-full bg-red-400'></div>
+                                <div className='size-4 rounded-full bg-red-400'></div>
                               )}
                             </TableCell>
                           </TableRow>
@@ -208,7 +211,7 @@ const AktualniProjektPage = ({ params: { slug } }: { params: { slug: string } })
         </div>
       )}
       {isPending && (
-        <div className='mx-auto flex min-h-[100dvh]'>
+        <div className='mx-auto flex min-h-dvh'>
           <span className='loading loading-ball loading-xs'></span>
           <span className='loading loading-ball loading-sm'></span>
           <span className='loading loading-ball loading-md'></span>

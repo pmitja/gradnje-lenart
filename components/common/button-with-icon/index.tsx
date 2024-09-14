@@ -1,4 +1,3 @@
-import ArrowRightIcon from '@/components/icons/arrow-right'
 import { Button, ButtonProps } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 

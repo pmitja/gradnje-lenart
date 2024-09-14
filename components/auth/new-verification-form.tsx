@@ -1,16 +1,20 @@
 'use client'
 
-import { CardWrapper } from './card-wrapper'
-import { BeatLoader } from 'react-spinners'
 import { useSearchParams } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
+import { BeatLoader } from 'react-spinners'
+
 import { newVerification } from '@/actions/new-verification'
 import { FormError } from '@/components/form-error'
 import { FormSuccess } from '@/components/form-success'
 
+import { CardWrapper } from './card-wrapper'
+
 export const NewVerificationForm = () => {
-  const [error, setError] = useState<string | undefined>()
-  const [success, setSuccess] = useState<string | undefined>()
+  const [ error, setError ] = useState<string | undefined>()
+
+  const [ success, setSuccess ] = useState<string | undefined>()
+
   const searchParams = useSearchParams()
 
   const token = searchParams.get('token')
@@ -29,11 +33,11 @@ export const NewVerificationForm = () => {
       .catch(() => {
         setError('Something went wrong!')
       })
-  }, [token, success, error])
+  }, [ token, success, error ])
 
   useEffect(() => {
     onSubmit()
-  }, [onSubmit])
+  }, [ onSubmit ])
 
   return (
     <CardWrapper headerLabel='Verify your email'>

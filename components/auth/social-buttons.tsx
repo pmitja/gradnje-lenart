@@ -1,14 +1,16 @@
 'use client'
 
-import { socialLogin } from '@/actions/social-login'
-import { Button } from '@/components/ui/button'
 import { FaGithub } from 'react-icons/fa'
 import { FcGoogle } from 'react-icons/fc'
+
+import { socialLogin } from '@/actions/social-login'
+import { Button } from '@/components/ui/button'
 
 function SocialButtons() {
   const onClick = (provider: 'google' | 'github') => {
     socialLogin(provider)
   }
+
   return (
     <div className='flex w-full items-center gap-x-2'>
       <Button

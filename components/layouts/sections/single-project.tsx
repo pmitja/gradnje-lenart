@@ -1,34 +1,29 @@
 'use client'
 
 import { Location, RealEstate } from '@prisma/client'
-import {
-  ArrowRight,
+import { ArrowRight,
   BadgeCheckIcon,
   Car,
   Expand,
   Home,
   Maximize2,
-  ParkingCircle,
-} from 'lucide-react'
+  ParkingCircle } from 'lucide-react'
 import Image from 'next/image'
 import React, { useState } from 'react'
-import { useMediaQuery } from '@/hooks/use-media-query'
 
+import PropertyFilter from '@/components/common/property-filter'
+import { Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger } from '@/components/ui/accordion'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion'
+import { useMediaQuery } from '@/hooks/use-media-query'
 import { formatNumber } from '@/lib/helpers'
 import { cn } from '@/lib/utils'
 import { StatusType } from '@/types/general'
-
-import PropertyFilter from '@/components/common/property-filter'
 
 interface LocationWithRealEstates extends Location {
   realEstates: RealEstate[]
@@ -63,7 +58,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
     variant="outline"
     className={cn(
       'flex h-full w-full min-w-fit flex-col gap-4 rounded-xl border-4 border-transparent bg-primary-50 p-4 shadow-md hover:bg-primary-75/25 lg:flex-row',
-      isActive && 'border-4 border-primary-400'
+      isActive && 'border-4 border-primary-400',
     )}
     onClick={() => onClick(realEstate)}
   >
@@ -185,7 +180,8 @@ const DetailedPropertyView: React.FC<DetailedPropertyViewProps> = ({
 )
 
 const RealEstateListing = ({ location }: { location: LocationWithRealEstates }) => {
-  const [selectedProject, setSelectedProject] = useState<RealEstate>(location.realEstates[0])
+  const [ selectedProject, setSelectedProject ] = useState<RealEstate>(location.realEstates[0])
+
   const isDesktop = useMediaQuery('(min-width: 1120px)')
 
   return (

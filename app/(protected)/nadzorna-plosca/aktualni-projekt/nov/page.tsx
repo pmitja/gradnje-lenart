@@ -1,61 +1,59 @@
 'use client'
 
+import { zodResolver } from '@hookform/resolvers/zod'
+import { ToggleGroup } from '@radix-ui/react-toggle-group'
 import { ChevronLeft } from 'lucide-react'
+import Image from 'next/image'
+import Link from 'next/link'
+import { useEffect, useState, useTransition } from 'react'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
 
+import { deleteUTFiles } from '@/actions/delete-from-uploadthing'
+import { newLocation } from '@/actions/new-location'
+import ApartmentForm from '@/components/common/apartment-form'
+import Spinner from '@/components/common/spinner'
+import { FormError } from '@/components/form-error'
+import { FormSuccess } from '@/components/form-success'
+import CloseIcon from '@/components/icons/close'
 import { Button } from '@/components/ui/button'
-import {
-  Card,
+import { Card,
   CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle
-} from '@/components/ui/card'
-
-import { Input } from '@/components/ui/input'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow
-} from '@/components/ui/table'
-import { Textarea } from '@/components/ui/textarea'
-import { useEffect, useState, useTransition } from 'react'
-import {
-  Form,
+  CardTitle } from '@/components/ui/card'
+import { Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage
-} from '@/components/ui/form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
-import { ToggleGroup } from '@radix-ui/react-toggle-group'
+  FormMessage } from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow } from '@/components/ui/table'
+import { Textarea } from '@/components/ui/textarea'
 import { ToggleGroupItem } from '@/components/ui/toggle-group'
-import { newLocation } from '@/actions/new-location'
-import { Apartment, LocationType, StatusType } from '@/types/general'
-import { mainFormSchema } from '@/schemas'
-import { FormError } from '@/components/form-error'
-import { FormSuccess } from '@/components/form-success'
-import Link from 'next/link'
 import { UploadButton } from '@/lib/utils/uploadthing'
-import Image from 'next/image'
-import CloseIcon from '@/components/icons/close'
-import { deleteUTFiles } from '@/actions/delete-from-uploadthing'
-import Spinner from '@/components/common/spinner'
-import ApartmentForm from '@/components/common/apartment-form'
+import { mainFormSchema } from '@/schemas'
+import { Apartment, LocationType, StatusType } from '@/types/general'
 
 const NovAktualniProjektPage = () => {
-  const [apartments, setApartments] = useState<Apartment[]>([])
-  const [isPending, startTransition] = useTransition()
-  const [error, setError] = useState<string | undefined>('')
-  const [success, setSuccess] = useState<string | undefined>('')
-  const [imagesBeginUploading, setImagesBeginUploading] = useState(false)
-  const [uploadedImages, setUploadedImages] = useState<string[]>([])
+  const [ apartments, setApartments ] = useState<Apartment[]>([])
+
+  const [ isPending, startTransition ] = useTransition()
+
+  const [ error, setError ] = useState<string | undefined>('')
+
+  const [ success, setSuccess ] = useState<string | undefined>('')
+
+  const [ , setImagesBeginUploading ] = useState(false)
+
+  const [ uploadedImages, setUploadedImages ] = useState<string[]>([])
 
   const form = useForm<z.infer<typeof mainFormSchema>>({
     resolver: zodResolver(mainFormSchema),
@@ -65,21 +63,21 @@ const NovAktualniProjektPage = () => {
       city: '',
       address: '',
       images: [],
-      apartments: apartments,
+      apartments,
       type: LocationType.Apartments,
-      isActive: true
-    }
+      isActive: true,
+    },
   })
 
   const { setValue } = form
 
   const saveFormValues = (values: Apartment) => {
-    setApartments((prevApartments) => [...prevApartments, values])
+    setApartments((prevApartments) => [ ...prevApartments, values ])
   }
 
   useEffect(() => {
     setValue('apartments', apartments)
-  }, [apartments])
+  }, [ apartments ])
 
   function onSubmit(values: z.infer<typeof mainFormSchema>) {
     setError('')
@@ -96,9 +94,10 @@ const NovAktualniProjektPage = () => {
 
   const handleRemoveImage = (image: string) => async () => {
     startTransition(() => {
-      deleteUTFiles([image]).then((res) => {
+      deleteUTFiles([ image ]).then((res) => {
         if (res.success) {
           const filteredImages = uploadedImages.filter((img) => img !== image)
+
           setUploadedImages(filteredImages)
           setValue('images', filteredImages)
         }
@@ -118,10 +117,10 @@ const NovAktualniProjektPage = () => {
               <Button
                 variant='outline'
                 size='icon'
-                className='h-7 w-7'
+                className='size-7'
               >
                 <Link href={'/nadzorna-plosca'}>
-                  <ChevronLeft className='h-4 w-4' />
+                  <ChevronLeft className='size-4' />
                   <span className='sr-only'>Back</span>
                 </Link>
               </Button>
@@ -290,22 +289,23 @@ const NovAktualniProjektPage = () => {
                           onUploadProgress={() => setImagesBeginUploading(true)}
                           onClientUploadComplete={(res) => {
                             const array = res.map((file) => file.key)
+
                             setValue('images', array)
                             setUploadedImages(array)
                             setImagesBeginUploading(false)
                           }}
-                          onUploadError={(error: Error) => {
+                          onUploadError={() => {
                             setImagesBeginUploading(false)
                           }}
                           className='ut-button:bg-primary-500 ut-button:ut-readying:bg-primary-500/50 ut-button:ut-uploading:bg-primary-300'
                         />
                       </div>
-                      {!isPending &&
-                        uploadedImages.length > 0 &&
-                        uploadedImages.map((image) => (
-                          <div className='relative max-w-fit'>
+                      {!isPending
+                        && uploadedImages.length > 0
+                        && uploadedImages.map((image) => (
+                          <div className='relative max-w-fit' key={image}>
                             <Image
-                              className='h-[200px] w-[200px] rounded-xl object-cover'
+                              className='size-[200px] rounded-xl object-cover'
                               width={200}
                               height={200}
                               key={image}
@@ -408,13 +408,13 @@ const NovAktualniProjektPage = () => {
                               <TableCell>{apartment.priceWithTax} €</TableCell>
                               <TableCell>
                                 {apartment.status === StatusType.Prodaja && (
-                                  <div className='h-4 w-4 rounded-full bg-green-400'></div>
+                                  <div className='size-4 rounded-full bg-green-400'></div>
                                 )}
                                 {apartment.status === StatusType.Rezervirano && (
-                                  <div className='h-4 w-4 rounded-full bg-yellow-400'></div>
+                                  <div className='size-4 rounded-full bg-yellow-400'></div>
                                 )}
                                 {apartment.status === StatusType.Prodano && (
-                                  <div className='h-4 w-4 rounded-full bg-red-400'></div>
+                                  <div className='size-4 rounded-full bg-red-400'></div>
                                 )}
                               </TableCell>
                             </TableRow>

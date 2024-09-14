@@ -1,37 +1,39 @@
 'use client'
 
-import { CardWrapper } from './card-wrapper'
-import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useState, useTransition } from 'react'
+import { useForm } from 'react-hook-form'
 import * as z from 'zod'
-import { RegisterSchema } from '@/schemas'
-import {
-  Form,
+
+import { register } from '@/actions/register'
+import { FormError } from '@/components/form-error'
+import { FormSuccess } from '@/components/form-success'
+import { Button } from '@/components/ui/button'
+import { Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage
-} from '@/components/ui/form'
+  FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import { FormError } from '@/components/form-error'
-import { FormSuccess } from '@/components/form-success'
-import { useState, useTransition } from 'react'
-import { register } from '@/actions/register'
+import { RegisterSchema } from '@/schemas'
+
+import { CardWrapper } from './card-wrapper'
 
 function RegisterForm() {
-  const [isPending, startTransition] = useTransition()
-  const [error, setError] = useState<string | undefined>('')
-  const [success, setSuccess] = useState<string | undefined>('')
+  const [ isPending, startTransition ] = useTransition()
+
+  const [ error, setError ] = useState<string | undefined>('')
+
+  const [ success, setSuccess ] = useState<string | undefined>('')
 
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
     defaultValues: {
       email: '',
       password: '',
-      name: ''
-    }
+      name: '',
+    },
   })
 
   const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
@@ -57,8 +59,7 @@ function RegisterForm() {
             <FormField
               control={form.control}
               name='name'
-              render={({ field }) => {
-                return (
+              render={({ field }) => (
                   <FormItem>
                     <FormLabel>Name</FormLabel>
                     <FormControl>
@@ -71,14 +72,12 @@ function RegisterForm() {
                     </FormControl>
                     <FormMessage />
                   </FormItem>
-                )
-              }}
+              )}
             />
             <FormField
               control={form.control}
               name='email'
-              render={({ field }) => {
-                return (
+              render={({ field }) => (
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
@@ -91,14 +90,12 @@ function RegisterForm() {
                     </FormControl>
                     <FormMessage />
                   </FormItem>
-                )
-              }}
+              )}
             />
             <FormField
               control={form.control}
               name='password'
-              render={({ field }) => {
-                return (
+              render={({ field }) => (
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
@@ -111,8 +108,7 @@ function RegisterForm() {
                     </FormControl>
                     <FormMessage />
                   </FormItem>
-                )
-              }}
+              )}
             />
           </div>
           <FormError message={error} />

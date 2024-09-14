@@ -1,14 +1,14 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
+import React from 'react'
 
 type LoginButtonProps = {
   children: React.ReactNode
   mode?: 'modal' | 'redirect'
-  asChild?: boolean
 }
 
-function LoginButton({ children, mode = 'redirect', asChild }: LoginButtonProps) {
+function LoginButton({ children, mode = 'redirect' }: LoginButtonProps) {
   const router = useRouter()
 
   const onClick = () => {

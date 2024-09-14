@@ -10,8 +10,7 @@ interface BackButtonProps {
   disabled?: boolean
 }
 
-export const BackButton = ({ href, label, disabled }: BackButtonProps) => {
-  return (
+export const BackButton = ({ href, label, disabled }: BackButtonProps) => (
     <Button
       variant='link'
       className='w-full font-normal'
@@ -21,5 +20,4 @@ export const BackButton = ({ href, label, disabled }: BackButtonProps) => {
     >
       {label && <Link href={href}>{label}</Link>}
     </Button>
-  )
-}
+)

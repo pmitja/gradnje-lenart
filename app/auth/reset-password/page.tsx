@@ -1,7 +1,5 @@
 import ResetForm from '@/components/auth/reset-form'
 
-const ResetPasswordPage = () => {
-  return <ResetForm />
-}
+const ResetPasswordPage = () => <ResetForm />
 
 export default ResetPasswordPage

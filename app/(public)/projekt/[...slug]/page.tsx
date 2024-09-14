@@ -29,7 +29,7 @@ const SelectedProject = async ({ params }: { params: { slug: string } }) => {
 
   return (
     <div>
-      <InnerHero />
+      <InnerHero title={location.name} />
       <div className='mt-5 flex flex-col gap-5 lg:mt-10 lg:gap-10'>
       <RealEstateListing location={location} />
       <Cta />

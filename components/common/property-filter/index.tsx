@@ -1,14 +1,16 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect } from 'react'
+import { useForm } from 'react-hook-form'
 
 import ArrowSearchIcon from '@/components/icons/arrow-search'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { Slider } from '@/components/ui/slider'
 import { cn } from '@/lib/utils'
+import { useAppStore } from '@/store/app'
 
 import ButtonWithIcon from '../button-with-icon'
 
@@ -23,40 +25,33 @@ const PropertyFilter = ({ isDesktop = true }: PropertyFilterProps) => {
 
   const STEP = 500
 
-  const [ apartmentPrice, setApartmentPrice ] = useState([ 0, 300000 ])
+  const { propertyFilters, updatePropertyFilters } = useAppStore()
 
-  const [ floor, setFloor ] = useState('3')
+  const form = useForm({
+    defaultValues: {
+      floor: propertyFilters.floor,
+      size: propertyFilters.size,
+      priceRange: propertyFilters.priceRange || [ MIN_PRICE, MAX_PRICE ],
+      availability: propertyFilters.availability,
+    },
+  })
 
-  const [ size, setSize ] = useState('Dvosobno')
-
-  const [ additional, setAdditional ] = useState([ 'Parkirišče' ])
-
-  const [ availability, setAvailability ] = useState('Vsa')
-
-  const updateApartmentPrice = (value: number | number[], type?: 'min' | 'max') => {
-    const clamp = (v: number) => Math.min(Math.max(v, MIN_PRICE), MAX_PRICE)
-
-    if (Array.isArray(value)) {
-      const [ newMin, newMax ] = value.map((v) => clamp(Number.isNaN(v) ? MIN_PRICE : v))
-
-      setApartmentPrice([ newMin, Math.max(newMin, newMax) ])
-    } else {
-      const newValue = clamp(Number.isNaN(value) ? MIN_PRICE : value)
-
-      setApartmentPrice((prev) => {
-        if (type === 'min') {
-          return [ newValue, Math.max(newValue, prev[1]) ]
-        } if (type === 'max') {
-          return [ prev[0], Math.max(prev[0], newValue) ]
-        }
-        return prev
+  useEffect(() => {
+    const subscription = form.watch((value) => {
+      updatePropertyFilters({
+        ...value,
+        priceRange: value.priceRange
+          ? [ value.priceRange[0] || MIN_PRICE, value.priceRange[1] || MAX_PRICE ]
+          : [ MIN_PRICE, MAX_PRICE ],
       })
-    }
-  }
+    })
 
-  const toggleAdditional = (value: string) => {
-    // eslint-disable-next-line max-len
-    setAdditional((prev) => (prev.includes(value) ? prev.filter((item) => item !== value) : [ ...prev, value ]))
+    return () => subscription.unsubscribe()
+  }, [ form, updatePropertyFilters ])
+
+  const onSubmit = (data: any) => {
+    console.log(data)
+    // Handle form submission if needed
   }
 
   return (
@@ -66,136 +61,156 @@ const PropertyFilter = ({ isDesktop = true }: PropertyFilterProps) => {
           <CardTitle className="text-3xl font-bold">Filtri</CardTitle>
         </CardHeader>
       )}
-      <CardContent className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <div className="flex flex-col gap-6 rounded-2xl bg-primary-50 p-4 shadow-md">
-          <Label>Nadstropje:</Label>
-          <div className="flex flex-wrap gap-2">
-            {[ 'P', '1', '2', '3', '4', 'Vsa' ].map((value) => (
-              <Button
-                key={value}
-                variant="outline"
-                onClick={() => setFloor(value)}
-                className={cn(
-                  'rounded-2xl border-none bg-secondary-50 p-4 hover:bg-primary-300 hover:text-body-300',
-                  floor === value && 'bg-primary-200 text-body-300',
-                )}
-              >
-                {value}
-              </Button>
-            ))}
-          </div>
-        </div>
+      <CardContent className='px-0'>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <FormField
+              control={form.control}
+              name="floor"
+              render={({ field }) => (
+                <FormItem className="flex h-auto flex-col gap-4 rounded-2xl bg-primary-50 p-4 shadow-md">
+                  <FormLabel className="text-lg font-semibold">Nadstropje:</FormLabel>
+                  <FormControl>
+                    <div className="flex flex-wrap gap-2">
+                      {[ 'P', '1', '2', '3', '4', 'Vsa' ].map((value) => (
+                        <Button
+                          key={value}
+                          type="button"
+                          variant="outline"
+                          onClick={() => field.onChange(value)}
+                          className={cn(
+                            'rounded-xl border-none bg-secondary-50 px-4 py-2 text-sm font-medium hover:bg-primary-300 hover:text-body-300',
+                            field.value === value && 'bg-primary-200 text-body-300',
+                          )}
+                        >
+                          {value}
+                        </Button>
+                      ))}
+                    </div>
+                  </FormControl>
+                </FormItem>
+              )}
+            />
 
-        <div className="flex flex-col gap-6 rounded-2xl bg-primary-50 p-4 shadow-md">
-          <Label>Velikost:</Label>
-          <div className="flex flex-wrap gap-2">
-            {[ 'Enosobno', 'Ena in pol sobno', 'Dvosobno', 'Trisobno' ].map((value) => (
-              <Button
-                key={value}
-                variant="outline"
-                onClick={() => setSize(value)}
-                className={cn(
-                  'rounded-2xl border-none bg-secondary-50 p-4 hover:bg-primary-300 hover:text-body-300',
-                  size === value && 'bg-primary-200 text-body-300',
-                )}
-              >
-                {value}
-              </Button>
-            ))}
-          </div>
-        </div>
+            <FormField
+              control={form.control}
+              name="size"
+              render={({ field }) => (
+                <FormItem className="flex h-auto flex-col gap-4 rounded-2xl bg-primary-50 p-4 shadow-md">
+                  <FormLabel className="text-lg font-semibold">Velikost:</FormLabel>
+                  <FormControl>
+                    <div className="flex flex-wrap gap-2">
+                      {[ 'Enosobno', 'Ena in pol sobno', 'Dvosobno', 'Trisobno' ].map((value) => (
+                        <Button
+                          key={value}
+                          type="button"
+                          variant="outline"
+                          onClick={() => field.onChange(value)}
+                          className={cn(
+                            'rounded-xl border-none bg-secondary-50 px-4 py-2 text-sm font-medium hover:bg-primary-300 hover:text-body-300',
+                            field.value === value && 'bg-primary-200 text-body-300',
+                          )}
+                        >
+                          {value}
+                        </Button>
+                      ))}
+                    </div>
+                  </FormControl>
+                </FormItem>
+              )}
+            />
 
-        <div className="flex flex-col gap-6 rounded-2xl bg-primary-50 p-4 shadow-md">
-          <Label>Cena:</Label>
-          <Slider
-            defaultValue={apartmentPrice}
-            onValueChange={(value) => updateApartmentPrice(value)}
-            value={apartmentPrice}
-            max={MAX_PRICE}
-            min={MIN_PRICE}
-            step={STEP}
-          />
-          <div className="flex gap-4">
-            <div className="flex flex-col items-center gap-4">
-              <div className="inline-flex items-center rounded-2xl bg-secondary-50 p-4">
-                <span className="text-sm">od</span>
-                <Input
-                  id="min-price"
-                  type="number"
-                  className="inline h-auto max-w-16 border-none bg-transparent p-0 text-center text-sm"
-                  onChange={(e) => updateApartmentPrice(parseInt(e.target.value, 10), 'min')}
-                  value={apartmentPrice[0]}
-                />
-                <span className="text-sm">€</span>
-              </div>
-              <p className="text-xs">min.</p>
-            </div>
-            <div className="p-2 text-2xl">-</div>
-            <div className="flex flex-col items-center gap-4">
-              <div className="inline-flex items-center rounded-2xl bg-secondary-50 p-4">
-                <span className="text-sm">do</span>
-                <Input
-                  id="max-price"
-                  type="number"
-                  className="inline h-auto max-w-16 border-none bg-transparent p-0 text-center text-sm"
-                  onChange={(e) => updateApartmentPrice(parseInt(e.target.value, 10), 'max')}
-                  value={apartmentPrice[1]}
-                />
-                <span className="text-sm">€</span>
-              </div>
-              <p className="text-xs">max.</p>
-            </div>
-          </div>
-        </div>
+            <FormField
+              control={form.control}
+              name="availability"
+              render={({ field }) => (
+                <FormItem className="flex h-auto flex-col gap-4 rounded-2xl bg-primary-50 p-4 shadow-md">
+                  <FormLabel className="text-lg font-semibold">Status:</FormLabel>
+                  <FormControl>
+                    <div className="flex flex-wrap gap-2">
+                      {[ 'Na prodaj', 'Rezervirano', 'Prodano' ].map((value) => (
+                        <Button
+                          key={value}
+                          type="button"
+                          variant="outline"
+                          onClick={() => field.onChange(value)}
+                          className={cn(
+                            'rounded-xl border-none bg-secondary-50 px-6 py-2 text-sm font-medium hover:bg-primary-300 hover:text-body-300',
+                            field.value === value && 'bg-primary-200 text-body-300',
+                          )}
+                        >
+                          {value}
+                        </Button>
+                      ))}
+                    </div>
+                  </FormControl>
+                </FormItem>
+              )}
+            />
 
-        <div className="flex flex-col gap-6 rounded-2xl bg-primary-50 p-4 shadow-md">
-          <Label>Dodatno:</Label>
-          <div className="flex flex-wrap gap-2">
-            {[ 'Atri', 'Balkon', 'Parkirišče', 'Garažno mesto', 'Shramba v kletnih prostorih' ].map(
-              (value) => (
-                <Button
-                  key={value}
-                  variant="outline"
-                  onClick={() => toggleAdditional(value)}
-                  className={cn(
-                    'rounded-2xl border-none bg-secondary-50 p-4 hover:bg-primary-300 hover:text-body-300',
-                    additional.includes(value) && 'bg-primary-200 text-body-300',
-                  )}
-                >
-                  {value}
-                </Button>
-              ),
-            )}
-          </div>
-        </div>
+            <FormField
+              control={form.control}
+              name="priceRange"
+              render={({ field }) => (
+                <FormItem className="flex h-auto flex-col gap-4 rounded-2xl bg-primary-50 p-4 shadow-md">
+                  <FormLabel className="text-lg font-semibold">Cena:</FormLabel>
+                  <FormControl>
+                    <div className="flex flex-col gap-4">
+                      <Slider
+                        defaultValue={field.value}
+                        onValueChange={(value) => field.onChange(value)}
+                        max={MAX_PRICE}
+                        min={MIN_PRICE}
+                        step={STEP}
+                        className="py-4"
+                      />
+                      <div className="flex justify-between gap-4">
+                        <div className="flex flex-col items-center gap-2">
+                          <div className="inline-flex items-center rounded-xl bg-secondary-50 p-2">
+                            <span className="text-xs font-medium">od</span>
+                            <Input
+                              type="number"
+                              className="inline h-auto max-w-16 border-none bg-transparent p-0 text-center text-sm font-medium"
+                              onChange={(e) => field.onChange([
+                                parseInt(e.target.value, 10), field.value[1] ])}
+                              value={field.value[0]}
+                            />
+                            <span className="text-xs font-medium">€</span>
+                          </div>
+                          <p className="text-xs text-gray-500">min.</p>
+                        </div>
+                        <div className="flex flex-col items-center gap-2">
+                          <div className="inline-flex items-center rounded-xl bg-secondary-50 p-2">
+                            <span className="text-xs font-medium">do</span>
+                            <Input
+                              type="number"
+                              className="inline h-auto max-w-16 border-none bg-transparent p-0 text-center text-sm font-medium"
+                              onChange={(e) => field.onChange([ field.value[0],
+                                parseInt(e.target.value, 10) ])}
+                              value={field.value[1]}
+                            />
+                            <span className="text-xs font-medium">€</span>
+                          </div>
+                          <p className="text-xs text-gray-500">max.</p>
+                        </div>
+                      </div>
+                    </div>
+                  </FormControl>
+                </FormItem>
+              )}
+            />
 
-        <div className="flex flex-col gap-6 rounded-2xl bg-primary-50 p-4 shadow-md">
-          <Label>Prosta:</Label>
-          <div className="flex gap-2">
-            {[ 'Vsa', 'Da', 'Ne' ].map((value) => (
-              <Button
-                key={value}
-                variant="outline"
-                onClick={() => setAvailability(value)}
-                className={cn(
-                  'rounded-2xl border-none bg-secondary-50 p-4 hover:bg-primary-300 hover:text-body-300',
-                  availability === value && 'bg-primary-200 text-body-300',
-                )}
-              >
-                {value}
-              </Button>
-            ))}
-          </div>
-        </div>
-
-        <ButtonWithIcon
-          variant="primary"
-          className="max-w-fit rounded-2xl px-10 py-3 text-xl font-normal text-body-300 drop-shadow-primary-button md:col-span-2"
-          icon={<ArrowSearchIcon />}
-          iconPosition="left"
-        >
-          Išči
-        </ButtonWithIcon>
+            <ButtonWithIcon
+              type="submit"
+              variant="primary"
+              className="max-w-fit rounded-xl px-10 py-3 text-lg font-semibold text-body-300 drop-shadow-primary-button md:col-span-2"
+              icon={<ArrowSearchIcon />}
+              iconPosition="left"
+            >
+              Išči
+            </ButtonWithIcon>
+          </form>
+        </Form>
       </CardContent>
     </Card>
   )

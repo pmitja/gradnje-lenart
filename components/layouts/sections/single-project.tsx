@@ -9,7 +9,7 @@ import { ArrowRight,
   Maximize2,
   ParkingCircle } from 'lucide-react'
 import Image from 'next/image'
-import React, { useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 
 import PropertyFilter from '@/components/common/property-filter'
 import { Accordion,
@@ -23,6 +23,7 @@ import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carouse
 import { useMediaQuery } from '@/hooks/use-media-query'
 import { formatNumber } from '@/lib/helpers'
 import { cn } from '@/lib/utils'
+import { useAppStore } from '@/store/app'
 import { StatusType } from '@/types/general'
 
 interface LocationWithRealEstates extends Location {
@@ -180,9 +181,38 @@ const DetailedPropertyView: React.FC<DetailedPropertyViewProps> = ({
 )
 
 const RealEstateListing = ({ location }: { location: LocationWithRealEstates }) => {
-  const [ selectedProject, setSelectedProject ] = useState<RealEstate>(location.realEstates[0])
+  const { propertyFilters } = useAppStore()
+
+  const [ selectedProject, setSelectedProject ] = useState<RealEstate | null>(null)
 
   const isDesktop = useMediaQuery('(min-width: 1120px)')
+
+  const filteredRealEstates = useMemo(() => location.realEstates.filter((realEstate) => {
+    const { floor, size, priceRange, availability } = propertyFilters
+
+    const floorMatch = !floor || floor === 'Vsa' || realEstate.floor === floor
+
+    const sizeMatch = !size || realEstate.name.includes(size)
+
+    const priceMatch = !priceRange || (
+      Number(realEstate.priceWithTax) >= priceRange[0]
+        && Number(realEstate.priceWithTax) <= priceRange[1]
+    )
+
+    const availabilityMatch = !availability || realEstate.status === availability
+
+    return floorMatch && sizeMatch && priceMatch && availabilityMatch
+  }), [ location.realEstates, propertyFilters ])
+
+  useEffect(() => {
+    if (filteredRealEstates.length > 0 && !selectedProject) {
+      setSelectedProject(filteredRealEstates[0])
+    } else if (filteredRealEstates.length === 0) {
+      setSelectedProject(null)
+    } else if (selectedProject && !filteredRealEstates.includes(selectedProject)) {
+      setSelectedProject(filteredRealEstates[0])
+    }
+  }, [ filteredRealEstates, selectedProject ])
 
   return (
     <>
@@ -206,7 +236,7 @@ const RealEstateListing = ({ location }: { location: LocationWithRealEstates }) 
         </h2>
         <Carousel className="w-full">
           <CarouselContent className="mb-2 ml-1 flex gap-8">
-            {location.realEstates.map((realEstate) => (
+            {filteredRealEstates.map((realEstate) => (
               <CarouselItem key={realEstate.id} className="min-w-fit shrink p-0">
                 <PropertyCard
                   key={realEstate.id}
@@ -214,7 +244,7 @@ const RealEstateListing = ({ location }: { location: LocationWithRealEstates }) 
                   city={location.city}
                   address={location.address}
                   onClick={setSelectedProject}
-                  isActive={selectedProject.id === realEstate.id}
+                  isActive={selectedProject?.id === realEstate.id}
                 />
               </CarouselItem>
             ))}

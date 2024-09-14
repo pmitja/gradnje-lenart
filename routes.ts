@@ -9,8 +9,7 @@ export const publicRoutes = [
   '/auth/new-verification',
   '/api/uploadthing?slug=imageUploader',
   '/projekti',
-  '/projekt/lenart-v-slovenskih-goricah',
-  '/projekt/lenart-v-slov-goricah',
+  '/projekt',
 ]
 
 /**

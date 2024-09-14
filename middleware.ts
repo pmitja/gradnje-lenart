@@ -38,7 +38,8 @@ export default auth((req) => {
     return NextResponse.next()
   }
 
-  if (!isLoggedIn && !isPublicRoute) {
+  if (!isLoggedIn && !isPublicRoute
+    && !publicRoutes.some((route) => nextUrl.pathname.startsWith(route))) {
     let callbackUrl = nextUrl.pathname
 
     if (nextUrl.search) {

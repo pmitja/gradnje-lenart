@@ -13,7 +13,6 @@ import React, { useEffect, useMemo, useState } from 'react'
 
 import NoResultComponent from '@/components/common/no-results-banner'
 import PropertyFilter from '@/components/common/property-filter'
-import RealEstateTable from '@/components/common/real-estate-table'
 import { Accordion,
   AccordionContent,
   AccordionItem,
@@ -237,7 +236,6 @@ const RealEstateListing = ({ location }: { location: LocationWithRealEstates }) 
 
   return (
     <>
-      <RealEstateTable location={location} />
       {isDesktop ? (
         <PropertyFilter />
       ) : (

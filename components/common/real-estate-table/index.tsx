@@ -16,9 +16,10 @@ import { cn } from '@/lib/utils'
 
 interface RealEstateTableProps {
   location: Location & { realEstates: RealEstate[] }
+  slug: string
 }
 
-const RealEstateTable: React.FC<RealEstateTableProps> = ({ location }) => (
+const RealEstateTable: React.FC<RealEstateTableProps> = ({ location, slug }) => (
   <>
     <h2 className='text-xl font-bold leading-none tracking-tight text-secondary-400 lg:text-3xl'>
       Cenik
@@ -54,7 +55,7 @@ const RealEstateTable: React.FC<RealEstateTableProps> = ({ location }) => (
             <TableCell className="text-right">
               {realEstate.status === 'Na prodaj' && (
                 <Button asChild variant="primary" size="sm">
-                  <Link href={realEstate.slug}>Preveri</Link>
+                  <Link href={`${slug}/${realEstate.id}`}>Preveri</Link>
                 </Button>
               )}
             </TableCell>

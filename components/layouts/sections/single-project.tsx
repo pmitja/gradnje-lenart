@@ -13,6 +13,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 
 import NoResultComponent from '@/components/common/no-results-banner'
 import PropertyFilter from '@/components/common/property-filter'
+import RealEstateTable from '@/components/common/real-estate-table'
 import { Accordion,
   AccordionContent,
   AccordionItem,
@@ -236,12 +237,13 @@ const RealEstateListing = ({ location }: { location: LocationWithRealEstates }) 
 
   return (
     <>
+      <RealEstateTable location={location} />
       {isDesktop ? (
         <PropertyFilter />
       ) : (
         <Accordion type="single" collapsible>
           <AccordionItem value="item-1">
-            <AccordionTrigger className="text-3xl font-bold data-[state=open]:bg-transparent">
+            <AccordionTrigger className="text-xl font-bold data-[state=open]:bg-transparent lg:text-3xl">
               Filtri
             </AccordionTrigger>
             <AccordionContent className="data-[state=open]:bg-transparent">
@@ -251,8 +253,8 @@ const RealEstateListing = ({ location }: { location: LocationWithRealEstates }) 
         </Accordion>
       )}
       <section className="flex w-full flex-col gap-3 lg:gap-5">
-        <h2 className="flex items-center gap-2 text-2xl font-bold text-secondary-400 md:text-3xl lg:text-4xl">
-          <Home size={32} /> Nepremičnine
+        <h2 className="flex items-center gap-2 text-xl font-bold text-secondary-400 lg:text-3xl">
+          <Home size={32} className='size-4 lg:size-8' /> Nepremičnine
         </h2>
         <Carousel className="w-full">
           <CarouselContent className="mb-2 ml-1 flex gap-8">

@@ -66,7 +66,7 @@ const PropertyFilter = ({ isDesktop = true }: PropertyFilterProps) => {
     <Card className="mx-auto w-full border-none bg-transparent px-0 shadow-none">
       {isDesktop && (
         <CardHeader className='px-0'>
-          <CardTitle className="text-3xl font-bold">Filtri</CardTitle>
+          <CardTitle className="text-xl font-bold text-secondary-400 lg:text-3xl">Filtri</CardTitle>
         </CardHeader>
       )}
       <CardContent className='px-0'>

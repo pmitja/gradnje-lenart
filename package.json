@@ -69,6 +69,7 @@
     "uploadthing": "^6.13.2",
     "uuid": "^9.0.1",
     "vaul": "^0.9.1",
+    "yet-another-react-lightbox": "^3.21.5",
     "zod": "^3.23.5",
     "zustand": "^4.5.4"
   },
@@ -79,12 +80,6 @@
     "@types/react-dom": "^18",
     "@types/uuid": "^9.0.8",
     "daisyui": "^4.12.2",
-    "postcss": "^8",
-    "prettier": "^3.3.3",
-    "prettier-plugin-tailwindcss": "^0.6.6",
-    "prisma": "^5.12.1",
-    "tailwindcss": "^3.4.1",
-    "typescript": "^5",
     "eslint": "^8.57.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^17.1.0",
@@ -102,6 +97,12 @@
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "eslint-plugin-tailwindcss": "^3.13.0",
     "eslint-plugin-testing-library": "^6.2.0",
-    "eslint-plugin-unused-imports": "^3.0.0"
+    "eslint-plugin-unused-imports": "^3.0.0",
+    "postcss": "^8",
+    "prettier": "^3.3.3",
+    "prettier-plugin-tailwindcss": "^0.6.6",
+    "prisma": "^5.12.1",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
   }
 }

@@ -14,9 +14,12 @@ import { Bath,
 import React from 'react'
 
 import ButtonWithIcon from '@/components/common/button-with-icon'
+import DocumentIcon from '@/components/icons/document'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 
+import PropertyMap from './property-map'
 import RealEstateImages from './real-estate-images'
 
 const images = [
@@ -37,8 +40,9 @@ interface PropertyDetail {
   value: string;
 }
 
-const DetailViewRealEstate = ({ description, technicalData }:
-  { description: string, technicalData: {id: string, text: string}[] }) => {
+const DetailViewRealEstate = ({ description, technicalData, city, address, files }:
+  { description: string, technicalData: {id: string, text: string}[],
+  city: string, address: string, files: string[] }) => {
   const details: PropertyDetail[] = [
     {
       icon: <Euro className="size-2 md:size-4 lg:size-6" />, label: 'Cena', value: '200.000 €',
@@ -127,11 +131,30 @@ const DetailViewRealEstate = ({ description, technicalData }:
 
       <div className='flex flex-col gap-3'>
         <h3 className='text-xl font-semibold leading-none tracking-tight text-secondary-400 lg:text-3xl'>Tehnični podatki</h3>
-        <ul className='text-secondary-300'>
+        <ul className='grid grid-cols-2 text-secondary-300 md:grid-cols-3'>
           {technicalData.map((data, index) => (
             <li className='flex gap-5' key={index}><Check className='text-primary-200' />{data.text}</li>
           ))}
         </ul>
+      </div>
+
+      <div className='grid grid-cols-1 items-center gap-5 lg:grid-cols-2 lg:gap-10'>
+        <div className='flex flex-col gap-3 md:gap-5'>
+          <h3 className='text-xl font-semibold leading-none tracking-tight text-secondary-400 lg:text-3xl'>Lokacija</h3>
+          <PropertyMap address={address} city={city} />
+        </div>
+        <div className='flex flex-col items-center gap-10'>
+          <div className='flex flex-col gap-4 rounded-2xl bg-white p-6 shadow-md'>
+            <h4>Dokumenti</h4>
+            <div className='flex items-center gap-3'>
+              <DocumentIcon />
+              {files.map((file, index) => (
+                <a href={`https://utfs.io/f/${file}`} target='_blank' key={index}>{`https://utfs.io/f/${file}`}</a> // Display each file string
+              ))}
+            </div>
+          </div>
+            <Button variant="secondary" className='w-fit'>Vstopite v stik</Button>
+        </div>
       </div>
 
       <ButtonWithIcon variant="primary" className="w-full lg:w-auto" icon={<KeySquare />} iconPosition='left'>Rezerviraj nepremičnino</ButtonWithIcon>

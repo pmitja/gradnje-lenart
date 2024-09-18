@@ -39,7 +39,7 @@ const SingleProjectPage = async ({ params }: { params: { slug: string; id: strin
         size={realEstates.size?.toString() || '0'}
         parkingSpaces={realEstates.parkingSpaces ?? 0}
       />
-      <DetailViewRealEstate description={realEstates.description ?? ''} technicalData={realEstates.technicalData as {id: string, text: string}[]} />
+      <DetailViewRealEstate description={realEstates.description ?? ''} technicalData={realEstates.technicalData as {id: string, text: string}[]} address={location.address} city={location.city} files={realEstates.files} />
       <div className="mt-5 flex flex-col gap-5 lg:mt-10 lg:gap-10">
         <Cta />
         <OffersBanner

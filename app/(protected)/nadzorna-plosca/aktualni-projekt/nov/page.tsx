@@ -7,7 +7,6 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useState, useTransition } from 'react'
 import { useForm } from 'react-hook-form'
-import { UploadedFileData, UploadFileResult } from 'uploadthing/types'
 import { z } from 'zod'
 
 import { deleteUTFiles } from '@/actions/delete-from-uploadthing'
@@ -291,8 +290,8 @@ const NovAktualniProjektPage = () => {
                         <UploadButton
                           endpoint='imageUploader'
                           onUploadProgress={() => setImagesBeginUploading(true)}
-                          onClientUploadComplete={(res: UploadFileResult) => {
-                            const array = res.map((file: UploadedFileData) => file.key)
+                          onClientUploadComplete={(res) => {
+                            const array = res.map((file) => file.key)
 
                             setValue('images', array)
                             setUploadedImages(array)

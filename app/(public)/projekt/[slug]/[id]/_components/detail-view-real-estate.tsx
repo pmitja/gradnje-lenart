@@ -42,7 +42,7 @@ interface PropertyDetail {
 
 const DetailViewRealEstate = ({ description, technicalData, city, address, files }:
   { description: string, technicalData: {id: string, text: string}[],
-  city: string, address: string, files: string[] }) => {
+  city: string, address: string, files?: {name: string, key: string}[] }) => {
   const details: PropertyDetail[] = [
     {
       icon: <Euro className="size-2 md:size-4 lg:size-6" />, label: 'Cena', value: '200.000 €',
@@ -143,18 +143,18 @@ const DetailViewRealEstate = ({ description, technicalData, city, address, files
           <h3 className='text-xl font-semibold leading-none tracking-tight text-secondary-400 lg:text-3xl'>Lokacija</h3>
           <PropertyMap address={address} city={city} />
         </div>
-        <div className='flex flex-col items-center gap-10'>
-          <div className='flex flex-col gap-4 rounded-2xl bg-white p-6 shadow-md'>
+        {files && <div className='flex flex-col items-center gap-10'>
+          <div className='flex max-w-full flex-col gap-4 overflow-hidden rounded-2xl bg-white p-6 shadow-md'>
             <h4>Dokumenti</h4>
             <div className='flex items-center gap-3'>
               <DocumentIcon />
               {files.map((file, index) => (
-                <a href={`https://utfs.io/f/${file}`} target='_blank' key={index}>{`https://utfs.io/f/${file}`}</a> // Display each file string
+                <a href={`https://utfs.io/f/${file.key}`} target='_blank' key={index}>{file.name}</a> // Display each file string
               ))}
             </div>
           </div>
             <Button variant="secondary" className='w-fit'>Vstopite v stik</Button>
-        </div>
+        </div>}
       </div>
 
       <ButtonWithIcon variant="primary" className="w-full lg:w-auto" icon={<KeySquare />} iconPosition='left'>Rezerviraj nepremičnino</ButtonWithIcon>

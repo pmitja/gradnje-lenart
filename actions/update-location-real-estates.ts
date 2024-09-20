@@ -1,3 +1,6 @@
+/* eslint-disable no-plusplus */
+/* eslint-disable no-await-in-loop */
+
 'use server'
 
 import { z } from 'zod'
@@ -9,13 +12,12 @@ import { updateSchema } from '@/schemas'
 export const updateLocationRealEstate = async (values: z.infer<typeof updateSchema>) => {
   const validatedFields = updateSchema.safeParse(values)
 
-  console.log(validatedFields)
   if (!validatedFields.success) {
     return {
       error: 'Invalid fields',
     }
   }
-  const { apartments, locationSlug } = values
+  const { apartments, locationSlug } = validatedFields.data
 
   const location = await db.location.findUnique({
     where: {
@@ -28,7 +30,6 @@ export const updateLocationRealEstate = async (values: z.infer<typeof updateSche
       error: 'Location not found',
     }
   }
-
   try {
     await Promise.all(
       apartments.map(async (apartment) => {
@@ -56,11 +57,36 @@ export const updateLocationRealEstate = async (values: z.infer<typeof updateSche
                   id: td.id, text: td.text,
                 }))
                 : undefined,
-              files: apartment.files,
+              files: apartment.files
+                ? apartment.files.map((td) => ({
+                  name: td.name, key: td.key,
+                }))
+                : undefined,
               isExposed: apartment.isExposed,
             },
           })
         } else {
+          let slug = generateSlugWithNumber(location.slug, apartment.number)
+
+          let slugExists = true
+
+          let slugCounter = 1
+
+          while (slugExists) {
+            const existingRealEstate = await db.realEstate.findUnique({
+              where: {
+                slug,
+              },
+            })
+
+            if (!existingRealEstate) {
+              slugExists = false
+            } else {
+              slug = generateSlugWithNumber(location.slug, `${apartment.number}-${slugCounter}`)
+              slugCounter++
+            }
+          }
+
           await db.realEstate.create({
             data: {
               name: apartment.name,
@@ -70,7 +96,7 @@ export const updateLocationRealEstate = async (values: z.infer<typeof updateSche
               priceWithTax: apartment.priceWithTax,
               price: apartment.price,
               locationId: location.id,
-              slug: generateSlugWithNumber(location.slug, apartment.number),
+              slug,
               status: apartment.status,
               images: apartment.images,
               description: apartment.description,
@@ -84,7 +110,11 @@ export const updateLocationRealEstate = async (values: z.infer<typeof updateSche
                   text: td.text,
                 }))
                 : undefined,
-              files: apartment.files,
+              files: apartment.files
+                ? apartment.files.map((td) => ({
+                  name: td.name, key: td.key,
+                }))
+                : undefined,
               isExposed: apartment.isExposed,
             },
           })

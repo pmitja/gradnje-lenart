@@ -38,6 +38,14 @@ export default auth((req) => {
     return NextResponse.next()
   }
 
+  if (!isLoggedIn && !isPublicRoute) {
+    const callbackUrl = nextUrl.pathname
+
+    const encodedCallbackUrl = encodeURIComponent(callbackUrl)
+
+    return Response.redirect(new URL(`/auth/login?callbackUrl=${encodedCallbackUrl}`, nextUrl))
+  }
+
   if (!isLoggedIn && !isPublicRoute
     && !publicRoutes.some((route) => nextUrl.pathname.startsWith(route))) {
     let callbackUrl = nextUrl.pathname

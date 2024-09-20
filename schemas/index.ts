@@ -74,7 +74,10 @@ export const formSchema = z.object({
       }),
     )
     .optional(),
-  files: z.array(z.string()).optional(),
+  files: z.array(z.object({
+    name: z.string(),
+    key: z.string(),
+  })).nullable(),
   isExposed: z.boolean(),
 })
 

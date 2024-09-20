@@ -102,7 +102,10 @@ export type Apartment = {
     id: string
     text: string
   }[]
-  files?: string[]
+  files?: {
+    name: string
+    key: string
+  }[] | null
   isExposed: boolean
 }
 

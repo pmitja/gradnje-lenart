@@ -51,7 +51,7 @@ const AktualniProjektPage = ({ params: { slug } }: { params: { slug: string } })
         }
       })
     })
-  }, [])
+  }, [ slug ])
 
   const form = useForm<z.infer<typeof updateSchema>>({
     resolver: zodResolver(updateSchema),
@@ -68,7 +68,10 @@ const AktualniProjektPage = ({ params: { slug } }: { params: { slug: string } })
   }
 
   useEffect(() => {
-    setValue('apartments', apartments)
+    setValue('apartments', apartments.map((apartment) => ({
+      ...apartment,
+      files: null,
+    })))
   }, [ apartments ])
 
   function onSubmit(values: z.infer<typeof updateSchema>) {
@@ -112,7 +115,11 @@ const AktualniProjektPage = ({ params: { slug } }: { params: { slug: string } })
                 variant={'primary'}
                 className='border border-body-200'
                 onClick={() => onSubmit({
-                  apartments, locationSlug: location.slug,
+                  apartments: apartments.map((apartment) => ({
+                    ...apartment,
+                    files: apartment.files || null,
+                  })),
+                  locationSlug: location.slug,
                 })}
               >
                 Posodobi lokacijo

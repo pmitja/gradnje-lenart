@@ -4,9 +4,9 @@ import { UTApi } from 'uploadthing/server'
 
 const utapi = new UTApi()
 
-export const deleteUTFiles = async (files: string[]) => {
+export const deleteUTFiles = async (key: string[]) => {
   try {
-    await utapi.deleteFiles(files)
+    await utapi.deleteFiles(key)
     return {
       success: 'Slika je odstranjena',
     }

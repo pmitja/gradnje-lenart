@@ -87,7 +87,11 @@ export const newLocation = async (values: z.infer<typeof mainFormSchema>) => {
               })),
             }
             : undefined,
-          files: apartment.files,
+          files: apartment.files
+            ? apartment.files.map((td) => ({
+              name: td.name, key: td.key,
+            }))
+            : undefined,
         },
       })
     }),

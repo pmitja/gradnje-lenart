@@ -6,6 +6,7 @@ import { Tag, TagInput } from 'emblor'
 import Image from 'next/image'
 import { useState, useTransition } from 'react'
 import { useForm } from 'react-hook-form'
+import { UploadedFileData, UploadFileResult } from 'uploadthing/types'
 import { z } from 'zod'
 
 import { deleteUTFiles } from '@/actions/delete-from-uploadthing'
@@ -41,7 +42,7 @@ const ApartmentForm = ({ saveFormValues }: { saveFormValues: (values: Apartment)
 
   const [ uploadedImages, setUploadedImages ] = useState<string[]>([])
 
-  const [ uploadedFiles, setUploadedFiles ] = useState<string[]>([])
+  const [ uploadedFiles, setUploadedFiles ] = useState<{ name: string; key: string }[]>([])
 
   const [ technicalData, setTechnicalData ] = useState<Tag[]>([])
 
@@ -91,11 +92,11 @@ const ApartmentForm = ({ saveFormValues }: { saveFormValues: (values: Apartment)
     })
   }
 
-  const handleRemoveFile = (file: string) => async () => {
+  const handleRemoveFile = (key: string) => async () => {
     startTransition(() => {
-      deleteUTFiles([ file ]).then((res) => {
+      deleteUTFiles([ key ]).then((res) => {
         if (res.success) {
-          const filteredFiles = uploadedFiles.filter((id) => id !== file)
+          const filteredFiles = uploadedFiles.filter((file) => file.key !== key)
 
           setUploadedFiles(filteredFiles)
           setValue('files', filteredFiles)
@@ -503,8 +504,8 @@ const ApartmentForm = ({ saveFormValues }: { saveFormValues: (values: Apartment)
               <UploadButton
                 endpoint='imageUploader'
                 onUploadProgress={() => setImagesBeginUploading(true)}
-                onClientUploadComplete={(res) => {
-                  const array = res.map((file) => file.key)
+                onClientUploadComplete={(res: UploadFileResult) => {
+                  const array = res.map((file: UploadedFileData) => file.key)
 
                   setValue('images', array)
                   setUploadedImages(array)
@@ -545,8 +546,10 @@ const ApartmentForm = ({ saveFormValues }: { saveFormValues: (values: Apartment)
               <UploadButton
                 endpoint='fileUpload'
                 onUploadProgress={() => setFilesBeginUploading(true)}
-                onClientUploadComplete={(res) => {
-                  const array = res.map((file) => file.key)
+                onClientUploadComplete={(res: UploadFileResult) => {
+                  const array = res.map((file: UploadedFileData) => ({
+                    name: file.name, key: file.key,
+                  }))
 
                   setValue('files', array)
                   setUploadedFiles(array)
@@ -563,12 +566,12 @@ const ApartmentForm = ({ saveFormValues }: { saveFormValues: (values: Apartment)
             {!isPending
               && uploadedFiles.length > 0
               && uploadedFiles.map((file) => (
-                <div className='relative flex max-w-fit items-center gap-3 rounded-md bg-primary-300 p-2 text-white' key={file}>
-                  <div>{file}</div>
+                <div className='relative flex max-w-fit items-center gap-3 rounded-md bg-primary-300 p-2 text-white' key={file.key}>
+                  <div>{file.name}</div>
                   <Button
                     variant={'ghost'}
                     className='max-w-fit'
-                    onClick={handleRemoveFile(file)}
+                    onClick={handleRemoveFile(file.key)}
                   >
                     <CloseIcon />
                   </Button>

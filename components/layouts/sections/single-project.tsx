@@ -1,14 +1,9 @@
 'use client'
 
 import { Location, RealEstate } from '@prisma/client'
-import { ArrowRight,
-  BadgeCheckIcon,
-  Car,
-  Expand,
-  Home,
-  Maximize2,
-  ParkingCircle } from 'lucide-react'
+import { ArrowRight, BadgeCheckIcon, Home, InfoIcon, Maximize2 } from 'lucide-react'
 import Image from 'next/image'
+import Link from 'next/link'
 import React, { useEffect, useMemo, useState } from 'react'
 
 import NoResultComponent from '@/components/common/no-results-banner'
@@ -24,6 +19,7 @@ import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carouse
 import { useMediaQuery } from '@/hooks/use-media-query'
 import { formatNumber } from '@/lib/helpers'
 import { cn } from '@/lib/utils'
+import { rooms } from '@/lib/utils/rooms'
 import { useAppStore } from '@/store/app'
 import { StatusType } from '@/types/general'
 
@@ -36,9 +32,7 @@ interface PropertyDetails {
   type: string
   location: string
   size: string
-  hasBalcony: boolean
-  hasParking: boolean
-  hasGarage: boolean
+  spaces?: string[] | null
 }
 
 interface PropertyCardProps {
@@ -47,6 +41,7 @@ interface PropertyCardProps {
   address: string
   onClick: (realEstate: RealEstate) => void
   isActive: boolean
+  spaces?: string[] | null
 }
 
 const PropertyCard: React.FC<PropertyCardProps> = ({
@@ -55,6 +50,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
   address,
   onClick,
   isActive = false,
+  spaces,
 }) => (
   <Button
     variant="outline"
@@ -64,7 +60,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
     )}
     onClick={() => onClick(realEstate)}
   >
-    <div className="relative">
+    <div className="relative w-full">
       <Image
         src={`https://utfs.io/f/${realEstate.images[0]}`}
         alt={realEstate.name}
@@ -72,9 +68,15 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
         height={200}
         className="relative aspect-square size-full max-h-[200px] rounded-2xl object-cover lg:max-w-[200px]"
       />
+
       {realEstate.status === StatusType.Rezervirano && (
-        <div className="absolute right-0 top-0 w-full rounded-t-2xl bg-red-500 px-2 py-1 text-xs text-white">
+        <div className="absolute right-0 top-0 w-full rounded-t-2xl bg-orange-100 px-2 py-1 text-xs text-orange-800">
           Rezervirano
+        </div>
+      )}
+      {realEstate.status === StatusType.Prodano && (
+        <div className="absolute right-0 top-0 w-full rounded-t-2xl bg-destructive-200 px-2 py-1 text-xs text-white">
+          Prodano
         </div>
       )}
     </div>
@@ -88,21 +90,24 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
       <span className="text-xs leading-3.5 text-secondary-200">
         {city}, {address}
       </span>
-      <div className="mt-2 flex flex-wrap gap-2">
-        <Badge variant={'pills'} className="px-2 py-1 text-xs font-bold text-secondary-400">
-          <Expand size={16} />
-          {realEstate.size} m²
-        </Badge>
-        <Badge variant={'pills'} className="px-2 py-1 text-xs font-bold text-secondary-400">
-          Balkon
-        </Badge>
-        <Badge variant={'pills'} className="px-2 py-1 text-xs font-bold text-secondary-400">
-          Parkirišče
-        </Badge>
-        <Badge variant={'pills'} className="px-2 py-1 text-xs font-bold text-secondary-400">
-          Garaža
-        </Badge>
-      </div>
+      {spaces && (
+        <div className="grid grid-cols-3 gap-2">
+          {spaces.slice(0, 3).map((space, index) => {
+            const matchingRoom = rooms.find((room) => room.label === space)
+
+            return (
+              <Badge
+                key={index}
+                variant={'pills'}
+                className="px-2 py-1 text-xs font-bold text-secondary-400"
+              >
+                {matchingRoom ? matchingRoom.icon : null}
+                <span>{space}</span>
+              </Badge>
+            )
+          })}
+        </div>
+      )}
     </div>
   </Button>
 )
@@ -111,6 +116,8 @@ interface DetailedPropertyViewProps extends PropertyDetails {
   imageSrc: string
   name: string
   description: string
+  url: string
+  status?: string | null
 }
 
 const DetailedPropertyView: React.FC<DetailedPropertyViewProps> = ({
@@ -120,15 +127,15 @@ const DetailedPropertyView: React.FC<DetailedPropertyViewProps> = ({
   type,
   location,
   size,
-  hasBalcony,
-  hasParking,
-  hasGarage,
+  spaces,
   description,
+  status,
+  url,
 }) => (
   <Card className="w-full bg-primary-50">
     <CardContent className="p-6">
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        <div>
+        <div className="relative">
           <Image
             src={`https://utfs.io/f/${imageSrc}`}
             alt={name}
@@ -136,6 +143,16 @@ const DetailedPropertyView: React.FC<DetailedPropertyViewProps> = ({
             height={600}
             className="max-h-[600px] w-full rounded-xl object-cover"
           />
+          {status && status === StatusType.Rezervirano && (
+            <div className="absolute right-0 top-0 w-full rounded-t-xl bg-orange-100 p-2.5 text-center font-semibold text-orange-800">
+              Rezervirano
+            </div>
+          )}
+          {status && status === StatusType.Prodano && (
+            <div className="absolute right-0 top-0 w-full rounded-t-xl bg-destructive-200 p-2.5 text-center font-semibold text-white">
+              Prodano
+            </div>
+          )}
         </div>
         <div className="text-secondary-400">
           <h2 className="mb-2 text-2xl font-bold">{type}</h2>
@@ -146,64 +163,105 @@ const DetailedPropertyView: React.FC<DetailedPropertyViewProps> = ({
               <Maximize2 size={20} />
               <span>{size} m²</span>
             </Badge>
-            {hasBalcony && (
-              <Badge variant={'pills'} className="flex items-center gap-2">
-                <Home size={20} />
-                <span>Balkon</span>
-              </Badge>
-            )}
-            {hasParking && (
-              <Badge variant={'pills'} className="flex items-center gap-2">
-                <ParkingCircle size={20} />
-                <span>Parkirišče</span>
-              </Badge>
-            )}
-            {hasGarage && (
-              <Badge variant={'pills'} className="flex items-center gap-2">
-                <Car size={20} />
-                <span>Garaža</span>
-              </Badge>
+            {spaces && (
+              <div className="flex flex-wrap gap-2">
+                {spaces.map((space, index) => {
+                  const matchingRoom = rooms.find((room) => room.label === space)
+
+                  return (
+                    <Badge key={index} variant={'pills'} className="flex items-center gap-2">
+                      {matchingRoom ? matchingRoom.icon : null}
+                      <span>{space}</span>
+                    </Badge>
+                  )
+                })}
+              </div>
             )}
           </div>
           <p className="mb-4 text-gray-700">{description}</p>
-          <div className="flex gap-4">
-            <Button variant={'primary'} className="flex gap-3">
-              <BadgeCheckIcon />
-              Rezerviraj
-            </Button>
-            <Button variant={'secondary'}>
-              Ogled <ArrowRight />
-            </Button>
-          </div>
+          {status && status === StatusType.Rezervirano && (
+            <div className="flex flex-col items-center gap-y-4">
+              <div className="flex w-full place-content-center items-start gap-2 rounded-md border border-secondary-200 bg-informative-50 p-2.5 text-secondary-200">
+                <InfoIcon className="shrink-0" size={20} />
+                <p className="text-sm">
+                  V primeru sprostitve rezervacije se prosim prijavite v čakalno listo.
+                </p>
+              </div>
+              <div className="flex gap-4">
+                <Button variant={'primary'}>Obvesti me</Button>
+                <Link href={url}>
+                  <Button asChild variant={'secondary'}>
+                    <span>
+                      Ogled <ArrowRight />
+                    </span>
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          )}
+          {status !== StatusType.Prodano && status !== StatusType.Rezervirano && (
+            <div className="flex gap-4">
+              <Button variant={'primary'} className="flex gap-3">
+                <BadgeCheckIcon />
+                Rezerviraj
+              </Button>
+              <Link href={url}>
+                <Button asChild variant={'secondary'}>
+                  <span>
+                    Ogled <ArrowRight />
+                  </span>
+                </Button>
+              </Link>
+            </div>
+          )}
+          {status === StatusType.Prodano && (
+            <div className="flex gap-4">
+              <Link href={url}>
+                <Button asChild variant={'secondary'}>
+                  <span>
+                    Ogled <ArrowRight />
+                  </span>
+                </Button>
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </CardContent>
   </Card>
 )
 
-const RealEstateListing = ({ location }: { location: LocationWithRealEstates }) => {
+const RealEstateListing = ({
+  location,
+  slug,
+}: {
+  location: LocationWithRealEstates
+  slug: string
+}) => {
   const { propertyFilters, updatePropertyFilters } = useAppStore()
 
   const [ selectedProject, setSelectedProject ] = useState<RealEstate | null>(null)
 
   const isDesktop = useMediaQuery('(min-width: 1120px)')
 
-  const filteredRealEstates = useMemo(() => location.realEstates.filter((realEstate) => {
-    const { floor, size, priceRange, availability } = propertyFilters
+  const filteredRealEstates = useMemo(
+    () => location.realEstates.filter((realEstate) => {
+      const { floor, size, priceRange, availability } = propertyFilters
 
-    const floorMatch = !floor || floor === 'Vsa' || realEstate.floor === floor
+      const floorMatch = !floor || floor === 'Vsa' || realEstate.floor === floor
 
-    const sizeMatch = !size || realEstate.name.includes(size)
+      const sizeMatch = !size || realEstate.name.includes(size)
 
-    const priceMatch = !priceRange || (
-      Number(realEstate.priceWithTax) >= priceRange[0]
-        && Number(realEstate.priceWithTax) <= priceRange[1]
-    )
+      const priceMatch = !priceRange
+          || (Number(realEstate.priceWithTax) >= priceRange[0]
+            && Number(realEstate.priceWithTax) <= priceRange[1])
 
-    const availabilityMatch = !availability || realEstate.status === availability
+      const availabilityMatch = !availability || realEstate.status === availability
 
-    return floorMatch && sizeMatch && priceMatch && availabilityMatch
-  }), [ location.realEstates, propertyFilters ])
+      return floorMatch && sizeMatch && priceMatch && availabilityMatch
+    }),
+    [ location.realEstates, propertyFilters ],
+  )
 
   const resetFilters = () => {
     updatePropertyFilters({
@@ -252,7 +310,7 @@ const RealEstateListing = ({ location }: { location: LocationWithRealEstates }) 
       )}
       <section className="flex w-full flex-col gap-3 lg:gap-5">
         <h2 className="flex items-center gap-2 text-xl font-bold text-secondary-400 lg:text-3xl">
-          <Home size={32} className='size-4 lg:size-8' /> Nepremičnine
+          <Home size={32} className="size-4 lg:size-8" /> Nepremičnine
         </h2>
         <Carousel className="w-full">
           <CarouselContent className="mb-2 ml-1 flex gap-8">
@@ -265,6 +323,7 @@ const RealEstateListing = ({ location }: { location: LocationWithRealEstates }) 
                   address={location.address}
                   onClick={setSelectedProject}
                   isActive={selectedProject?.id === realEstate.id}
+                  spaces={realEstate.spaces}
                 />
               </CarouselItem>
             ))}
@@ -278,10 +337,10 @@ const RealEstateListing = ({ location }: { location: LocationWithRealEstates }) 
             size={selectedProject.size?.toString() || ''}
             imageSrc={selectedProject.images[0]}
             name={selectedProject.name}
-            hasBalcony={true}
-            hasParking={true}
-            hasGarage={true}
-            description={selectedProject.description || ''}
+            spaces={selectedProject.spaces}
+            description={selectedProject.shortDescription || ''}
+            url={`${slug}/${selectedProject.id}`}
+            status={selectedProject.status}
           />
         )}
       </section>

@@ -3,7 +3,7 @@ import { getRealEstateById } from '@/actions/get-real-estate-by-id'
 import Cta from '@/components/common/cta'
 import RealEstateHero from '@/components/common/hero/real-estate-hero'
 import OffersBanner from '@/components/layouts/sections/offers-banner'
-import { OfferInfo } from '@/types/general'
+import { OfferInfo, SpacesType } from '@/types/general'
 
 import DetailViewRealEstate from './_components/detail-view-real-estate'
 
@@ -31,6 +31,7 @@ const SingleProjectPage = async ({ params }: { params: { slug: string; id: strin
     return null
   }
 
+  console.log(realEstates)
   return (
     <div>
       <RealEstateHero
@@ -39,7 +40,15 @@ const SingleProjectPage = async ({ params }: { params: { slug: string; id: strin
         size={realEstates.size?.toString() || '0'}
         parkingSpaces={realEstates.parkingSpaces ?? 0}
       />
-      <DetailViewRealEstate description={realEstates.description ?? ''} technicalData={realEstates.technicalData as {id: string, text: string}[]} address={location.address} city={location.city} files={realEstates.files as {name: string, key: string}[]} />
+      <DetailViewRealEstate
+        description={realEstates.description ?? ''}
+        technicalData={realEstates.technicalData as { id: string; text: string }[]}
+        address={location.address}
+        city={location.city}
+        files={realEstates.files as { name: string; key: string }[]}
+        spaces={realEstates.spaces as SpacesType[]}
+        status={realEstates.status}
+      />
       <div className="mt-5 flex flex-col gap-5 lg:mt-10 lg:gap-10">
         <Cta />
         <OffersBanner

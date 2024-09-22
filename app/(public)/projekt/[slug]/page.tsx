@@ -33,7 +33,7 @@ const SelectedProject = async ({ params }: { params: { slug: string } }) => {
       <InnerHero title={location.name} />
       <div className='mt-5 flex flex-col gap-5 lg:mt-10 lg:gap-10'>
       <RealEstateTable location={location} slug={params.slug.toString()} />
-      <RealEstateListing location={location} />
+      <RealEstateListing location={location} slug={params.slug.toString()} />
       <Cta />
       <OffersBanner
         title='Ne spreglejte te ponudbe'

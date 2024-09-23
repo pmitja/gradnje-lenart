@@ -1,9 +1,8 @@
-import { z } from "zod";
+import { z } from 'zod'
 
 export const Route = {
-  name: "ApiAuthNextauth",
+  name: 'ApiAuthNextauth',
   params: z.object({
     nextauth: z.string().array(),
-  })
-};
-
+  }),
+}

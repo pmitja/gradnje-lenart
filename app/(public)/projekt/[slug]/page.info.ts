@@ -1,9 +1,8 @@
-import { z } from "zod";
+import { z } from 'zod'
 
 export const Route = {
-  name: "PublicProjektSlug",
+  name: 'PublicProjektSlug',
   params: z.object({
     slug: z.string(),
-  })
-};
-
+  }),
+}

@@ -6,7 +6,7 @@ import { apiAuthPrefix,
   apiUploadThingPrefix,
   authRoutes,
   DEFAULT_LOGIN_REDIRECT,
-  publicRoutes } from '@/routes'
+  publicRoutes } from '@/middleware-routes'
 
 const { auth } = NextAuth(authConfig)
 
@@ -17,48 +17,34 @@ export default auth((req) => {
 
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix)
 
-  const isPublicRoute = publicRoutes.includes(nextUrl.pathname)
+  const isExactPublicRoute = publicRoutes.includes(nextUrl.pathname)
+
+  const isPublicRoute = publicRoutes.some((route) => route !== '/' && nextUrl.pathname.startsWith(route))
 
   const isAuthRoute = authRoutes.includes(nextUrl.pathname)
 
   const isUploadThingRoute = nextUrl.pathname.startsWith(apiUploadThingPrefix)
 
-  if (isUploadThingRoute) {
+  // Allow API routes
+  if (isUploadThingRoute || isApiAuthRoute) {
     return NextResponse.next()
   }
 
-  if (isApiAuthRoute) {
-    return NextResponse.next()
+  // Redirect logged-in users away from auth routes
+  if (isAuthRoute && isLoggedIn) {
+    return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl))
   }
 
-  if (isAuthRoute) {
-    if (isLoggedIn) {
-      return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl))
-    }
-    return NextResponse.next()
-  }
-
-  if (!isLoggedIn && !isPublicRoute) {
-    const callbackUrl = nextUrl.pathname
+  // Redirect to login for non-public routes when not logged in
+  if (!isLoggedIn && !isExactPublicRoute && !isPublicRoute) {
+    const callbackUrl = nextUrl.pathname + (nextUrl.search || '')
 
     const encodedCallbackUrl = encodeURIComponent(callbackUrl)
 
-    return Response.redirect(new URL(`/auth/login?callbackUrl=${encodedCallbackUrl}`, nextUrl))
+    return NextResponse.redirect(new URL(`/auth/login?callbackUrl=${encodedCallbackUrl}`, nextUrl))
   }
 
-  if (!isLoggedIn && !isPublicRoute
-    && !publicRoutes.some((route) => nextUrl.pathname.startsWith(route))) {
-    let callbackUrl = nextUrl.pathname
-
-    if (nextUrl.search) {
-      callbackUrl += nextUrl.search
-    }
-
-    const encodedCallbackUrl = encodeURIComponent(callbackUrl)
-
-    return Response.redirect(new URL(`/auth/login?callbackUrl=${encodedCallbackUrl}`, nextUrl))
-  }
-
+  // Proceed if everything is fine
   return NextResponse.next()
 })
 

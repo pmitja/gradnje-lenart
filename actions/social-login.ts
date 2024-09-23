@@ -3,7 +3,7 @@
 import { AuthError } from 'next-auth'
 
 import { signIn } from '@/auth'
-import { DEFAULT_LOGIN_REDIRECT } from '@/routes'
+import { DEFAULT_LOGIN_REDIRECT } from '@/middleware-routes'
 
 export const socialLogin = async (provider: string) => {
   try {

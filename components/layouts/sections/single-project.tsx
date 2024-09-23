@@ -1,13 +1,17 @@
 'use client'
 
 import { Location, RealEstate } from '@prisma/client'
-import { ArrowRight, BadgeCheckIcon, Home, InfoIcon, Maximize2 } from 'lucide-react'
+import { ArrowRight, BadgeCheckIcon, BedIcon, Car, Home, InfoIcon, Maximize2, PackageOpen, TableIcon, TvIcon } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useEffect, useMemo, useState } from 'react'
 
 import NoResultComponent from '@/components/common/no-results-banner'
 import PropertyFilter from '@/components/common/property-filter'
+import DiningIcon from '@/components/icons/dining'
+import KitchenIcon from '@/components/icons/kitchen'
+import ShowerIcon from '@/components/icons/shower'
+import WcIcon from '@/components/icons/wc'
 import { Accordion,
   AccordionContent,
   AccordionItem,
@@ -19,9 +23,55 @@ import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carouse
 import { useMediaQuery } from '@/hooks/use-media-query'
 import { formatNumber } from '@/lib/helpers'
 import { cn } from '@/lib/utils'
-import { rooms } from '@/lib/utils/rooms'
 import { useAppStore } from '@/store/app'
-import { StatusType } from '@/types/general'
+import { SpacesType, StatusType } from '@/types/general'
+
+export const rooms = [
+  {
+    icon: <TableIcon className="size-6" />,
+    label: SpacesType.Room,
+  },
+  {
+    icon: <ShowerIcon className="size-6" />,
+    label: SpacesType.Bathroom,
+  },
+  {
+    icon: <WcIcon className="size-6" />,
+    label: SpacesType.WC,
+  },
+  {
+    icon: <BedIcon className="size-6" />,
+    label: SpacesType.Bedroom,
+  },
+  {
+    icon: <KitchenIcon className="size-6" />,
+    label: SpacesType.Kitchen,
+  },
+  {
+    icon: <DiningIcon className="size-6" />,
+    label: SpacesType.DinningRoom,
+  },
+  {
+    icon: <TvIcon className="size-6" />,
+    label: SpacesType.LivingRoom,
+  },
+  {
+    icon: <Home className="size-6" />,
+    label: SpacesType.Balcony,
+  },
+  {
+    icon: <Home className="size-6" />,
+    label: SpacesType.Terrace,
+  },
+  {
+    icon: <PackageOpen className="size-6" />,
+    label: SpacesType.Storage,
+  },
+  {
+    icon: <Car className="size-6" />,
+    label: SpacesType.Parking,
+  },
+]
 
 interface LocationWithRealEstates extends Location {
   realEstates: RealEstate[]
@@ -102,7 +152,6 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
                 className="px-2 py-1 text-xs font-bold text-secondary-400"
               >
                 {matchingRoom ? matchingRoom.icon : null}
-                <span>{space}</span>
               </Badge>
             )
           })}

@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "dr:build": "npx declarative-routing build",
+    "dr:build:watch": "npx declarative-routing build --watch"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.0.0",
@@ -56,6 +58,7 @@
     "next-auth": "^5.0.0-beta.16",
     "next-themes": "^0.3.0",
     "ol": "^10.1.0",
+    "query-string": "^9.1.0",
     "react": "^18",
     "react-day-picker": "^8.10.1",
     "react-dom": "^18",
@@ -71,7 +74,7 @@
     "uuid": "^9.0.1",
     "vaul": "^0.9.1",
     "yet-another-react-lightbox": "^3.21.5",
-    "zod": "^3.23.5",
+    "zod": "^3.23.8",
     "zustand": "^4.5.4"
   },
   "devDependencies": {

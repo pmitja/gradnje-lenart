@@ -3,6 +3,7 @@ import Image from 'next/image'
 
 import DoubleChervonRightIcon from '@/components/icons/double-chervon-right'
 import { Button } from '@/components/ui/button'
+import { PublicProjekti } from '@/routes'
 
 import ButtonWithIcon from '../button-with-icon'
 
@@ -22,12 +23,15 @@ const Hero = () => (
             prijazne soseske...
           </p>
           <div className='flex flex-wrap gap-5 lg:mt-3 lg:gap-10'>
-            <ButtonWithIcon
-              variant='primary'
-              className='px-6 py-4 text-xl'
-            >
-              Akutalni projekti
-            </ButtonWithIcon>
+            <PublicProjekti.Link>
+              <ButtonWithIcon
+                asChild
+                variant='primary'
+                className='px-6 py-4 text-xl'
+              >
+                Akutalni projekti
+              </ButtonWithIcon>
+            </PublicProjekti.Link>
             <ButtonWithIcon
               variant='secondary'
               className='px-6 py-4 text-xl'

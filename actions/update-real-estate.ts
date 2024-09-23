@@ -11,8 +11,6 @@ import { updateRealEstateSchema } from '@/schemas'
 export const updateRealEstate = async (values: z.infer<typeof updateRealEstateSchema>) => {
   const validatedFields = updateRealEstateSchema.safeParse(values)
 
-  console.log(validatedFields)
-
   if (!validatedFields.success) {
     return {
       error: 'Invalid fields',

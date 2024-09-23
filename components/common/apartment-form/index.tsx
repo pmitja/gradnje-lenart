@@ -32,7 +32,8 @@ import { UploadButton } from '@/lib/utils/uploadthing'
 import { formSchema } from '@/schemas'
 import { Apartment, EnergyClass, ExposedType, SpacesType, StatusType } from '@/types/general'
 
-const ApartmentForm = ({ saveFormValues }: { saveFormValues: (values: Apartment) => void }) => {
+const ApartmentForm = ({ saveFormValues, nextNumber = '1' }:
+  { saveFormValues: (values: Apartment) => void, nextNumber?: string }) => {
   const [ open, setOpen ] = useState(false)
 
   const [ imagesBeginUploading, setImagesBeginUploading ] = useState(false)
@@ -52,7 +53,7 @@ const ApartmentForm = ({ saveFormValues }: { saveFormValues: (values: Apartment)
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      number: '',
+      number: nextNumber,
       name: '',
       floor: '',
       size: 0,
@@ -132,7 +133,7 @@ const ApartmentForm = ({ saveFormValues }: { saveFormValues: (values: Apartment)
                     <FormControl>
                       <Input
                         id='number'
-                        defaultValue='1'
+                        defaultValue={String(nextNumber)}
                         className='col-span-3'
                         {...field}
                       />
@@ -329,7 +330,7 @@ const ApartmentForm = ({ saveFormValues }: { saveFormValues: (values: Apartment)
                 name='energyLevel'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Status</FormLabel>
+                    <FormLabel>Energetski nivo</FormLabel>
                     <FormControl>
                       <ToggleGroup
                         type='single'

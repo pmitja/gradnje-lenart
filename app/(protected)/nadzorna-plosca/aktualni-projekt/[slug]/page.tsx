@@ -4,6 +4,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ChevronLeft } from 'lucide-react'
+import { revalidatePath } from 'next/cache'
 import Link from 'next/link'
 import { useEffect, useState, useTransition } from 'react'
 import { useForm } from 'react-hook-form'
@@ -12,6 +13,7 @@ import { z } from 'zod'
 import { getLocationRealEstates } from '@/actions/get-location-real-esatates'
 import { updateLocationRealEstate } from '@/actions/update-location-real-estates'
 import ApartmentForm from '@/components/common/apartment-form'
+import EditApartmentDialog from '@/components/common/apartment-form/edit'
 import Project404 from '@/components/containers/404/project-404'
 import { Button } from '@/components/ui/button'
 import { Card,
@@ -41,6 +43,8 @@ const AktualniProjektPage = ({ params: { slug } }: { params: { slug: string } })
   const [ location, setLocation ] = useState<Location | null>(null)
 
   const [ isError, setIsError ] = useState(false)
+
+  const [ selectedApartment, setSelectedApartment ] = useState<Apartment | null>(null)
 
   useEffect(() => {
     setIsError(false)
@@ -85,6 +89,10 @@ const AktualniProjektPage = ({ params: { slug } }: { params: { slug: string } })
         setSuccess(result.success)
       })
     })
+  }
+
+  const handleApartmentEdit = (apartment: Apartment) => {
+    setSelectedApartment(apartment)
   }
 
   return (
@@ -157,7 +165,11 @@ const AktualniProjektPage = ({ params: { slug } }: { params: { slug: string } })
                       {apartments
                         .sort((a, b) => Number(a.number) - Number(b.number))
                         .map((apartment) => (
-                          <TableRow key={apartment.number}>
+                          <TableRow
+                            key={apartment.number}
+                            className="cursor-pointer hover:bg-primary-100"
+                            onClick={() => handleApartmentEdit(apartment)}
+                          >
                             <TableCell className='font-semibold'>{apartment.number}</TableCell>
                             <TableCell>{apartment.name}</TableCell>
                             <TableCell>{apartment.floor}. nadstropje</TableCell>
@@ -181,7 +193,10 @@ const AktualniProjektPage = ({ params: { slug } }: { params: { slug: string } })
                   </Table>
                 </CardContent>
                 <CardFooter className='justify-center border-t p-4'>
-                  <ApartmentForm saveFormValues={saveFormValues} />
+                  <ApartmentForm
+                    saveFormValues={saveFormValues}
+                    nextNumber={apartments.length > 0 ? String(Number(apartments[apartments.length - 1].number) + 1) : '1'}
+                  />
                 </CardFooter>
               </Card>
             </div>
@@ -217,6 +232,16 @@ const AktualniProjektPage = ({ params: { slug } }: { params: { slug: string } })
             </Button>
             <Button size='sm'>Save Product</Button>
           </div>
+          {selectedApartment && (
+            <EditApartmentDialog
+              apartment={selectedApartment}
+              id={selectedApartment.id}
+              onCancel={() => {
+                setSelectedApartment(null)
+                revalidatePath('/nadzorna-plosca/aktualni-projekt/lenart')
+              }}
+            />
+          )}
         </div>
       )}
       {isPending && (

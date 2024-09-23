@@ -79,6 +79,7 @@ export const formSchema = z.object({
     key: z.string(),
   })).nullable(),
   isExposed: z.boolean(),
+  slug: z.string().optional(),
 })
 
 export const mainFormSchema = z.object({
@@ -107,4 +108,9 @@ export const updateSchema = z.object({
     message: 'Dodaj vsaj eno stanovanje.',
   }),
   locationSlug: z.string(),
+})
+
+export const updateRealEstateSchema = z.object({
+  apartment: formSchema,
+  locationId: z.string(),
 })

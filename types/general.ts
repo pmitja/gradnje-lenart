@@ -107,6 +107,7 @@ export type Apartment = {
     key: string
   }[] | null
   isExposed: boolean
+  id?: string
 }
 
 export interface OfferInfo {

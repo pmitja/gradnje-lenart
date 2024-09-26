@@ -16,55 +16,11 @@ import { SpacesType, StatusType } from '@/types/general'
 import PropertyMap from './property-map'
 import RealEstateImages from './real-estate-images'
 
-const images = [
-  {
-    src: '/stanovanje.jpg',
-    alt: 'Living room',
-    badge: 'Top izbira',
-  },
-  {
-    src: '/stanovanje2.jpg',
-    alt: 'Exterior view',
-  },
-  {
-    src: '/stanovanje3.jpg',
-    alt: 'Bathroom',
-  },
-]
-
 interface PropertyDetail {
   icon: React.ReactNode
   label: string
   value: string
 }
-
-const details: PropertyDetail[] = [
-  {
-    icon: <Euro className="size-2 md:size-4 lg:size-6" />,
-    label: 'Cena',
-    value: '200.000 €',
-  },
-  {
-    icon: <Maximize2 className="size-2 md:size-4 lg:size-6" />,
-    label: 'Velikost',
-    value: '72 m²',
-  },
-  {
-    icon: <Calendar className="size-2 md:size-4 lg:size-6" />,
-    label: 'Nazadnje rezervirano',
-    value: '14.12.2024',
-  },
-  {
-    icon: <Zap className="size-2 md:size-4 lg:size-6" />,
-    label: 'Enegretsko varčna',
-    value: 'Visoka raven',
-  },
-  {
-    icon: <Car className="size-2 md:size-4 lg:size-6" />,
-    label: 'Parkirišče',
-    value: 'Dve parkirni mesti',
-  },
-]
 
 const DetailViewRealEstate = ({
   description,
@@ -74,6 +30,12 @@ const DetailViewRealEstate = ({
   files,
   spaces,
   status,
+  price,
+  lastTimeReserved,
+  energyLevel,
+  parkingSpaces,
+  size,
+  images,
 }: {
   description: string
   technicalData: { id: string; text: string }[]
@@ -82,12 +44,46 @@ const DetailViewRealEstate = ({
   files?: { name: string; key: string }[]
   spaces?: SpacesType[]
   status?: string | null
+  price: number | null
+  lastTimeReserved: Date
+  energyLevel: string | null
+  parkingSpaces: number | null
+  size: number | null
+  images: string[]
 }) => {
   const router = useRouter()
 
   const handleBack = () => {
     router.back()
   }
+
+  const details: PropertyDetail[] = [
+    {
+      icon: <Euro className="size-2 md:size-4 lg:size-6" />,
+      label: 'Cena',
+      value: price ? `${price.toLocaleString('sl-SI')} €` : 'N/A',
+    },
+    {
+      icon: <Maximize2 className="size-2 md:size-4 lg:size-6" />,
+      label: 'Velikost',
+      value: `${size} m²`,
+    },
+    {
+      icon: <Calendar className="size-2 md:size-4 lg:size-6" />,
+      label: 'Nazadnje rezervirano',
+      value: lastTimeReserved.toLocaleDateString('sl-SI'),
+    },
+    {
+      icon: <Zap className="size-2 md:size-4 lg:size-6" />,
+      label: 'Enegretsko varčna',
+      value: String(energyLevel),
+    },
+    {
+      icon: <Car className="size-2 md:size-4 lg:size-6" />,
+      label: 'Število parkirnih mest',
+      value: String(parkingSpaces),
+    },
+  ]
 
   return (
     <div className="relative mt-8">
@@ -96,7 +92,11 @@ const DetailViewRealEstate = ({
           <h3 className="text-xl font-semibold uppercase leading-none tracking-tight lg:text-3xl">
             {StatusType.Prodano}
           </h3>
-          <Button variant={'secondary'} onClick={handleBack} className='w-fit border-white text-white'>
+          <Button
+            variant={'secondary'}
+            onClick={handleBack}
+            className="w-fit border-white text-white"
+          >
             Pojdi nazaj
           </Button>
         </div>
@@ -200,7 +200,7 @@ const DetailViewRealEstate = ({
             </h3>
             <PropertyMap address={address} city={city} />
           </div>
-          {files && (
+          {files && files?.length > 0 && (
             <div className="flex flex-col items-center gap-10">
               <div className="flex max-w-full flex-col gap-4 overflow-hidden rounded-2xl bg-white p-6 shadow-md">
                 <h4>Dokumenti</h4>

@@ -31,7 +31,6 @@ const SingleProjectPage = async ({ params }: { params: { slug: string; id: strin
     return null
   }
 
-  console.log(realEstates)
   return (
     <div>
       <RealEstateHero
@@ -48,6 +47,12 @@ const SingleProjectPage = async ({ params }: { params: { slug: string; id: strin
         files={realEstates.files as { name: string; key: string }[]}
         spaces={realEstates.spaces as SpacesType[]}
         status={realEstates.status}
+        price={realEstates.priceWithTax}
+        lastTimeReserved={realEstates.updatedAt}
+        energyLevel={realEstates.energyLevel}
+        parkingSpaces={realEstates.parkingSpaces}
+        size={realEstates.size}
+        images={realEstates.images}
       />
       <div className="mt-5 flex flex-col gap-5 lg:mt-10 lg:gap-10">
         <Cta />

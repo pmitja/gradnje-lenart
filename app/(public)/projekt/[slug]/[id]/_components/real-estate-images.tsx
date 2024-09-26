@@ -9,13 +9,10 @@ import Lightbox from 'yet-another-react-lightbox'
 
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
+import { cn } from '@/lib/utils'
 
 interface ImageGalleryProps {
-  images: {
-    src: string;
-    alt: string;
-    badge?: string;
-  }[];
+  images: string[];
 }
 
 const RealEstateImages: React.FC<ImageGalleryProps> = ({ images }) => {
@@ -30,25 +27,25 @@ const RealEstateImages: React.FC<ImageGalleryProps> = ({ images }) => {
 
   return (
     <>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+      <div className={cn('grid gap-4', images.length === 1 && 'grid-cols-1', (images.length === 3 || images.length > 3) && 'md:grid-cols-3', images.length === 2 && 'grid-cols-2')}>
         {images.map((image, index) => (
           <Card key={index} className="overflow-hidden">
             <CardContent className="relative p-0">
               <div className="relative h-48 w-full md:h-64" >
                 <Image
-                  src={image.src}
-                  alt={image.alt}
+                  src={`https://utfs.io/f/${image}`}
+                  alt={image}
                   className='cursor-pointer object-cover'
                   fill
                   onClick={() => openLightbox(index)}
                 />
               </div>
-              {image.badge && (
+              {image && (
                 <Badge
                   className="absolute left-2 top-2 flex items-center gap-1 bg-primary-500 shadow-md"
                 >
                   <ThumbsUp className="size-4" />
-                  {image.badge}
+                  Top izbira
                 </Badge>
               )}
             </CardContent>
@@ -59,7 +56,7 @@ const RealEstateImages: React.FC<ImageGalleryProps> = ({ images }) => {
         open={isOpen}
         close={() => setIsOpen(false)}
         slides={images.map((img) => ({
-          src: img.src,
+          src: `https://utfs.io/f/${img}`,
         }))}
         index={currentImageIndex}
         styles={{

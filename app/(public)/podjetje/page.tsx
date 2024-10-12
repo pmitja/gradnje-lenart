@@ -6,11 +6,11 @@ import PartnersBanner from '@/components/common/partners-banner'
 import PartnersCards from '@/components/common/partners-cards'
 import { StatType } from '@/components/common/stat'
 import Stats from '@/components/common/stats'
+import GradnjeIcon from '@/components/icons/gradnje-icon'
 import OffersBanner from '@/components/layouts/sections/offers-banner'
 import ShadowBanner from '@/components/ui/shadow-banner'
 
 import { OfferInfo } from '../projekti/page'
-import GradnjeIcon from '@/components/icons/gradnje-icon'
 
 const stats: StatType[] = [
   {
@@ -50,7 +50,7 @@ const About = () => (
     />
     <PartnersBanner />
     <section className="flex flex-col gap-4 py-6">
-      <p className="md:text-3xl font-bold text-2xl text-secondary-400">
+      <p className="text-2xl font-bold text-secondary-400 md:text-3xl">
         Nasledstvo, ki ustvarja sanje.
       </p>
       <p className="text-lg text-secondary-200 md:text-xl">

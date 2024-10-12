@@ -1,3 +1,5 @@
+import React from 'react'
+
 type ShadowBannerProps = {
   backgroundImagePath: string
   icon: React.ReactNode

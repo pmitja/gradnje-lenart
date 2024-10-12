@@ -1,6 +1,6 @@
 'use client'
 
-import { Calendar, Car, Check, Euro, InfoIcon, Maximize2, Zap } from 'lucide-react'
+import { Calendar, Car, Check, Euro, InfoIcon, KeySquare, Maximize2, Zap } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 
@@ -225,7 +225,14 @@ const DetailViewRealEstate = ({
             </div>
           )}
         </div>
-        <ReservationDialog realEstateId={id} />
+        {status !== StatusType.Prodano && status !== StatusType.Rezervirano && (
+          <ReservationDialog realEstateId={id}>
+            <Button variant="primary" className="w-fit self-center lg:w-auto">
+              <KeySquare className="mr-2 size-4" />
+              Rezerviraj nepremičnino
+            </Button>
+          </ReservationDialog>
+        )}
       </div>
     </div>
   )

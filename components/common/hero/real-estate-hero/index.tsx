@@ -1,18 +1,23 @@
 import { BadgeCheckIcon, Car, Expand, Home, MapPin, ParkingSquare, Share2 } from 'lucide-react'
 
+import ReservationDialog from '@/app/(public)/projekt/[slug]/[id]/_components/ReservationDialog'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 
 const RealEstateHero = ({
+  id,
   title,
   address,
   size,
   parkingSpaces = 0,
+  status,
 }: {
+  id: string
   title: string
   address: string
   size: string
   parkingSpaces?: number
+  status?: string | null
 }) => (
   <div className="relative inset-x-1/2 mx-[-50vw] w-screen min-w-[100vw] bg-hero-page bg-cover pt-10 md:pt-16 lg:pt-0">
     <div className="container relative flex w-full flex-col items-center justify-center gap-8 pb-8 lg:w-full lg:grid-cols-2 lg:gap-5 lg:pb-28 lg:pt-20">
@@ -44,18 +49,24 @@ const RealEstateHero = ({
             <span>Parkirišče</span>
           </Badge>
         )}
-        {parkingSpaces > 0 && <Badge
-          variant={'heroPills'}
-          className="place-content-center text-xs font-bold text-secondary-400"
-        >
-          <Car />
-          <span>{parkingSpaces}</span>
-        </Badge>}
+        {parkingSpaces > 0 && (
+          <Badge
+            variant={'heroPills'}
+            className="place-content-center text-xs font-bold text-secondary-400"
+          >
+            <Car />
+            <span>{parkingSpaces}</span>
+          </Badge>
+        )}
       </div>
-      <Button variant={'primary'} className="flex gap-3">
-        <BadgeCheckIcon />
-        Rezerviraj
-      </Button>
+      {status !== 'Prodano' && status !== 'Rezervirano' && (
+        <ReservationDialog realEstateId={id}>
+          <Button variant={'primary'} className="flex gap-3">
+            <BadgeCheckIcon />
+            Rezerviraj
+          </Button>
+        </ReservationDialog>
+      )}
       <Button variant={'secondary'} className="flex gap-3">
         <Share2 />
       </Button>

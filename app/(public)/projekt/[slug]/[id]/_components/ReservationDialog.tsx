@@ -26,9 +26,10 @@ const formSchema = z.object({
 
 interface ReservationDialogProps {
   realEstateId: string
+  children: React.ReactNode
 }
 
-const ReservationDialog: React.FC<ReservationDialogProps> = ({ realEstateId }) => {
+const ReservationDialog: React.FC<ReservationDialogProps> = ({ realEstateId, children }) => {
   const router = useRouter()
 
   const [ isOpen, setIsOpen ] = React.useState(false)
@@ -66,7 +67,7 @@ const ReservationDialog: React.FC<ReservationDialogProps> = ({ realEstateId }) =
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="primary" className="w-fit self-center">Rezerviraj</Button>
+        {children}
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
@@ -116,7 +117,7 @@ const ReservationDialog: React.FC<ReservationDialogProps> = ({ realEstateId }) =
                 </FormItem>
               )}
             />
-            <Button type="submit">Pošlji rezervacijo</Button>
+            <Button variant={'primary'} type="submit">Pošlji rezervacijo</Button>
           </form>
         </Form>
       </DialogContent>

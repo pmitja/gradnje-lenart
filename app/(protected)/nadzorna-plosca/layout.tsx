@@ -7,6 +7,7 @@ import React from 'react'
 
 import { getAllLocations } from '@/actions/get-all-locations'
 import { auth } from '@/auth'
+import { Toaster } from '@/components/ui/toaster'
 import WithDashBoardNavigation from '@/components/with-dashboard-navigation'
 
 const montserrat = Montserrat({
@@ -34,6 +35,7 @@ export default async function RootLayout({ children }: Readonly<{
       <html lang='sl'>
         <body className={`${montserrat.className} ${archivo.variable}`}>
           <WithDashBoardNavigation navItems={location}>{children}</WithDashBoardNavigation>
+          <Toaster />
         </body>
       </html>
     </SessionProvider>

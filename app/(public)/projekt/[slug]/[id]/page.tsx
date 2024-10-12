@@ -34,10 +34,12 @@ const SingleProjectPage = async ({ params }: { params: { slug: string; id: strin
   return (
     <div>
       <RealEstateHero
+        id={params.id}
         title={realEstates.name}
         address={`${location.city}, ${location.address}`}
         size={realEstates.size?.toString() || '0'}
         parkingSpaces={realEstates.parkingSpaces ?? 0}
+        status={realEstates.status}
       />
       <DetailViewRealEstate
         id={params.id}

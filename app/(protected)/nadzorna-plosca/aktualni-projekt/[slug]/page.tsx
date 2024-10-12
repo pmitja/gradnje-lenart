@@ -4,9 +4,8 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ChevronLeft } from 'lucide-react'
-import { revalidatePath } from 'next/cache'
 import Link from 'next/link'
-import { useEffect, useState, useTransition } from 'react'
+import { useCallback, useEffect, useState, useTransition } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -46,7 +45,7 @@ const AktualniProjektPage = ({ params: { slug } }: { params: { slug: string } })
 
   const [ selectedApartment, setSelectedApartment ] = useState<Apartment | null>(null)
 
-  useEffect(() => {
+  const fetchLocationData = useCallback(() => {
     setIsError(false)
     startTransition(() => {
       getLocationRealEstates(slug).then((result) => {
@@ -58,6 +57,10 @@ const AktualniProjektPage = ({ params: { slug } }: { params: { slug: string } })
       })
     })
   }, [ slug ])
+
+  useEffect(() => {
+    fetchLocationData()
+  }, [ fetchLocationData ])
 
   const form = useForm<z.infer<typeof updateSchema>>({
     resolver: zodResolver(updateSchema),
@@ -78,7 +81,7 @@ const AktualniProjektPage = ({ params: { slug } }: { params: { slug: string } })
       ...apartment,
       files: null,
     })))
-  }, [ apartments ])
+  }, [ apartments, setValue ])
 
   function onSubmit(values: z.infer<typeof updateSchema>) {
     setError('')
@@ -93,6 +96,11 @@ const AktualniProjektPage = ({ params: { slug } }: { params: { slug: string } })
 
   const handleApartmentEdit = (apartment: Apartment) => {
     setSelectedApartment(apartment)
+  }
+
+  const handleEditCancel = () => {
+    setSelectedApartment(null)
+    fetchLocationData() // Revalidate path to get latest location real estates
   }
 
   return (
@@ -236,10 +244,7 @@ const AktualniProjektPage = ({ params: { slug } }: { params: { slug: string } })
             <EditApartmentDialog
               apartment={selectedApartment}
               id={selectedApartment.id}
-              onCancel={() => {
-                setSelectedApartment(null)
-                revalidatePath('/nadzorna-plosca/aktualni-projekt/lenart')
-              }}
+              onCancel={handleEditCancel}
             />
           )}
         </div>

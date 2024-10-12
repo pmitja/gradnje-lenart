@@ -52,8 +52,9 @@ export const updateRealEstate = async (values: z.infer<typeof updateRealEstateSc
         },
       })
     }
+
     return {
-      success: 'Nepremičnina je posodobljena!',
+      success: 'Nepremičnina uspešno posodobljena',
     }
   } catch (error) {
     console.error('Error updating/creating apartments:', error)

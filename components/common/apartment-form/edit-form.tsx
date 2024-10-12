@@ -491,10 +491,13 @@ const EditApartmentForm = ({ data, onCancel, id = '' }: { data: Apartment,
             endpoint="imageUploader"
             onUploadProgress={() => setImagesBeginUploading(true)}
             onClientUploadComplete={(res) => {
-              const array = res.map((file) => file.key)
+              // Modify this part to add new images to existing ones
+              const newImages = res.map((file) => file.key)
 
-              setValue('images', array)
-              setUploadedImages(array)
+              const updatedImages = [ ...uploadedImages, ...newImages ]
+
+              setValue('images', updatedImages)
+              setUploadedImages(updatedImages)
               setImagesBeginUploading(false)
             }}
             onUploadError={(error: Error) => {

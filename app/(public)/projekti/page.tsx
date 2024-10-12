@@ -25,18 +25,18 @@ const offersInfo: OfferInfo = {
 }
 
 const ActualProjectPage = () => (
-    <>
-      <ProjectFilterHero />
-      <ProjectsSection />
-      <ProccesOfBuying />
-      <OffersBanner
-        title='Ne spreglejte te ponudbe'
-        description='Pri nas vam omogočamo najti domove, ki ustrezajo vašemu življenjskemu slogu in aspiracijam. Odkrijte brezhibno nepremičninsko izkušnjo.'
-        images={OffersBannerImages}
-        offerInfo={offersInfo}
-      />
-      <Faq />
-    </>
+  <>
+    <ProjectFilterHero />
+    <ProjectsSection />
+    <ProccesOfBuying />
+    <OffersBanner
+      title="Ne spreglejte te ponudbe"
+      description="Pri nas vam omogočamo najti domove, ki ustrezajo vašemu življenjskemu slogu in aspiracijam. Odkrijte brezhibno nepremičninsko izkušnjo."
+      images={OffersBannerImages}
+      offerInfo={offersInfo}
+    />
+    <Faq />
+  </>
 )
 
 export default ActualProjectPage

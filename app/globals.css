@@ -121,3 +121,10 @@ body,
   -webkit-appearance: none;
   margin: 0;
 }
+
+.bg-pattern {
+  background-image: url('/partners-pattern.webp');
+  background-size: 10rem;
+  background-repeat: no-repeat;
+  background-position: right bottom;
+}

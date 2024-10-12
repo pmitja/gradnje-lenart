@@ -5,7 +5,7 @@ import Image from 'next/image'
 
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
 
-const Partners = () => (
+const PartnersBanner = () => (
     <div className='relative inset-x-1/2 mx-[-50vw] w-screen min-w-[100vw] bg-primary-75'>
       <section className='container flex w-full gap-12 overflow-hidden py-8 lg:py-[70px]'>
         <Carousel
@@ -110,4 +110,4 @@ const Partners = () => (
     </div>
 )
 
-export default Partners
+export default PartnersBanner

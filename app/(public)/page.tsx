@@ -1,7 +1,7 @@
 import Cta from '@/components/common/cta'
 import FeatureCards from '@/components/common/feature-cards'
 import Hero from '@/components/common/hero'
-import Partners from '@/components/common/partners'
+import PartnersBanner from '@/components/common/partners-banner'
 import Testimonials from '@/components/common/testimonials'
 import ImageLeftTextRight from '@/components/layouts/image-left-text-right'
 import Faq from '@/components/layouts/sections/faq'
@@ -15,31 +15,34 @@ export default function Home() {
       <Hero />
       <ImageLeftTextRight
         image={{
-          src: '/trio-cards.webp', alt: 'Hero',
+          src: '/trio-cards.webp',
+          alt: 'Hero',
         }}
         mobileImage={{
-          src: '/gradnje-plus-logo-card.webp', alt: 'Hero',
+          src: '/gradnje-plus-logo-card.webp',
+          alt: 'Hero',
         }}
-        heading='Nepremičnine niso zgolj nakup. So nepogrešljiv del vsakega izmed nas.'
-        text='Odkrijte edinstvene nepremičnine z našimi storitvami. Gradnje
-        Plus vam pomagajo pri svetovanju, prodaji in odkup nepremičnin.'
+        heading="Nepremičnine niso zgolj nakup. So nepogrešljiv del vsakega izmed nas."
+        text="Odkrijte edinstvene nepremičnine z našimi storitvami. Gradnje
+        Plus vam pomagajo pri svetovanju, prodaji in odkup nepremičnin."
       />
-      <Partners />
-      <SectionWithTitleInMiddle title='Prednosti'>
+      <PartnersBanner />
+      <SectionWithTitleInMiddle title="Prednosti">
         <FeatureCards />
       </SectionWithTitleInMiddle>
       <SectionWithImageAbsolute
         text={
           'Naj bo vaš dom oaza dobrega počutja. Znižaj stres, povečaj zadovoljstvo in izboljšaj spanec s pozitivnim in udobnim okoljem.'
         }
-        title='Najdimo vam dom, o katerem sanjate. Na vas je, da spišete najlepšo zgodbo.'
+        title="Najdimo vam dom, o katerem sanjate. Na vas je, da spišete najlepšo zgodbo."
         image={{
-          src: '/apartment-image.webp', alt: 'Image',
+          src: '/apartment-image.webp',
+          alt: 'Image',
         }}
       />
       <Testimonials />
       <Cta />
-      <SectionWithTitleInMiddle title='Zadnje blog objave'>
+      <SectionWithTitleInMiddle title="Zadnje blog objave">
         <LatestBlogPosts />
       </SectionWithTitleInMiddle>
       <Faq />

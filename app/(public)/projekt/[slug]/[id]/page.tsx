@@ -5,7 +5,7 @@ import RealEstateHero from '@/components/common/hero/real-estate-hero'
 import OffersBanner from '@/components/layouts/sections/offers-banner'
 import { OfferInfo, SpacesType } from '@/types/general'
 
-import DetailViewRealEstate from './_components/detail-view-real-estate'
+import DetailViewRealEstate, { TechnicalData } from './_components/detail-view-real-estate'
 
 const OffersBannerImages = [
   '/stanovanje.jpg',
@@ -40,8 +40,9 @@ const SingleProjectPage = async ({ params }: { params: { slug: string; id: strin
         parkingSpaces={realEstates.parkingSpaces ?? 0}
       />
       <DetailViewRealEstate
+        id={params.id}
         description={realEstates.description ?? ''}
-        technicalData={realEstates.technicalData as { id: string; text: string }[]}
+        technicalData={realEstates.technicalData as unknown as TechnicalData}
         address={location.address}
         city={location.city}
         files={realEstates.files as { name: string; key: string }[]}

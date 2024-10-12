@@ -1,10 +1,9 @@
 'use client'
 
-import { Calendar, Car, Check, Euro, InfoIcon, KeySquare, Maximize2, Zap } from 'lucide-react'
+import { Calendar, Car, Check, Euro, InfoIcon, Maximize2, Zap } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 
-import ButtonWithIcon from '@/components/common/button-with-icon'
 import DocumentIcon from '@/components/icons/document'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -15,6 +14,7 @@ import { SpacesType, StatusType } from '@/types/general'
 
 import PropertyMap from './property-map'
 import RealEstateImages from './real-estate-images'
+import ReservationDialog from './ReservationDialog'
 
 interface PropertyDetail {
   icon: React.ReactNode
@@ -22,7 +22,12 @@ interface PropertyDetail {
   value: string
 }
 
+export interface TechnicalData {
+  create: { id: string; text: string }[]
+}
+
 const DetailViewRealEstate = ({
+  id,
   description,
   technicalData,
   city,
@@ -37,8 +42,9 @@ const DetailViewRealEstate = ({
   size,
   images,
 }: {
+  id: string
   description: string
-  technicalData: { id: string; text: string }[]
+  technicalData: TechnicalData
   city: string
   address: string
   files?: { name: string; key: string }[]
@@ -183,8 +189,8 @@ const DetailViewRealEstate = ({
           <h3 className="text-xl font-semibold leading-none tracking-tight text-secondary-400 lg:text-3xl">
             Tehnični podatki
           </h3>
-          <ul className="grid grid-cols-2 text-secondary-300 md:grid-cols-3">
-            {technicalData.map((data, index) => (
+          <ul className="grid grid-cols-2 items-center gap-5 text-secondary-300 md:grid-cols-3">
+            {technicalData.create.map((data, index) => (
               <li className="flex gap-5" key={index}>
                 <Check className="text-primary-200" />
                 {data.text}
@@ -219,15 +225,7 @@ const DetailViewRealEstate = ({
             </div>
           )}
         </div>
-
-        <ButtonWithIcon
-          variant="primary"
-          className="w-fit self-center lg:w-auto"
-          icon={<KeySquare />}
-          iconPosition="left"
-        >
-          Rezerviraj nepremičnino
-        </ButtonWithIcon>
+        <ReservationDialog realEstateId={id} />
       </div>
     </div>
   )

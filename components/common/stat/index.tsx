@@ -16,7 +16,6 @@ export interface StatType {
   isPercentage?: boolean
 }
 
-''
 const Stat: React.FC<StatProps> = ({ subtitle, endValue, duration = 2, isPercentage = false }) => {
   const titleRef = useRef<HTMLParagraphElement>(null)
 

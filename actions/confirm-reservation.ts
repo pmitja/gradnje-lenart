@@ -19,13 +19,33 @@ export async function confirmReservation(id: string) {
       throw new Error('Reservation not found')
     }
 
-    // Update the real estate status to 'Prodano'
+    // Create a new Customer based on the reservation data
+    const customer = await db.customer.create({
+      data: {
+        fullName: reservation.fullName,
+        email: reservation.email,
+        phoneNumber: reservation.phoneNumber,
+      },
+    })
+
+    // Update the real estate status to 'Prodano' and link it to the customer
     await db.realEstate.update({
       where: {
         id: reservation.realEstateId,
       },
       data: {
         status: StatusType.Prodano,
+        customerId: customer.id,
+      },
+    })
+
+    // Update the reservation to link it to the customer
+    await db.reservation.update({
+      where: {
+        id: reservation.id,
+      },
+      data: {
+        customerId: customer.id,
       },
     })
 

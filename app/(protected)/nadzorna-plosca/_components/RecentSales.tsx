@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import { getRecentSales } from '@/actions/get-recent-sales'
 import { Avatar,
@@ -14,11 +14,11 @@ import { Card,
 interface Sale {
   id: string
   name: string
-  priceWithTax: number
+  priceWithTax: number | null
   customer: {
     fullName: string
     email: string
-  }
+  } | null
   location: {
     name: string
   }
@@ -27,35 +27,38 @@ interface Sale {
 export default function RecentSales() {
   const [ sales, setSales ] = useState<Sale[]>([])
 
-  useEffect(() => {
-    const fetchSales = async () => {
-      const recentSales = await getRecentSales(5)
+  const fetchSales = useCallback(async () => {
+    const recentSales = await getRecentSales(5)
 
-      setSales(recentSales)
-    }
-
-    fetchSales()
+    setSales(recentSales)
   }, [])
 
+  useEffect(() => {
+    fetchSales()
+  }, [ fetchSales ])
+
   return (
-    <Card>
+    <Card className="bg-white">
       <CardHeader>
         <CardTitle>Nedavne prodaje</CardTitle>
       </CardHeader>
       <CardContent className="grid gap-8">
-        {sales.map((sale) => (
-          <div key={sale.id} className="flex items-center gap-4">
+        {sales && sales.map((sale) => (
+          <div key={sale.id} className="flex items-center gap-4 rounded-md bg-primary-50 p-4">
             <Avatar className="hidden size-9 sm:flex">
               <AvatarImage src="/placeholder-avatar.png" alt="Avatar" />
-              <AvatarFallback>{sale.customer.fullName.slice(0, 2).toUpperCase()}</AvatarFallback>
+              <AvatarFallback>{sale.customer?.fullName.slice(0, 2).toUpperCase() || 'NA'}</AvatarFallback>
             </Avatar>
             <div className="grid gap-1">
-              <p className="text-sm font-medium leading-none">{sale.customer.fullName}</p>
-              <p className="text-sm text-muted-foreground">{sale.customer.email}</p>
+              <p className="text-sm font-medium leading-none">{sale.customer?.fullName || 'N/A'}</p>
+              <p className="text-sm text-muted-foreground">{sale.customer?.email || 'N/A'}</p>
             </div>
-            <div className="ml-auto font-medium">+€{sale.priceWithTax.toFixed(2)}</div>
+            <div className="ml-auto font-medium">+ {sale.priceWithTax?.toLocaleString('de-DE', {
+              minimumFractionDigits: 2, maximumFractionDigits: 2,
+            }) || '0,00'} €</div>
           </div>
         ))}
+        {(!sales || sales.length === 0) && <p>Trenutno ni nedavnih prodaj.</p>}
       </CardContent>
     </Card>
   )

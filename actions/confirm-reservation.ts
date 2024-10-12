@@ -1,5 +1,7 @@
 'use server'
 
+import { revalidatePath } from 'next/cache'
+
 import { db } from '@/lib/db'
 import { StatusType } from '@/types/general'
 
@@ -39,15 +41,15 @@ export async function confirmReservation(id: string) {
       },
     })
 
-    // Update the reservation to link it to the customer
-    await db.reservation.update({
+    // Delete the reservation
+    await db.reservation.delete({
       where: {
         id: reservation.id,
       },
-      data: {
-        customerId: customer.id,
-      },
     })
+
+    // Revalidate the dashboard page to refresh the data
+    revalidatePath('/nadzorna-plosca')
 
     return {
       success: true,
@@ -55,7 +57,8 @@ export async function confirmReservation(id: string) {
   } catch (error) {
     console.error('Failed to confirm reservation:', error)
     return {
-      success: false, error: 'Failed to confirm reservation',
+      success: false,
+      error: 'Failed to confirm reservation',
     }
   }
 }

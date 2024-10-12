@@ -1,79 +1,85 @@
-import { getReservations } from '@/actions/get-reservations'
-import { Badge } from '@/components/ui/badge'
-import { Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle } from '@/components/ui/card'
-import { Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow } from '@/components/ui/table'
-import { formatDate } from '@/lib/utils'
+'use client'
 
-import ReservationsList from './_components/ReservationsList'
+import { useCallback, useEffect, useState } from 'react'
+
+import { getLocationCounts } from '@/actions/get-location-counts'
+import { getReservations } from '@/actions/get-reservations'
+import { getSoldApartmentsCount } from '@/actions/get-sold-apartments-count'
+
+import ActiveReservations from './_components/ActiveReservations'
+import LocationCount from './_components/LocationCount'
+import RecentSales from './_components/RecentSales'
 import ReservationsSummary from './_components/ReservationsSummary'
 
-const UserPage = async () => {
-  const reservations = await getReservations()
+interface Reservation {
+  realEstate: {
+    location: string;
+    apartmentNumber: string;
+    number: string | null;
+    name: string;
+    images: string[];
+  };
+  id: string;
+  fullName: string;
+  email: string;
+  phoneNumber: string;
+  createdAt: Date;
+  updatedAt: Date;
+  realEstateId: string;
+  customerId: string | null;
+}
+
+const UserPage = () => {
+  const [ reservations, setReservations ] = useState<Reservation[]>([])
+
+  const [ reservationsCount, setReservationsCount ] = useState(0)
+
+  const [ activeLocations, setActiveLocations ] = useState(0)
+
+  const [ inactiveLocations, setInactiveLocations ] = useState(0)
+
+  const [ soldApartmentsCount, setSoldApartmentsCount ] = useState(0)
+
+  const fetchData = useCallback(async () => {
+    const fetchedReservations = await getReservations()
+
+    setReservations(fetchedReservations)
+    setReservationsCount(fetchedReservations.length)
+
+    const { activeLocations, inactiveLocations } = await getLocationCounts()
+
+    setActiveLocations(activeLocations)
+    setInactiveLocations(inactiveLocations)
+
+    const soldCount = await getSoldApartmentsCount()
+
+    setSoldApartmentsCount(soldCount)
+  }, [])
+
+  useEffect(() => {
+    fetchData()
+  }, [ fetchData ])
+
+  const handleReservationConfirmed = () => {
+    fetchData()
+  }
 
   return (
     <div className="flex min-h-screen w-full flex-col">
       <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
         <h1 className="text-2xl font-bold">Dobrodošli na nadzorni plošči</h1>
         <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
-          <ReservationsSummary reservationsCount={reservations.length} />
+          <ReservationsSummary reservationsCount={reservationsCount} />
+          <LocationCount title="Aktivne lokacije" count={activeLocations} />
+          <LocationCount title="Neaktivne lokacije" count={inactiveLocations} />
+          <LocationCount title="Prodana stanovanja" count={soldApartmentsCount} />
         </div>
-        <div className="grid gap-4 md:gap-8 lg:grid-cols-2 xl:grid-cols-3">
-          <Card className="xl:col-span-2">
-            <CardHeader className="flex flex-row items-center">
-              <div className="grid gap-2">
-                <CardTitle>Rezervacije</CardTitle>
-                <CardDescription>
-                  Nedavne rezervacije nepremičnin.
-                </CardDescription>
-              </div>
-              <ReservationsList initialReservations={reservations} />
-            </CardHeader>
-            <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Stranka</TableHead>
-                    <TableHead className="hidden xl:table-cell">Nepremičnina</TableHead>
-                    <TableHead className="hidden xl:table-cell">Status</TableHead>
-                    <TableHead className="text-right">Čas rezervacije</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {reservations.slice(0, 5).map((reservation) => (
-                    <TableRow key={reservation.id}>
-                      <TableCell>
-                        <div className="font-medium">{reservation.fullName}</div>
-                        <div className="hidden text-sm text-muted-foreground md:inline">
-                          {reservation.email}
-                        </div>
-                      </TableCell>
-                      <TableCell className="hidden xl:table-cell">
-                        {reservation.realEstate.location}
-                      </TableCell>
-                      <TableCell className="hidden xl:table-cell">
-                        <Badge className="text-xs" variant="outline">
-                          Aktivna
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="text-right">
-                        {formatDate(reservation.createdAt)}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
-          {/* Add more cards or components here if needed */}
+        <div className="grid gap-4 md:gap-8 lg:grid-cols-2">
+          <ActiveReservations
+            reservations={reservations}
+            onReservationConfirmed={handleReservationConfirmed}
+          />
+          <RecentSales />
         </div>
       </main>
     </div>

@@ -27,8 +27,12 @@ const RealEstateImages: React.FC<ImageGalleryProps> = ({ images }) => {
 
   return (
     <>
-      <div className={cn('grid gap-4', images.length === 1 && 'grid-cols-1', (images.length === 3 || images.length > 3) && 'md:grid-cols-3', images.length === 2 && 'grid-cols-2')}>
-        {images.map((image, index) => (
+      <div className={cn(
+        'grid gap-4',
+        images.length === 1 && 'grid-cols-1',
+        images.length >= 2 && 'grid-cols-2 md:grid-cols-3',
+      )}>
+        {images.slice(0, 3).map((image, index) => (
           <Card key={index} className="overflow-hidden">
             <CardContent className="relative p-0">
               <div className="relative h-48 w-full md:h-64" >
@@ -40,7 +44,7 @@ const RealEstateImages: React.FC<ImageGalleryProps> = ({ images }) => {
                   onClick={() => openLightbox(index)}
                 />
               </div>
-              {image && (
+              {index === 1 && (
                 <Badge
                   className="absolute left-2 top-2 flex items-center gap-1 bg-primary-500 shadow-md"
                 >

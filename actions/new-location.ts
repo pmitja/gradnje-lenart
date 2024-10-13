@@ -97,7 +97,7 @@ export const newLocation = async (values: z.infer<typeof mainFormSchema>) => {
     }),
   )
 
-  revalidatePath('nadzorna-plosca')
+  revalidatePath('/nadzorna-plosca')
 
   return {
     success: 'Nova lokacija je dodana!',

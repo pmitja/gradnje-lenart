@@ -4,15 +4,10 @@ import { Location } from '@prisma/client'
 import { ArchiveIcon,
   ArrowBigLeft,
   DoorOpenIcon,
-  Home,
-  LineChart,
   Menu,
-  Package,
   RssIcon,
-  ShoppingCart,
   SquarePlusIcon,
-  StickyNoteIcon,
-  Users } from 'lucide-react'
+  StickyNoteIcon } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
@@ -22,7 +17,6 @@ import { Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger } from '@/components/ui/accordion'
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
@@ -30,10 +24,12 @@ import { Public } from '@/routes'
 
 const WithDashBoardNavigation = ({
   children,
-  navItems,
+  activeNavItems,
+  finishedNavItems,
 }: {
   children: React.ReactNode
-  navItems: Location[]
+  activeNavItems: Location[]
+  finishedNavItems?: Location[]
 }) => {
   const SidebarContent = () => (
     <div className="flex h-full max-h-screen flex-col gap-2">
@@ -57,67 +53,39 @@ const WithDashBoardNavigation = ({
               <AccordionContent>
                 <Link
                   href={'/nadzorna-plosca/aktualni-projekt/nov'}
-                  className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                  className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:!text-primary-200"
                 >
                   Nov vnos
                 </Link>
-                {navItems
-                  && navItems.map((location) => (
+                {activeNavItems
+                  && activeNavItems.map((location) => (
                     <Link
                       key={location.slug}
                       href={`/nadzorna-plosca/aktualni-projekt/${location.slug}`}
-                      className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                      className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:!text-primary-200"
                     >
                       {location.name}
                     </Link>
                   ))}
               </AccordionContent>
             </AccordionItem>
-            <AccordionItem value="item-2">
+            {finishedNavItems && <AccordionItem value="item-2">
               <AccordionTrigger>
                 <ArchiveIcon /> Pretekli projekti
               </AccordionTrigger>
               <AccordionContent>
-                <Link
-                  href="#"
-                  className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-                >
-                  <Home className="size-4" />
-                  Dashboard
-                </Link>
-                <Link
-                  href="#"
-                  className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-                >
-                  <ShoppingCart className="size-4" />
-                  Orders
-                  <Badge className="ml-auto flex size-6 shrink-0 items-center justify-center rounded-full">
-                    6
-                  </Badge>
-                </Link>
-                <Link
-                  href="#"
-                  className="flex items-center gap-3 rounded-lg bg-muted px-3 py-2 text-primary transition-all hover:text-primary"
-                >
-                  <Package className="size-4" />
-                  Products{' '}
-                </Link>
-                <Link
-                  href="#"
-                  className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-                >
-                  <Users className="size-4" />
-                  Customers
-                </Link>
-                <Link
-                  href="#"
-                  className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-                >
-                  <LineChart className="size-4" />
-                  Analytics
-                </Link>
+              {finishedNavItems
+                  && finishedNavItems.map((location) => (
+                    <Link
+                      key={location.slug}
+                      href={`/nadzorna-plosca/aktualni-projekt/${location.slug}`}
+                      className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:!text-primary-200"
+                    >
+                      {location.name}
+                    </Link>
+                  ))}
               </AccordionContent>
-            </AccordionItem>
+            </AccordionItem>}
             <AccordionItem value="item-3">
               <AccordionTrigger>
                 <RssIcon />
@@ -126,14 +94,14 @@ const WithDashBoardNavigation = ({
               <AccordionContent>
                 <Link
                   href="#"
-                  className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                  className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:!text-primary-200"
                 >
                   <StickyNoteIcon className="size-4" />
                   Pregled
                 </Link>
                 <Link
                   href="#"
-                  className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                  className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:!text-primary-200"
                 >
                   <SquarePlusIcon className="size-4" />
                   Dodaj blog objavo
@@ -143,7 +111,7 @@ const WithDashBoardNavigation = ({
           </Accordion>
           <Link
             href="/nadzorna-plosca/aktualni-projekt/nov"
-            className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+            className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:!text-primary-200"
           >
             <SquarePlusIcon className="size-6" />
             Dodaj nov projekt

@@ -1,5 +1,7 @@
 'use server'
 
+import { revalidatePath } from 'next/cache'
+
 import { db } from '@/lib/db'
 import { StatusType } from '@/types/general'
 
@@ -40,6 +42,8 @@ export async function finishProject(locationSlug: string) {
         isActive: false,
       },
     })
+
+    revalidatePath('/nadzorna-plosca')
 
     return {
       success: true,

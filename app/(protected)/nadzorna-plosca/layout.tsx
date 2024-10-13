@@ -15,7 +15,8 @@ const montserrat = Montserrat({
 })
 
 const archivo = Archivo({
-  subsets: [ 'latin' ], variable: '--font-archivo',
+  subsets: [ 'latin' ],
+  variable: '--font-archivo',
 })
 
 export const metadata: Metadata = {
@@ -32,9 +33,14 @@ export default async function RootLayout({ children }: Readonly<{
 
   return (
     <SessionProvider session={session}>
-      <html lang='sl'>
+      <html lang="sl">
         <body className={`${montserrat.className} ${archivo.variable}`}>
-          <WithDashBoardNavigation navItems={location}>{children}</WithDashBoardNavigation>
+          <WithDashBoardNavigation
+            activeNavItems={location.filter((loc) => loc.isActive)}
+            finishedNavItems={location.filter((loc) => !loc.isActive)}
+          >
+            {children}
+          </WithDashBoardNavigation>
           <Toaster />
         </body>
       </html>

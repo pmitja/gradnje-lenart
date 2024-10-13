@@ -1,6 +1,7 @@
 'use server'
 
 import { db } from '@/lib/db'
+import { StatusType } from '@/types/general'
 
 import { getLocationCounts } from './get-location-counts'
 import { getSoldApartmentsCount } from './get-sold-apartments-count'
@@ -20,6 +21,32 @@ export async function getDashboardData() {
       },
     })
 
+    const recentSales = await db.realEstate.findMany({
+      where: {
+        status: StatusType.Prodano,
+        customer: {
+          isNot: null,
+        },
+      },
+      include: {
+        customer: {
+          select: {
+            fullName: true,
+            email: true,
+          },
+        },
+        location: {
+          select: {
+            name: true,
+          },
+        },
+      },
+      orderBy: {
+        updatedAt: 'desc',
+      },
+      take: 5,
+    })
+
     const { activeLocations, inactiveLocations } = await getLocationCounts()
 
     const soldCount = await getSoldApartmentsCount()
@@ -37,6 +64,7 @@ export async function getDashboardData() {
       activeLocations,
       inactiveLocations,
       soldApartmentsCount: soldCount,
+      recentSales,
     }
   } catch (error) {
     console.error('Failed to fetch dashboard data:', error)
@@ -46,6 +74,7 @@ export async function getDashboardData() {
       activeLocations: 0,
       inactiveLocations: 0,
       soldApartmentsCount: 0,
+      recentSales: [],
     }
   }
 }

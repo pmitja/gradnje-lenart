@@ -1,8 +1,5 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
-
-import { getRecentSales } from '@/actions/get-recent-sales'
 import { Avatar,
   AvatarFallback,
   AvatarImage } from '@/components/ui/avatar'
@@ -11,38 +8,27 @@ import { Card,
   CardHeader,
   CardTitle } from '@/components/ui/card'
 
-interface Sale {
-  id: string
-  name: string
-  priceWithTax: number | null
-  customer: {
-    fullName: string
-    email: string
-  } | null
-  location: {
+  interface Sale {
+    id: string
     name: string
+    priceWithTax: number | null
+    updatedAt: Date
+    customer: {
+      fullName: string
+      email: string
+    } | null
+    location: {
+      name: string
+    }
   }
-}
 
-export default function RecentSales() {
-  const [ sales, setSales ] = useState<Sale[]>([])
-
-  const fetchSales = useCallback(async () => {
-    const recentSales = await getRecentSales(5)
-
-    setSales(recentSales)
-  }, [])
-
-  useEffect(() => {
-    fetchSales()
-  }, [ fetchSales ])
-
+export default function RecentSales({ sales }: { sales: Sale[] }) {
   return (
     <Card className="bg-white">
       <CardHeader>
         <CardTitle>Nedavne prodaje</CardTitle>
       </CardHeader>
-      <CardContent className="grid gap-8">
+      <CardContent className="grid gap-4">
         {sales && sales.map((sale) => (
           <div key={sale.id} className="flex items-center gap-4 rounded-md bg-primary-50 p-4">
             <Avatar className="hidden size-9 sm:flex">

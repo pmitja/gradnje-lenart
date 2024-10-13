@@ -27,12 +27,27 @@ interface Reservation {
   customerId: string | null;
 }
 
+interface Sale {
+  id: string
+  name: string
+  priceWithTax: number | null
+  updatedAt: Date
+  customer: {
+    fullName: string
+    email: string
+  } | null
+  location: {
+    name: string
+  }
+}
+
 interface DashboardData {
   reservations: Reservation[];
   reservationsCount: number;
   activeLocations: number;
   inactiveLocations: number;
   soldApartmentsCount: number;
+  recentSales: Sale[];
 }
 
 const UserPage = () => {
@@ -42,6 +57,7 @@ const UserPage = () => {
     activeLocations: 0,
     inactiveLocations: 0,
     soldApartmentsCount: 0,
+    recentSales: [],
   })
 
   const fetchData = useCallback(async () => {
@@ -52,7 +68,10 @@ const UserPage = () => {
 
   useEffect(() => {
     fetchData()
-    console.log(dashboardData)
+  }, [ fetchData ])
+
+  const handleReservationUpdated = useCallback(() => {
+    fetchData()
   }, [ fetchData ])
 
   return (
@@ -68,8 +87,9 @@ const UserPage = () => {
         <div className="grid gap-4 md:gap-8 lg:grid-cols-2">
           <ActiveReservations
             reservations={dashboardData.reservations}
+            onReservationUpdated={handleReservationUpdated}
           />
-          <RecentSales />
+          <RecentSales sales={dashboardData.recentSales} />
         </div>
       </main>
     </div>

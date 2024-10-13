@@ -41,9 +41,10 @@ interface Reservation {
 
 interface ReservationsListProps {
   initialReservations: Reservation[]
+  onReservationUpdated: () => void // Add this prop
 }
 
-const ReservationsList = ({ initialReservations }: ReservationsListProps) => {
+const ReservationsList = ({ initialReservations, onReservationUpdated }: ReservationsListProps) => {
   const [ reservations, setReservations ] = useState(initialReservations)
 
   console.log('ReservationsList received reservations:', initialReservations)
@@ -57,6 +58,7 @@ const ReservationsList = ({ initialReservations }: ReservationsListProps) => {
         title: 'Rezervacija potrjena',
         description: 'Rezervacija je bila uspešno potrjena.',
       })
+      onReservationUpdated() // Call the callback
     } else {
       toast({
         title: 'Napaka',
@@ -74,6 +76,7 @@ const ReservationsList = ({ initialReservations }: ReservationsListProps) => {
         title: 'Rezervacija odstranjena',
         description: 'Rezervacija je bila uspešno odstranjena.',
       })
+      onReservationUpdated() // Call the callback
     } else {
       toast({
         title: 'Napaka',

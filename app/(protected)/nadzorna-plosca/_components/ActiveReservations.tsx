@@ -26,11 +26,14 @@ interface Reservation {
 
 interface ActiveReservationsProps {
   reservations: Reservation[]
+  onReservationUpdated: () => void
 }
 
 export default function ActiveReservations(
-  { reservations }: ActiveReservationsProps,
+  { reservations, onReservationUpdated }: ActiveReservationsProps,
 ) {
+  console.log('ActiveReservations received reservations:', reservations)
+
   return (
     <Card className="bg-white">
       <CardHeader className="flex flex-row items-center">
@@ -41,6 +44,7 @@ export default function ActiveReservations(
         {reservations.length > 0 && (
           <ReservationsList
             initialReservations={reservations}
+            onReservationUpdated={onReservationUpdated}
           />
         )}
       </CardHeader>

@@ -105,18 +105,17 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
   <Button
     variant="outline"
     className={cn(
-      'flex h-full w-full min-w-fit flex-col gap-4 rounded-xl border-4 border-transparent bg-primary-50 p-4 shadow-md hover:bg-primary-75/25 lg:flex-row',
+      'grid h-full w-full grid-cols-1 gap-4 rounded-xl border-4 border-transparent bg-primary-50 p-4 shadow-md hover:bg-primary-75/25 sm:w-[280px]',
       isActive && 'border-4 border-primary-400',
     )}
     onClick={() => onClick(realEstate)}
   >
-    <div className="relative w-full">
+    <div className="relative size-full min-h-[150px]">
       <Image
-        src={`https://utfs.io/f/${realEstate.images[0]}`}
+        src={realEstate.images[0] ? `https://utfs.io/f/${realEstate.images[0]}` : '/no-image.webp'}
         alt={realEstate.name}
-        width={200}
-        height={200}
-        className="relative aspect-square size-full max-h-[200px] rounded-2xl object-cover lg:max-w-[200px]"
+        fill
+        className="relative aspect-square size-full max-h-[200px] rounded-2xl object-cover"
       />
 
       {realEstate.status === StatusType.Rezervirano && (
@@ -186,7 +185,7 @@ const DetailedPropertyView: React.FC<DetailedPropertyViewProps> = ({
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <div className="relative">
           <Image
-            src={`https://utfs.io/f/${imageSrc}`}
+            src={imageSrc ? `https://utfs.io/f/${imageSrc}` : '/no-image.webp'}
             alt={name}
             width={800}
             height={600}
@@ -207,36 +206,15 @@ const DetailedPropertyView: React.FC<DetailedPropertyViewProps> = ({
           <h2 className="mb-2 text-2xl font-bold">{type}</h2>
           <h3 className="mb-4 text-3xl font-bold text-primary-200">{price} €</h3>
           <p className="mb-4 text-gray-600">{location}</p>
-          <div className="mb-4 flex flex-wrap gap-4">
-            <Badge variant={'pills'} className="flex items-center gap-2">
-              <Maximize2 size={20} />
-              <span>{size} m²</span>
-            </Badge>
-            {spaces && (
-              <div className="flex flex-wrap gap-2">
-                {spaces.map((space, index) => {
-                  const matchingRoom = rooms.find((room) => room.label === space)
-
-                  return (
-                    <Badge key={index} variant={'pills'} className="flex items-center gap-2">
-                      {matchingRoom ? matchingRoom.icon : null}
-                      <span>{space}</span>
-                    </Badge>
-                  )
-                })}
-              </div>
-            )}
-          </div>
-          <p className="mb-4 text-gray-700">{description}</p>
           {status && status === StatusType.Rezervirano && (
-            <div className="flex flex-col items-center gap-y-4">
+            <div className="mb-4 flex flex-col items-center gap-y-4">
               <div className="flex w-full place-content-center items-start gap-2 rounded-md border border-secondary-200 bg-informative-50 p-2.5 text-secondary-200">
                 <InfoIcon className="shrink-0" size={20} />
                 <p className="text-sm">
                   V primeru sprostitve rezervacije se prosim prijavite v čakalno listo.
                 </p>
               </div>
-              <div className="flex gap-4">
+              <div className="flex flex-wrap gap-4">
                 <Button variant={'primary'}>Obvesti me</Button>
                 <Link href={url}>
                   <Button asChild variant={'secondary'}>
@@ -249,7 +227,7 @@ const DetailedPropertyView: React.FC<DetailedPropertyViewProps> = ({
             </div>
           )}
           {status !== StatusType.Prodano && status !== StatusType.Rezervirano && (
-            <div className="flex gap-4">
+            <div className="mb-4 flex flex-wrap gap-4">
               <Button variant={'primary'} className="flex gap-3">
                 <BadgeCheckIcon />
                 Rezerviraj
@@ -264,7 +242,7 @@ const DetailedPropertyView: React.FC<DetailedPropertyViewProps> = ({
             </div>
           )}
           {status === StatusType.Prodano && (
-            <div className="flex gap-4">
+            <div className="mb-4 flex flex-wrap gap-4">
               <Link href={url}>
                 <Button asChild variant={'secondary'}>
                   <span>
@@ -274,6 +252,27 @@ const DetailedPropertyView: React.FC<DetailedPropertyViewProps> = ({
               </Link>
             </div>
           )}
+          <p className="mb-4 text-gray-700">{description}</p>
+          <div className="mb-4 flex flex-wrap gap-4">
+            <Badge variant={'pills'} className="flex items-center gap-2">
+              <Maximize2 size={20} />
+              <span>{size} m²</span>
+            </Badge>
+            {spaces && (
+              <div className="flex flex-wrap gap-2">
+                {spaces.map((space, index) => {
+                  const matchingRoom = rooms.find((room) => room.label === space)
+
+                  return (
+                    <Badge key={index} variant={'pills'} className="flex items-center gap-2 text-sm">
+                      {matchingRoom ? matchingRoom.icon : null}
+                      <span className="text-sm">{space}</span>
+                    </Badge>
+                  )
+                })}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </CardContent>
@@ -362,11 +361,10 @@ const RealEstateListing = ({
           <Home size={32} className="size-4 lg:size-8" /> Nepremičnine
         </h2>
         <Carousel className="w-full">
-          <CarouselContent className="mb-2 ml-1 flex gap-8">
+          <CarouselContent className="-ml-4">
             {filteredRealEstates.map((realEstate) => (
-              <CarouselItem key={realEstate.id} className="min-w-fit shrink p-0">
+              <CarouselItem key={realEstate.id} className="pl-4 sm:basis-auto">
                 <PropertyCard
-                  key={realEstate.id}
                   realEstate={realEstate}
                   city={location.city}
                   address={location.address}
@@ -391,6 +389,7 @@ const RealEstateListing = ({
             url={`${slug}/${selectedProject.id}`}
             status={selectedProject.status}
           />
+
         )}
       </section>
     </>

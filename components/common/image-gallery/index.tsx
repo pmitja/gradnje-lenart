@@ -29,7 +29,7 @@ const ImageGallery = ({ images, offerInfo }: ImageGalleryProps) => {
         className={`relative overflow-hidden rounded-2xl ${validImages.length === 4 && 'col-span-2 row-span-2 md:col-span-1 md:row-span-2 lg:col-span-2'}`}
       >
         <Image
-          src={validImages[0]}
+          src={`https://utfs.io/f/${validImages[0]}`}
           alt={'offer-image-1'}
           fill
           sizes='(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 33vw'
@@ -42,7 +42,6 @@ const ImageGallery = ({ images, offerInfo }: ImageGalleryProps) => {
           <div className='inline-flex w-fit items-center gap-2 border-b border-primary-100 text-lg md:text-xl'>
             <Link
               href={offerInfo.linkHref}
-              target='_blank'
               className='text-body-75'
             >
               {offerInfo.linkLabel || 'Več o nepremičnini'}
@@ -54,32 +53,36 @@ const ImageGallery = ({ images, offerInfo }: ImageGalleryProps) => {
           </div>
         </div>
       </div>
-      <div
-        className={`relative hidden overflow-hidden rounded-2xl md:block ${validImages.length === 4 && 'col-span-2 row-span-1 md:col-span-1 md:row-span-2'}`}
-      >
+      {validImages[1] && (
+        <div
+          className={`relative hidden overflow-hidden rounded-2xl md:block ${validImages.length === 4 && 'col-span-2 row-span-1 md:col-span-1 md:row-span-2'}`}
+        >
         <Image
-          src={validImages[1]}
+          src={`https://utfs.io/f/${validImages[1]}`}
           alt={'offer-image-2'}
           fill
           sizes='(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 33vw'
           className='object-cover'
-        />
-      </div>
-      <div
-        className={`relative hidden overflow-hidden rounded-2xl lg:block ${validImages.length === 4 && 'col-span-1 row-span-1'}`}
-      >
+          />
+        </div>
+      )}
+      {validImages[2] && (
+        <div
+          className={`relative hidden overflow-hidden rounded-2xl lg:block ${validImages.length === 4 && 'col-span-1 row-span-1'}`}
+        >
         <Image
-          src={validImages[2]}
+          src={`https://utfs.io/f/${validImages[2]}`}
           alt={'offer-image-3'}
           fill
-          sizes='(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 33vw'
-          className='object-cover'
-        />
-      </div>
+            sizes='(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 33vw'
+            className='object-cover'
+          />
+        </div>
+      )}
       {validImages.length === 4 && (
         <div className='relative col-span-1 row-span-1 hidden overflow-hidden rounded-2xl lg:block'>
           <Image
-            src={validImages[3]}
+            src={`https://utfs.io/f/${validImages[3]}`}
             alt={'offer-image-4'}
             fill
             sizes='(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 33vw'

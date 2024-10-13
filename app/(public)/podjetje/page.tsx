@@ -9,8 +9,6 @@ import GradnjeIcon from '@/components/icons/gradnje-icon'
 import OffersBanner from '@/components/layouts/sections/offers-banner'
 import ShadowBanner from '@/components/ui/shadow-banner'
 
-import { OfferInfo } from '../projekti/page'
-
 const stats: StatType[] = [
   {
     subtitle: 'nepremičnin zgrajenih',
@@ -25,19 +23,6 @@ const stats: StatType[] = [
     endValue: 99,
     isPercentage: true,
   },
-]
-
-const offersInfo: OfferInfo = {
-  title: '2 sobno stanovanje',
-  description: 'Velik skupni prostor s kuhinjo, spalnica, otroška soba in kopalnica.',
-  linkHref: '#',
-}
-
-const OffersBannerImages = [
-  '/stanovanje.jpg',
-  '/stanovanje2.jpg',
-  '/stanovanje3.jpg',
-  '/stanovanje4.jpg',
 ]
 
 const About = () => (
@@ -130,12 +115,7 @@ const About = () => (
       <Cta />
     </section>
     <section className="py-6">
-      <OffersBanner
-        title="Ne spreglejte naše premium ponudbe"
-        description="Pri nas vam omogočamo najti domove, ki ustrezajo vašemu življenjskemu slogu in aspiracijam. Odkrijte brezhibno nepremičninsko izkušnjo."
-        images={OffersBannerImages}
-        offerInfo={offersInfo}
-      />
+      <OffersBanner />
     </section>
     <section className="py-6 lg:py-12">
       <ContactUs />

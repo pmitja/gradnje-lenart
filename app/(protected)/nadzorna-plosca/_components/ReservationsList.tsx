@@ -46,6 +46,8 @@ interface ReservationsListProps {
 const ReservationsList = ({ initialReservations }: ReservationsListProps) => {
   const [ reservations, setReservations ] = useState(initialReservations)
 
+  console.log('ReservationsList received reservations:', initialReservations)
+
   const handleConfirm = async (id: string) => {
     const result = await confirmReservation(id)
 

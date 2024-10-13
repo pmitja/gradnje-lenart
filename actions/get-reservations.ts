@@ -4,32 +4,16 @@ export async function getReservations() {
   try {
     const reservations = await db.reservation.findMany({
       include: {
-        realEstate: {
-          select: {
-            name: true,
-            images: true,
-            location: {
-              select: {
-                name: true,
-              },
-            },
-            number: true, // This corresponds to apartmentNumber
-          },
-        },
+        realEstate: true,
       },
       orderBy: {
         createdAt: 'desc',
       },
     })
 
-    return reservations.map((reservation) => ({
-      ...reservation,
-      realEstate: {
-        ...reservation.realEstate,
-        location: reservation.realEstate.location.name,
-        apartmentNumber: reservation.realEstate.number || '',
-      },
-    }))
+    console.log('Raw reservations:', JSON.stringify(reservations, null, 2))
+
+    return reservations
   } catch (error) {
     console.error('Failed to fetch reservations:', error)
     return []

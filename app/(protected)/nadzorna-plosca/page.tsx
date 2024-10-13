@@ -2,9 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react'
 
-import { getLocationCounts } from '@/actions/get-location-counts'
-import { getReservations } from '@/actions/get-reservations'
-import { getSoldApartmentsCount } from '@/actions/get-sold-apartments-count'
+import { getDashboardData } from '@/actions/get-dashboard-data'
 
 import ActiveReservations from './_components/ActiveReservations'
 import LocationCount from './_components/LocationCount'
@@ -29,55 +27,47 @@ interface Reservation {
   customerId: string | null;
 }
 
+interface DashboardData {
+  reservations: Reservation[];
+  reservationsCount: number;
+  activeLocations: number;
+  inactiveLocations: number;
+  soldApartmentsCount: number;
+}
+
 const UserPage = () => {
-  const [ reservations, setReservations ] = useState<Reservation[]>([])
-
-  const [ reservationsCount, setReservationsCount ] = useState(0)
-
-  const [ activeLocations, setActiveLocations ] = useState(0)
-
-  const [ inactiveLocations, setInactiveLocations ] = useState(0)
-
-  const [ soldApartmentsCount, setSoldApartmentsCount ] = useState(0)
+  const [ dashboardData, setDashboardData ] = useState<DashboardData>({
+    reservations: [],
+    reservationsCount: 0,
+    activeLocations: 0,
+    inactiveLocations: 0,
+    soldApartmentsCount: 0,
+  })
 
   const fetchData = useCallback(async () => {
-    const fetchedReservations = await getReservations()
+    const data = await getDashboardData()
 
-    setReservations(fetchedReservations)
-    setReservationsCount(fetchedReservations.length)
-
-    const { activeLocations, inactiveLocations } = await getLocationCounts()
-
-    setActiveLocations(activeLocations)
-    setInactiveLocations(inactiveLocations)
-
-    const soldCount = await getSoldApartmentsCount()
-
-    setSoldApartmentsCount(soldCount)
+    setDashboardData(data)
   }, [])
 
   useEffect(() => {
     fetchData()
+    console.log(dashboardData)
   }, [ fetchData ])
-
-  const handleReservationConfirmed = () => {
-    fetchData()
-  }
 
   return (
     <div className="flex min-h-screen w-full flex-col">
       <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
         <h1 className="text-2xl font-bold">Dobrodošli na nadzorni plošči</h1>
         <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
-          <ReservationsSummary reservationsCount={reservationsCount} />
-          <LocationCount title="Aktivne lokacije" count={activeLocations} />
-          <LocationCount title="Neaktivne lokacije" count={inactiveLocations} />
-          <LocationCount title="Prodana stanovanja" count={soldApartmentsCount} />
+          <ReservationsSummary reservationsCount={dashboardData.reservationsCount} />
+          <LocationCount title="Aktivne lokacije" count={dashboardData.activeLocations} />
+          <LocationCount title="Neaktivne lokacije" count={dashboardData.inactiveLocations} />
+          <LocationCount title="Prodana stanovanja" count={dashboardData.soldApartmentsCount} />
         </div>
         <div className="grid gap-4 md:gap-8 lg:grid-cols-2">
           <ActiveReservations
-            reservations={reservations}
-            onReservationConfirmed={handleReservationConfirmed}
+            reservations={dashboardData.reservations}
           />
           <RecentSales />
         </div>

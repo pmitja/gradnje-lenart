@@ -1,7 +1,3 @@
-import { useState } from 'react'
-
-import { confirmReservation } from '@/actions/confirm-reservation'
-import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Table,
   TableBody,
@@ -30,23 +26,11 @@ interface Reservation {
 
 interface ActiveReservationsProps {
   reservations: Reservation[]
-  onReservationConfirmed: () => void
 }
 
 export default function ActiveReservations(
-  { reservations: initialReservations, onReservationConfirmed }: ActiveReservationsProps,
+  { reservations }: ActiveReservationsProps,
 ) {
-  const [ reservations, setReservations ] = useState(initialReservations)
-
-  const handleConfirm = async (id: string) => {
-    const result = await confirmReservation(id)
-
-    if (result.success) {
-      setReservations(reservations.filter((r) => r.id !== id))
-      onReservationConfirmed()
-    }
-  }
-
   return (
     <Card className="bg-white">
       <CardHeader className="flex flex-row items-center">
@@ -54,7 +38,11 @@ export default function ActiveReservations(
           <CardTitle>Rezervacije</CardTitle>
           <CardDescription>Nedavne rezervacije nepremičnin.</CardDescription>
         </div>
-        {reservations.length > 0 && <ReservationsList initialReservations={reservations} />}
+        {reservations.length > 0 && (
+          <ReservationsList
+            initialReservations={reservations}
+          />
+        )}
       </CardHeader>
       <CardContent>
         {reservations.length === 0 ? (
@@ -66,7 +54,6 @@ export default function ActiveReservations(
                 <TableHead>Stranka</TableHead>
                 <TableHead className="hidden xl:table-cell">Nepremičnina</TableHead>
                 <TableHead className="text-right">Čas rezervacije</TableHead>
-                <TableHead>Akcije</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -82,9 +69,6 @@ export default function ActiveReservations(
                     {reservation.realEstate.location}
                   </TableCell>
                   <TableCell className="text-right">{formatDate(reservation.createdAt)}</TableCell>
-                  <TableCell>
-                    <Button onClick={() => handleConfirm(reservation.id)}>Potrdi prodajo</Button>
-                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

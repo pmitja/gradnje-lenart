@@ -20,17 +20,26 @@ export const getLocationsByCity = async (values: z.infer<typeof projectFilterSch
     let locations: any[] = []
 
     if (location === 'all' && type === 'all') {
-      locations = await db.location.findMany()
+      locations = await db.location.findMany({
+        where: {
+          isActive: true,
+        },
+      })
       return locations
     }
 
     if (location === 'all' && !type) {
-      locations = await db.location.findMany()
+      locations = await db.location.findMany({
+        where: {
+          isActive: true,
+        },
+      })
       return locations
     } if (location === 'all' && type) {
       locations = await db.location.findMany({
         where: {
           type,
+          isActive: true,
         },
       })
       return locations
@@ -40,6 +49,7 @@ export const getLocationsByCity = async (values: z.infer<typeof projectFilterSch
       locations = await db.location.findMany({
         where: {
           city: location,
+          isActive: true,
         },
       })
       return locations
@@ -47,6 +57,7 @@ export const getLocationsByCity = async (values: z.infer<typeof projectFilterSch
       locations = await db.location.findMany({
         where: {
           city: location,
+          isActive: true,
         },
       })
       return locations
@@ -56,6 +67,7 @@ export const getLocationsByCity = async (values: z.infer<typeof projectFilterSch
       locations = await db.location.findMany({
         where: {
           type,
+          isActive: true,
         },
       })
       return locations
@@ -63,6 +75,7 @@ export const getLocationsByCity = async (values: z.infer<typeof projectFilterSch
       locations = await db.location.findMany({
         where: {
           city: location,
+          isActive: true,
         },
       })
       return locations
@@ -71,6 +84,7 @@ export const getLocationsByCity = async (values: z.infer<typeof projectFilterSch
         where: {
           city: location,
           type,
+          isActive: true,
         },
       })
       return locations

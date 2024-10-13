@@ -71,14 +71,14 @@ const ProjectsFilter = () => {
             onSubmit={form.handleSubmit(onSubmit)}
             className='grid w-full items-start gap-6'
           >
-            <fieldset className='grid-col-1 grid max-w-fit items-center gap-4 rounded-lg border bg-body-200 p-4 shadow-sm lg:grid-cols-3 lg:gap-9 lg:rounded-full lg:px-10 lg:py-5'>
+            <fieldset className='grid max-w-fit items-center gap-4 rounded-lg border bg-body-200 p-4 shadow-sm lg:grid-cols-3 lg:gap-9 lg:rounded-full lg:px-10 lg:py-5'>
               {location && (
                 <FormField
                   control={form.control}
                   name='location'
                   render={({ field }) => (
                     <FormItem className='flex flex-col gap-2 border-secondary-200 pr-2 md:pr-4 lg:border-r-2 lg:pr-6'>
-                      <FormLabel className='text-text px-3 text-base font-bold lg:text-xl'>
+                      <FormLabel className='px-3 text-base font-bold lg:text-xl'>
                         Lokacija
                       </FormLabel>
                       <FormControl>
@@ -115,7 +115,7 @@ const ProjectsFilter = () => {
                 name='type'
                 render={({ field }) => (
                   <FormItem className='flex flex-col gap-2 border-secondary-200 pr-2 md:pr-4 lg:border-r-2 lg:pr-6'>
-                    <FormLabel className='text-text px-3 text-base font-bold lg:text-xl'>
+                    <FormLabel className='px-3 text-base font-bold lg:text-xl'>
                       Vrsta
                     </FormLabel>
                     <FormControl>
@@ -134,7 +134,7 @@ const ProjectsFilter = () => {
                             value={LocationType.Apartments}
                             className='hover:bg-primary-50'
                           >
-                            Več stanovanjski objekt
+                            Večstanovanjski objekt
                           </SelectItem>
                           <SelectItem value={LocationType.House}>Hiša</SelectItem>
                           <SelectItem value='all'>Vse vrste</SelectItem>

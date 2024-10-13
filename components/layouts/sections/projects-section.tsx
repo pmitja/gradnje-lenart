@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { useEffect, useTransition } from 'react'
+import { useCallback, useEffect, useTransition } from 'react'
 
 import { getLocationsByCity } from '@/actions/get-locations-by-city'
 import ButtonWithIcon from '@/components/common/button-with-icon'
@@ -60,6 +60,14 @@ const ProjectsSection = () => {
 
   const [ isPending, startTransition ] = useTransition()
 
+  const fetchProjects = useCallback((filters: typeof projectFilters) => {
+    startTransition(async () => {
+      const projects = await getLocationsByCity(filters)
+
+      updateCurrentProjects(Array.isArray(projects) ? projects : [])
+    })
+  }, [ startTransition, updateCurrentProjects ])
+
   const handleFilterRemove = (filter: string) => {
     const newFilters = {
       location: projectFilters.location === filter ? 'all' : projectFilters.location,
@@ -67,28 +75,12 @@ const ProjectsSection = () => {
     }
 
     updateProjectFilters(newFilters)
-    startTransition(async () => {
-      getLocationsByCity(newFilters).then((projects) => {
-        if (Array.isArray(projects)) {
-          updateCurrentProjects(projects)
-        } else {
-          updateCurrentProjects([])
-        }
-      })
-    })
+    fetchProjects(newFilters)
   }
 
   useEffect(() => {
-    startTransition(async () => {
-      getLocationsByCity(projectFilters).then((projects) => {
-        if (Array.isArray(projects)) {
-          updateCurrentProjects(projects)
-        } else {
-          updateCurrentProjects([])
-        }
-      })
-    })
-  }, [ projectFilters, startTransition, updateCurrentProjects ])
+    fetchProjects(projectFilters)
+  }, [ projectFilters, fetchProjects ])
 
   return (
     <section className='flex flex-col gap-3 lg:gap-5'>

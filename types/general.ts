@@ -25,7 +25,7 @@ export enum StatusType {
 
 export enum LocationType {
   House = 'Hiša',
-  Apartments = 'Več stanovanjski objekt'
+  Apartments = 'Večstanovanjski objekt'
 }
 
 export enum SpacesType {

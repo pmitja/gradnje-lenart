@@ -5,10 +5,12 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ChevronLeft } from 'lucide-react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useState, useTransition } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
+import { finishProject } from '@/actions/finish-project'
 import { getLocationRealEstates } from '@/actions/get-location-real-esatates'
 import { updateLocationRealEstate } from '@/actions/update-location-real-estates'
 import ApartmentForm from '@/components/common/apartment-form'
@@ -21,16 +23,20 @@ import { Card,
   CardFooter,
   CardHeader,
   CardTitle } from '@/components/ui/card'
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow } from '@/components/ui/table'
+import { toast } from '@/components/ui/use-toast'
 import { updateSchema } from '@/schemas'
 import { Apartment, Location, StatusType } from '@/types/general'
 
 const AktualniProjektPage = ({ params: { slug } }: { params: { slug: string } }) => {
+  const router = useRouter()
+
   const [ apartments, setApartments ] = useState<Apartment[]>([])
 
   const [ isPending, startTransition ] = useTransition()
@@ -44,6 +50,8 @@ const AktualniProjektPage = ({ params: { slug } }: { params: { slug: string } })
   const [ isError, setIsError ] = useState(false)
 
   const [ selectedApartment, setSelectedApartment ] = useState<Apartment | null>(null)
+
+  const [ isFinishDialogOpen, setIsFinishDialogOpen ] = useState(false)
 
   const fetchLocationData = useCallback(() => {
     setIsError(false)
@@ -101,6 +109,35 @@ const AktualniProjektPage = ({ params: { slug } }: { params: { slug: string } })
   const handleEditCancel = () => {
     setSelectedApartment(null)
     fetchLocationData() // Revalidate path to get latest location real estates
+  }
+
+  const handleFinishProject = async () => {
+    const result = await finishProject(slug)
+
+    if (result.success) {
+      toast({
+        title: 'Projekt zaključen',
+        description: 'Projekt je bil uspešno zaključen. Vse nepremičnine so prodane.',
+        variant: 'default',
+      })
+      setIsFinishDialogOpen(false)
+      // Redirect to the dashboard page after a short delay
+      setTimeout(() => {
+        router.push('/nadzorna-plosca')
+      }, 2000) // 2 second delay
+    } else if (result.error === 'Not all real estates are sold') {
+      toast({
+        title: 'Napaka',
+        description: `Projekta ni mogoče zaključiti. Obstaja še ${result.unsoldCount} neprodanih nepremičnin na tej lokaciji.`,
+        variant: 'destructive',
+      })
+    } else {
+      toast({
+        title: 'Napaka',
+        description: result.error || 'Pri zaključevanju projekta je prišlo do napake.',
+        variant: 'destructive',
+      })
+    }
   }
 
   return (
@@ -214,19 +251,37 @@ const AktualniProjektPage = ({ params: { slug } }: { params: { slug: string } })
                 className='bg-primary-75'
               >
                 <CardHeader>
-                  <CardTitle>Status</CardTitle>
+                  <CardTitle>Projekt razprodan in zaključen</CardTitle>
                   <CardDescription>
-                    Lipsum dolor sit amet, consectetur adipiscing elit.
+                    Projekt je razprodan in zaključen.
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div></div>
-                  <Button
-                    size='sm'
-                    variant='secondary'
-                  >
-                    Archive Product
-                  </Button>
+                  <Dialog open={isFinishDialogOpen} onOpenChange={setIsFinishDialogOpen}>
+                    <DialogTrigger asChild>
+                      <Button
+                        size='sm'
+                        variant='outline'
+                        className='hover:!bg-primary-50 hover:!text-primary-300'
+                      >
+                        Zaključi projekt
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Zaključi projekt</DialogTitle>
+                        <DialogDescription>
+                          Ali ste prepričani, da želite zaključiti ta projekt?
+                          To dejanje bo označilo lokacijo kot neaktivno.
+                        </DialogDescription>
+                      </DialogHeader>
+                      <DialogFooter>
+                        <Button variant="secondary" onClick={() => setIsFinishDialogOpen(false)}>Prekliči</Button>
+                        <Button variant="primary" onClick={handleFinishProject}>Zaključi projekt</Button>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
                 </CardContent>
               </Card>
             </div>

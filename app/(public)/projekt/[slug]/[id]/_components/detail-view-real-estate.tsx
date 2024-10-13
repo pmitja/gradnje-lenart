@@ -22,10 +22,6 @@ interface PropertyDetail {
   value: string
 }
 
-export interface TechnicalData {
-  create: { id: string; text: string }[]
-}
-
 const DetailViewRealEstate = ({
   id,
   description,
@@ -44,7 +40,7 @@ const DetailViewRealEstate = ({
 }: {
   id: string
   description: string
-  technicalData: TechnicalData
+  technicalData: { id: string; text: string }[]
   city: string
   address: string
   files?: { name: string; key: string }[]
@@ -190,7 +186,7 @@ const DetailViewRealEstate = ({
             Tehnični podatki
           </h3>
           <ul className="grid grid-cols-2 items-center gap-5 text-secondary-300 md:grid-cols-3">
-            {technicalData.create.map((data, index) => (
+            {technicalData.map((data, index) => (
               <li className="flex gap-5" key={index}>
                 <Check className="text-primary-200" />
                 {data.text}

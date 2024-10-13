@@ -52,11 +52,7 @@ export const updateLocationRealEstate = async (values: z.infer<typeof updateSche
               spaces: apartment.spaces,
               energyLevel: apartment.energyLevel,
               parkingSpaces: apartment.parkingSpaces,
-              technicalData: apartment.technicalData
-                ? apartment.technicalData.map((td) => ({
-                  id: td.id, text: td.text,
-                }))
-                : undefined,
+              technicalData: apartment.technicalData,
               files: apartment.files
                 ? apartment.files.map((td) => ({
                   name: td.name, key: td.key,

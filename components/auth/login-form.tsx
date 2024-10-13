@@ -51,7 +51,6 @@ function LoginForm() {
 
     startTransition(() => {
       login(values).then((data) => {
-        console.log(data)
         if (data?.error) return setError(data.error)
         if (data?.success) return setSuccess(data.success)
       })

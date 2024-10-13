@@ -32,8 +32,6 @@ interface ActiveReservationsProps {
 export default function ActiveReservations(
   { reservations, onReservationUpdated }: ActiveReservationsProps,
 ) {
-  console.log('ActiveReservations received reservations:', reservations)
-
   return (
     <Card className="bg-white">
       <CardHeader className="flex flex-row items-center">

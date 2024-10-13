@@ -11,8 +11,6 @@ export async function getReservations() {
       },
     })
 
-    console.log('Raw reservations:', JSON.stringify(reservations, null, 2))
-
     return reservations
   } catch (error) {
     console.error('Failed to fetch reservations:', error)

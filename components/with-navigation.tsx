@@ -24,10 +24,6 @@ const navItems = [
     text: 'Kontakt',
     link: '/kontakt',
   },
-  {
-    text: 'Blog',
-    link: '/blog',
-  },
 ]
 
 const WithNavigation: FC = () => {

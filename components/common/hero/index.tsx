@@ -1,13 +1,19 @@
+import console from 'console'
 import { ArrowUpRight } from 'lucide-react'
 import Image from 'next/image'
 
+import { getRandomProject } from '@/actions/get-random-project'
 import DoubleChervonRightIcon from '@/components/icons/double-chervon-right'
 import { Button } from '@/components/ui/button'
 import { PublicProjekti } from '@/routes'
 
 import ButtonWithIcon from '../button-with-icon'
 
-const Hero = () => (
+const Hero = async () => {
+  const randomProject = await getRandomProject()
+
+  console.log(randomProject?.images[0])
+  return (
     <div className='relative inset-x-1/2 mx-[-50vw] w-screen min-w-[100vw] bg-primary-75 pt-10 md:pt-16 lg:pt-0'>
       <div className='container relative grid w-full justify-center gap-10 lg:w-full lg:grid-cols-2 lg:gap-6'>
         <div className='relative flex flex-col justify-center gap-5'>
@@ -50,7 +56,7 @@ const Hero = () => (
         <div className='relative inset-x-1/2 mx-[-50vw] flex w-screen flex-col items-center lg:inset-x-auto lg:mx-auto lg:w-full'>
           <div className='relative md:flex md:w-full md:flex-col md:items-center'>
             <Image
-              src='/hero-image.webp'
+              src={randomProject?.images[0] ? ` https://utfs.io/f/${randomProject?.images[0]}` : '/hero-image.webp'}
               alt='Hero image'
               width='795'
               height='700'
@@ -67,15 +73,14 @@ const Hero = () => (
               className='absolute bottom-0 right-0 hidden lg:block'
             />
           </div>
-          <div className='flex flex-col gap-4 bg-body-100 px-5 py-3 lg:flex-row lg:bg-body-75 lg:p-8'>
+          <div className='flex w-full flex-col justify-between gap-4 bg-body-100 px-5 py-3 lg:flex-row lg:bg-body-75 lg:p-8'>
             <div className='flex flex-col gap-3'>
               <h3 className='text-xl font-bold text-secondary-400'>
-                Večstanovanjskih objekt - Lenart
+                {randomProject?.name ?? 'Večstanovanjskih objekt - Lenart'}
               </h3>
 
-              <p className='font-archivo text-base leading-5 text-secondary-400'>
-                Nov, sodoben večstanovanjski objekt v Lenartu - vrhunska bivalna izkušnja v
-                idiličnem okolju. Prijazne cene in vrhunska kakovost bivanja
+              <p className='w-full font-archivo text-base leading-5 text-secondary-400'>
+                {randomProject?.description ?? 'Nov, sodoben večstanovanjski objekt v Lenartu - vrhunska bivalna izkušnja v idiličnem okolju. Prijazne cene in vrhunska kakovost bivanja'}
               </p>
             </div>
             <Button
@@ -89,6 +94,7 @@ const Hero = () => (
         </div>
       </div>
     </div>
-)
+  )
+}
 
 export default Hero

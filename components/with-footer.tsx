@@ -22,10 +22,6 @@ const navItems = [
     link: '/kontakt',
   },
   {
-    text: 'Blog',
-    link: '/blog',
-  },
-  {
     text: 'Nadzorna plošča',
     link: '/nadzorna-plosca',
   },

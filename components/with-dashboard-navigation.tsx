@@ -32,7 +32,7 @@ const WithDashBoardNavigation = ({
   finishedNavItems?: Location[]
 }) => {
   const SidebarContent = () => (
-    <div className="flex h-full max-h-screen flex-col gap-2">
+    <div className="flex h-full max-h-screen flex-col gap-2 fixed min-w-[279px]">
       <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
         <Link href="/nadzorna-plosca" className="flex items-center gap-2 font-semibold">
           <Image src={'/gradnje-plus-logo.webp'} alt="Logo" width={200} height={32} />
@@ -40,7 +40,7 @@ const WithDashBoardNavigation = ({
       </div>
       <div className="flex-1">
         <nav className="grid items-start gap-4 px-2 text-sm font-medium lg:px-4">
-          <Accordion type="single" collapsible className="w-full">
+          <Accordion type="single" collapsible className="w-full max-w-[245px]">
             <div className="border-b">
               <Public.Link className="group flex flex-1 items-center justify-between px-3 py-4 text-start font-medium transition-all">
                 <ArrowBigLeft /> Nazaj na stran
@@ -119,11 +119,7 @@ const WithDashBoardNavigation = ({
         </nav>
       </div>
       <div className="mt-auto p-4">
-        <Card x-chunk="dashboard-02-chunk-0">
-          <CardContent className="p-2 pt-0 md:p-4">
-            <LogoutButton>Logout</LogoutButton>
-          </CardContent>
-        </Card>
+        <LogoutButton>Izpis</LogoutButton>
       </div>
     </div>
   )
@@ -135,7 +131,7 @@ const WithDashBoardNavigation = ({
           <SidebarContent />
         </div>
         <div className="flex flex-col">
-          <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
+          <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6 lg:hidden">
             <Sheet>
               <SheetTrigger asChild>
                 <Button variant="outline" size="icon" className="shrink-0 md:hidden">

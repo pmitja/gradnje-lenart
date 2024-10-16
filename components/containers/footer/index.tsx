@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
+import { Button } from '@/components/ui/button'
 import { NavbarProps } from '@/types/general'
 
 const Footer = ({ navItems }: NavbarProps) => (
@@ -65,6 +66,14 @@ const Footer = ({ navItems }: NavbarProps) => (
             © Copyright 2024, vse pravice pridržane od Gradnje plus d.o.o. . Izdelava: Mipa
             solutions
           </p>
+          <Link href="/nadzorna-plosca" className='mt-4'>
+            <Button
+              variant={'secondary'}
+              size={'sm'}
+            >
+              Nadzorna plošča
+            </Button>
+          </Link>
         </aside>
       </footer>
     </div>

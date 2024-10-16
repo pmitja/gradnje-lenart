@@ -21,10 +21,6 @@ const navItems = [
     text: 'Kontakt',
     link: '/kontakt',
   },
-  {
-    text: 'Nadzorna plošča',
-    link: '/nadzorna-plosca',
-  },
 ]
 
 const WithFooter: FC = () => <Footer navItems={navItems} />

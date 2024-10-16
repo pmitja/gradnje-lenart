@@ -47,7 +47,6 @@ const DesktopNavigation = ({ navItems }: NavbarProps) => {
         <aside className='flex items-center gap-2'>
           <Button variant='secondary'>FAQ</Button>
           <Button variant='primary'>Kontakt</Button>
-          <Link href={'/nadzorna-plosca'} className='text-secondary-300'>Prijava</Link>
         </aside>
       </div>
     </div>

@@ -25,6 +25,10 @@ const navItems = [
     text: 'Blog',
     link: '/blog',
   },
+  {
+    text: 'Nadzorna plošča',
+    link: '/nadzorna-plosca',
+  },
 ]
 
 const WithFooter: FC = () => <Footer navItems={navItems} />

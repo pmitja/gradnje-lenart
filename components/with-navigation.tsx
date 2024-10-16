@@ -2,10 +2,10 @@
 
 import { type FC, useEffect, useState } from 'react'
 
+import Banner from '@/components/common/banner'
 import DesktopNavigation from '@/components/containers/navigation/desktop-navigation'
+import MobileNavigation from '@/components/containers/navigation/mobile-navigation'
 import { useMediaQuery } from '@/hooks/use-media-query'
-
-import MobileNavigation from './containers/navigation/mobile-navigation'
 
 const navItems = [
   {
@@ -39,11 +39,13 @@ const WithNavigation: FC = () => {
     <>
       {!isDesktop && isMounted && (
         <>
+          <Banner />
           <MobileNavigation navItems={navItems} />
         </>
       )}
       {isDesktop && isMounted && (
         <>
+          <Banner />
           <DesktopNavigation navItems={navItems} />
         </>
       )}

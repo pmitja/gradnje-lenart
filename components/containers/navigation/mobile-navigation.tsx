@@ -60,9 +60,9 @@ const MobileNavigation = ({ navItems }: NavbarProps) => {
   }, [ pathName ])
 
   return (
-    <>
+    <header>
       <nav
-        className='fixed inset-x-0 top-0 z-[21470000] flex items-center justify-between bg-body-75 p-5'
+        className='fixed inset-x-0 top-[36px] z-[21470000] flex items-center justify-between bg-body-75 p-5'
         aria-label='Mobile Menu'
       >
         <Link href={'/'}>
@@ -114,7 +114,7 @@ const MobileNavigation = ({ navItems }: NavbarProps) => {
           </li>
         ))}
       </Container>
-    </>
+    </header>
   )
 }
 

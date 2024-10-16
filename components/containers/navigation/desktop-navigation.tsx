@@ -12,7 +12,7 @@ const DesktopNavigation = ({ navItems }: NavbarProps) => {
   const pathname = usePathname()
 
   return (
-    <div className='fixed inset-x-0 top-0 z-10 flex items-center justify-between bg-body-75 py-5'>
+    <header className='fixed inset-x-0 top-[36px] z-10 flex items-center justify-between bg-body-75 py-5'>
       <div className='container mx-auto flex w-full justify-between'>
         <aside>
           <Link
@@ -49,7 +49,7 @@ const DesktopNavigation = ({ navItems }: NavbarProps) => {
           <Button variant='primary'>Kontakt</Button>
         </aside>
       </div>
-    </div>
+    </header>
   )
 }
 

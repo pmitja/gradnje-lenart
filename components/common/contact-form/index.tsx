@@ -14,27 +14,13 @@ import { Form,
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { cn } from '@/lib/utils'
+import { contactFormSchema } from '@/schemas'
 
 const inputClasses = 'max-w-[20rem] rounded-none border-0 border-b border-secondary-100 bg-transparent p-0 outline-none'
 
-const formSchema = z.object({
-  name: z.string().min(2, {
-    message: 'Ime mora vsebovati vsaj 2 znaka',
-  }).max(50),
-  surname: z.string().min(2, {
-    message: 'Priimek mora vsebovati vsaj 2 znaka',
-  }).max(50),
-  email: z.string().email({
-    message: 'Vnesite veljaven elektronski naslov',
-  }),
-  message: z.string().min(10, {
-    message: 'Sporočilo mora vsebovati vsaj 10 znakov',
-  }),
-})
-
 const ContactForm = () => {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof contactFormSchema>>({
+    resolver: zodResolver(contactFormSchema),
     defaultValues: {
       name: '',
       surname: '',
@@ -43,16 +29,16 @@ const ContactForm = () => {
     },
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: z.infer<typeof contactFormSchema>) {
     console.log(values)
   }
 
   return (
     <div className="text-secondary-400">
-      <p className="mb-3 md:text-3xl text-2xl font-bold">Kontaktiraj nas še danes</p>
+      <p className="mb-3 text-2xl font-bold md:text-3xl">Kontaktiraj nas še danes</p>
       <p className="mb-3">
-        Prosim izpolni spodnji obrazec s podatki, kateri se nanašajo na vas in na vačo vprašanje. Na
-        vaše vprašanje bomo odgovorili v najkrajšem možnem času.
+        Prosim izpolni spodnji obrazec s podatki, kateri se nanašajo na vaše vprašanje.
+        Na vprašanje bomo odgovorili v najkrajšem možnem času.
       </p>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -109,7 +95,7 @@ const ContactForm = () => {
             )}
           />
           <Button
-            className="rounded-sm bg-primary-300 px-12 py-6 text-secondary-50 hover:bg-primary-400"
+            variant='primary'
             type="submit"
           >
             Pošlji sporočilo

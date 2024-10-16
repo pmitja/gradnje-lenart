@@ -114,3 +114,18 @@ export const updateRealEstateSchema = z.object({
   apartment: formSchema,
   locationId: z.string(),
 })
+
+export const contactFormSchema = z.object({
+  name: z.string().min(2, {
+    message: 'Ime mora vsebovati vsaj 2 znaka',
+  }).max(50),
+  surname: z.string().min(2, {
+    message: 'Priimek mora vsebovati vsaj 2 znaka',
+  }).max(50),
+  email: z.string().email({
+    message: 'Vnesite veljaven elektronski naslov',
+  }),
+  message: z.string().min(10, {
+    message: 'Sporočilo mora vsebovati vsaj 10 znakov',
+  }),
+})

@@ -62,7 +62,7 @@ const MobileNavigation = ({ navItems }: NavbarProps) => {
   return (
     <header>
       <nav
-        className='fixed inset-x-0 top-[36px] z-[21470000] flex items-center justify-between bg-body-75 p-5'
+        className={cn('fixed inset-x-0 top-0 z-[21470000] flex items-center justify-between bg-body-75 p-5', isOpen && 'top-[36px]')}
         aria-label='Mobile Menu'
       >
         <Link href={'/'}>

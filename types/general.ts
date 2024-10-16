@@ -39,7 +39,22 @@ export enum SpacesType {
   Terrace = 'Terasa',
   Storage = 'Shramba',
   Room = 'Soba',
-  Parking = 'Parkirišče'
+  Parking = 'Parkirišče',
+  Hallway = 'Hodnik',
+  Attic = 'Mansarda',
+  Basement = 'Klet',
+  Office = 'Pisarniški prostor',
+  LaundryRoom = 'Pralnica',
+  Pantry = 'Shramba za živila',
+  Garage = 'Garaža',
+  Garden = 'Vrt',
+  Playroom = 'Igralnica',
+  Gym = 'Fitnes',
+  Sauna = 'Savna',
+  WalkInCloset = 'Garderoba',
+  Library = 'Knjižnica',
+  UtilityRoom = 'Tehnični prostor',
+  Pool = 'Bazen'
 }
 
 export enum EnergyClass {
@@ -75,6 +90,7 @@ export interface RealEstate {
 export interface Location {
   id: string
   name: string
+  type: LocationType
   description: string | null
   address: string
   city: string

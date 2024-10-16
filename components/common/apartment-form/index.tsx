@@ -30,10 +30,10 @@ import { Textarea } from '@/components/ui/textarea'
 import { ToggleGroupItem } from '@/components/ui/toggle-group'
 import { UploadButton } from '@/lib/utils/uploadthing'
 import { formSchema } from '@/schemas'
-import { Apartment, EnergyClass, ExposedType, SpacesType, StatusType } from '@/types/general'
+import { Apartment, EnergyClass, ExposedType, LocationType, SpacesType, StatusType } from '@/types/general'
 
-const ApartmentForm = ({ saveFormValues, nextNumber = '1' }:
-  { saveFormValues: (values: Apartment) => void, nextNumber?: string }) => {
+const ApartmentForm = ({ saveFormValues, nextNumber = '1', type }:
+  { saveFormValues: (values: Apartment) => void, nextNumber?: string, type: LocationType }) => {
   const [ open, setOpen ] = useState(false)
 
   const [ imagesBeginUploading, setImagesBeginUploading ] = useState(false)
@@ -55,7 +55,7 @@ const ApartmentForm = ({ saveFormValues, nextNumber = '1' }:
     defaultValues: {
       number: nextNumber,
       name: '',
-      floor: '',
+      floor: type === LocationType.Apartments ? '' : undefined,
       size: 0,
       price: 0,
       priceWithTax: 0,
@@ -65,7 +65,7 @@ const ApartmentForm = ({ saveFormValues, nextNumber = '1' }:
       description: '',
       spaces: [],
       energyLevel: '',
-      parkingSpaces: 0,
+      parkingSpaces: type === LocationType.Apartments ? 0 : undefined,
       technicalData: [],
       files: [],
       isExposed: false,
@@ -111,12 +111,12 @@ const ApartmentForm = ({ saveFormValues, nextNumber = '1' }:
       onOpenChange={setOpen}
     >
       <DialogTrigger asChild>
-        <Button variant='outline'>Dodaj stanovanje</Button>
+        <Button variant='outline'>Dodaj {type === LocationType.Apartments ? 'stanovanje' : 'hišo'}</Button>
       </DialogTrigger>
       <DialogContent className='max-h-screen w-full max-w-3xl overflow-y-scroll'>
         <DialogHeader>
-          <DialogTitle>Dodaj stanovanje</DialogTitle>
-          <DialogDescription>Prosim vnesite točne podatke o stanovanju.</DialogDescription>
+          <DialogTitle>Dodaj {type === LocationType.Apartments ? 'stanovanje' : 'hišo'}</DialogTitle>
+          <DialogDescription>Prosim vnesite točne podatke o {type === LocationType.Apartments ? 'stanovanju' : 'hiši'}.</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form
@@ -129,7 +129,7 @@ const ApartmentForm = ({ saveFormValues, nextNumber = '1' }:
                 name='number'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Št. apartments</FormLabel>
+                    <FormLabel>Št. {type === LocationType.Apartments ? 'stanovanja' : 'hiše'}</FormLabel>
                     <FormControl>
                       <Input
                         id='number'
@@ -203,26 +203,28 @@ const ApartmentForm = ({ saveFormValues, nextNumber = '1' }:
                 )}
               />
             </div>
-            <div className='grid grid-cols-1 items-center gap-4'>
-              <FormField
-                control={form.control}
-                name='floor'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Etaža</FormLabel>
-                    <FormControl>
-                      <Input
-                        id='floor'
-                        defaultValue='3. nadstropje'
-                        className='col-span-3'
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+            {type === LocationType.Apartments && (
+              <div className='grid grid-cols-1 items-center gap-4'>
+                <FormField
+                  control={form.control}
+                  name='floor'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Etaža</FormLabel>
+                      <FormControl>
+                        <Input
+                          id='floor'
+                          defaultValue='3. nadstropje'
+                          className='col-span-3'
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            )}
             <div className='grid grid-cols-1 items-center gap-4'>
               <FormField
                 control={form.control}
@@ -295,7 +297,7 @@ const ApartmentForm = ({ saveFormValues, nextNumber = '1' }:
                 name='spaces'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Status</FormLabel>
+                    <FormLabel>Prostori</FormLabel>
                     <FormControl>
                       <ToggleGroup
                         type='multiple'
@@ -360,28 +362,30 @@ const ApartmentForm = ({ saveFormValues, nextNumber = '1' }:
                 )}
               />
             </div>
-            <div className='grid grid-cols-1 items-center gap-4'>
-              <FormField
-                control={form.control}
-                name='parkingSpaces'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Število parkirnih mest</FormLabel>
-                    <FormControl>
-                      <Input
-                        type='number'
-                        min={0}
-                        id='parkingSpaces'
-                        className='col-span-3'
-                        {...field}
-                        onChange={(event) => field.onChange(+event.target.value)}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+            {type === LocationType.Apartments && (
+              <div className='grid grid-cols-1 items-center gap-4'>
+                <FormField
+                  control={form.control}
+                  name='parkingSpaces'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Število parkirnih mest</FormLabel>
+                      <FormControl>
+                        <Input
+                          type='number'
+                          min={0}
+                          id='parkingSpaces'
+                          className='col-span-3'
+                          {...field}
+                          onChange={(event) => field.onChange(+event.target.value)}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            )}
             <div className='grid grid-cols-1 items-center gap-4'>
               <FormField
                 control={form.control}

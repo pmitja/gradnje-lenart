@@ -26,10 +26,14 @@ import { Textarea } from '@/components/ui/textarea'
 import { ToggleGroupItem } from '@/components/ui/toggle-group'
 import { UploadButton } from '@/lib/utils/uploadthing'
 import { formSchema } from '@/schemas'
-import { Apartment, EnergyClass, ExposedType, SpacesType, StatusType } from '@/types/general'
+import { Apartment, EnergyClass, ExposedType, LocationType, SpacesType, StatusType } from '@/types/general'
 
-const EditApartmentForm = ({ data, onCancel, id = '' }: { data: Apartment,
-  onCancel: () => void, id?: string }) => {
+const EditApartmentForm = ({ data, onCancel, id = '', type }: {
+  data: Apartment,
+  onCancel: () => void,
+  id?: string,
+  type: LocationType
+}) => {
   const [ imagesBeginUploading, setImagesBeginUploading ] = useState(false)
 
   const [ filesBeginUploading, setFilesBeginUploading ] = useState(false)
@@ -56,7 +60,7 @@ const EditApartmentForm = ({ data, onCancel, id = '' }: { data: Apartment,
     defaultValues: {
       number: data.number,
       name: data.name,
-      floor: data.floor,
+      floor: type === LocationType.Apartments ? data.floor : undefined,
       size: data.size,
       price: data.price,
       priceWithTax: data.priceWithTax,
@@ -66,7 +70,7 @@ const EditApartmentForm = ({ data, onCancel, id = '' }: { data: Apartment,
       description: data.description,
       spaces: data.spaces,
       energyLevel: data.energyLevel,
-      parkingSpaces: data.parkingSpaces,
+      parkingSpaces: type === LocationType.Apartments ? data.parkingSpaces : undefined,
       technicalData: data.technicalData,
       files: data.files,
       isExposed: data.isExposed,
@@ -127,7 +131,7 @@ const EditApartmentForm = ({ data, onCancel, id = '' }: { data: Apartment,
             name="number"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Št. apartments</FormLabel>
+                <FormLabel>Št. {type === LocationType.Apartments ? 'stanovanja' : 'hiše'}</FormLabel>
                 <FormControl>
                   <Input id="number" defaultValue="1" className="col-span-3" {...field} />
                 </FormControl>
@@ -146,7 +150,7 @@ const EditApartmentForm = ({ data, onCancel, id = '' }: { data: Apartment,
                 <FormControl>
                   <Input
                     id="name"
-                    defaultValue="2 sobno stanovanje"
+                    defaultValue={type === LocationType.Apartments ? '2 sobno stanovanje' : 'Hiša'}
                     className="col-span-3"
                     {...field}
                   />
@@ -166,7 +170,7 @@ const EditApartmentForm = ({ data, onCancel, id = '' }: { data: Apartment,
                 <FormControl>
                   <Textarea
                     id="description"
-                    defaultValue="Opis stanovanja"
+                    defaultValue={`Opis ${type === LocationType.Apartments ? 'stanovanja' : 'hiše'}`}
                     className="col-span-3"
                     {...field}
                   />
@@ -186,7 +190,7 @@ const EditApartmentForm = ({ data, onCancel, id = '' }: { data: Apartment,
                 <FormControl>
                   <Textarea
                     id="description"
-                    defaultValue="Opis stanovanja"
+                    defaultValue={`Opis ${type === LocationType.Apartments ? 'stanovanja' : 'hiše'}`}
                     className="col-span-3"
                     {...field}
                   />
@@ -196,26 +200,28 @@ const EditApartmentForm = ({ data, onCancel, id = '' }: { data: Apartment,
             )}
           />
         </div>
-        <div className="grid grid-cols-1 items-center gap-4">
-          <FormField
-            control={form.control}
-            name="floor"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Etaža</FormLabel>
-                <FormControl>
-                  <Input
-                    id="floor"
-                    defaultValue="3. nadstropje"
-                    className="col-span-3"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
+        {type === LocationType.Apartments && (
+          <div className="grid grid-cols-1 items-center gap-4">
+            <FormField
+              control={form.control}
+              name="floor"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Etaža</FormLabel>
+                  <FormControl>
+                    <Input
+                      id="floor"
+                      defaultValue="3. nadstropje"
+                      className="col-span-3"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+        )}
         <div className="grid grid-cols-1 items-center gap-4">
           <FormField
             control={form.control}
@@ -348,28 +354,30 @@ const EditApartmentForm = ({ data, onCancel, id = '' }: { data: Apartment,
             )}
           />
         </div>
-        <div className="grid grid-cols-1 items-center gap-4">
-          <FormField
-            control={form.control}
-            name="parkingSpaces"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Število parkirnih mest</FormLabel>
-                <FormControl>
-                  <Input
-                    type="number"
-                    min={0}
-                    id="parkingSpaces"
-                    className="col-span-3"
-                    {...field}
-                    onChange={(event) => field.onChange(+event.target.value)}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
+        {type === LocationType.Apartments && (
+          <div className="grid grid-cols-1 items-center gap-4">
+            <FormField
+              control={form.control}
+              name="parkingSpaces"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Število parkirnih mest</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      min={0}
+                      id="parkingSpaces"
+                      className="col-span-3"
+                      {...field}
+                      onChange={(event) => field.onChange(+event.target.value)}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+        )}
         <div className="grid grid-cols-1 items-center gap-4">
           <FormField
             control={form.control}
@@ -572,7 +580,7 @@ const EditApartmentForm = ({ data, onCancel, id = '' }: { data: Apartment,
           disabled={imagesBeginUploading || filesBeginUploading}
           variant={'form'}
         >
-          Posodobi nepremičnino
+          Posodobi {type === LocationType.Apartments ? 'stanovanje' : 'hišo'}
         </Button>
         <Button
           type="button"

@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
 import { rooms } from '@/lib/utils/rooms'
-import { SpacesType, StatusType } from '@/types/general'
+import { LocationType, SpacesType, StatusType } from '@/types/general'
 
 import PropertyMap from './property-map'
 import RealEstateImages from './real-estate-images'
@@ -37,6 +37,7 @@ const DetailViewRealEstate = ({
   parkingSpaces,
   size,
   images,
+  type,
 }: {
   id: string
   description: string
@@ -52,6 +53,7 @@ const DetailViewRealEstate = ({
   parkingSpaces: number | null
   size: number | null
   images: string[]
+  type: LocationType
 }) => {
   const router = useRouter()
 
@@ -59,7 +61,7 @@ const DetailViewRealEstate = ({
     router.back()
   }
 
-  const details: PropertyDetail[] = [
+  const details: PropertyDetail[] = type === LocationType.Apartments ? [
     {
       icon: <Euro className="size-2 md:size-4 lg:size-6" />,
       label: 'Cena',
@@ -84,6 +86,27 @@ const DetailViewRealEstate = ({
       icon: <Car className="size-2 md:size-4 lg:size-6" />,
       label: 'Število parkirnih mest',
       value: String(parkingSpaces),
+    },
+  ] : [
+    {
+      icon: <Euro className="size-2 md:size-4 lg:size-6" />,
+      label: 'Cena',
+      value: price ? `${price.toLocaleString('sl-SI')} €` : 'N/A',
+    },
+    {
+      icon: <Maximize2 className="size-2 md:size-4 lg:size-6" />,
+      label: 'Velikost',
+      value: `${size} m²`,
+    },
+    {
+      icon: <Calendar className="size-2 md:size-4 lg:size-6" />,
+      label: 'Nazadnje rezervirano',
+      value: lastTimeReserved.toLocaleDateString('sl-SI'),
+    },
+    {
+      icon: <Zap className="size-2 md:size-4 lg:size-6" />,
+      label: 'Enegretsko varčna',
+      value: String(energyLevel),
     },
   ]
 
@@ -113,7 +136,7 @@ const DetailViewRealEstate = ({
           <div className="flex flex-col items-center gap-y-4">
             <div className="w-full rounded-md bg-destructive-200 p-2.5 text-center text-white">
               <h3 className="text-xl font-semibold leading-none tracking-tight lg:text-3xl">
-                Stanovanje je trenutno rezervirano.
+                {type === LocationType.Apartments ? 'Stanovanje je trenutno rezervirano.' : 'Hiša je trenutno rezervirana.'}
               </h3>
             </div>
 
@@ -181,7 +204,7 @@ const DetailViewRealEstate = ({
           <p className="text-secondary-300">{description}</p>
         </div>
 
-        <div className="flex flex-col gap-3">
+        {technicalData.length > 0 && <div className="flex flex-col gap-3">
           <h3 className="text-xl font-semibold leading-none tracking-tight text-secondary-400 lg:text-3xl">
             Tehnični podatki
           </h3>
@@ -193,7 +216,7 @@ const DetailViewRealEstate = ({
               </li>
             ))}
           </ul>
-        </div>
+        </div>}
 
         <div className="grid grid-cols-1 items-center gap-5 lg:grid-cols-2 lg:gap-10">
           <div className="flex flex-col gap-3 md:gap-5">

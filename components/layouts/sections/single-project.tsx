@@ -334,7 +334,7 @@ const RealEstateListing = ({
   if (filteredRealEstates.length === 0) {
     return (
       <>
-        <PropertyFilter />
+        <PropertyFilter type={location.type} />
         <NoResultComponent onReset={resetFilters} />
       </>
     )
@@ -343,7 +343,7 @@ const RealEstateListing = ({
   return (
     <>
       {isDesktop ? (
-        <PropertyFilter />
+        <PropertyFilter type={location.type} />
       ) : (
         <Accordion type="single" collapsible>
           <AccordionItem value="item-1">
@@ -351,7 +351,7 @@ const RealEstateListing = ({
               Filtri
             </AccordionTrigger>
             <AccordionContent className="data-[state=open]:bg-transparent">
-              <PropertyFilter isDesktop={isDesktop} />
+              <PropertyFilter isDesktop={isDesktop} type={location.type} />
             </AccordionContent>
           </AccordionItem>
         </Accordion>

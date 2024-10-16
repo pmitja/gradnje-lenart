@@ -32,7 +32,7 @@ import { Table,
   TableRow } from '@/components/ui/table'
 import { toast } from '@/components/ui/use-toast'
 import { updateSchema } from '@/schemas'
-import { Apartment, Location, StatusType } from '@/types/general'
+import { Apartment, Location, LocationType, StatusType } from '@/types/general'
 
 const AktualniProjektPage = ({ params: { slug } }: { params: { slug: string } }) => {
   const router = useRouter()
@@ -188,18 +188,18 @@ const AktualniProjektPage = ({ params: { slug } }: { params: { slug: string } })
                 className='bg-primary-75'
               >
                 <CardHeader>
-                  <CardTitle>Stanovanja</CardTitle>
+                  <CardTitle>{location.type === LocationType.Apartments ? 'Stanovanja' : 'Hiše'}</CardTitle>
                   <CardDescription>
-                    V tabeli so prikazana vsa apartments, ki so trenutno dodana na lokacijo.
+                    {location.type === LocationType.Apartments ? 'V tabeli so prikazana vsa stanovanja, ki so trenutno dodana na lokacijo.' : 'V tabeli so prikazana vse hiše, ki so trenutno dodana na lokacijo.'}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <Table>
                     <TableHeader>
                       <TableRow>
-                        <TableHead>Št. apartments</TableHead>
+                        <TableHead>Št. {location.type === LocationType.Apartments ? 'stanovanja' : 'hiše'}</TableHead>
                         <TableHead>Naziv</TableHead>
-                        <TableHead>Etaža</TableHead>
+                        {location.type === LocationType.Apartments && <TableHead>Etaža</TableHead>}
                         <TableHead>Kvadratura</TableHead>
                         <TableHead>Cena (brez ddv)</TableHead>
                         <TableHead>Cena</TableHead>
@@ -217,7 +217,8 @@ const AktualniProjektPage = ({ params: { slug } }: { params: { slug: string } })
                           >
                             <TableCell className='font-semibold'>{apartment.number}</TableCell>
                             <TableCell>{apartment.name}</TableCell>
-                            <TableCell>{apartment.floor}. nadstropje</TableCell>
+                            {location.type === LocationType.Apartments
+                            && <TableCell>{apartment.floor}. nadstropje</TableCell>}
                             <TableCell>{apartment.size} m2</TableCell>
                             <TableCell>{apartment.price} €</TableCell>
                             <TableCell>{apartment.priceWithTax} €</TableCell>
@@ -241,6 +242,7 @@ const AktualniProjektPage = ({ params: { slug } }: { params: { slug: string } })
                   <ApartmentForm
                     saveFormValues={saveFormValues}
                     nextNumber={apartments.length > 0 ? String(Number(apartments[apartments.length - 1].number) + 1) : '1'}
+                    type={location.type}
                   />
                 </CardFooter>
               </Card>
@@ -300,6 +302,7 @@ const AktualniProjektPage = ({ params: { slug } }: { params: { slug: string } })
               apartment={selectedApartment}
               id={selectedApartment.id}
               onCancel={handleEditCancel}
+              type={location.type}
             />
           )}
         </div>

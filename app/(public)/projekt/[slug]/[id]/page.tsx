@@ -3,7 +3,7 @@ import { getRealEstateById } from '@/actions/get-real-estate-by-id'
 import Cta from '@/components/common/cta'
 import RealEstateHero from '@/components/common/hero/real-estate-hero'
 import OffersBanner from '@/components/layouts/sections/offers-banner'
-import { SpacesType } from '@/types/general'
+import { LocationType, SpacesType } from '@/types/general'
 
 import DetailViewRealEstate from './_components/detail-view-real-estate'
 
@@ -41,6 +41,7 @@ const SingleProjectPage = async ({ params }: { params: { slug: string; id: strin
         parkingSpaces={realEstates.parkingSpaces}
         size={realEstates.size}
         images={realEstates.images}
+        type={location.type as LocationType}
       />
       <div className="mt-5 flex flex-col gap-5 lg:mt-10 lg:gap-10">
         <Cta />

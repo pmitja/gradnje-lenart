@@ -380,9 +380,9 @@ const NovAktualniProjektPage = () => {
                   className='bg-primary-75'
                 >
                   <CardHeader>
-                    <CardTitle>Stanovanja</CardTitle>
+                    <CardTitle>{form.getValues('type') === LocationType.Apartments ? 'Stanovanja' : 'Hiše'}</CardTitle>
                     <CardDescription>
-                      V tabeli so prikazana vsa stanovanja, ki so trenutno dodana na lokacijo.
+                      V tabeli so prikazana vse {form.getValues('type') === LocationType.Apartments ? 'stanovanja' : 'hiše'}, ki so trenutno dodana na lokacijo.
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
@@ -391,7 +391,8 @@ const NovAktualniProjektPage = () => {
                         <TableRow>
                           <TableHead>Št. stanovanja</TableHead>
                           <TableHead>Naziv</TableHead>
-                          <TableHead>Etaža</TableHead>
+                          {form.getValues('type') === LocationType.Apartments
+                          && <TableHead>Etaža</TableHead>}
                           <TableHead>Kvadratura</TableHead>
                           <TableHead>Cena (brez ddv)</TableHead>
                           <TableHead>Cena</TableHead>
@@ -405,7 +406,8 @@ const NovAktualniProjektPage = () => {
                             <TableRow key={apartment.number}>
                               <TableCell className='font-semibold'>{apartment.number}</TableCell>
                               <TableCell>{apartment.name}</TableCell>
-                              <TableCell>{apartment.floor}. nadstropje</TableCell>
+                              {form.getValues('type') === LocationType.Apartments
+                              && <TableCell>{apartment.floor}. nadstropje</TableCell>}
                               <TableCell>{apartment.size} m2</TableCell>
                               <TableCell>{apartment.price} €</TableCell>
                               <TableCell>{apartment.priceWithTax} €</TableCell>
@@ -426,7 +428,7 @@ const NovAktualniProjektPage = () => {
                     </Table>
                   </CardContent>
                   <CardFooter className='justify-center border-t p-4'>
-                    <ApartmentForm saveFormValues={saveFormValues} />
+                    <ApartmentForm saveFormValues={saveFormValues} type={form.getValues('type') as LocationType} />
                   </CardFooter>
                 </Card>
               </div>

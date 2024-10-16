@@ -15,9 +15,10 @@ import ButtonWithIcon from '../button-with-icon'
 
 interface PropertyFilterProps {
   isDesktop?: boolean
+  type: string
 }
 
-const PropertyFilter = ({ isDesktop = true }: PropertyFilterProps) => {
+const PropertyFilter = ({ isDesktop = true, type }: PropertyFilterProps) => {
   const MAX_PRICE = 500000
 
   const MIN_PRICE = 0
@@ -72,7 +73,7 @@ const PropertyFilter = ({ isDesktop = true }: PropertyFilterProps) => {
       <CardContent className='px-0'>
         <Form {...form}>
           <form className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <FormField
+            {type === 'Večstanovanjski objekt' && <FormField
               control={form.control}
               name="floor"
               render={({ field }) => (
@@ -98,9 +99,9 @@ const PropertyFilter = ({ isDesktop = true }: PropertyFilterProps) => {
                   </FormControl>
                 </FormItem>
               )}
-            />
+            />}
 
-            <FormField
+            {type === 'Večstanovanjski objekt' && <FormField
               control={form.control}
               name="size"
               render={({ field }) => (
@@ -126,7 +127,7 @@ const PropertyFilter = ({ isDesktop = true }: PropertyFilterProps) => {
                   </FormControl>
                 </FormItem>
               )}
-            />
+            />}
 
             <FormField
               control={form.control}

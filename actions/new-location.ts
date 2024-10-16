@@ -21,7 +21,12 @@ export const newLocation = async (values: z.infer<typeof mainFormSchema>) => {
     apartments, images, type, isActive,
   } = validatedFields.data
 
-  let slug = `${generateSlug(city)}`
+  // Replace special characters in the city name
+  const normalizedCity = city.replace(/[šŠ]/g, 's')
+    .replace(/[čćČĆ]/g, 'c')
+    .replace(/[žŽ]/g, 'z')
+
+  let slug = `${generateSlug(normalizedCity)}`
 
   const isCityTaken = await db.location.findMany({
     where: {

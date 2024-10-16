@@ -1,11 +1,12 @@
 'use client'
 
 import { Location, RealEstate } from '@prisma/client'
-import { ArrowRight, BadgeCheckIcon, BedIcon, Car, Home, InfoIcon, Maximize2, PackageOpen, TableIcon, TvIcon } from 'lucide-react'
+import { ArrowRight, BedIcon, Car, Home, InfoIcon, KeySquare, Maximize2, PackageOpen, TableIcon, TvIcon } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useEffect, useMemo, useState } from 'react'
 
+import ReservationDialog from '@/app/(public)/projekt/[slug]/[id]/_components/ReservationDialog'
 import NoResultComponent from '@/components/common/no-results-banner'
 import PropertyFilter from '@/components/common/property-filter'
 import DiningIcon from '@/components/icons/dining'
@@ -166,6 +167,7 @@ interface DetailedPropertyViewProps extends PropertyDetails {
   description: string
   url: string
   status?: string | null
+  id: string
 }
 
 const DetailedPropertyView: React.FC<DetailedPropertyViewProps> = ({
@@ -179,6 +181,7 @@ const DetailedPropertyView: React.FC<DetailedPropertyViewProps> = ({
   description,
   status,
   url,
+  id,
 }) => (
   <Card className="w-full bg-primary-50">
     <CardContent className="p-6">
@@ -207,7 +210,7 @@ const DetailedPropertyView: React.FC<DetailedPropertyViewProps> = ({
           <h3 className="mb-4 text-3xl font-bold text-primary-200">{price} €</h3>
           <p className="mb-4 text-gray-600">{location}</p>
           {status && status === StatusType.Rezervirano && (
-            <div className="mb-4 flex flex-col items-center gap-y-4">
+            <div className="mb-4 flex flex-col gap-y-4">
               <div className="flex w-full place-content-center items-start gap-2 rounded-md border border-secondary-200 bg-informative-50 p-2.5 text-secondary-200">
                 <InfoIcon className="shrink-0" size={20} />
                 <p className="text-sm">
@@ -228,10 +231,12 @@ const DetailedPropertyView: React.FC<DetailedPropertyViewProps> = ({
           )}
           {status !== StatusType.Prodano && status !== StatusType.Rezervirano && (
             <div className="mb-4 flex flex-wrap gap-4">
-              <Button variant={'primary'} className="flex gap-3">
-                <BadgeCheckIcon />
-                Rezerviraj
-              </Button>
+              <ReservationDialog realEstateId={id}>
+            <Button variant="primary" className="w-fit self-center lg:w-auto">
+              <KeySquare className="mr-2 size-4" />
+              Rezerviraj
+            </Button>
+          </ReservationDialog>
               <Link href={url}>
                 <Button asChild variant={'secondary'}>
                   <span>
@@ -388,6 +393,7 @@ const RealEstateListing = ({
             description={selectedProject.shortDescription || ''}
             url={`${slug}/${selectedProject.id}`}
             status={selectedProject.status}
+            id={selectedProject.id}
           />
 
         )}

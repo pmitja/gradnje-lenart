@@ -62,7 +62,7 @@ const MobileNavigation = ({ navItems }: NavbarProps) => {
   return (
     <header>
       <nav
-        className={cn('fixed inset-x-0 top-0 z-[21470000] flex items-center justify-between bg-body-75 p-5', isOpen && 'top-[36px]')}
+        className='fixed inset-x-0 top-[36px] z-[21470000] flex items-center justify-between bg-body-75 p-5'
         aria-label='Mobile Menu'
       >
         <Link href={'/'}>
@@ -80,7 +80,7 @@ const MobileNavigation = ({ navItems }: NavbarProps) => {
       </nav>
       <Container
         className={cn(
-          'fixed left-0 top-0 z-20 flex min-h-[100dvh] min-w-full flex-col gap-6 bg-body-75 p-6 text-xl transition-all duration-500',
+          'fixed left-0 top-[36px] z-20 flex min-h-[100dvh] min-w-full flex-col gap-6 bg-body-75 p-6 text-xl transition-all duration-500',
           isOpen ? 'animation-fadeAndSlideIn' : '-translate-y-full opacity-0',
         )}
         role='navigation'

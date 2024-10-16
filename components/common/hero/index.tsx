@@ -1,6 +1,6 @@
-import console from 'console'
 import { ArrowUpRight } from 'lucide-react'
 import Image from 'next/image'
+import Link from 'next/link'
 
 import { getRandomProject } from '@/actions/get-random-project'
 import DoubleChervonRightIcon from '@/components/icons/double-chervon-right'
@@ -12,7 +12,6 @@ import ButtonWithIcon from '../button-with-icon'
 const Hero = async () => {
   const randomProject = await getRandomProject()
 
-  console.log(randomProject?.images[0])
   return (
     <div className='relative inset-x-1/2 mx-[-50vw] w-screen min-w-[100vw] bg-primary-75 pt-10 md:pt-16 lg:pt-0'>
       <div className='container relative grid w-full justify-center gap-10 lg:w-full lg:grid-cols-2 lg:gap-6'>
@@ -83,13 +82,17 @@ const Hero = async () => {
                 {randomProject?.description ?? 'Nov, sodoben večstanovanjski objekt v Lenartu - vrhunska bivalna izkušnja v idiličnem okolju. Prijazne cene in vrhunska kakovost bivanja'}
               </p>
             </div>
-            <Button
-              variant={'rounded'}
-              size={'rounded'}
-              className='size-[68px] min-w-[68px] self-end text-body-200 lg:self-auto'
-            >
-              <ArrowUpRight />
-            </Button>
+            {randomProject && (
+              <Link href={`/projekt/${randomProject.slug}/${randomProject.realEstates[0].id}`}>
+                <Button
+                  variant={'rounded'}
+                  size={'rounded'}
+                  className='size-[68px] min-w-[68px] self-end text-body-200 lg:self-auto'
+                >
+                  <ArrowUpRight />
+                </Button>
+              </Link>
+            )}
           </div>
         </div>
       </div>

@@ -123,13 +123,20 @@ const ReservationsList = ({ initialReservations, onReservationUpdated }: Reserva
                   {reservations.map((reservation) => (
                     <TableRow key={reservation.id}>
                       <TableCell>
-                        <Image
+                        {reservation.realEstate.images?.[0] && <Image
                           alt="Slika nepremičnine"
                           className="aspect-square rounded-md object-cover"
                           height="64"
                           src={`https://utfs.io/f/${reservation.realEstate.images?.[0]}` || '/placeholder.svg'}
                           width="64"
-                        />
+                        />}
+                        {!reservation.realEstate.images?.[0] && <Image
+                          alt="Slika nepremičnine"
+                          className="aspect-square rounded-md object-cover"
+                          height="64"
+                          src={'/placeholder.svg'}
+                          width="64"
+                        />}
                       </TableCell>
                       <TableCell className="font-medium">{reservation.realEstate.name}</TableCell>
                       <TableCell>{reservation.realEstate.location}</TableCell>

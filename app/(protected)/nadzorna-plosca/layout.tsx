@@ -5,7 +5,7 @@ import { Archivo, Montserrat } from 'next/font/google'
 import { SessionProvider } from 'next-auth/react'
 import React from 'react'
 
-import { getAllLocations } from '@/actions/get-all-locations'
+import { getAllLocationsActiveAndFinished } from '@/actions/get-inactive-locations-active-and-finished'
 import { auth } from '@/auth'
 import { Toaster } from '@/components/ui/toaster'
 import WithDashBoardNavigation from '@/components/with-dashboard-navigation'
@@ -29,7 +29,7 @@ export default async function RootLayout({ children }: Readonly<{
 }>) {
   const session = await auth()
 
-  const location = (await getAllLocations()) || []
+  const location = (await getAllLocationsActiveAndFinished()) || []
 
   return (
     <SessionProvider session={session}>

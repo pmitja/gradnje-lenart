@@ -10,7 +10,7 @@ import SectionWithTitleInMiddle from '@/components/layouts/sections/title-middle
 
 export default function Home() {
   return (
-    <>
+    <div>
       <Hero />
       <ImageLeftTextRight
         image={{
@@ -45,6 +45,6 @@ export default function Home() {
         <LatestBlogPosts />
       </SectionWithTitleInMiddle> */}
       <Faq />
-    </>
+    </div>
   )
 }

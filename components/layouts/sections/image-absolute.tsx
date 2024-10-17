@@ -22,7 +22,7 @@ const SectionWithImageAbsolute = ({
   ...props
 }: SectionWithImageAbsoluteProps) => (
     <section
-      className={cn('relative flex flex-col-reverse gap-5', className)}
+      className={cn('relative flex flex-col-reverse gap-5 my-6 md:my-10', className)}
       {...props}
     >
       <Image

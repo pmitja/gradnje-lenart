@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
 
 const PartnersBanner = () => (
-    <div className='relative inset-x-1/2 mx-[-50vw] w-screen min-w-[100vw] bg-primary-75'>
+    <div className='relative inset-x-1/2 mx-[-50vw] my-6 w-screen min-w-[100vw] bg-primary-75 md:my-10'>
       <section className='container flex w-full gap-12 overflow-hidden py-8 lg:py-[70px]'>
         <Carousel
           plugins={[

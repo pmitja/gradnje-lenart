@@ -9,7 +9,7 @@ import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carouse
 
 const Testimonials = () => (
     <>
-      <section className='grid grid-cols-1 justify-between gap-8 lg:grid-cols-2'>
+      <section className='grid grid-cols-1 justify-between gap-8 py-6 md:py-10 lg:grid-cols-2 lg:py-28'>
         <div className='flex flex-col gap-6'>
           <h2 className='text-xl font-bold leading-tight text-primary-200 sm:text-2xl sm:leading-tight md:text-3xl md:leading-tight lg:text-4xl lg:leading-tight'>
             Izjave zadovoljih strank

@@ -14,7 +14,7 @@ const SectionWithTitleInMiddle = ({
   ...props
 }: SectionWithTitleInMiddleProps) => (
     <section
-      className={cn('flex w-full flex-col gap-16 lg:gap-20', className)}
+      className={cn('flex w-full flex-col gap-16 lg:gap-20 py-6 md:py-10 lg:py-28', className)}
       {...props}
     >
       <h2 className='self-center text-xl font-bold leading-tight text-secondary-200 sm:text-2xl sm:leading-tight md:text-3xl md:leading-tight lg:text-4xl lg:leading-tight'>

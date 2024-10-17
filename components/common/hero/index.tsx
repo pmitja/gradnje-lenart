@@ -86,7 +86,7 @@ const Hero = async () => {
                 <Button
                   variant={'rounded'}
                   size={'rounded'}
-                  className='size-[40px] min-w-[40px] self-end text-body-200 sm:size-[50px] sm:min-w-[50px] lg:self-auto'
+                  className='size-[40px] min-w-[40px] self-end p-0 text-body-200 sm:size-[50px] sm:min-w-[50px] lg:self-auto'
                 >
                   <ArrowUpRight className="size-4 sm:size-5" />
                 </Button>

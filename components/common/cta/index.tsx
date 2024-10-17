@@ -30,7 +30,7 @@ const Cta = () => (
             </Button>
           </div>
           <div className='flex flex-col gap-6'>
-            <h2 className='self-center text-2xl md:text-3xl font-bold text-body-200 lg:text-[38px] lg:leading-[57px]'>
+            <h2 className='self-center text-2xl font-bold text-body-200 md:text-3xl lg:text-[38px] lg:leading-[57px]'>
               Prijavite se za najnovejše projekte
             </h2>
             <p className='text-base leading-5 text-secondary-300'>

@@ -27,7 +27,7 @@ const ImageLeftTextRight = ({
 }: ImageLeftTextRightProps) => (
     <section
       className={cn(
-        'grid grid-cols-1 items-center gap-10 lg:grid-cols-[1fr_1fr] lg:gap-16',
+        'grid grid-cols-1 items-center gap-10 lg:grid-cols-[1fr_1fr] lg:gap-16 py-6 md:py-10 lg:py-28',
         className,
       )}
     >

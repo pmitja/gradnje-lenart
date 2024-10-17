@@ -71,6 +71,7 @@ const MobileNavigation = ({ navItems }: NavbarProps) => {
             alt='Gradnje plus'
             width={192}
             height={35}
+            className='max-h-[30px] object-contain'
           />
         </Link>
         <HamburgerButton
@@ -95,24 +96,24 @@ const MobileNavigation = ({ navItems }: NavbarProps) => {
             height={40}
           />
         </button>
-        <ul className='flex items-center justify-center gap-8'></ul>
+        <ul className='flex flex-col items-start justify-center gap-4'>
         {navItems.map((navItem, index) => (
           <li
-            className='list-none pb-4'
+            className='list-none'
             key={index}
           >
             <Link
               href={navItem.link}
               key={navItem.link}
               className={cn(
-                'text-3xl font-semibold leading-6 text-secondary-300',
+                'text-xl font-semibold leading-6 text-secondary-300',
                 pathName === `${navItem.link}` && 'border-b-2 border-primary-300',
               )}
             >
               {navItem.text}
             </Link>
           </li>
-        ))}
+        ))}</ul>
       </Container>
     </header>
   )

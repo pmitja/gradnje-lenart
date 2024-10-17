@@ -24,7 +24,7 @@ const ProjectElement = ({
   images?: string[]
   description: string
 }) => (
-  <div className='row-span-3 flex flex-col rounded-lg bg-[#AEA490]/30 shadow-md md:px-8'>
+  <div className='row-span-3 flex flex-col overflow-hidden rounded-lg bg-[#AEA490]/30 shadow-md md:px-8'>
     <Image
       className='mx-auto max-h-[50%] w-full object-cover md:ml-0'
       width={733}
@@ -32,15 +32,15 @@ const ProjectElement = ({
       src={images && images[0] ? `https://utfs.io/f/${images[0]}` : '/apartment-image.webp'}
       alt='Image'
     />
-    <div className='flex h-full flex-col place-content-start gap-4 p-4 md:justify-between'>
-      <h3 className='text-start text-3xl font-bold text-primary-400 md:text-2xl lg:text-4xl'>
+    <div className='flex h-full flex-col place-content-start gap-2 py-4 md:justify-between'>
+      <h3 className='text-start text-2xl font-bold text-primary-400 lg:text-3xl'>
         {title}
       </h3>
-      <p className='text-sm lg:text-base'>{description}</p>
+      <p className='self-start text-sm lg:text-base'>{description}</p>
       <Link href={`projekt/${link}`}>
         <ButtonWithIcon
           variant='primary'
-          className='max-w-fit px-6 py-4 text-xl drop-shadow-primary-button transition hover:translate-y-1'
+          className='max-w-fit drop-shadow-primary-button transition hover:translate-y-1'
         >
           Pojdi na projekt
         </ButtonWithIcon>
@@ -120,7 +120,7 @@ const ProjectsSection = () => {
             </div>
           )}
           {!isPending && (
-            <div className='mt-10 grid grid-cols-1 gap-10 text-center sm:mx-auto sm:max-w-sm md:mt-20 md:max-w-full md:grid-cols-2 md:text-left'>
+            <div className='mt-10 grid grid-cols-1 gap-10 text-center sm:mx-auto sm:max-w-sm md:mt-20 md:max-w-full md:grid-cols-3 md:text-left'>
               {currentProjects.map((project) => (
                 <ProjectElement
                   key={project.id}

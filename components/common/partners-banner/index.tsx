@@ -15,7 +15,7 @@ const PartnersBanner = () => (
             }),
           ]}
           opts={{
-            align: 'start',
+            align: 'center',
             loop: true,
           }}
         >
@@ -23,14 +23,16 @@ const PartnersBanner = () => (
             {Array.from({
               length: 9,
             }).map((_, index) => (
-              <CarouselItem key={index} className='basis-1/3 pl-2 md:basis-1/4 md:pl-4 lg:basis-1/5'>
-                <Image
-                  src={'/gradnje-plus-logo.webp'}
-                  alt={`Partner ${index + 1}`}
-                  width={200}
-                  height={80}
-                  className='h-7 w-auto md:h-9 lg:h-10'
-                />
+              <CarouselItem key={index} className='basis-full pl-2 sm:basis-1/2 md:basis-1/3 md:pl-4 lg:basis-1/4 xl:basis-1/5'>
+                <div className="flex h-full items-center justify-center">
+                  <Image
+                    src={'/gradnje-plus-logo.webp'}
+                    alt={`Partner ${index + 1}`}
+                    width={200}
+                    height={80}
+                    className='h-7 w-auto md:h-9 lg:h-10'
+                  />
+                </div>
               </CarouselItem>
             ))}
           </CarouselContent>

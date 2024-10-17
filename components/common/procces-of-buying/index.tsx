@@ -1,5 +1,6 @@
 import { CircleCheck } from 'lucide-react'
 import Image from 'next/image'
+import Link from 'next/link'
 
 import ButtonWithIcon from '../button-with-icon'
 
@@ -39,12 +40,13 @@ const ProccesOfBuying = () => (
               </li>
             ))}
           </ul>
+          <Link href='/kontakt'>
           <ButtonWithIcon
             variant='secondary'
-            className='max-w-fit px-6 py-4 text-xl'
+            className='max-w-fit'
           >
             Vstopite v stik
-          </ButtonWithIcon>
+          </ButtonWithIcon></Link>
         </div>
         <Image
           src={'/postopek-nakupa.webp'}

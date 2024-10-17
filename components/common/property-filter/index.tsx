@@ -212,7 +212,7 @@ const PropertyFilter = ({ isDesktop = true, type }: PropertyFilterProps) => {
             <ButtonWithIcon
               type="button"
               variant="secondary"
-              className="max-w-fit rounded-xl px-10 py-3 text-lg font-semibold drop-shadow-primary-button md:col-span-2"
+              className="max-w-fit rounded-xl font-semibold drop-shadow-primary-button md:col-span-2"
               onClick={onReset}
             >
               Poenostavi filtre

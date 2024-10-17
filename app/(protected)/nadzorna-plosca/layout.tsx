@@ -4,10 +4,10 @@ import type { Metadata } from 'next'
 import { Archivo, Montserrat } from 'next/font/google'
 import { SessionProvider } from 'next-auth/react'
 import React from 'react'
+import { Toaster } from 'sonner'
 
 import { getAllLocationsActiveAndFinished } from '@/actions/get-inactive-locations-active-and-finished'
 import { auth } from '@/auth'
-import { Toaster } from '@/components/ui/toaster'
 import WithDashBoardNavigation from '@/components/with-dashboard-navigation'
 
 const montserrat = Montserrat({
@@ -41,7 +41,7 @@ export default async function RootLayout({ children }: Readonly<{
           >
             {children}
           </WithDashBoardNavigation>
-          <Toaster />
+          <Toaster position="top-center" />
         </body>
       </html>
     </SessionProvider>

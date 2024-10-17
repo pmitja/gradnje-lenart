@@ -3,6 +3,7 @@
 import { ArrowUpRight, MoreHorizontal } from 'lucide-react'
 import Image from 'next/image'
 import { useState } from 'react'
+import { toast } from 'sonner'
 
 import { confirmReservation } from '@/actions/confirm-reservation'
 import { removeReservation } from '@/actions/remove-reservation'
@@ -22,7 +23,6 @@ import { Table,
   TableHead,
   TableHeader,
   TableRow } from '@/components/ui/table'
-import { toast } from '@/components/ui/use-toast'
 import { formatDate } from '@/lib/utils'
 
 interface Reservation {
@@ -52,15 +52,13 @@ const ReservationsList = ({ initialReservations, onReservationUpdated }: Reserva
 
     if (result.success) {
       setReservations(reservations.filter((r) => r.id !== id))
-      toast({
-        title: 'Rezervacija potrjena',
-        description: 'Rezervacija je bila uspešno potrjena.',
+      toast.success('Rezervacija potrjena', {
+        description: 'Kontaktirali vas bomo za potrditev.',
       })
       onReservationUpdated() // Call the callback
     } else {
-      toast({
-        title: 'Napaka',
-        description: 'Pri potrditvi rezervacije je prišlo do napake. Prosimo, poskusite znova.',
+      toast.error('Pri potrditvi rezervacije je prišlo do napake.', {
+        description: 'Prosimo, poskusite znova.',
       })
     }
   }
@@ -70,15 +68,11 @@ const ReservationsList = ({ initialReservations, onReservationUpdated }: Reserva
 
     if (result.success) {
       setReservations(reservations.filter((r) => r.id !== id))
-      toast({
-        title: 'Rezervacija odstranjena',
-        description: 'Rezervacija je bila uspešno odstranjena.',
-      })
+      toast.success('Rezervacija odstranjena')
       onReservationUpdated() // Call the callback
     } else {
-      toast({
-        title: 'Napaka',
-        description: 'Pri odstranjevanju rezervacije je prišlo do napake. Prosimo, poskusite znova.',
+      toast.error('Pri odstranitvi rezervacije je prišlo do napake. Prosimo, poskusite znova.', {
+        description: 'Prosimo, poskusite znova.',
       })
     }
   }

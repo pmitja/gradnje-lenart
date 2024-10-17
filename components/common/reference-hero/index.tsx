@@ -169,19 +169,19 @@ export default function ProjectReference({ projects }: ProjectReferenceProps) {
       <div className="container relative flex w-full flex-col items-center justify-center gap-4 border-none bg-inherit pb-6 sm:gap-6 sm:pb-8 md:gap-8 md:pb-12 lg:pb-16">
         <h1
           ref={titleRef}
-          className="text-3xl font-bold sm:text-4xl lg:text-4xl lg:leading-tight xl:text-5xl"
+          className="text-3xl font-bold text-secondary-400 sm:text-4xl lg:text-4xl lg:leading-tight xl:text-5xl"
         >
           {project.name}
         </h1>
         <div className="w-full max-w-4xl">
           <div className="mb-4 grid grid-cols-2 gap-2 sm:gap-4">
-            <div className="rounded-lg border border-secondary-200 bg-primary-100 p-3 text-body-200 sm:p-4">
+            <div className="rounded-lg border border-secondary-200 bg-secondary-100/50 p-3 text-body-200 sm:p-4">
               <h3 ref={yearRef} className="text-xl font-bold sm:text-2xl">
                 {new Date(project.createdAt).getFullYear()}
               </h3>
               <p className="text-xs sm:text-sm">Leto gradnje</p>
             </div>
-            <div className="rounded-lg border border-secondary-200 bg-primary-100 p-3 text-body-200 sm:p-4">
+            <div className="rounded-lg border border-secondary-200 bg-secondary-100/50 p-3 text-body-200 sm:p-4">
               <h3 ref={unitsRef} className="text-xl font-bold sm:text-2xl">
                 {project.realEstates.length}
               </h3>
@@ -259,28 +259,28 @@ export default function ProjectReference({ projects }: ProjectReferenceProps) {
 
           {/* Overall Stats Section */}
           <div className="mt-8 p-4 sm:p-6">
-            <h2 className="mb-4 text-center text-xl font-bold sm:text-2xl">Referenčni podatki</h2>
+            <h2 className="mb-4 text-center text-xl font-bold text-secondary-400 sm:text-2xl">Referenčni podatki</h2>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-              <div className="flex flex-col items-center rounded-lg border border-secondary-200 bg-primary-100 p-3 text-body-200 sm:p-4">
-                <Building className="mb-2 size-8 text-primary-200" />
+              <div className="flex flex-col items-center rounded-lg border border-secondary-200 bg-secondary-100/50 p-3 text-body-200 sm:p-4">
+                <Building className="mb-2 size-8 text-body-200" />
                 <span className="text-2xl font-bold sm:text-3xl" ref={statsRefs.totalProjects}>
                   0
                 </span>
-                <span className="text-sm text-muted-foreground">Zaključenih projektov</span>
+                <span className="text-sm text-body-200">Zaključenih projektov</span>
               </div>
-              <div className="flex flex-col items-center rounded-lg border border-secondary-200 bg-primary-100 p-3 text-body-200 sm:p-4">
-                <Home className="mb-2 size-8 text-primary-200" />
+              <div className="flex flex-col items-center rounded-lg border border-secondary-200 bg-secondary-100/50 p-3 text-body-200 sm:p-4">
+                <Home className="mb-2 size-8 text-body-200" />
                 <span className="text-2xl font-bold sm:text-3xl" ref={statsRefs.totalUnits}>
                   0
                 </span>
-                <span className="text-sm text-muted-foreground">Zgrajenih nepremičnin</span>
+                <span className="text-sm text-body-200">Zgrajenih nepremičnin</span>
               </div>
-              <div className="flex flex-col items-center rounded-lg border border-secondary-200 bg-primary-100 p-3 text-body-200 sm:p-4">
-                <Users className="mb-2 size-8 text-primary-200" />
+              <div className="flex flex-col items-center rounded-lg border border-secondary-200 bg-secondary-100/50 p-3 text-body-200 sm:p-4">
+                <Users className="mb-2 size-8 text-body-200" />
                 <span className="text-2xl font-bold sm:text-3xl" ref={statsRefs.satisfiedCustomers}>
                   0
                 </span>
-                <span className="text-sm text-muted-foreground">Zadovoljnih kupcev</span>
+                <span className="text-sm text-body-200">Zadovoljnih kupcev</span>
               </div>
             </div>
           </div>

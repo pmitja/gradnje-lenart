@@ -1,9 +1,12 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useTransition } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import { z } from 'zod'
 
+import { sendEmail } from '@/actions/send-email'
 import { Button } from '@/components/ui/button'
 import { Form,
   FormControl,
@@ -19,6 +22,8 @@ import { contactFormSchema } from '@/schemas'
 const inputClasses = 'max-w-[20rem] rounded-none border-0 border-b border-secondary-100 bg-transparent p-0 outline-none'
 
 const ContactForm = () => {
+  const [ isPending, startTransition ] = useTransition()
+
   const form = useForm<z.infer<typeof contactFormSchema>>({
     resolver: zodResolver(contactFormSchema),
     defaultValues: {
@@ -30,7 +35,20 @@ const ContactForm = () => {
   })
 
   function onSubmit(values: z.infer<typeof contactFormSchema>) {
-    console.log(values)
+    startTransition(async () => {
+      const result = await sendEmail(values)
+
+      if ('error' in result) {
+        toast.error(result.error, {
+          description: 'Prosimo, poskusite znova.',
+        })
+      } else {
+        toast.success('Sporočilo uspešno poslano!', {
+          description: 'Kontaktirali vas bomo v najkrajšem možnem času.',
+        })
+        form.reset()
+      }
+    })
   }
 
   return (
@@ -97,8 +115,9 @@ const ContactForm = () => {
           <Button
             variant='primary'
             type="submit"
+            disabled={isPending}
           >
-            Pošlji sporočilo
+            {isPending ? 'Pošiljanje...' : 'Pošlji sporočilo'}
           </Button>
         </form>
       </Form>

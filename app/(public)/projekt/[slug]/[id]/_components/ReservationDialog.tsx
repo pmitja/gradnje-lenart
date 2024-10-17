@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import * as z from 'zod'
 
 import { reserveRealEstate } from '@/actions/reserve-real-estate'
@@ -16,7 +17,6 @@ import { Dialog,
   DialogTrigger } from '@/components/ui/dialog'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { toast } from '@/components/ui/use-toast'
 
 const formSchema = z.object({
   fullName: z.string().min(2, 'Full name must be at least 2 characters'),
@@ -51,14 +51,12 @@ const ReservationDialog: React.FC<ReservationDialogProps> = ({ realEstateId, chi
 
     if (result.success) {
       setIsOpen(false)
-      toast({
-        title: 'Rezervacija uspešna!',
+      toast.success('Rezervacija uspešna!', {
         description: 'Kontaktirali vas bomo za potrditev.',
       })
       router.refresh()
     } else {
-      toast({
-        title: 'Napaka pri rezervaciji!',
+      toast.error('Napaka pri rezervaciji!', {
         description: 'Prosimo, poskusite znova.',
       })
     }

@@ -8,6 +8,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useState, useTransition } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import { z } from 'zod'
 
 import { finishProject } from '@/actions/finish-project'
@@ -30,7 +31,6 @@ import { Table,
   TableHead,
   TableHeader,
   TableRow } from '@/components/ui/table'
-import { toast } from '@/components/ui/use-toast'
 import { updateSchema } from '@/schemas'
 import { Apartment, Location, LocationType, StatusType } from '@/types/general'
 
@@ -115,10 +115,8 @@ const AktualniProjektPage = ({ params: { slug } }: { params: { slug: string } })
     const result = await finishProject(slug)
 
     if (result.success) {
-      toast({
-        title: 'Projekt zaključen',
-        description: 'Projekt je bil uspešno zaključen. Vse nepremičnine so prodane.',
-        variant: 'default',
+      toast.success('Projekt zaključen', {
+        description: 'Vse nepremičnine so prodane.',
       })
       setIsFinishDialogOpen(false)
       // Redirect to the dashboard page after a short delay
@@ -126,16 +124,12 @@ const AktualniProjektPage = ({ params: { slug } }: { params: { slug: string } })
         router.push('/nadzorna-plosca')
       }, 2000) // 2 second delay
     } else if (result.error === 'Not all real estates are sold') {
-      toast({
-        title: 'Napaka',
-        description: `Projekta ni mogoče zaključiti. Obstaja še ${result.unsoldCount} neprodanih nepremičnin na tej lokaciji.`,
-        variant: 'destructive',
+      toast.error(`Projekta ni mogoče zaključiti. Obstaja še ${result.unsoldCount} neprodanih nepremičnin na tej lokaciji.`, {
+        description: 'Prosimo, poskusite znova.',
       })
     } else {
-      toast({
-        title: 'Napaka',
-        description: result.error || 'Pri zaključevanju projekta je prišlo do napake.',
-        variant: 'destructive',
+      toast.error(result.error || 'Pri zaključevanju projekta je prišlo do napake.', {
+        description: 'Prosimo, poskusite znova.',
       })
     }
   }

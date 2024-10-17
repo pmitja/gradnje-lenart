@@ -32,7 +32,7 @@ export default async function RootLayout({ children }: Readonly<{
       <html lang='sl'>
         <body className={`${montserrat.className} ${archivo.variable} overflow-x-hidden bg-body-75`}>
           <WithLayout layout='centered'>{children}</WithLayout>
-          <Toaster />
+          <Toaster position="top-center" />
         </body>
       </html>
     </SessionProvider>

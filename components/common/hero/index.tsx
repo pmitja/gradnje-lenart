@@ -16,14 +16,14 @@ const Hero = async () => {
     <div className='relative inset-x-1/2 mx-[-50vw] w-screen min-w-[100vw] bg-primary-75 pt-6 sm:pt-10 md:pt-16 lg:pt-0'>
       <div className='container relative grid w-full justify-center gap-6 sm:gap-8 lg:w-full lg:grid-cols-2 lg:gap-10'>
         <div className='relative flex flex-col justify-center gap-4 sm:gap-5'>
-          <div className='flex max-w-fit gap-2 sm:gap-[10px] rounded-xl sm:rounded-2xl bg-primary-500 px-3 sm:px-5 py-1 sm:py-2 font-archivo text-sm sm:text-base font-semibold text-body-200'>
+          <div className='flex max-w-fit gap-2 rounded-xl bg-primary-500 px-3 py-1 font-archivo text-sm font-semibold text-body-200 sm:gap-[10px] sm:rounded-2xl sm:px-5 sm:py-2 sm:text-base'>
             <DoubleChervonRightIcon />
             Pozdravljeni, najdite svoje sanje!
           </div>
-          <h2 className='text-2xl sm:text-3xl md:text-4xl font-bold leading-[120%] md:text-[51px] md:leading-[57px] lg:mt-2 lg:leading-[76.5px]'>
+          <h2 className='text-2xl font-bold leading-[120%] sm:text-3xl md:text-[51px] md:leading-[57px] lg:mt-2 lg:leading-[76.5px]'>
             Najdite, kupite & stanujte v svoji nepremični z nami!
           </h2>
-          <p className='font-archivo text-base sm:text-lg md:text-xl leading-7 sm:leading-8 text-secondary-200'>
+          <p className='font-archivo text-base leading-7 text-secondary-200 sm:text-lg sm:leading-8 md:text-xl'>
             Imeli boste vse pomembno v svoji bližini: trgovino, banko, pošto, šolo, vrtec, družinam
             prijazne soseske...
           </p>
@@ -32,14 +32,14 @@ const Hero = async () => {
               <ButtonWithIcon
                 asChild
                 variant='primary'
-                className='px-4 sm:px-6 py-3 sm:py-4 text-base sm:text-xl'
+                className='px-4 py-3 text-base sm:px-6 sm:py-4 sm:text-xl'
               >
                 Akutalni projekti
               </ButtonWithIcon>
             </PublicProjekti.Link>
             <ButtonWithIcon
               variant='secondary'
-              className='px-4 sm:px-6 py-3 sm:py-4 text-base sm:text-xl'
+              className='px-4 py-3 text-base sm:px-6 sm:py-4 sm:text-xl'
             >
               Vstopite v stik
             </ButtonWithIcon>
@@ -59,9 +59,9 @@ const Hero = async () => {
               alt='Hero image'
               width='795'
               height='700'
-              className='w-full max-h-[250px] sm:max-h-[310px] object-cover md:min-h-[500px] lg:min-h-[700px]'
+              className='max-h-[250px] w-full object-cover sm:max-h-[310px] md:min-h-[500px] lg:min-h-[700px]'
             />
-            <span className='absolute bottom-0 left-0 bg-[#3E5566]/50 px-3 sm:px-5 py-2 sm:py-3 font-archivo text-base sm:text-xl font-bold leading-6 sm:leading-8 text-body-200 md:hidden lg:block lg:px-8 lg:py-3'>
+            <span className='absolute bottom-0 left-0 bg-[#3E5566]/50 px-3 py-2 font-archivo text-base font-bold leading-6 text-body-200 sm:px-5 sm:py-3 sm:text-xl sm:leading-8 md:hidden lg:block lg:px-8 lg:py-3'>
               Aktualni projekti
             </span>
             <Image
@@ -72,12 +72,12 @@ const Hero = async () => {
               className='absolute bottom-0 right-0 hidden lg:block'
             />
           </div>
-          <div className='flex w-full flex-col justify-between gap-4 bg-body-100 px-4 sm:px-5 py-3 lg:flex-row lg:bg-body-75 lg:p-8'>
+          <div className='flex w-full flex-col justify-between gap-4 bg-body-100 px-4 py-3 sm:px-5 lg:flex-row lg:bg-body-75 lg:p-8'>
             <div className='flex flex-col gap-2 sm:gap-3'>
-              <h3 className='text-lg sm:text-xl font-bold text-secondary-400'>
+              <h3 className='text-lg font-bold text-secondary-400 sm:text-xl'>
                 {randomProject?.name ?? 'Večstanovanjskih objekt - Lenart'}
               </h3>
-              <p className='w-full font-archivo text-sm sm:text-base leading-5 text-secondary-400'>
+              <p className='w-full font-archivo text-sm leading-5 text-secondary-400 sm:text-base'>
                 {randomProject?.description ?? 'Nov, sodoben večstanovanjski objekt v Lenartu - vrhunska bivalna izkušnja v idiličnem okolju. Prijazne cene in vrhunska kakovost bivanja'}
               </p>
             </div>
@@ -86,9 +86,9 @@ const Hero = async () => {
                 <Button
                   variant={'rounded'}
                   size={'rounded'}
-                  className='size-[50px] sm:size-[68px] min-w-[50px] sm:min-w-[68px] self-end text-body-200 lg:self-auto'
+                  className='size-[50px] min-w-[50px] self-end text-body-200 sm:size-[68px] sm:min-w-[68px] lg:self-auto'
                 >
-                  <ArrowUpRight className="w-5 h-5 sm:w-6 sm:h-6" />
+                  <ArrowUpRight className="size-5 sm:size-6" />
                 </Button>
               </Link>
             )}

@@ -10,6 +10,8 @@ export const publicRoutes = [
   '/api/uploadthing?slug=imageUploader',
   '/projekti',
   '/projekt',
+  '/podjetje',
+  '/reference',
 ]
 
 /**

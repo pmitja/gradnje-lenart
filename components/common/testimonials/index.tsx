@@ -11,11 +11,11 @@ const Testimonials = () => (
     <>
       <section className='grid grid-cols-1 justify-between gap-8 lg:grid-cols-2'>
         <div className='flex flex-col gap-6'>
-          <h2 className='text-4xl font-bold leading-[120%] text-primary-200 md:text-[51px] md:leading-[57px] lg:leading-[76.5px]'>
+          <h2 className='text-xl font-bold leading-tight text-primary-200 sm:text-2xl sm:leading-tight md:text-3xl md:leading-tight lg:text-4xl lg:leading-tight'>
             Izjave zadovoljih strank
           </h2>
 
-          <p className='font-archivo text-base leading-5 text-secondary-200'>
+          <p className='font-archivo text-sm leading-normal text-secondary-200 sm:text-base sm:leading-relaxed md:text-lg'>
             Pri nas se trudimo, da vsaka stranka dobi najboljšo možno izkušnjo. Tukaj je nekaj izjav
             naših zadovoljnih strank, ki so z nami delile svoje pozitivne izkušnje.
           </p>

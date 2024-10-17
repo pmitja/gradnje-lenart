@@ -7,7 +7,7 @@ import { Accordion,
 const Faq = () => (
     <section className='mb-16 flex flex-col justify-between gap-[72px] md:mb-20 lg:mb-[140px] lg:flex-row lg:gap-8'>
       <div className='flex basis-1/3 flex-col gap-6'>
-        <h2 className='text-4xl font-bold leading-[120%] text-secondary-400 md:text-[51px] md:leading-[57px] lg:leading-[76.5px]'>
+        <h2 className='text-xl font-bold leading-tight text-secondary-200 sm:text-2xl sm:leading-tight md:text-3xl md:leading-tight lg:text-4xl lg:leading-tight'>
           Pogosta vprašanja
         </h2>
         <p className='font-archivo text-base leading-5 text-secondary-200'>

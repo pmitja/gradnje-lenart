@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { NavbarProps } from '@/types/general'
 
 const Footer = ({ navItems }: NavbarProps) => (
-    <div className='relative inset-x-1/2 mx-[-50vw] w-screen min-w-[100vw] bg-primary-100 pt-10 md:pt-16 lg:pt-0'>
+    <div className='relative inset-x-1/2 mx-[-50vw] w-screen min-w-[100vw] bg-primary-100'>
       <footer className='footer footer-center rounded bg-primary-100 p-10 text-secondary-200'>
         <Image
           src='/gradnje-plus-logo.webp'

@@ -14,89 +14,25 @@ const PartnersBanner = () => (
               delay: 3500,
             }),
           ]}
+          opts={{
+            align: 'start',
+            loop: true,
+          }}
         >
-          <CarouselContent className='-ml-1'>
-            <CarouselItem className='md:basis-1/2 lg:basis-1/4'>
-              <Image
-                src={'/gradnje-plus-logo.webp'}
-                alt='Partner 1'
-                width={200}
-                height={80}
-                className='h-7 w-fit md:h-9 lg:h-10'
-              />
-            </CarouselItem>
-            <CarouselItem className='md:basis-1/2 lg:basis-1/4'>
-              <Image
-                src={'/gradnje-plus-logo.webp'}
-                alt='Partner 2'
-                width={200}
-                height={80}
-                className='h-7 w-fit md:h-9 lg:h-10'
-              />
-            </CarouselItem>
-            <CarouselItem className='md:basis-1/2 lg:basis-1/4'>
-              <Image
-                src={'/gradnje-plus-logo.webp'}
-                alt='Partner 3'
-                width={200}
-                height={80}
-                className='h-7 w-fit md:h-9 lg:h-10'
-              />
-            </CarouselItem>
-            <CarouselItem className='md:basis-1/2 lg:basis-1/4'>
-              <Image
-                src={'/gradnje-plus-logo.webp'}
-                alt='Partner 4'
-                width={200}
-                height={80}
-                className='h-7 w-fit md:h-9 lg:h-10'
-              />
-            </CarouselItem>
-            <CarouselItem className='md:basis-1/2 lg:basis-1/4'>
-              <Image
-                src={'/gradnje-plus-logo.webp'}
-                alt='Partner 5'
-                width={200}
-                height={80}
-                className='h-7 w-fit md:h-9 lg:h-10'
-              />
-            </CarouselItem>
-            <CarouselItem className='md:basis-1/2 lg:basis-1/4'>
-              <Image
-                src={'/gradnje-plus-logo.webp'}
-                alt='Partner 6'
-                width={200}
-                height={80}
-                className='h-7 w-fit md:h-9 lg:h-10'
-              />
-            </CarouselItem>
-            <CarouselItem className='md:basis-1/2 lg:basis-1/4'>
-              <Image
-                src={'/gradnje-plus-logo.webp'}
-                alt='Partner 7'
-                width={200}
-                height={80}
-                className='h-7 w-fit md:h-9 lg:h-10'
-              />
-            </CarouselItem>
-            <CarouselItem className='md:basis-1/2 lg:basis-1/4'>
-              <Image
-                src={'/gradnje-plus-logo.webp'}
-                alt='Partner 8'
-                width={200}
-                height={80}
-                className='h-7 w-fit md:h-9 lg:h-10'
-              />
-            </CarouselItem>
-            <CarouselItem className='md:basis-1/2 lg:basis-1/4'>
-              <Image
-                src={'/gradnje-plus-logo.webp'}
-                alt='Partner 9'
-                width={200}
-                height={80}
-                className='h-7 w-fit md:h-9 lg:h-10'
-              />
-            </CarouselItem>
+          <CarouselContent className='-ml-2 md:-ml-4'>
+            {Array.from({
+              length: 9,
+            }).map((_, index) => (
+              <CarouselItem key={index} className='basis-1/3 pl-2 md:basis-1/4 md:pl-4 lg:basis-1/5'>
+                <Image
+                  src={'/gradnje-plus-logo.webp'}
+                  alt={`Partner ${index + 1}`}
+                  width={200}
+                  height={80}
+                  className='h-7 w-auto md:h-9 lg:h-10'
+                />
+              </CarouselItem>
+            ))}
           </CarouselContent>
         </Carousel>
         <Image

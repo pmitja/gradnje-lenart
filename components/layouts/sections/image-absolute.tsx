@@ -33,10 +33,10 @@ const SectionWithImageAbsolute = ({
         className='relative max-h-[250px] rounded-2xl object-cover md:max-h-[550px] lg:max-h-[630px]'
       />
       <div className='left-0 top-0 flex flex-col gap-6 rounded-2xl rounded-bl-none rounded-tr-none bg-body-75 md:absolute md:max-w-[60%] md:pb-2 md:pr-2 lg:pb-[50px] lg:pr-6'>
-        <h2 className='self-center text-4xl font-bold leading-[120%] text-secondary-200 md:text-[51px] md:leading-[57px] lg:leading-[76.5px]'>
+        <h2 className='self-center text-xl font-bold leading-tight text-secondary-200 sm:text-2xl sm:leading-tight md:text-3xl md:leading-tight lg:text-4xl lg:leading-tight'>
           {title}
         </h2>
-        <p className='text-xl leading-6 text-secondary-200'>{text}</p>
+        <p className='font-archivo text-sm leading-normal text-secondary-200 sm:text-base sm:leading-relaxed md:text-lg'>{text}</p>
         <ButtonWithIcon
           variant={'secondary'}
           className='w-fit'
@@ -44,12 +44,12 @@ const SectionWithImageAbsolute = ({
           Vstopite v stik
         </ButtonWithIcon>
       </div>
-      <div className='absolute bottom-0 flex w-full grow-0 flex-row items-center justify-center gap-4 rounded-t-2xl bg-body-75 md:right-0 md:flex md:max-w-[330px] md:rounded-tr-none md:p-2 lg:p-3'>
+      <div className='absolute bottom-0 flex w-full grow-0 flex-row items-center justify-center gap-4 rounded-t-2xl bg-body-75 pt-2 md:right-0 md:flex md:max-w-[330px] md:rounded-tr-none md:p-2 lg:p-3'>
         <HomeIcon
           size={64}
           className='max-h-8 max-w-8 md:min-h-12 md:min-w-12 lg:min-h-16 lg:min-w-16'
         />
-        <p className='break-words font-archivo text-xl italic leading-6 text-secondary-200'>
+        <p className='break-words pt-2 font-archivo text-sm italic leading-normal text-secondary-200 sm:text-base sm:leading-relaxed md:text-lg'>
           Več kot 1000 nepremični zgrajenih in prodanih
         </p>
       </div>

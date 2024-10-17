@@ -47,10 +47,10 @@ const CardWithIcon: FC<CardWithIconProps<Icons>> = ({
         height={iconSize}
         className='text-primary-300'
       />
-      <h3 className='text-3xl font-bold text-primary-300 lg:text-[38px] lg:leading-[57px]'>
+      <h3 className=' text-lg font-bold leading-tight text-primary-300 sm:text-lg sm:leading-tight md:text-xl md:leading-tight lg:text-2xl lg:leading-tight'>
         {title}
       </h3>
-      <p className='text-xl leading-6 text-secondary-200'>{text}</p>
+      <p className='font-archivo text-sm leading-normal text-secondary-200 sm:text-base sm:leading-relaxed md:text-lg'>{text}</p>
     </div>
   )
 }

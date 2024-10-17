@@ -50,10 +50,10 @@ const ImageLeftTextRight = ({
         )}
       </div>
       <div className='row-start-1 flex flex-col gap-6 md:gap-5 lg:row-start-auto'>
-        <h2 className='text-4xl font-bold leading-[120%] text-secondary-400 md:text-[51px] md:leading-[57px] lg:leading-[76.5px]'>
+        <h2 className='text-xl font-bold leading-tight sm:text-2xl sm:leading-tight md:text-3xl md:leading-tight lg:text-4xl lg:leading-tight'>
           {heading}
         </h2>
-        <p className='text-xl leading-6'>{text}</p>
+        <p className='font-archivo text-sm leading-normal text-secondary-200 sm:text-base sm:leading-relaxed md:text-lg'>{text}</p>
         <ButtonWithIcon
           variant='primary'
           className='w-fit self-center px-6 py-4 text-xl md:self-start lg:mt-10'

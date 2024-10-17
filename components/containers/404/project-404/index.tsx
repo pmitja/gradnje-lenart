@@ -1,9 +1,9 @@
 import { MoveLeft } from 'lucide-react'
 import Image from 'next/image'
-import Link from 'next/link'
 
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import { ProtectedNadzornaPlosca, ProtectedNadzornaPloscaAktualniProjektNov } from '@/routes'
 
 const Project404 = ({ className }: { className?: string }) => (
     <section className={cn('flex min-h-[100dvh] items-center dark:bg-gray-900', className)}>
@@ -24,14 +24,16 @@ const Project404 = ({ className }: { className?: string }) => (
               className='flex w-1/2 items-center justify-center gap-x-2 rounded-lg border bg-white px-5 py-2 text-sm text-gray-700 transition-colors duration-200 sm:w-auto'
             >
               <MoveLeft />
-              <Link href={'/nadzorna-plosca'}>Nazaj na nadzorno ploščo</Link>
+              <ProtectedNadzornaPlosca.Link>Nazaj na nadzorno ploščo</ProtectedNadzornaPlosca.Link>
             </Button>
 
             <Button
               variant={'primary'}
               className='w-1/2 shrink-0 rounded-lg px-5 py-2 text-sm tracking-wide text-white transition-colors duration-200 sm:w-auto'
             >
-              <Link href={'/nadzorna-plosca/aktualni-projekt/nov'}>Dodaj novo lokacijo</Link>
+              <ProtectedNadzornaPloscaAktualniProjektNov.Link>
+                Dodaj novo lokacijo
+              </ProtectedNadzornaPloscaAktualniProjektNov.Link>
             </Button>
           </div>
         </div>

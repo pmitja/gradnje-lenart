@@ -2,6 +2,7 @@ import Image from 'next/image'
 import React from 'react'
 
 import { cn } from '@/lib/utils'
+import { PublicProjekti } from '@/routes'
 
 import ButtonWithIcon from '../common/button-with-icon'
 
@@ -54,12 +55,14 @@ const ImageLeftTextRight = ({
           {heading}
         </h2>
         <p className='font-archivo text-sm leading-normal text-secondary-200 sm:text-base sm:leading-relaxed md:text-lg'>{text}</p>
-        <ButtonWithIcon
-          variant='primary'
-          className='w-fit self-center px-6 py-4 md:self-start lg:mt-10'
+        <PublicProjekti.Link>
+          <ButtonWithIcon
+            variant='primary'
+            className='w-fit self-center px-6 py-4 md:self-start lg:mt-10'
         >
           Akutalni projekti
-        </ButtonWithIcon>
+          </ButtonWithIcon>
+        </PublicProjekti.Link>
       </div>
     </section>
 )

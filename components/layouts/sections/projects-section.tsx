@@ -1,7 +1,6 @@
 'use client'
 
 import Image from 'next/image'
-import Link from 'next/link'
 import { useCallback, useEffect, useTransition } from 'react'
 
 import { getLocationsByCity } from '@/actions/get-locations-by-city'
@@ -11,6 +10,7 @@ import Spinner from '@/components/common/spinner'
 import CloseIcon from '@/components/icons/close'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { PublicProjektSlug } from '@/routes'
 import { useAppStore } from '@/store/app'
 
 const ProjectElement = ({
@@ -37,14 +37,16 @@ const ProjectElement = ({
         {title}
       </h3>
       <p className='self-start text-sm lg:text-base'>{description}</p>
-      <Link href={`projekt/${link}`}>
+      <PublicProjektSlug.Link
+        slug={link}
+      >
         <ButtonWithIcon
           variant='primary'
           className='max-w-fit drop-shadow-primary-button transition hover:translate-y-1'
         >
           Pojdi na projekt
         </ButtonWithIcon>
-      </Link>
+      </PublicProjektSlug.Link>
     </div>
   </div>
 )

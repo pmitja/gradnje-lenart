@@ -4,7 +4,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { ToggleGroup } from '@radix-ui/react-toggle-group'
 import { ChevronLeft } from 'lucide-react'
 import Image from 'next/image'
-import Link from 'next/link'
 import { useEffect, useState, useTransition } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -39,6 +38,7 @@ import { Table,
 import { Textarea } from '@/components/ui/textarea'
 import { ToggleGroupItem } from '@/components/ui/toggle-group'
 import { UploadButton } from '@/lib/utils/uploadthing'
+import { ProtectedNadzornaPlosca } from '@/routes'
 import { mainFormSchema } from '@/schemas'
 import { Apartment, LocationType, StatusType } from '@/types/general'
 
@@ -122,10 +122,10 @@ const NovAktualniProjektPage = () => {
                 size='icon'
                 className='size-7'
               >
-                <Link href={'/nadzorna-plosca'}>
+                <ProtectedNadzornaPlosca.Link>
                   <ChevronLeft className='size-4' />
                   <span className='sr-only'>Back</span>
-                </Link>
+                </ProtectedNadzornaPlosca.Link>
               </Button>
               <h1 className='flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight text-primary-300 sm:grow-0'>
                 Dodajanje nove lokacije

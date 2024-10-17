@@ -4,6 +4,7 @@ import React from 'react'
 
 import ButtonWithIcon from '@/components/common/button-with-icon'
 import { cn } from '@/lib/utils'
+import { PublicKontakt } from '@/routes'
 
 interface SectionWithImageAbsoluteProps extends React.HTMLAttributes<HTMLElement> {
   title: string
@@ -37,12 +38,14 @@ const SectionWithImageAbsolute = ({
           {title}
         </h2>
         <p className='font-archivo text-sm leading-normal text-secondary-200 sm:text-base sm:leading-relaxed md:text-lg'>{text}</p>
-        <ButtonWithIcon
-          variant={'secondary'}
-          className='w-fit'
+        <PublicKontakt.Link>
+          <ButtonWithIcon
+            variant={'secondary'}
+            className='w-fit'
         >
           Vstopite v stik
         </ButtonWithIcon>
+        </PublicKontakt.Link>
       </div>
       <div className='absolute bottom-0 flex w-full grow-0 flex-row items-center justify-center gap-4 rounded-t-2xl bg-body-75 pt-2 md:right-0 md:flex md:max-w-[330px] md:rounded-tr-none md:p-2 lg:p-3'>
         <HomeIcon

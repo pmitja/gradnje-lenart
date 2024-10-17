@@ -1,7 +1,6 @@
 'use client'
 
 import { Location, RealEstate } from '@prisma/client'
-import Link from 'next/link'
 import React from 'react'
 
 import { Button } from '@/components/ui/button'
@@ -13,6 +12,7 @@ import { Table,
   TableRow } from '@/components/ui/table'
 import { formatNumber } from '@/lib/helpers'
 import { cn } from '@/lib/utils'
+import { PublicProjektSlugId } from '@/routes'
 
 interface RealEstateTableProps {
   location: Location & { realEstates: RealEstate[] }
@@ -58,7 +58,12 @@ const RealEstateTable: React.FC<RealEstateTableProps> = ({ location, slug }) => 
               <TableCell className="text-right">
                 {realEstate.status === 'Na prodaj' && (
                   <Button asChild variant="primary" size="sm">
-                    <Link href={`${slug}/${realEstate.id}`}>Preveri</Link>
+                    <PublicProjektSlugId.Link
+                      slug={slug}
+                      id={realEstate.id}
+                    >
+                      Preveri
+                    </PublicProjektSlugId.Link>
                   </Button>
                 )}
               </TableCell>

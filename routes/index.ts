@@ -4,10 +4,13 @@ import { z } from 'zod'
 import * as ProtectedNadzornaPloscaAktualniProjektSlugRoute from '@/app/(protected)/nadzorna-plosca/aktualni-projekt/[slug]/page.info'
 import * as ProtectedNadzornaPloscaAktualniProjektNovRoute from '@/app/(protected)/nadzorna-plosca/aktualni-projekt/nov/page.info'
 import * as ProtectedNadzornaPloscaRoute from '@/app/(protected)/nadzorna-plosca/page.info'
+import * as PublicKontaktRoute from '@/app/(public)/kontakt/page.info'
 import * as PublicRoute from '@/app/(public)/page.info'
+import * as PublicPodjetjeRoute from '@/app/(public)/podjetje/page.info'
 import * as PublicProjektSlugIdRoute from '@/app/(public)/projekt/[slug]/[id]/page.info'
 import * as PublicProjektSlugRoute from '@/app/(public)/projekt/[slug]/page.info'
 import * as PublicProjektiRoute from '@/app/(public)/projekti/page.info'
+import * as PublicReferenceRoute from '@/app/(public)/reference/page.info'
 import * as ApiAuthNextauthRoute from '@/app/api/auth/[...nextauth]/route.info'
 import * as ApiUploadthingRoute from '@/app/api/uploadthing/route.info'
 import * as AuthErrorRoute from '@/app/auth/error/page.info'
@@ -56,6 +59,22 @@ export const Public = makeRoute(
   },
 )
 
+export const PublicKontakt = makeRoute(
+  '/(public)/kontakt',
+  {
+    ...defaultInfo,
+    ...PublicKontaktRoute.Route,
+  },
+)
+
+export const PublicPodjetje = makeRoute(
+  '/(public)/podjetje',
+  {
+    ...defaultInfo,
+    ...PublicPodjetjeRoute.Route,
+  },
+)
+
 export const PublicProjektSlug = makeRoute(
   '/(public)/projekt/[slug]',
   {
@@ -77,6 +96,14 @@ export const PublicProjekti = makeRoute(
   {
     ...defaultInfo,
     ...PublicProjektiRoute.Route,
+  },
+)
+
+export const PublicReference = makeRoute(
+  '/(public)/reference',
+  {
+    ...defaultInfo,
+    ...PublicReferenceRoute.Route,
   },
 )
 

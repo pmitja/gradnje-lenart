@@ -19,7 +19,7 @@ import { Accordion,
   AccordionTrigger } from '@/components/ui/accordion'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
-import { Public } from '@/routes'
+import { ProtectedNadzornaPlosca, ProtectedNadzornaPloscaAktualniProjektNov, ProtectedNadzornaPloscaAktualniProjektSlug, Public } from '@/routes'
 
 const WithDashBoardNavigation = ({
   children,
@@ -33,9 +33,9 @@ const WithDashBoardNavigation = ({
   const SidebarContent = () => (
     <div className="fixed flex h-full max-h-screen min-w-[279px] flex-col gap-2">
       <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
-        <Link href="/nadzorna-plosca" className="flex items-center gap-2 font-semibold">
+        <ProtectedNadzornaPlosca.Link className="flex items-center gap-2 font-semibold">
           <Image src={'/gradnje-plus-logo.webp'} alt="Logo" width={200} height={32} />
-        </Link>
+        </ProtectedNadzornaPlosca.Link>
       </div>
       <div className="flex-1">
         <nav className="grid items-start gap-4 px-2 text-sm font-medium lg:px-4">
@@ -50,21 +50,20 @@ const WithDashBoardNavigation = ({
                 <DoorOpenIcon /> Aktualni projekti
               </AccordionTrigger>
               <AccordionContent>
-                <Link
-                  href={'/nadzorna-plosca/aktualni-projekt/nov'}
+                <ProtectedNadzornaPloscaAktualniProjektNov.Link
                   className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:!text-primary-200"
                 >
                   Nov vnos
-                </Link>
+                </ProtectedNadzornaPloscaAktualniProjektNov.Link>
                 {activeNavItems
                   && activeNavItems.map((location) => (
-                    <Link
+                    <ProtectedNadzornaPloscaAktualniProjektSlug.Link
+                      slug={location.slug}
                       key={location.slug}
-                      href={`/nadzorna-plosca/aktualni-projekt/${location.slug}`}
                       className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:!text-primary-200"
                     >
                       {location.name}
-                    </Link>
+                    </ProtectedNadzornaPloscaAktualniProjektSlug.Link>
                   ))}
               </AccordionContent>
             </AccordionItem>
@@ -75,13 +74,13 @@ const WithDashBoardNavigation = ({
               <AccordionContent>
               {finishedNavItems
                   && finishedNavItems.map((location) => (
-                    <Link
+                    <ProtectedNadzornaPloscaAktualniProjektSlug.Link
                       key={location.slug}
-                      href={`/nadzorna-plosca/aktualni-projekt/${location.slug}`}
+                      slug={location.slug}
                       className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:!text-primary-200"
                     >
                       {location.name}
-                    </Link>
+                    </ProtectedNadzornaPloscaAktualniProjektSlug.Link>
                   ))}
               </AccordionContent>
             </AccordionItem>}
@@ -108,13 +107,12 @@ const WithDashBoardNavigation = ({
               </AccordionContent>
             </AccordionItem>
           </Accordion>
-          <Link
-            href="/nadzorna-plosca/aktualni-projekt/nov"
+          <ProtectedNadzornaPloscaAktualniProjektNov.Link
             className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:!text-primary-200"
           >
             <SquarePlusIcon className="size-6" />
             Dodaj nov projekt
-          </Link>
+          </ProtectedNadzornaPloscaAktualniProjektNov.Link>
         </nav>
       </div>
       <div className="mt-auto p-4">

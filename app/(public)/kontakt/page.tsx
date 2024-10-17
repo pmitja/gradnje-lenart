@@ -76,12 +76,8 @@ const KontaktPage = () => (
     <section className="py-6 lg:py-12">
       <ContactUs />
     </section>
-    <section className="py-6">
       <Cta />
-    </section>
-    <section className="py-6">
       <OffersBanner />
-    </section>
   </div>
 )
 

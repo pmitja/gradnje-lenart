@@ -86,8 +86,8 @@ const ProjectsSection = () => {
     <section className='flex flex-col gap-3 lg:gap-5'>
       <div className='py-12 text-secondary-400 sm:py-16 lg:py-20'>
         <div className='mx-auto px-4 sm:px-6 lg:px-8'>
-          <div className='mx-auto mb-4 max-w-2xl text-center lg:mb-0'>
-            <p className='text-sm font-medium text-secondary-500'>Gradnje Plus</p>
+          <div className='mx-auto mb-4 flex max-w-2xl flex-col items-center gap-2 text-center lg:mb-0'>
+            <Badge className='bg-primary-200 text-sm font-medium text-body-200'>Gradnje Plus</Badge>
             <h2 className='mt-2 text-3xl font-bold sm:text-4xl xl:text-5xl'>Aktualni projekti</h2>
             <hr className='mx-auto mt-4 h-2 w-32 border-none bg-primary-200' />
           </div>

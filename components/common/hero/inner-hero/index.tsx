@@ -9,10 +9,10 @@ const InnerHero = ({ title }: { title: string }) => (
           <Sparkle />
           Aktualni projekti
         </Badge>
-        <h1 className='text-center text-4xl font-bold leading-[120%] md:text-[51px] md:leading-[57px] lg:mt-2 lg:max-w-[75%] lg:text-[67px] lg:leading-[100.5px]'>
+        <h1 className='text-center text-3xl font-bold sm:text-4xl lg:mt-2 lg:max-w-[75%] lg:text-4xl lg:leading-tight xl:text-5xl'>
           {title}
         </h1>
-        <p className='text-center font-archivo text-lg leading-6 text-secondary-200 lg:max-w-[60%] lg:text-xl lg:leading-8'>
+        <p className="text-center font-archivo text-sm leading-normal text-secondary-200 sm:text-base sm:leading-relaxed md:text-lg lg:max-w-[60%]">
           Naše strokovno znanje nam omogoča, da vam ponudimo domove, ki ne le ustrezajo vašemu
           življenjskemu slogu, ampak tudi uresničujejo vaše ambicije.
         </p>

@@ -20,7 +20,7 @@ const Hero = async () => {
             <DoubleChervonRightIcon className="size-3 sm:size-4" />
             Pozdravljeni, najdite svoje sanje!
           </div>
-          <h1 className='text-xl font-bold leading-tight sm:text-2xl sm:leading-tight md:text-3xl md:leading-tight lg:text-4xl lg:leading-tight'>
+          <h1 className='text-3xl font-bold sm:text-4xl lg:mt-2 lg:max-w-[75%] lg:text-4xl lg:leading-tight xl:text-5xl'>
             Najdite, kupite & stanujte v svoji nepremični z nami!
           </h1>
           <p className='font-archivo text-sm leading-normal text-secondary-200 sm:text-base sm:leading-relaxed md:text-lg'>

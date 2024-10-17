@@ -111,12 +111,8 @@ const About = () => (
       <p className="text-2xl font-bold text-secondary-400 md:text-3xl">Partnerji</p>
       <PartnersCards />
     </section>
-    <section className="py-6">
       <Cta />
-    </section>
-    <section className="py-6">
       <OffersBanner />
-    </section>
     <section className="py-6 lg:py-12">
       <ContactUs />
     </section>

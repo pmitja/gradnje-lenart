@@ -77,7 +77,7 @@ const ProjectsFilter = () => {
                   control={form.control}
                   name='location'
                   render={({ field }) => (
-                    <FormItem className='flex flex-col gap-2 border-secondary-200 pr-2 md:pr-4 lg:border-r-2 lg:pr-6'>
+                    <FormItem className='flex flex-col border-secondary-200 pr-2 md:pr-4 lg:border-r-2 lg:pr-6'>
                       <FormLabel className='px-3 text-base font-bold lg:text-xl'>
                         Lokacija
                       </FormLabel>
@@ -114,7 +114,7 @@ const ProjectsFilter = () => {
                 control={form.control}
                 name='type'
                 render={({ field }) => (
-                  <FormItem className='flex flex-col gap-2 border-secondary-200 pr-2 md:pr-4 lg:border-r-2 lg:pr-6'>
+                  <FormItem className='flex flex-col border-secondary-200 pr-2 md:pr-4 lg:border-r-2 lg:pr-6'>
                     <FormLabel className='px-3 text-base font-bold lg:text-xl'>
                       Vrsta
                     </FormLabel>

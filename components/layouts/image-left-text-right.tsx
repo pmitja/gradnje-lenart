@@ -56,7 +56,7 @@ const ImageLeftTextRight = ({
         <p className='font-archivo text-sm leading-normal text-secondary-200 sm:text-base sm:leading-relaxed md:text-lg'>{text}</p>
         <ButtonWithIcon
           variant='primary'
-          className='w-fit self-center px-6 py-4 text-xl md:self-start lg:mt-10'
+          className='w-fit self-center px-6 py-4 md:self-start lg:mt-10'
         >
           Akutalni projekti
         </ButtonWithIcon>

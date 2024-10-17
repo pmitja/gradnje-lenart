@@ -169,7 +169,7 @@ export default function ProjectReference({ projects }: ProjectReferenceProps) {
       <div className="container relative flex w-full flex-col items-center justify-center gap-4 border-none bg-inherit pb-6 sm:gap-6 sm:pb-8 md:gap-8 md:pb-12 lg:pb-16">
         <h1
           ref={titleRef}
-          className="max-w-[90%] text-center text-2xl font-bold leading-tight sm:max-w-[85%] sm:text-3xl sm:leading-tight md:max-w-[80%] md:text-4xl md:leading-tight lg:max-w-[75%] lg:text-5xl lg:leading-tight"
+          className="text-3xl font-bold sm:text-4xl lg:text-4xl lg:leading-tight xl:text-5xl"
         >
           {project.name}
         </h1>

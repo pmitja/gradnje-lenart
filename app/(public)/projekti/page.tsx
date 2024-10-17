@@ -5,13 +5,13 @@ import OffersBanner from '@/components/layouts/sections/offers-banner'
 import ProjectsSection from '@/components/layouts/sections/projects-section'
 
 const ActualProjectPage = () => (
-  <>
+  <div>
     <ProjectFilterHero />
     <ProjectsSection />
     <ProccesOfBuying />
     <OffersBanner />
     <Faq />
-  </>
+  </div>
 )
 
 export default ActualProjectPage

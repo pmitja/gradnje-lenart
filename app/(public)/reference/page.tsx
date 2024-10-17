@@ -18,12 +18,8 @@ const ReferencePage = async () => {
   return (
     <div>
       <ReferenceHero projects={inactiveLocations} />
-      <section className="py-6">
-        <OffersBanner />
-      </section>
-      <section className="py-6">
-        <Cta />
-      </section>
+      <OffersBanner />
+      <Cta />
       <section className="py-6 lg:py-12">
         <ContactUs />
       </section>

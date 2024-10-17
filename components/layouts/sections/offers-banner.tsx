@@ -33,7 +33,7 @@ const OffersBanner = () => {
   }
 
   return (
-    <section className='mb-5 flex flex-col gap-8 lg:mb-10'>
+    <section className='flex flex-col gap-8 py-6 md:py-10 lg:py-20'>
       <div className='flex w-full flex-row flex-wrap justify-between gap-4'>
         <h3 className='text-2xl font-bold text-secondary-400 md:text-3xl'>{exposedRealEstate.name}</h3>
         <Link href={`/projekt/${exposedRealEstate.location.slug}/${exposedRealEstate.id}`}>

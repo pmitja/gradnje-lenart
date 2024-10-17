@@ -250,7 +250,7 @@ export default function ProjectReference({ projects }: ProjectReferenceProps) {
                     }}
                   />
                   <p className="mt-2 text-xs font-semibold sm:text-sm">
-                    Next: {nextProjectData.name}
+                    Naslednji: {nextProjectData.name}
                   </p>
                 </div>
               )}
@@ -292,7 +292,7 @@ export default function ProjectReference({ projects }: ProjectReferenceProps) {
         slides={lightboxImages}
         styles={{
           root: {
-            zIndex: 99999999,
+            zIndex: 21470002,
           },
         }}
         render={{

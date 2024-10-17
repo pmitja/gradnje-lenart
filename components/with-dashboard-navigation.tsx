@@ -18,7 +18,6 @@ import { Accordion,
   AccordionItem,
   AccordionTrigger } from '@/components/ui/accordion'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { Public } from '@/routes'
 
@@ -32,7 +31,7 @@ const WithDashBoardNavigation = ({
   finishedNavItems?: Location[]
 }) => {
   const SidebarContent = () => (
-    <div className="flex h-full max-h-screen flex-col gap-2 fixed min-w-[279px]">
+    <div className="fixed flex h-full max-h-screen min-w-[279px] flex-col gap-2">
       <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
         <Link href="/nadzorna-plosca" className="flex items-center gap-2 font-semibold">
           <Image src={'/gradnje-plus-logo.webp'} alt="Logo" width={200} height={32} />
@@ -131,7 +130,7 @@ const WithDashBoardNavigation = ({
           <SidebarContent />
         </div>
         <div className="flex flex-col">
-          <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6 lg:hidden">
+          <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:hidden lg:h-[60px] lg:px-6">
             <Sheet>
               <SheetTrigger asChild>
                 <Button variant="outline" size="icon" className="shrink-0 md:hidden">

@@ -15,6 +15,7 @@ import { LocationType, SpacesType, StatusType } from '@/types/general'
 import PropertyMap from './property-map'
 import RealEstateImages from './real-estate-images'
 import ReservationDialog from './ReservationDialog'
+import WaitingListDialog from './WaitingListDialog'
 
 interface PropertyDetail {
   icon: React.ReactNode
@@ -147,7 +148,9 @@ const DetailViewRealEstate = ({
               </p>
             </div>
 
-            <Button variant={'primary'}>Zanimam se</Button>
+            <WaitingListDialog realEstateId={id}>
+              <Button variant={'primary'}>Zanimam se</Button>
+            </WaitingListDialog>
           </div>
         )}
         <RealEstateImages images={images} />

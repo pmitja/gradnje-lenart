@@ -99,6 +99,7 @@ model RealEstate {
   reservations     Reservation[]
   customerId       String?
   customer         Customer?     @relation(fields: [customerId], references: [id])
+  waitingList      WaitingListEntry[]
 }
 
 model Reservation {
@@ -123,6 +124,14 @@ model Customer {
   updatedAt   DateTime      @updatedAt
   realEstates RealEstate[]
   Reservation Reservation[]
+}
+
+model WaitingListEntry {
+  id          String    @id @default(cuid())
+  email       String
+  createdAt   DateTime  @default(now())
+  realEstate  RealEstate @relation(fields: [realEstateId], references: [id])
+  realEstateId String
 }
 
 enum UserRole {

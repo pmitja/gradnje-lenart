@@ -28,7 +28,7 @@ const defaultInfo = {
 }
 
 export const ProtectedNadzornaPlosca = makeRoute(
-  '/(protected)/nadzorna-plosca',
+  '/nadzorna-plosca',
   {
     ...defaultInfo,
     ...ProtectedNadzornaPloscaRoute.Route,
@@ -36,7 +36,7 @@ export const ProtectedNadzornaPlosca = makeRoute(
 )
 
 export const ProtectedNadzornaPloscaAktualniProjektSlug = makeRoute(
-  '/(protected)/nadzorna-plosca/aktualni-projekt/[slug]',
+  '/nadzorna-plosca/aktualni-projekt/[slug]',
   {
     ...defaultInfo,
     ...ProtectedNadzornaPloscaAktualniProjektSlugRoute.Route,
@@ -44,7 +44,7 @@ export const ProtectedNadzornaPloscaAktualniProjektSlug = makeRoute(
 )
 
 export const ProtectedNadzornaPloscaAktualniProjektNov = makeRoute(
-  '/(protected)/nadzorna-plosca/aktualni-projekt/nov',
+  '/nadzorna-plosca/aktualni-projekt/nov',
   {
     ...defaultInfo,
     ...ProtectedNadzornaPloscaAktualniProjektNovRoute.Route,
@@ -52,7 +52,7 @@ export const ProtectedNadzornaPloscaAktualniProjektNov = makeRoute(
 )
 
 export const Public = makeRoute(
-  '/(public)',
+  '/',
   {
     ...defaultInfo,
     ...PublicRoute.Route,

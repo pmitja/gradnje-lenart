@@ -12,6 +12,7 @@ import { z } from 'zod'
 
 import { finishProject } from '@/actions/finish-project'
 import { getLocationRealEstates } from '@/actions/get-location-real-esatates'
+import { reactivateProject } from '@/actions/reactivate-project'
 import { updateLocationRealEstate } from '@/actions/update-location-real-estates'
 import ApartmentForm from '@/components/common/apartment-form'
 import EditApartmentDialog from '@/components/common/apartment-form/edit'
@@ -134,6 +135,22 @@ const AktualniProjektPage = ({ params: { slug } }: { params: { slug: string } })
     }
   }
 
+  const handleReactivateProject = async () => {
+    const result = await reactivateProject(slug)
+
+    if (result.success) {
+      toast.success('Projekt ponovno aktiviran', {
+        description: 'Lokacija je zdaj označena kot aktivna.',
+      })
+      setIsFinishDialogOpen(false)
+      fetchLocationData() // Refresh the location data
+    } else {
+      toast.error(result.error || 'Pri ponovni aktivaciji projekta je prišlo do napake.', {
+        description: 'Prosimo, poskusite znova.',
+      })
+    }
+  }
+
   return (
     <main className='grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8'>
       {!isPending && location && (
@@ -184,7 +201,7 @@ const AktualniProjektPage = ({ params: { slug } }: { params: { slug: string } })
                 <CardHeader>
                   <CardTitle>{location.type === LocationType.Apartments ? 'Stanovanja' : 'Hiše'}</CardTitle>
                   <CardDescription>
-                    {location.type === LocationType.Apartments ? 'V tabeli so prikazana vsa stanovanja, ki so trenutno dodana na lokacijo.' : 'V tabeli so prikazana vse hiše, ki so trenutno dodana na lokacijo.'}
+                    {location.type === LocationType.Apartments ? 'V tabeli so prikazana vsa stanovanja, ki so trenutno dodana na lokacijo.' : 'V tabeli so prikazana vse hiše, ki so trenutno dodane na lokacijo.'}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -247,13 +264,14 @@ const AktualniProjektPage = ({ params: { slug } }: { params: { slug: string } })
                 className='bg-primary-75'
               >
                 <CardHeader>
-                  <CardTitle>Projekt razprodan in zaključen</CardTitle>
+                  <CardTitle>{location.isActive ? 'Zaključi projekt' : 'Ponovno aktiviraj projekt'}</CardTitle>
                   <CardDescription>
-                    Projekt je razprodan in zaključen.
+                    {location.isActive
+                      ? 'Projekt je razprodan. Zaključi projekt, da lokacija ne bo več vidna v nadzorni plosci.'
+                      : 'Ponovno aktiviraj projekt, da lokacija ponovno postane vidna v nadzorni plosci.'}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div></div>
                   <Dialog open={isFinishDialogOpen} onOpenChange={setIsFinishDialogOpen}>
                     <DialogTrigger asChild>
                       <Button
@@ -261,20 +279,23 @@ const AktualniProjektPage = ({ params: { slug } }: { params: { slug: string } })
                         variant='outline'
                         className='hover:!bg-primary-50 hover:!text-primary-300'
                       >
-                        Zaključi projekt
+                        {location.isActive ? 'Zaključi projekt' : 'Ponovno aktiviraj projekt'}
                       </Button>
                     </DialogTrigger>
                     <DialogContent>
                       <DialogHeader>
-                        <DialogTitle>Zaključi projekt</DialogTitle>
+                        <DialogTitle>{location.isActive ? 'Zaključi projekt' : 'Ponovno aktiviraj projekt'}</DialogTitle>
                         <DialogDescription>
-                          Ali ste prepričani, da želite zaključiti ta projekt?
-                          To dejanje bo označilo lokacijo kot neaktivno.
+                          {location.isActive
+                            ? 'Ali ste prepričani, da želite zaključiti ta projekt? To dejanje bo označilo lokacijo kot neaktivno.'
+                            : 'Ali ste prepričani, da želite ponovno aktivirati ta projekt? To dejanje bo označilo lokacijo kot aktivno.'}
                         </DialogDescription>
                       </DialogHeader>
                       <DialogFooter>
                         <Button variant="secondary" onClick={() => setIsFinishDialogOpen(false)}>Prekliči</Button>
-                        <Button variant="primary" onClick={handleFinishProject}>Zaključi projekt</Button>
+                        <Button variant="primary" onClick={location.isActive ? handleFinishProject : handleReactivateProject}>
+                          {location.isActive ? 'Zaključi projekt' : 'Ponovno aktiviraj projekt'}
+                        </Button>
                       </DialogFooter>
                     </DialogContent>
                   </Dialog>

@@ -98,6 +98,7 @@ export interface Location {
   realEstates: RealEstate[]
   createdAt: Date
   updatedAt: Date
+  isActive: boolean
 }
 
 export type Apartment = {

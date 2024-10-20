@@ -6,6 +6,8 @@ import { useState } from 'react'
 import { toast } from 'sonner'
 
 import { confirmReservation } from '@/actions/confirm-reservation'
+import { notifyWaitingList } from '@/actions/notify-waiting-list'
+import { removeAllFromWaitingList } from '@/actions/remove-all-from-waiting-list'
 import { removeReservation } from '@/actions/remove-reservation'
 import { Button } from '@/components/ui/button'
 import { Card,
@@ -32,6 +34,7 @@ interface Reservation {
   phoneNumber: string
   createdAt: Date
   realEstate: {
+    id: string
     name: string
     images?: string[]
     location: string
@@ -70,6 +73,31 @@ const ReservationsList = ({ initialReservations, onReservationUpdated }: Reserva
       setReservations(reservations.filter((r) => r.id !== id))
       toast.success('Rezervacija odstranjena')
       onReservationUpdated() // Call the callback
+
+      // Get the real estate ID for the removed reservation
+      const removedReservation = reservations.find((r) => r.id === id)
+
+      if (removedReservation) {
+        const { id: realEstateId, name: realEstateName } = removedReservation.realEstate
+
+        // Notify waiting list
+        const notificationResult = await notifyWaitingList(realEstateId, realEstateName)
+
+        if (notificationResult.success) {
+          toast.success('Obvestila poslana čakalni listi')
+
+          // Remove all entries from the waiting list for this real estate
+          const removeWaitingListResult = await removeAllFromWaitingList(realEstateId)
+
+          if (removeWaitingListResult.success) {
+            toast.success('Čakalna lista za to nepremičnino je bila izpraznjena')
+          } else {
+            toast.error('Napaka pri praznjenju čakalne liste')
+          }
+        } else {
+          toast.error('Napaka pri pošiljanju obvestil čakalni listi')
+        }
+      }
     } else {
       toast.error('Pri odstranitvi rezervacije je prišlo do napake. Prosimo, poskusite znova.', {
         description: 'Prosimo, poskusite znova.',

@@ -11,6 +11,7 @@ import ReservationsSummary from './_components/ReservationsSummary'
 
 interface Reservation {
   realEstate: {
+    id: string;
     location: string;
     apartmentNumber: string;
     number: string | null;

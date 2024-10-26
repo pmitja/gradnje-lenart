@@ -1,5 +1,6 @@
 'use client'
 
+import { useSession } from 'next-auth/react'
 import { useCallback, useEffect, useState } from 'react'
 
 import { getDashboardData } from '@/actions/get-dashboard-data'
@@ -52,6 +53,10 @@ interface DashboardData {
 }
 
 const UserPage = () => {
+  const { data: session } = useSession()
+
+  const userRole = session?.user?.role || 'USER'
+
   const [ dashboardData, setDashboardData ] = useState<DashboardData>({
     reservations: [],
     reservationsCount: 0,
@@ -89,6 +94,7 @@ const UserPage = () => {
           <ActiveReservations
             reservations={dashboardData.reservations}
             onReservationUpdated={handleReservationUpdated}
+            userRole={userRole}
           />
           <RecentSales sales={dashboardData.recentSales} />
         </div>

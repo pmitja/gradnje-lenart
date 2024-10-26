@@ -5,6 +5,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ChevronLeft } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 import { useCallback, useEffect, useState, useTransition } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -37,6 +38,12 @@ import { Apartment, Location, LocationType, StatusType } from '@/types/general'
 
 const AktualniProjektPage = ({ params: { slug } }: { params: { slug: string } }) => {
   const router = useRouter()
+
+  const { data: session } = useSession()
+
+  const userRole = session?.user?.role || 'USER'
+
+  const isAdmin = userRole === 'ADMIN'
 
   const [ apartments, setApartments ] = useState<Apartment[]>([])
 
@@ -104,7 +111,9 @@ const AktualniProjektPage = ({ params: { slug } }: { params: { slug: string } })
   }
 
   const handleApartmentEdit = (apartment: Apartment) => {
-    setSelectedApartment(apartment)
+    if (isAdmin) {
+      setSelectedApartment(apartment)
+    }
   }
 
   const handleEditCancel = () => {
@@ -170,26 +179,30 @@ const AktualniProjektPage = ({ params: { slug } }: { params: { slug: string } })
               {location.name}
             </h1>
             <div className='hidden items-center gap-2 md:ml-auto md:flex'>
-              <Button
-                variant='outline'
-                size='sm'
-              >
-                Prekliči
-              </Button>
-              <Button
-                size='sm'
-                variant={'primary'}
-                className='border border-body-200'
-                onClick={() => onSubmit({
-                  apartments: apartments.map((apartment) => ({
-                    ...apartment,
-                    files: apartment.files || null,
-                  })),
-                  locationSlug: location.slug,
-                })}
-              >
-                Posodobi lokacijo
-              </Button>
+              {isAdmin && (
+                <>
+                  <Button
+                    variant='outline'
+                    size='sm'
+                  >
+                    Prekliči
+                  </Button>
+                  <Button
+                    size='sm'
+                    variant={'primary'}
+                    className='border border-body-200'
+                    onClick={() => onSubmit({
+                      apartments: apartments.map((apartment) => ({
+                        ...apartment,
+                        files: apartment.files || null,
+                      })),
+                      locationSlug: location.slug,
+                    })}
+                  >
+                    Posodobi lokacijo
+                  </Button>
+                </>
+              )}
             </div>
           </div>
           <div className='grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-2 lg:gap-8'>
@@ -223,8 +236,8 @@ const AktualniProjektPage = ({ params: { slug } }: { params: { slug: string } })
                         .map((apartment) => (
                           <TableRow
                             key={apartment.number}
-                            className="cursor-pointer hover:bg-primary-100"
-                            onClick={() => handleApartmentEdit(apartment)}
+                            className={isAdmin ? 'cursor-pointer hover:bg-primary-100' : ''}
+                            onClick={() => isAdmin && handleApartmentEdit(apartment)}
                           >
                             <TableCell className='font-semibold'>{apartment.number}</TableCell>
                             <TableCell>{apartment.name}</TableCell>
@@ -250,58 +263,62 @@ const AktualniProjektPage = ({ params: { slug } }: { params: { slug: string } })
                   </Table>
                 </CardContent>
                 <CardFooter className='justify-center border-t p-4'>
-                  <ApartmentForm
-                    saveFormValues={saveFormValues}
-                    nextNumber={apartments.length > 0 ? String(Number(apartments[apartments.length - 1].number) + 1) : '1'}
-                    type={location.type}
-                  />
+                  {isAdmin && (
+                    <ApartmentForm
+                      saveFormValues={saveFormValues}
+                      nextNumber={apartments.length > 0 ? String(Number(apartments[apartments.length - 1].number) + 1) : '1'}
+                      type={location.type}
+                    />
+                  )}
                 </CardFooter>
               </Card>
             </div>
-            <div className='grid auto-rows-max items-start gap-4 lg:gap-8'>
-              <Card
-                x-chunk='dashboard-07-chunk-5'
-                className='bg-primary-75'
-              >
-                <CardHeader>
-                  <CardTitle>{location.isActive ? 'Zaključi projekt' : 'Ponovno aktiviraj projekt'}</CardTitle>
-                  <CardDescription>
-                    {location.isActive
-                      ? 'Projekt je razprodan. Zaključi projekt, da lokacija ne bo več vidna v nadzorni plosci.'
-                      : 'Ponovno aktiviraj projekt, da lokacija ponovno postane vidna v nadzorni plosci.'}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Dialog open={isFinishDialogOpen} onOpenChange={setIsFinishDialogOpen}>
-                    <DialogTrigger asChild>
-                      <Button
-                        size='sm'
-                        variant='outline'
-                        className='hover:!bg-primary-50 hover:!text-primary-300'
-                      >
-                        {location.isActive ? 'Zaključi projekt' : 'Ponovno aktiviraj projekt'}
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent>
-                      <DialogHeader>
-                        <DialogTitle>{location.isActive ? 'Zaključi projekt' : 'Ponovno aktiviraj projekt'}</DialogTitle>
-                        <DialogDescription>
-                          {location.isActive
-                            ? 'Ali ste prepričani, da želite zaključiti ta projekt? To dejanje bo označilo lokacijo kot neaktivno.'
-                            : 'Ali ste prepričani, da želite ponovno aktivirati ta projekt? To dejanje bo označilo lokacijo kot aktivno.'}
-                        </DialogDescription>
-                      </DialogHeader>
-                      <DialogFooter>
-                        <Button variant="secondary" onClick={() => setIsFinishDialogOpen(false)}>Prekliči</Button>
-                        <Button variant="primary" onClick={location.isActive ? handleFinishProject : handleReactivateProject}>
+            {isAdmin && (
+              <div className='grid auto-rows-max items-start gap-4 lg:gap-8'>
+                <Card
+                  x-chunk='dashboard-07-chunk-5'
+                  className='bg-primary-75'
+                >
+                  <CardHeader>
+                    <CardTitle>{location.isActive ? 'Zaključi projekt' : 'Ponovno aktiviraj projekt'}</CardTitle>
+                    <CardDescription>
+                      {location.isActive
+                        ? 'Projekt je razprodan. Zaključi projekt, da lokacija ne bo več vidna v nadzorni plosci.'
+                        : 'Ponovno aktiviraj projekt, da lokacija ponovno postane vidna v nadzorni plosci.'}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <Dialog open={isFinishDialogOpen} onOpenChange={setIsFinishDialogOpen}>
+                      <DialogTrigger asChild>
+                        <Button
+                          size='sm'
+                          variant='outline'
+                          className='hover:!bg-primary-50 hover:!text-primary-300'
+                        >
                           {location.isActive ? 'Zaključi projekt' : 'Ponovno aktiviraj projekt'}
                         </Button>
-                      </DialogFooter>
-                    </DialogContent>
-                  </Dialog>
-                </CardContent>
-              </Card>
-            </div>
+                      </DialogTrigger>
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle>{location.isActive ? 'Zaključi projekt' : 'Ponovno aktiviraj projekt'}</DialogTitle>
+                          <DialogDescription>
+                            {location.isActive
+                              ? 'Ali ste prepričani, da želite zaključiti ta projekt? To dejanje bo označilo lokacijo kot neaktivno.'
+                              : 'Ali ste prepričani, da želite ponovno aktivirati ta projekt? To dejanje bo označilo lokacijo kot aktivno.'}
+                          </DialogDescription>
+                        </DialogHeader>
+                        <DialogFooter>
+                          <Button variant="secondary" onClick={() => setIsFinishDialogOpen(false)}>Prekliči</Button>
+                          <Button variant="primary" onClick={location.isActive ? handleFinishProject : handleReactivateProject}>
+                            {location.isActive ? 'Zaključi projekt' : 'Ponovno aktiviraj projekt'}
+                          </Button>
+                        </DialogFooter>
+                      </DialogContent>
+                    </Dialog>
+                  </CardContent>
+                </Card>
+              </div>
+            )}
           </div>
           <div className='flex items-center justify-center gap-2 md:hidden'>
             <Button
@@ -312,10 +329,11 @@ const AktualniProjektPage = ({ params: { slug } }: { params: { slug: string } })
             </Button>
             <Button size='sm'>Save Product</Button>
           </div>
-          {selectedApartment && (
+          {isAdmin && selectedApartment && (
             <EditApartmentDialog
               apartment={selectedApartment}
-              id={selectedApartment.id}
+              id={selectedApartment.id ?? ''}
+              isAdmin={isAdmin}
               onCancel={handleEditCancel}
               type={location.type}
             />

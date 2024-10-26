@@ -28,11 +28,14 @@ interface Reservation {
 interface ActiveReservationsProps {
   reservations: Reservation[]
   onReservationUpdated: () => void
+  userRole?: string
 }
 
 export default function ActiveReservations(
-  { reservations, onReservationUpdated }: ActiveReservationsProps,
+  { reservations, onReservationUpdated, userRole = 'USER' }: ActiveReservationsProps,
 ) {
+  const isAdmin = userRole === 'ADMIN'
+
   return (
     <Card className="bg-white">
       <CardHeader className="flex flex-row items-center">
@@ -40,10 +43,11 @@ export default function ActiveReservations(
           <CardTitle>Rezervacije</CardTitle>
           <CardDescription>Nedavne rezervacije nepremičnin.</CardDescription>
         </div>
-        {reservations.length > 0 && (
+        {reservations.length > 0 && isAdmin && (
           <ReservationsList
             initialReservations={reservations}
             onReservationUpdated={onReservationUpdated}
+            userRole={userRole}
           />
         )}
       </CardHeader>

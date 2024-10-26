@@ -4,6 +4,8 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { ToggleGroup } from '@radix-ui/react-toggle-group'
 import { ChevronLeft } from 'lucide-react'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 import { useEffect, useState, useTransition } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -43,6 +45,14 @@ import { mainFormSchema } from '@/schemas'
 import { Apartment, LocationType, StatusType } from '@/types/general'
 
 const NovAktualniProjektPage = () => {
+  const { data: session } = useSession()
+
+  const userRole = session?.user?.role
+
+  const isAdmin = userRole === 'ADMIN'
+
+  const router = useRouter()
+
   const [ apartments, setApartments ] = useState<Apartment[]>([])
 
   const [ isPending, startTransition ] = useTransition()
@@ -81,6 +91,16 @@ const NovAktualniProjektPage = () => {
       files: null,
     })))
   }, [ apartments ])
+
+  useEffect(() => {
+    if (!isAdmin) {
+      router.push('/nadzorna-plosca')
+    }
+  }, [ isAdmin, router ])
+
+  if (!isAdmin) {
+    return null // or a loading spinner
+  }
 
   function onSubmit(values: z.infer<typeof mainFormSchema>) {
     setError('')

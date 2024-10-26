@@ -21,15 +21,21 @@ import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { ProtectedNadzornaPlosca, Public } from '@/routes'
 
-const WithDashBoardNavigation = ({
-  children,
-  activeNavItems,
-  finishedNavItems,
-}: {
+interface WithDashBoardNavigationProps {
   children: React.ReactNode
   activeNavItems: Location[]
   finishedNavItems?: Location[]
+  userRole: string
+}
+
+const WithDashBoardNavigation: React.FC<WithDashBoardNavigationProps> = ({
+  children,
+  activeNavItems,
+  finishedNavItems,
+  userRole,
 }) => {
+  const isAdmin = userRole === 'ADMIN'
+
   const SidebarContent = () => (
     <div className="fixed flex h-full max-h-screen min-w-[279px] flex-col gap-2">
       <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
@@ -50,12 +56,14 @@ const WithDashBoardNavigation = ({
                 <DoorOpenIcon /> Aktualni projekti
               </AccordionTrigger>
               <AccordionContent>
-                <Link
-                  href={'/nadzorna-plosca/aktualni-projekt/nov'}
-                  className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:!text-primary-200"
-                >
-                  Nov vnos
-                </Link>
+                {isAdmin && (
+                  <Link
+                    href={'/nadzorna-plosca/aktualni-projekt/nov'}
+                    className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:!text-primary-200"
+                  >
+                    Nov vnos
+                  </Link>
+                )}
                 {activeNavItems
                   && activeNavItems.map((location) => (
                     <Link
@@ -85,36 +93,40 @@ const WithDashBoardNavigation = ({
                   ))}
               </AccordionContent>
             </AccordionItem>}
-            <AccordionItem value="item-3">
-              <AccordionTrigger>
-                <RssIcon />
-                Blog objave
-              </AccordionTrigger>
-              <AccordionContent>
-                <Link
-                  href="#"
-                  className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:!text-primary-200"
-                >
-                  <StickyNoteIcon className="size-4" />
-                  Pregled
-                </Link>
-                <Link
-                  href="#"
-                  className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:!text-primary-200"
-                >
-                  <SquarePlusIcon className="size-4" />
-                  Dodaj blog objavo
-                </Link>
-              </AccordionContent>
-            </AccordionItem>
+            {isAdmin && (
+              <AccordionItem value="item-3">
+                <AccordionTrigger>
+                  <RssIcon />
+                  Blog objave
+                </AccordionTrigger>
+                <AccordionContent>
+                  <Link
+                    href="#"
+                    className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:!text-primary-200"
+                  >
+                    <StickyNoteIcon className="size-4" />
+                    Pregled
+                  </Link>
+                  <Link
+                    href="#"
+                    className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:!text-primary-200"
+                  >
+                    <SquarePlusIcon className="size-4" />
+                    Dodaj blog objavo
+                  </Link>
+                </AccordionContent>
+              </AccordionItem>
+            )}
           </Accordion>
-          <Link
-            href={'/nadzorna-plosca/aktualni-projekt/nov'}
-            className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:!text-primary-200"
-          >
-            <SquarePlusIcon className="size-6" />
-            Dodaj nov projekt
-          </Link>
+          {isAdmin && (
+            <Link
+              href={'/nadzorna-plosca/aktualni-projekt/nov'}
+              className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:!text-primary-200"
+            >
+              <SquarePlusIcon className="size-6" />
+              Dodaj nov projekt
+            </Link>
+          )}
         </nav>
       </div>
       <div className="mt-auto p-4">

@@ -44,11 +44,14 @@ interface Reservation {
 
 interface ReservationsListProps {
   initialReservations: Reservation[]
-  onReservationUpdated: () => void // Add this prop
+  onReservationUpdated: () => void
+  userRole?: string
 }
 
-const ReservationsList = ({ initialReservations, onReservationUpdated }: ReservationsListProps) => {
+const ReservationsList = ({ initialReservations, onReservationUpdated, userRole = 'USER' }: ReservationsListProps) => {
   const [ reservations, setReservations ] = useState(initialReservations)
+
+  const isAdmin = userRole === 'ADMIN'
 
   const handleConfirm = async (id: string) => {
     const result = await confirmReservation(id)
@@ -108,7 +111,7 @@ const ReservationsList = ({ initialReservations, onReservationUpdated }: Reserva
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant={'primary'} size="sm" className="ml-auto gap-1">
+        <Button variant={'primary'} size="sm" className="ml-auto gap-1" disabled={!isAdmin}>
           Prikaži vse
           <ArrowUpRight className="size-4" />
         </Button>
@@ -168,23 +171,25 @@ const ReservationsList = ({ initialReservations, onReservationUpdated }: Reserva
                       <TableCell>{reservation.phoneNumber}</TableCell>
                       <TableCell>{formatDate(reservation.createdAt)}</TableCell>
                       <TableCell>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild className='hover:!bg-primary-75 hover:!text-white'>
-                            <Button aria-haspopup="true" size="icon" variant="ghost">
-                              <MoreHorizontal className="size-4" />
-                              <span className="sr-only">Odpri meni</span>
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>Akcije</DropdownMenuLabel>
-                            <DropdownMenuItem onClick={() => handleConfirm(reservation.id)} className='hover:!bg-primary-75 hover:!text-white'>
-                              Potrdi
-                            </DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => handleRemove(reservation.id)} className='hover:!bg-primary-75 hover:!text-white'>
-                              Odstrani
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
+                        {isAdmin && (
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild className='hover:!bg-primary-75 hover:!text-white'>
+                              <Button aria-haspopup="true" size="icon" variant="ghost">
+                                <MoreHorizontal className="size-4" />
+                                <span className="sr-only">Odpri meni</span>
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuLabel>Akcije</DropdownMenuLabel>
+                              <DropdownMenuItem onClick={() => handleConfirm(reservation.id)} className='hover:!bg-primary-75 hover:!text-white'>
+                                Potrdi
+                              </DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => handleRemove(reservation.id)} className='hover:!bg-primary-75 hover:!text-white'>
+                                Odstrani
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        )}
                       </TableCell>
                     </TableRow>
                   ))}

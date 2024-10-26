@@ -9,6 +9,7 @@ import { Toaster } from 'sonner'
 import { getAllLocationsActiveAndFinished } from '@/actions/get-inactive-locations-active-and-finished'
 import { auth } from '@/auth'
 import WithDashBoardNavigation from '@/components/with-dashboard-navigation'
+// You'll need to implement this function
 
 const montserrat = Montserrat({
   subsets: [ 'latin' ],
@@ -29,6 +30,8 @@ export default async function RootLayout({ children }: Readonly<{
 }>) {
   const session = await auth()
 
+  const userRole = session?.user?.role || 'USER'
+
   const location = (await getAllLocationsActiveAndFinished()) || []
 
   return (
@@ -38,6 +41,7 @@ export default async function RootLayout({ children }: Readonly<{
           <WithDashBoardNavigation
             activeNavItems={location.filter((loc) => loc.isActive)}
             finishedNavItems={location.filter((loc) => !loc.isActive)}
+            userRole={userRole}
           >
             {children}
           </WithDashBoardNavigation>

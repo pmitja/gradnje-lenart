@@ -16,6 +16,7 @@ interface Reservation {
   phoneNumber: string
   createdAt: Date
   realEstate: {
+    id: string
     name: string
     location: string
     apartmentNumber: string

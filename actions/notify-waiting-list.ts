@@ -2,39 +2,46 @@
 
 import { Resend } from 'resend'
 
-import { getWaitingListEmails } from './get-waiting-list-emails'
+import { db } from '@/lib/db'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
 export async function notifyWaitingList(realEstateId: string, realEstateName: string) {
   try {
-    const waitingListEmails = await getWaitingListEmails(realEstateId)
+    // Fetch waiting list entries for the given realEstateId
+    const waitingListEntries = await db.waitingListEntry.findMany({
+      where: {
+        realEstateId,
+      },
+    })
 
-    if (waitingListEmails.length === 0) {
+    if (waitingListEntries.length === 0) {
       return {
-        success: true, message: 'No emails in waiting list',
+        success: true, message: 'No entries in the waiting list',
       }
     }
 
-    await resend.emails.send({
-      from: 'Contact Form <onboarding@resend.dev>',
-      to: waitingListEmails,
+    // Prepare email data for each entry
+    const emailData = waitingListEntries.map((entry) => ({
+      from: 'Gradnje Plus <onboarding@resend.dev>',
+      to: [ entry.email ],
       subject: 'Nepremičnina je na voljo',
-      html: `
-        <p>Spoštovani,</p>
-        <p>Obveščamo vas, da je nepremičnina ${realEstateName} zdaj na voljo.</p>
-        <p>Če ste še vedno zainteresirani, vas prosimo, da nas kontaktirate čim prej.</p>
-        <p>Lep pozdrav,<br>Vaša ekipa za nepremičnine</p>
-      `,
-    })
+      html: `<p>Spoštovani,</p>
+             <p>Obveščamo vas, da je nepremičnina ${realEstateName}, za katero ste izrazili zanimanje, zdaj na voljo.</p>
+             <p>Za več informacij nas prosim kontaktirajte.</p>
+             <p>Lep pozdrav,<br>Vaša ekipa</p>`,
+    }))
+
+    // Send batch emails
+    await resend.batch.send(emailData)
 
     return {
-      success: true, message: 'Emails sent successfully',
+      success: true, message: 'Notifications sent successfully',
     }
   } catch (error) {
-    console.error('Error notifying waiting list:', error)
+    console.error('Error sending notifications:', error)
     return {
-      success: false, message: 'Failed to send emails',
+      success: false, error: 'Failed to send notifications',
     }
   }
 }

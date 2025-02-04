@@ -14,6 +14,7 @@ export const publicRoutes = [
   '/reference',
   '/pogoji-poslovanja',
   '/zasebnost',
+  '/kontakt',
 ]
 
 /**

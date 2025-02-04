@@ -52,7 +52,7 @@ function NewPasswordForm() {
   }
 
   return (
-    <CardWrapper headerLabel='Enter the new password'>
+    <CardWrapper headerLabel='Vnesi novo geslo'>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -64,7 +64,7 @@ function NewPasswordForm() {
               name='password'
               render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel>Geslo</FormLabel>
                     <FormControl>
                       <Input
                         {...field}
@@ -85,7 +85,7 @@ function NewPasswordForm() {
             className='w-full'
             disabled={isPending}
           >
-            Change password
+            Spremeni geslo
           </Button>
         </form>
       </Form>

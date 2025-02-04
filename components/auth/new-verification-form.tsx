@@ -40,7 +40,7 @@ export const NewVerificationForm = () => {
   }, [ onSubmit ])
 
   return (
-    <CardWrapper headerLabel='Verify your email'>
+    <CardWrapper headerLabel='Potrdi svoj email'>
       <div className='flex w-full flex-col items-center justify-center gap-4'>
         {!success && !error && <BeatLoader color='#2563EB' />}
         <FormError message={error} />

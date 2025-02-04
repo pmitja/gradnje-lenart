@@ -61,7 +61,7 @@ function RegisterForm() {
               name='name'
               render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Name</FormLabel>
+                    <FormLabel>Ime</FormLabel>
                     <FormControl>
                       <Input
                         {...field}
@@ -97,7 +97,7 @@ function RegisterForm() {
               name='password'
               render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel>Geslo</FormLabel>
                     <FormControl>
                       <Input
                         {...field}
@@ -118,7 +118,7 @@ function RegisterForm() {
             className='w-full'
             disabled={isPending}
           >
-            Create an account
+            Ustvari račun
           </Button>
         </form>
       </Form>

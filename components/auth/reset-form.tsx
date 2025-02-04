@@ -47,7 +47,7 @@ function ResetForm() {
   }
 
   return (
-    <CardWrapper headerLabel='Forgot your password?'>
+    <CardWrapper headerLabel='Pozabljeno geslo?'>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -80,7 +80,7 @@ function ResetForm() {
             className='w-full'
             disabled={isPending}
           >
-            Send reset password email
+            Pošljite email za ponastavitev gesla
           </Button>
         </form>
       </Form>

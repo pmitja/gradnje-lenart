@@ -88,7 +88,7 @@ function LoginForm() {
               name='password'
               render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>Geslo</FormLabel>
                     <FormControl>
                       <Input
                         {...field}
@@ -103,7 +103,7 @@ function LoginForm() {
                       asChild
                       className='px-0'
                     >
-                      <Link href='/auth/reset-password'>Forgot password?</Link>
+                      <Link href='/auth/reset-password'>Pozabljeno geslo?</Link>
                     </Button>
                     <FormMessage />
                   </FormItem>

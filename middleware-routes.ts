@@ -12,6 +12,8 @@ export const publicRoutes = [
   '/projekt',
   '/podjetje',
   '/reference',
+  '/pogoji-poslovanja',
+  '/zasebnost',
 ]
 
 /**

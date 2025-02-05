@@ -3,6 +3,7 @@
 import { Resend } from 'resend'
 import { z } from 'zod'
 
+import { ContactFormEmail } from '@/components/emails/contact-form'
 import { contactFormSchema } from '@/schemas'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
@@ -20,18 +21,20 @@ export async function sendEmail(formData: z.infer<typeof contactFormSchema>) {
 
   try {
     const data = await resend.emails.send({
-      from: 'Contact Form <onboarding@resend.dev>',
-      to: '200codestatus@gmail.com',
-      subject: 'New Contact Form Submission',
-      text: `
-        Name: ${name} ${surname}
-        Email: ${email}
-        Message: ${message}
-      `,
+      from: 'Gradnje Plus <info@gradnjeplus.com>',
+      to: 'info@gradnjeplus.com',
+      subject: `Novo kontaktno sporočilo od ${name} ${surname}`,
+      react: ContactFormEmail({
+        name,
+        surname,
+        email,
+        message,
+      }),
     })
 
     return {
-      success: true, data,
+      success: true,
+      data,
     }
   } catch (error) {
     return {

@@ -2,9 +2,12 @@
 
 import { Resend } from 'resend'
 
+import { PropertyNotificationEmail } from '@/components/emails/property-notification'
 import { db } from '@/lib/db'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
+
+const baseUrl = process.env.NEXT_PUBLIC_APP_URL
 
 export async function notifyWaitingList(realEstateId: string, realEstateName: string) {
   try {
@@ -17,31 +20,37 @@ export async function notifyWaitingList(realEstateId: string, realEstateName: st
 
     if (waitingListEntries.length === 0) {
       return {
-        success: true, message: 'No entries in the waiting list',
+        success: true,
+        message: 'No entries in the waiting list',
       }
     }
 
+    const propertyUrl = `${baseUrl}/nepremicnine/${realEstateId}`
+
     // Prepare email data for each entry
     const emailData = waitingListEntries.map((entry) => ({
-      from: 'Gradnje Plus <onboarding@resend.dev>',
+      from: 'Gradnje Plus <info@gradnjeplus.com>',
       to: [ entry.email ],
-      subject: 'Nepremičnina je na voljo',
-      html: `<p>Spoštovani,</p>
-             <p>Obveščamo vas, da je nepremičnina ${realEstateName}, za katero ste izrazili zanimanje, zdaj na voljo.</p>
-             <p>Za več informacij nas prosim kontaktirajte.</p>
-             <p>Lep pozdrav,<br>Vaša ekipa</p>`,
+      subject: 'Nepremičnina je na voljo – Ne zamudite priložnosti!',
+      react: PropertyNotificationEmail({
+        realEstateName,
+        propertyUrl,
+        recipientEmail: entry.email,
+      }),
     }))
 
     // Send batch emails
     await resend.batch.send(emailData)
 
     return {
-      success: true, message: 'Notifications sent successfully',
+      success: true,
+      message: 'Notifications sent successfully',
     }
   } catch (error) {
     console.error('Error sending notifications:', error)
     return {
-      success: false, error: 'Failed to send notifications',
+      success: false,
+      error: 'Failed to send notifications',
     }
   }
 }

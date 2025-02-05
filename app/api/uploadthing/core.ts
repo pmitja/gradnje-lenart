@@ -27,7 +27,9 @@ export const ourFileRouter = {
       }
     })
     .onUploadComplete(async ({ file }) => ({
-      file,
+      url: file.url,
+      name: file.name,
+      key: file.key,
     })),
   fileUpload: f({
     pdf: {
@@ -48,7 +50,9 @@ export const ourFileRouter = {
       }
     })
     .onUploadComplete(async ({ file }) => ({
-      file,
+      url: file.url,
+      name: file.name,
+      key: file.key,
     })),
 } satisfies FileRouter
 

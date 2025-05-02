@@ -44,7 +44,7 @@ export interface ButtonProps
     VariantProps<typeof buttonVariants> {
   asChild?: boolean
   icon?: React.ReactNode
-  iconPosition?: 'left' | 'right'
+  iconPosition?: 'left' | 'right',
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(

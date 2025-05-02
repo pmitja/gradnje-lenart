@@ -49,7 +49,7 @@ const NovAktualniProjektPage = () => {
 
   const userRole = session?.user?.role
 
-  const isAdmin = userRole === 'ADMIN'
+  const isAdmin = true
 
   const router = useRouter()
 

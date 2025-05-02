@@ -1,8 +1,8 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import React from 'react'
 
 import { cn } from '@/lib/utils'
-import { PublicProjekti } from '@/routes'
 
 import ButtonWithIcon from '../common/button-with-icon'
 
@@ -17,6 +17,8 @@ interface ImageLeftTextRightProps extends React.HTMLAttributes<HTMLElement> {
   }
   heading: string
   text: string
+  ctaText?: string
+  ctaLink?: string
 }
 
 const ImageLeftTextRight = ({
@@ -24,6 +26,8 @@ const ImageLeftTextRight = ({
   mobileImage,
   heading,
   text,
+  ctaText,
+  ctaLink,
   className,
 }: ImageLeftTextRightProps) => (
     <section
@@ -55,14 +59,25 @@ const ImageLeftTextRight = ({
           {heading}
         </h2>
         <p className='font-archivo text-sm leading-normal text-secondary-200 sm:text-base sm:leading-relaxed md:text-lg'>{text}</p>
-        <PublicProjekti.Link>
-          <ButtonWithIcon
-            variant='primary'
-            className='w-fit self-center px-6 py-4 md:self-start lg:mt-10'
-        >
-          Akutalni projekti
-          </ButtonWithIcon>
-        </PublicProjekti.Link>
+        {ctaLink && ctaText ? (
+          <Link href={ctaLink}>
+            <ButtonWithIcon
+              variant='primary'
+              className='w-fit self-center px-6 py-4 md:self-start lg:mt-10'
+            >
+              {ctaText}
+            </ButtonWithIcon>
+          </Link>
+        ) : (
+          <Link href="/projekti">
+            <ButtonWithIcon
+              variant='primary'
+              className='w-fit self-center px-6 py-4 md:self-start lg:mt-10'
+            >
+              Aktualni projekti
+            </ButtonWithIcon>
+          </Link>
+        )}
       </div>
     </section>
 )

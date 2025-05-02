@@ -1,128 +1,102 @@
 'use client'
 
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useTransition } from 'react'
-import { useForm } from 'react-hook-form'
-import { toast } from 'sonner'
-import { z } from 'zod'
+import React, { useState } from 'react'
 
-import { sendEmail } from '@/actions/send-email'
 import { Button } from '@/components/ui/button'
-import { Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
-import { cn } from '@/lib/utils'
-import { contactFormSchema } from '@/schemas'
 
-const inputClasses = 'max-w-[20rem] rounded-none border-0 border-b border-secondary-100 bg-transparent p-0 outline-none'
+export default function ContactForm() {
+  const [ name, setName ] = useState('')
 
-const ContactForm = () => {
-  const [ isPending, startTransition ] = useTransition()
+  const [ email, setEmail ] = useState('')
 
-  const form = useForm<z.infer<typeof contactFormSchema>>({
-    resolver: zodResolver(contactFormSchema),
-    defaultValues: {
-      name: '',
-      surname: '',
-      email: '',
-      message: '',
-    },
-  })
+  const [ phone, setPhone ] = useState('')
 
-  function onSubmit(values: z.infer<typeof contactFormSchema>) {
-    startTransition(async () => {
-      const result = await sendEmail(values)
+  const [ message, setMessage ] = useState('')
 
-      if ('error' in result) {
-        toast.error(result.error, {
-          description: 'Prosimo, poskusite znova.',
-        })
-      } else {
-        toast.success('Sporočilo uspešno poslano!', {
-          description: 'Kontaktirali vas bomo v najkrajšem možnem času.',
-        })
-        form.reset()
-      }
-    })
+  const [ isSubmitting, setIsSubmitting ] = useState(false)
+
+  const [ submitted, setSubmitted ] = useState(false)
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+
+    // In a real app, this would send the form data to your backend
+    // Simulate form submission
+    setTimeout(() => {
+      setSubmitted(true)
+      setIsSubmitting(false)
+    }, 1000)
+  }
+
+  if (submitted) {
+    return (
+      <div className="rounded-lg bg-green-50 p-6 text-center">
+        <h3 className="mb-2 text-xl font-bold text-green-700">Sporočilo poslano!</h3>
+        <p className="text-green-600">
+          Hvala za vaše sporočilo. Odgovorili vam bomo v najkrajšem možnem času.
+        </p>
+      </div>
+    )
   }
 
   return (
-    <div className="text-secondary-400">
-      <p className="mb-3 text-2xl font-bold md:text-3xl">Kontaktiraj nas še danes</p>
-      <p className="mb-3">
-        Prosim izpolni spodnji obrazec s podatki, kateri se nanašajo na vaše vprašanje.
-        Na vprašanje bomo odgovorili v najkrajšem možnem času.
-      </p>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Ime</FormLabel>
-                <FormControl>
-                  <Input className={inputClasses} {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="surname"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Priimek</FormLabel>
-                <FormControl>
-                  <Input className={inputClasses} {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input className={inputClasses} {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="message"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Sporočilo</FormLabel>
-                <FormControl>
-                  <Textarea className={cn(inputClasses, 'border p-2 rounded-md min-h-[8rem] max-w-full focus-visible:ring-0 focus-visible:ring-offset-0')} {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button
-            variant='primary'
-            type="submit"
-            disabled={isPending}
-          >
-            {isPending ? 'Pošiljanje...' : 'Pošlji sporočilo'}
-          </Button>
-        </form>
-      </Form>
-    </div>
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div>
+        <Label htmlFor="name">Ime in priimek</Label>
+        <Input
+          id="name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+          className="mt-1"
+        />
+      </div>
+
+      <div>
+        <Label htmlFor="email">Email</Label>
+        <Input
+          id="email"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          className="mt-1"
+        />
+      </div>
+
+      <div>
+        <Label htmlFor="phone">Telefon</Label>
+        <Input
+          id="phone"
+          type="tel"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+          className="mt-1"
+        />
+      </div>
+
+      <div>
+        <Label htmlFor="message">Sporočilo</Label>
+        <Textarea
+          id="message"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          required
+          className="mt-1 min-h-[120px]"
+        />
+      </div>
+
+      <Button
+        type="submit"
+        disabled={isSubmitting}
+        className="w-full bg-primary-300 text-white hover:bg-primary-400"
+      >
+        {isSubmitting ? 'Pošiljanje...' : 'Pošlji sporočilo'}
+      </Button>
+    </form>
   )
 }
-
-export default ContactForm

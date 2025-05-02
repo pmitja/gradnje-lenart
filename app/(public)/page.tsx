@@ -1,50 +1,17 @@
-import Cta from '@/components/common/cta'
-import FeatureCards from '@/components/common/feature-cards'
+import FeaturedProperties from '@/components/common/featured-properties'
 import Hero from '@/components/common/hero'
 import PartnersBanner from '@/components/common/partners-banner'
 import Testimonials from '@/components/common/testimonials'
-import ImageLeftTextRight from '@/components/layouts/image-left-text-right'
-import Faq from '@/components/layouts/sections/faq'
-import SectionWithImageAbsolute from '@/components/layouts/sections/image-absolute'
-import SectionWithTitleInMiddle from '@/components/layouts/sections/title-middle'
+import WhyChooseUs from '@/components/common/why-choose-us'
 
 export default function Home() {
   return (
-    <div>
+    <div className="flex flex-col">
       <Hero />
-      <ImageLeftTextRight
-        image={{
-          src: '/trio-cards.webp',
-          alt: 'Hero',
-        }}
-        mobileImage={{
-          src: '/gradnje-plus-logo-card.webp',
-          alt: 'Hero',
-        }}
-        heading="Nepremičnine niso zgolj nakup. So nepogrešljiv del vsakega izmed nas."
-        text="Odkrijte edinstvene nepremičnine z našimi storitvami. Gradnje
-        Plus vam pomagajo pri svetovanju, prodaji in odkup nepremičnin."
-      />
+      <FeaturedProperties />
       <PartnersBanner />
-      <SectionWithTitleInMiddle title="Prednosti">
-        <FeatureCards />
-      </SectionWithTitleInMiddle>
-      <SectionWithImageAbsolute
-        text={
-          'Naj bo vaš dom oaza dobrega počutja. Znižaj stres, povečaj zadovoljstvo in izboljšaj spanec s pozitivnim in udobnim okoljem.'
-        }
-        title="Najdimo vam dom, o katerem sanjate. Na vas je, da spišete najlepšo zgodbo."
-        image={{
-          src: '/apartment-image.webp',
-          alt: 'Image',
-        }}
-      />
+      <WhyChooseUs />
       <Testimonials />
-      <Cta />
-      {/* <SectionWithTitleInMiddle title="Zadnje blog objave">
-        <LatestBlogPosts />
-      </SectionWithTitleInMiddle> */}
-      <Faq />
     </div>
   )
 }

@@ -1,83 +1,134 @@
+import { Facebook, Instagram, Mail, MapPin, Phone } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import { ProtectedNadzornaPlosca } from '@/routes'
 import { NavbarProps } from '@/types/general'
 
-const Footer = ({ navItems }: NavbarProps) => (
-    <div className='relative inset-x-1/2 mx-[-50vw] w-screen min-w-[100vw] bg-primary-100'>
-      <footer className='footer footer-center rounded bg-primary-100 p-10 text-secondary-200'>
-        <Image
-          src='/gradnje-plus-logo.webp'
-          alt='logo'
-          width={200}
-          height={100}
-        />
-        <nav className='flex flex-wrap justify-around gap-4 text-base font-semibold leading-6'>
-          {navItems.map((navItem) => (
-            <Link
-              href={navItem.link}
-              key={navItem.link}
-              className='link-hover link'
-            >
-              {navItem.text}
-            </Link>
-          ))}
-        </nav>
-        <nav>
-          <div className='grid grid-flow-col gap-4'>
-            <a>
-              <svg
-                xmlns='http://www.w3.org/2000/svg'
-                width='24'
-                height='24'
-                viewBox='0 0 24 24'
-                className='fill-current'
+const Footer = ({ navItems }: NavbarProps) => {
+  const currentYear = new Date().getFullYear()
+
+  return (
+    <footer className="bg-primary-100 text-secondary-200">
+      <div className="container mx-auto px-4 py-12">
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+          {/* Company Info */}
+          <div>
+            <div className="mb-6 flex justify-center md:justify-start">
+              <Image
+                src="/gradnje-plus-logo.webp"
+                alt="Gradnje Plus"
+                width={200}
+                height={100}
+              />
+            </div>
+            <p className="mb-4 text-center text-secondary-200 md:text-left">
+              Gradnje Plus je vodilno podjetje za gradnjo in prodajo nepremičnin z več kot 15 let
+              izkušenj na slovenskem trgu.
+            </p>
+            <div className="flex justify-center space-x-4 md:justify-start">
+              <a
+                href="#"
+                className="flex size-10 items-center justify-center rounded-full bg-secondary-200/10 hover:bg-secondary-200/20"
+                aria-label="Facebook"
               >
-                <path d='M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z'></path>
-              </svg>
-            </a>
-            <a>
-              <svg
-                xmlns='http://www.w3.org/2000/svg'
-                width='24'
-                height='24'
-                viewBox='0 0 24 24'
-                className='fill-current'
+                <Facebook className="size-5" />
+              </a>
+              <a
+                href="#"
+                className="flex size-10 items-center justify-center rounded-full bg-secondary-200/10 hover:bg-secondary-200/20"
+                aria-label="Instagram"
               >
-                <path d='M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z'></path>
-              </svg>
-            </a>
-            <a>
-              <svg
-                xmlns='http://www.w3.org/2000/svg'
-                width='24'
-                height='24'
-                viewBox='0 0 24 24'
-                className='fill-current'
-              >
-                <path d='M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z'></path>
-              </svg>
-            </a>
+                <Instagram className="size-5" />
+              </a>
+            </div>
           </div>
-        </nav>
-        <aside>
-          <p>
-            © Copyright 2024, vse pravice pridržane od Gradnje plus d.o.o. . Izdelava: Mipa
-            solutions
-          </p>
-          <ProtectedNadzornaPlosca.Link className='mt-4'>
-            <Button
-              variant={'secondary'}
-              size={'sm'}
-            >
-              Nadzorna plošča
-            </Button>
-          </ProtectedNadzornaPlosca.Link>
-        </aside>
-      </footer>
-    </div>
-)
+
+          {/* Navigation */}
+          <div>
+            <h3 className="mb-4 text-center text-lg font-bold md:text-left">Navigacija</h3>
+            <nav className="flex flex-wrap justify-center gap-4 md:flex-col md:justify-start md:gap-2">
+              {navItems.map((navItem) => (
+                <Link
+                  href={navItem.link}
+                  key={navItem.link}
+                  className="hover:underline"
+                >
+                  {navItem.text}
+                </Link>
+              ))}
+            </nav>
+          </div>
+
+          {/* Contact Info */}
+          <div>
+            <h3 className="mb-4 text-center text-lg font-bold md:text-left">Kontakt</h3>
+            <ul className="space-y-3 text-center md:text-left">
+              <li className="flex flex-col items-center md:flex-row md:items-start">
+                <MapPin className="mb-1 size-5 md:mb-0 md:mr-2 md:mt-1 md:shrink-0" />
+                <span>Ljubljanska cesta 25, 2230 Lenart v Slovenskih goricah</span>
+              </li>
+              <li className="flex flex-col items-center md:flex-row md:items-center">
+                <Phone className="mb-1 size-5 md:mb-0 md:mr-2" />
+                <span>+386 2 720 83 30</span>
+              </li>
+              <li className="flex flex-col items-center md:flex-row md:items-center">
+                <Mail className="mb-1 size-5 md:mb-0 md:mr-2" />
+                <span>info@gradnje-plus.si</span>
+              </li>
+            </ul>
+          </div>
+
+          {/* Newsletter */}
+          <div>
+            <h3 className="mb-4 text-center text-lg font-bold md:text-left">Ostanite obveščeni</h3>
+            <p className="mb-4 text-center text-secondary-200 md:text-left">
+              Prijavite se na naše e-novice in bodite prvi obveščeni o novih projektih.
+            </p>
+            <form className="flex">
+              <Input
+                type="email"
+                placeholder="Vaš email naslov"
+                className="rounded-l-md bg-white/80 text-secondary-300"
+                required
+              />
+              <Button
+                type="submit"
+                className="rounded-r-md bg-secondary-300 text-white hover:bg-secondary-400"
+              >
+                Prijava
+              </Button>
+            </form>
+          </div>
+        </div>
+
+        {/* Bottom Bar */}
+        <div className="mt-12 border-t border-secondary-200/10 pt-6">
+          <div className="flex flex-col items-center justify-between space-y-4 md:flex-row md:space-y-0">
+            <p className="text-center text-sm md:text-left">
+              © {currentYear} Gradnje plus d.o.o., vse pravice pridržane. Izdelava: Mipa solutions
+            </p>
+            <div className="flex items-center space-x-4">
+              <Link href="/politika-zasebnosti" className="text-sm hover:underline">
+                Politika zasebnosti
+              </Link>
+              <ProtectedNadzornaPlosca.Link>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  asChild
+                >
+                  <Link href="/nadzorna-plosca">Nadzorna plošča</Link>
+                </Button>
+              </ProtectedNadzornaPlosca.Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  )
+}
 
 export default Footer

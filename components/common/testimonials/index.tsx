@@ -1,243 +1,123 @@
 'use client'
 
-import Autoplay from 'embla-carousel-autoplay'
-import { Quote } from 'lucide-react'
-import Image from 'next/image'
+import { Star } from 'lucide-react'
 
-import ButtonWithIcon from '@/components/common/button-with-icon'
-import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
+import { TestimonialCard } from '@/components/ui/testimonial-card'
+import { cn } from '@/lib/utils'
+
+// Testimonial data
+const testimonials = [
+  {
+    id: 1,
+    text: 'Presegla so naša pričakovanja z inovativnimi zasnovami, ki so našo vizijo spremenile v resničnost - resnično izjemno gradbeno podjetje.',
+    author: {
+      name: 'Samantha Novak',
+      handle: 'Lastnica stanovanja v Ljubljani',
+      avatar: '/testimonials.webp',
+    },
+  },
+  {
+    id: 2,
+    text: 'Njihova sposobnost zajeti bistvo naše blagovne znamke v vsakem projektu je neprimerljiva - neprecenljiv ustvarjalni sodelavec.',
+    author: {
+      name: 'Marko Horvat',
+      handle: 'Investitor, Maribor Center',
+      avatar: '/testimonials.webp',
+    },
+  },
+  {
+    id: 3,
+    text: 'Kreativni geniji, ki poslušajo, razumejo in ustvarjajo očarljive vizualne podobe - podjetje, ki resnično razume naše potrebe.',
+    author: {
+      name: 'Gabriela Kovač',
+      handle: 'Lastnica vile na obali',
+      avatar: '/testimonials.webp',
+    },
+  },
+  {
+    id: 4,
+    text: 'Osvežujoče in domiselno podjetje, ki dosledno zagotavlja izjemne rezultate - toplo priporočam za vsak projekt.',
+    author: {
+      name: 'Viktor Tomšič',
+      handle: 'Direktor nepremičninske agencije',
+      avatar: '/testimonials.webp',
+    },
+  },
+  {
+    id: 5,
+    text: 'Njihov umetniški občutek in strateški pristop sta privedla do izjemnih kampanj - zanesljiv ustvarjalni partner.',
+    author: {
+      name: 'Janez Potočnik',
+      handle: 'Lastnik poslovnega prostora',
+      avatar: '/testimonials.webp',
+    },
+  },
+  {
+    id: 6,
+    text: 'Od koncepta do izvedbe, njihova ustvarjalnost ne pozna meja - prelomnica za uspeh naše blagovne znamke.',
+    author: {
+      name: 'Natalija Martinc',
+      handle: 'Lastnica stanovanja v Kopru',
+      avatar: '/testimonials.webp',
+    },
+  },
+]
 
 const Testimonials = () => (
-    <>
-      <section className='grid grid-cols-1 justify-between gap-8 py-6 md:py-10 lg:grid-cols-2 lg:py-28'>
-        <div className='flex flex-col gap-6'>
-          <h2 className='text-xl font-bold leading-tight text-primary-200 sm:text-2xl sm:leading-tight md:text-3xl md:leading-tight lg:text-4xl lg:leading-tight'>
-            Izjave zadovoljih strank
-          </h2>
+  <section className={cn(
+    ' text-secondary-300',
+    'py-12 sm:py-24 md:py-32 px-0',
+  )}>
+    <div className="mx-auto flex max-w-container flex-col items-center gap-4 text-center sm:gap-16">
+      <div className="flex flex-col items-center gap-4 px-4 sm:gap-8">
+        {/* Rating Badge */}
+        <div className="mb-6 flex justify-center">
+          <div className="flex items-center gap-2 rounded-full bg-black px-6 py-3 text-white shadow-lg">
+            <Star className="size-5 fill-primary-300 text-primary-300" />
+            <span className="font-medium">Ocenjeno 4.8/5 s strani več kot 500 strank</span>
+          </div>
+        </div>
 
-          <p className='font-archivo text-sm leading-normal text-secondary-200 sm:text-base sm:leading-relaxed md:text-lg'>
-            Pri nas se trudimo, da vsaka stranka dobi najboljšo možno izkušnjo. Tukaj je nekaj izjav
-            naših zadovoljnih strank, ki so z nami delile svoje pozitivne izkušnje.
-          </p>
-          <ButtonWithIcon
-            variant={'secondary'}
-            className='w-fit'
-          >
-            Kontaktirajte nas
-          </ButtonWithIcon>
-        </div>
-        <Carousel
-          className='relative inset-x-1/2 col-span-2 row-start-2 mx-[-50vw] flex w-screen min-w-[100vw] flex-row flex-wrap gap-6 md:inset-x-auto md:mx-auto md:w-full md:min-w-[auto]'
-          opts={{
-            align: 'start',
-          }}
-          plugins={[
-            Autoplay({
-              delay: 3500,
-            }),
-          ]}
-        >
-          <CarouselContent>
-            <CarouselItem className='shadow-sm lg:basis-1/2'>
-              <div className='flex flex-wrap items-center justify-between gap-8 rounded-lg bg-body-200 p-8'>
-                <div className='flex flex-col gap-4'>
-                  <Quote className='text-primary-400' />
-                  <p className='font-semibold text-secondary-300'>
-                    S ponosom delim svoje izjemno zadovoljstvo z nakupom 2-sobnega stanovanja v
-                    vašem preteklem projektu. Od začetka do konca sem bil impresioniran z vašim
-                    profesionalnim pristopom in predanostjo kakovosti. Stanovanje presega vsa moja
-                    pričakovanja - od sodobne zasnove do kakovostnih materialov. Poleg tega, da je
-                    dom izjemno udoben, sem še posebej hvaležen za varno in urejeno okolico ter
-                    bližino ključnih storitev. Hvala vam za ustvarjanje tako prijetnega bivalnega
-                    prostora, ki ga sedaj z veseljem imenujem svoj dom.
-                  </p>
-                  <span className='text-xs leading-[14px] text-primary-200'>Boštjan Novak</span>
-                </div>
-                <Image
-                  src='/testimonials.webp'
-                  alt='Testimonials'
-                  width={100}
-                  height={100}
-                  className='mb-2 max-h-[100px] max-w-[100px] rounded-full drop-shadow-lg'
-                />
-              </div>
-            </CarouselItem>
-            <CarouselItem className='shadow-sm lg:basis-1/2'>
-              <div className='flex flex-wrap items-center justify-between gap-8 rounded-lg bg-body-200 p-8'>
-                <div className='flex flex-col gap-4'>
-                  <Quote className='text-primary-400' />
-                  <p className='font-semibold text-secondary-300'>
-                    S ponosom delim svoje izjemno zadovoljstvo z nakupom 2-sobnega stanovanja v
-                    vašem preteklem projektu. Od začetka do konca sem bil impresioniran z vašim
-                    profesionalnim pristopom in predanostjo kakovosti. Stanovanje presega vsa moja
-                    pričakovanja - od sodobne zasnove do kakovostnih materialov. Poleg tega, da je
-                    dom izjemno udoben, sem še posebej hvaležen za varno in urejeno okolico ter
-                    bližino ključnih storitev. Hvala vam za ustvarjanje tako prijetnega bivalnega
-                    prostora, ki ga sedaj z veseljem imenujem svoj dom.
-                  </p>
-                  <span className='text-xs leading-[14px] text-primary-200'>Boštjan Novak</span>
-                </div>
-                <Image
-                  src='/testimonials.webp'
-                  alt='Testimonials'
-                  width={100}
-                  height={100}
-                  className='mb-2 max-h-[100px] max-w-[100px] rounded-full drop-shadow-lg'
-                />
-              </div>
-            </CarouselItem>
-            <CarouselItem className='shadow-sm lg:basis-1/2'>
-              <div className='flex flex-wrap items-center justify-between gap-8 rounded-lg bg-body-200 p-8'>
-                <div className='flex flex-col gap-4'>
-                  <Quote className='text-primary-400' />
-                  <p className='font-semibold text-secondary-300'>
-                    S ponosom delim svoje izjemno zadovoljstvo z nakupom 2-sobnega stanovanja v
-                    vašem preteklem projektu. Od začetka do konca sem bil impresioniran z vašim
-                    profesionalnim pristopom in predanostjo kakovosti. Stanovanje presega vsa moja
-                    pričakovanja - od sodobne zasnove do kakovostnih materialov. Poleg tega, da je
-                    dom izjemno udoben, sem še posebej hvaležen za varno in urejeno okolico ter
-                    bližino ključnih storitev. Hvala vam za ustvarjanje tako prijetnega bivalnega
-                    prostora, ki ga sedaj z veseljem imenujem svoj dom.
-                  </p>
-                  <span className='text-xs leading-[14px] text-primary-200'>Boštjan Novak</span>
-                </div>
-                <Image
-                  src='/testimonials.webp'
-                  alt='Testimonials'
-                  width={100}
-                  height={100}
-                  className='mb-2 max-h-[100px] max-w-[100px] rounded-full drop-shadow-lg'
-                />
-              </div>
-            </CarouselItem>
-            <CarouselItem className='shadow-sm lg:basis-1/2'>
-              <div className='flex flex-wrap items-center justify-between gap-8 rounded-lg bg-body-200 p-8'>
-                <div className='flex flex-col gap-4'>
-                  <Quote className='text-primary-400' />
-                  <p className='font-semibold text-secondary-300'>
-                    S ponosom delim svoje izjemno zadovoljstvo z nakupom 2-sobnega stanovanja v
-                    vašem preteklem projektu. Od začetka do konca sem bil impresioniran z vašim
-                    profesionalnim pristopom in predanostjo kakovosti. Stanovanje presega vsa moja
-                    pričakovanja - od sodobne zasnove do kakovostnih materialov. Poleg tega, da je
-                    dom izjemno udoben, sem še posebej hvaležen za varno in urejeno okolico ter
-                    bližino ključnih storitev. Hvala vam za ustvarjanje tako prijetnega bivalnega
-                    prostora, ki ga sedaj z veseljem imenujem svoj dom.
-                  </p>
-                  <span className='text-xs leading-[14px] text-primary-200'>Boštjan Novak</span>
-                </div>
-                <Image
-                  src='/testimonials.webp'
-                  alt='Testimonials'
-                  width={100}
-                  height={100}
-                  className='mb-2 max-h-[100px] max-w-[100px] rounded-full drop-shadow-lg'
-                />
-              </div>
-            </CarouselItem>
-            <CarouselItem className='shadow-sm lg:basis-1/2'>
-              <div className='flex flex-wrap items-center justify-between gap-8 rounded-lg bg-body-200 p-8'>
-                <div className='flex flex-col gap-4'>
-                  <Quote className='text-primary-400' />
-                  <p className='font-semibold text-secondary-300'>
-                    S ponosom delim svoje izjemno zadovoljstvo z nakupom 2-sobnega stanovanja v
-                    vašem preteklem projektu. Od začetka do konca sem bil impresioniran z vašim
-                    profesionalnim pristopom in predanostjo kakovosti. Stanovanje presega vsa moja
-                    pričakovanja - od sodobne zasnove do kakovostnih materialov. Poleg tega, da je
-                    dom izjemno udoben, sem še posebej hvaležen za varno in urejeno okolico ter
-                    bližino ključnih storitev. Hvala vam za ustvarjanje tako prijetnega bivalnega
-                    prostora, ki ga sedaj z veseljem imenujem svoj dom.
-                  </p>
-                  <span className='text-xs leading-[14px] text-primary-200'>Boštjan Novak</span>
-                </div>
-                <Image
-                  src='/testimonials.webp'
-                  alt='Testimonials'
-                  width={100}
-                  height={100}
-                  className='mb-2 max-h-[100px] max-w-[100px] rounded-full drop-shadow-lg'
-                />
-              </div>
-            </CarouselItem>
-            <CarouselItem className='shadow-sm lg:basis-1/2'>
-              <div className='flex flex-wrap items-center justify-between gap-8 rounded-lg bg-body-200 p-8'>
-                <div className='flex flex-col gap-4'>
-                  <Quote className='text-primary-400' />
-                  <p className='font-semibold text-secondary-300'>
-                    S ponosom delim svoje izjemno zadovoljstvo z nakupom 2-sobnega stanovanja v
-                    vašem preteklem projektu. Od začetka do konca sem bil impresioniran z vašim
-                    profesionalnim pristopom in predanostjo kakovosti. Stanovanje presega vsa moja
-                    pričakovanja - od sodobne zasnove do kakovostnih materialov. Poleg tega, da je
-                    dom izjemno udoben, sem še posebej hvaležen za varno in urejeno okolico ter
-                    bližino ključnih storitev. Hvala vam za ustvarjanje tako prijetnega bivalnega
-                    prostora, ki ga sedaj z veseljem imenujem svoj dom.
-                  </p>
-                  <span className='text-xs leading-[14px] text-primary-200'>Boštjan Novak</span>
-                </div>
-                <Image
-                  src='/testimonials.webp'
-                  alt='Testimonials'
-                  width={100}
-                  height={100}
-                  className='mb-2 max-h-[100px] max-w-[100px] rounded-full drop-shadow-lg'
-                />
-              </div>
-            </CarouselItem>
-          </CarouselContent>
-        </Carousel>
-      </section>
-      {/* <div className="flex flex-col gap-3 place-items-center">
-        <Image
-          src="/testimonials.webp"
-          alt="Testimonials"
-          width={70}
-          height={70}
-          className="mb-2 rounded-full drop-shadow-lg"
-        />
-        <h3 className="font-archivo italic text-lg leading-7 text-primary-200 font-bold">
-          Vredni so zaupanja!
-        </h3>
-        <p className="font-archivo text-base leading-5 text-secondary-200 text-center">
-          S ponosom delim svoje izjemno zadovoljstvo z nakupom 2-sobnega
-          stanovanja v vašem preteklem projektu. Od začetka do konca sem bil
-          impresioniran z vašim profesionalnim pristopom in predanostjo
-          kakovosti. Stanovanje presega vsa moja pričakovanja - od sodobne
-          zasnove do kakovostnih materialov. Poleg tega, da je dom izjemno
-          udoben, sem še posebej hvaležen za varno in urejeno okolico ter
-          bližino ključnih storitev. Hvala vam za ustvarjanje tako prijetnega
-          bivalnega prostora, ki ga sedaj z veseljem imenujem svoj dom.
+        <h2 className="max-w-[720px] text-3xl font-bold leading-tight sm:text-5xl sm:leading-tight">
+          Besede pohvale naših strank
+        </h2>
+        <p className="text-md max-w-[600px] font-medium text-secondary-200 sm:text-xl">
+          Kaj pravijo naše stranke o naših nepremičninah in storitvah
         </p>
-        <span className="text-xs leading-[14px] text-secondary-75">
-          Boštjan Novak
-        </span>
-        <div className="avatar-group -space-x-4 rtl:space-x-reverse">
-          <div className="avatar border-primary-200 drop-shadow-lg">
-            <div className="w-12">
-              <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
-            </div>
+      </div>
+
+      <div className="relative flex w-full flex-col items-center justify-center overflow-hidden">
+        <div className="group flex flex-row overflow-hidden p-2 [--duration:40s] [--gap:1rem] [gap:var(--gap)]">
+          {/* First copy for seamless loop */}
+          <div className="flex shrink-0 animate-marquee flex-row justify-around [gap:var(--gap)] group-hover:[animation-play-state:paused]">
+            {testimonials.map((testimonial, i) => (
+              <TestimonialCard
+                key={`first-${i}`}
+                author={testimonial.author}
+                text={testimonial.text}
+                className="mx-4"
+              />
+            ))}
           </div>
-          <div className="avatar border-primary-200 drop-shadow-lg">
-            <div className="w-12">
-              <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
-            </div>
-          </div>
-          <div className="avatar border-primary-200 drop-shadow-lg">
-            <div className="w-12">
-              <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
-            </div>
-          </div>
-          <div className="avatar border-primary-200 drop-shadow-lg">
-            <div className="w-12">
-              <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
-            </div>
-          </div>
-          <div className="avatar placeholder border-primary-200 drop-shadow-lg">
-            <div className="w-12 bg-primary-75 text-secondary-200">
-              <span>+99</span>
-            </div>
+
+          {/* Second copy for seamless loop */}
+          <div className="flex shrink-0 animate-marquee flex-row justify-around [gap:var(--gap)] group-hover:[animation-play-state:paused]" aria-hidden="true">
+            {testimonials.map((testimonial, i) => (
+              <TestimonialCard
+                key={`second-${i}`}
+                author={testimonial.author}
+                text={testimonial.text}
+                className="mx-4"
+              />
+            ))}
           </div>
         </div>
-      </div> */}
-    </>
+
+        <div className="pointer-events-none absolute inset-y-0 left-0 hidden w-1/3 bg-gradient-to-r from-body-75 sm:block" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-1/3 bg-gradient-to-l from-body-75 sm:block" />
+      </div>
+    </div>
+  </section>
 )
 
 export default Testimonials

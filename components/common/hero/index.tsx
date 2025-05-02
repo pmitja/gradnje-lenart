@@ -1,112 +1,122 @@
-import { ArrowUpRight } from 'lucide-react'
+'use client'
+
+import { motion } from 'framer-motion'
+import { ArrowRight, Building, Shield, Users } from 'lucide-react'
 import Image from 'next/image'
+import Link from 'next/link'
 
-import { getRandomProject } from '@/actions/get-random-project'
-import DoubleChervonRightIcon from '@/components/icons/double-chervon-right'
 import { Button } from '@/components/ui/button'
-import { PublicKontakt, PublicProjekti, PublicProjektSlugId } from '@/routes'
 
-import ButtonWithIcon from '../button-with-icon'
+const features = [
+  {
+    title: 'Kakovostna gradnja',
+    description: 'Uporabljamo najnovejše tehnologije in kakovostne materiale za dolgotrajno vrednost.',
+    icon: Building,
+  },
+  {
+    title: 'Strokovnost',
+    description: 'Naša ekipa izkušenih strokovnjakov vam zagotavlja najboljšo podporo.',
+    icon: Users,
+  },
+  {
+    title: 'Zanesljivost',
+    description: 'Gradimo z mislijo na prihodnost in z odgovornostjo do okolja.',
+    icon: Shield,
+  },
+]
 
-const Hero = async () => {
-  const randomProject = await getRandomProject()
-
+export default function Hero() {
   return (
-    <div className="relative inset-x-1/2 mx-[-50vw] w-screen min-w-[100vw] bg-primary-75 pt-4 sm:pt-6 md:pt-10 lg:pt-0">
-      <div className="container relative grid w-full justify-center gap-4 sm:gap-6 lg:w-full lg:grid-cols-2 lg:gap-8">
-        <div className="relative flex flex-col justify-center gap-3 sm:gap-4 lg:gap-5">
-          <div className="flex max-w-fit gap-1 rounded-lg bg-primary-500 px-2 py-1 font-archivo text-xs font-semibold text-body-200 sm:gap-2 sm:rounded-xl sm:px-3 sm:text-sm">
-            <DoubleChervonRightIcon className="size-3 sm:size-4" />
-            Pozdravljeni, najdite svoje sanje!
-          </div>
-          <h1 className="text-3xl font-bold sm:text-4xl lg:mt-2 lg:max-w-[75%] lg:text-4xl lg:leading-tight xl:text-5xl">
-            Najdite, kupite & stanujte v svoji nepremični z nami!
+    <div className="relative inset-x-1/2 mx-[-50vw] min-h-[60dvh] w-screen pt-10">
+      {/* Background Image with Overlay */}
+      <div className="absolute inset-0">
+        <Image
+          src="/hero-1.webp"
+          alt="Modern Apartment"
+          fill
+          className="object-cover"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />s
+      </div>
+
+      {/* Hero Content */}
+      <div className="container relative z-[1] mx-auto flex h-full min-h-[60dvh] flex-col justify-between gap-8 px-6 pt-32 sm:px-10 lg:px-20">
+        <motion.div
+          initial={{
+            opacity: 0, y: 20,
+          }}
+          animate={{
+            opacity: 1, y: 0,
+          }}
+          transition={{
+            duration: 0.8,
+          }}
+          className="max-w-4xl"
+        >
+          <h1 className="text-4xl font-light tracking-tight text-white sm:text-5xl lg:text-6xl">
+            Vaš zaupanja vreden partner
+            <br />
+            <span className="font-medium">pri gradnji vašega doma</span>
           </h1>
-          <p className="font-archivo text-sm leading-normal text-secondary-200 sm:text-base sm:leading-relaxed md:text-lg">
-            Imeli boste vse pomembno v svoji bližini: trgovino, banko, pošto, šolo, vrtec, družinam
-            prijazne soseske...
+          <p className="mt-6 max-w-xl text-lg text-gray-200">
+            Z našimi storitvami vam pomagamo uresničiti sanje o lastnem domu.
+            Odkrijte naše aktualne projekte in začnite svojo pot do nove nepremičnine.
           </p>
-          <div className="flex flex-wrap gap-3 sm:gap-4 lg:mt-2">
-            <PublicProjekti.Link>
-              <ButtonWithIcon
-                asChild
-                variant="primary"
-                className="px-3 py-2 text-sm sm:px-4 sm:py-3 sm:text-base"
+
+          <div className="mt-8 flex flex-wrap gap-4">
+            <Link href="/projekti">
+              <Button
+                variant="outline"
+                size="lg"
+                className="group border-2 border-white bg-transparent text-white transition-all hover:bg-white hover:text-black"
               >
-                Akutalni projekti
-              </ButtonWithIcon>
-            </PublicProjekti.Link>
-            <PublicKontakt.Link>
-              <ButtonWithIcon
-                asChild
-                variant="secondary"
-                className="px-3 py-2 text-sm sm:px-4 sm:py-3 sm:text-base"
+                Aktualni projekti
+                <ArrowRight className="ml-2 size-4 transition-transform group-hover:translate-x-1" />
+              </Button>
+            </Link>
+            <Link href="/kontakt">
+              <Button
+                variant="default"
+                size="lg"
+                className="group bg-white text-black transition-all hover:bg-white/90"
               >
-                Vstopite v stik
-              </ButtonWithIcon>
-            </PublicKontakt.Link>
+                Kontaktirajte nas
+                <ArrowRight className="ml-2 size-4 transition-transform group-hover:translate-x-1" />
+              </Button>
+            </Link>
           </div>
-          <Image
-            src={'/hero-pattern.webp'}
-            alt="Pattern"
-            width="260"
-            height="230"
-            className="absolute -bottom-px right-[-41px] hidden lg:block"
-          />
-        </div>
-        <div className="relative inset-x-1/2 mx-[-50vw] flex w-screen flex-col items-center lg:inset-x-auto lg:mx-auto lg:w-full">
-          <div className="relative w-full md:flex md:flex-col md:items-center">
-            <Image
-              src={
-                randomProject?.images[0]
-                  ? `https://utfs.io/f/${randomProject?.images[0]}`
-                  : '/hero-image.webp'
-              }
-              alt="Hero image"
-              width="795"
-              height="700"
-              className="h-[200px] w-full object-cover sm:h-[250px] md:h-[350px] lg:h-[500px]"
-            />
-            <span className="absolute bottom-0 left-0 bg-[#3E5566]/50 px-2 py-1 font-archivo text-sm font-bold leading-normal text-body-200 sm:px-3 sm:py-2 sm:text-base md:hidden lg:block lg:px-4 lg:py-2 lg:text-lg">
-              Aktualni projekti
-            </span>
-            <Image
-              src={'/hero-pattern-2.webp'}
-              alt="Pattern"
-              width="177"
-              height="166"
-              className="absolute bottom-0 right-0 hidden lg:block"
-            />
-          </div>
-          <div className="flex w-full flex-col justify-between gap-3 bg-body-100 px-3 py-2 sm:px-4 sm:py-3 lg:flex-row lg:bg-body-75 lg:p-6">
-            <div className="flex flex-col gap-1 sm:gap-2">
-              <h3 className="text-base font-bold leading-tight text-secondary-400 sm:text-lg sm:leading-tight md:text-xl md:leading-tight lg:text-2xl lg:leading-tight">
-                {randomProject?.name ?? 'Večstanovanjskih objekt - Lenart'}
-              </h3>
-              <p className="w-full font-archivo text-xs leading-normal text-secondary-400 sm:text-sm">
-                {randomProject?.description
-                  ?? 'Nov, sodoben večstanovanjski objekt v Lenartu - vrhunska bivalna izkušnja v idiličnem okolju. Prijazne cene in vrhunska kakovost bivanja'}
-              </p>
-            </div>
-            {randomProject && (
-              <PublicProjektSlugId.Link
-                slug={randomProject.slug}
-                id={randomProject.realEstates[0].id}
+        </motion.div>
+
+        {/* Feature Highlights */}
+        <motion.div
+          initial={{
+            opacity: 0, y: 20,
+          }}
+          animate={{
+            opacity: 1, y: 0,
+          }}
+          transition={{
+            duration: 0.8, delay: 0.3,
+          }}
+          className="pb-10"
+        >
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {features.map((feature, index) => (
+              <div
+                key={index}
+                className="flex items-start space-x-4 text-white"
               >
-                <Button
-                  variant={'rounded'}
-                  size={'rounded'}
-                  className="size-[40px] min-w-[40px] self-end p-0 text-body-200 sm:size-[50px] sm:min-w-[50px] lg:self-auto"
-                >
-                  <ArrowUpRight className="size-4 sm:size-5" />
-                </Button>
-              </PublicProjektSlugId.Link>
-            )}
+                <feature.icon className="mt-1 size-6 shrink-0" />
+                <div>
+                  <h3 className="font-medium">{feature.title}</h3>
+                  <p className="mt-1 text-sm text-gray-300">{feature.description}</p>
+                </div>
+              </div>
+            ))}
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   )
 }
-
-export default Hero

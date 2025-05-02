@@ -1,51 +1,101 @@
 'use client'
 
-import Autoplay from 'embla-carousel-autoplay'
-import Image from 'next/image'
-
-import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
+// Partner logos data with placeholder images
+const partners = [
+  {
+    name: 'Wienerberger',
+    logo: '/gradnje-plus-logo.webp', // Using existing image as placeholder
+  },
+  {
+    name: 'Velux',
+    logo: '/gradnje-plus-logo.webp',
+  },
+  {
+    name: 'Knauf',
+    logo: '/gradnje-plus-logo.webp',
+  },
+  {
+    name: 'Geberit',
+    logo: '/gradnje-plus-logo.webp',
+  },
+  {
+    name: 'Schüco',
+    logo: '/gradnje-plus-logo.webp',
+  },
+  {
+    name: 'Gorenje',
+    logo: '/gradnje-plus-logo.webp',
+  },
+  {
+    name: 'JUB',
+    logo: '/gradnje-plus-logo.webp',
+  },
+  {
+    name: 'Ytong',
+    logo: '/gradnje-plus-logo.webp',
+  },
+]
 
 const PartnersBanner = () => (
-    <div className='relative inset-x-1/2 mx-[-50vw] my-6 w-screen min-w-[100vw] bg-primary-75 md:my-10'>
-      <section className='container flex w-full gap-12 overflow-hidden py-8 lg:py-[70px]'>
-        <Carousel
-          plugins={[
-            Autoplay({
-              delay: 3500,
-            }),
-          ]}
-          opts={{
-            align: 'center',
-            loop: true,
-          }}
-        >
-          <CarouselContent className='-ml-2 md:-ml-4'>
-            {Array.from({
-              length: 9,
-            }).map((_, index) => (
-              <CarouselItem key={index} className='basis-full pl-2 sm:basis-1/2 md:basis-1/3 md:pl-4 lg:basis-1/4 xl:basis-1/5'>
-                <div className="flex h-full items-center justify-center">
-                  <Image
-                    src={'/gradnje-plus-logo.webp'}
-                    alt={`Partner ${index + 1}`}
-                    width={200}
-                    height={80}
-                    className='h-7 w-auto md:h-9 lg:h-10'
-                  />
+  <div className="relative py-16">
+    <div className="container mx-auto px-4">
+      <div className="mb-10 text-center">
+        <h3 className="mb-2 text-2xl font-bold text-secondary-300">Naši zaupanja vredni partnerji</h3>
+        <p className="mx-auto max-w-2xl text-secondary-200">
+          Sodelujemo z vodilnimi blagovnimi znamkami v industriji,
+          da zagotovimo najvišjo kakovost za vaš dom
+        </p>
+      </div>
+
+      <div className="relative flex w-full flex-col items-center justify-center overflow-hidden">
+        {/* Main marquee container */}
+        <div className="group flex w-full overflow-hidden [--duration:40s] [--gap:2rem]">
+          {/* First copy of partners - this will scroll */}
+          <div
+            className="flex shrink-0 animate-marquee items-center gap-8 group-hover:[animation-play-state:paused]"
+            style={{
+              paddingRight: 'var(--gap)',
+            }}
+          >
+            {partners.map((partner, i) => (
+              <div
+                key={`first-${i}`}
+                className="flex h-24 w-[200px] shrink-0 items-center justify-center rounded-xl border border-gray-100 bg-white p-6 shadow-sm transition-all hover:shadow-md"
+              >
+                <div className="flex flex-col items-center justify-center">
+                  <div className="text-lg font-bold text-secondary-300">{partner.name}</div>
                 </div>
-              </CarouselItem>
+              </div>
             ))}
-          </CarouselContent>
-        </Carousel>
-        <Image
-          src={'/partners-pattern.webp'}
-          alt='Partner pattern'
-          width={170}
-          height={150}
-          className='absolute bottom-0 right-0 hidden md:block md:max-h-[100px] md:max-w-[120px] lg:max-h-[180px] lg:max-w-[180px]'
-        />
-      </section>
+          </div>
+
+          {/* Second copy of partners - creates the seamless loop */}
+          <div
+            className="flex shrink-0 animate-marquee items-center gap-8 group-hover:[animation-play-state:paused]"
+            style={{
+              paddingRight: 'var(--gap)',
+            }}
+            aria-hidden="true"
+          >
+            {partners.map((partner, i) => (
+              <div
+                key={`second-${i}`}
+                className="flex h-24 w-[200px] shrink-0 items-center justify-center rounded-xl border border-gray-100 bg-white p-6 shadow-sm transition-all hover:shadow-md"
+              >
+                <div className="flex flex-col items-center justify-center">
+                  <div className="text-lg font-bold text-secondary-300">{partner.name}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Gradient overlays */}
+        <div className="pointer-events-none absolute inset-y-0 left-0 w-1/6 bg-gradient-to-r from-body-50 to-transparent" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-1/6 bg-gradient-to-l from-body-50 to-transparent" />
+      </div>
     </div>
+  </div>
 )
 
 export default PartnersBanner

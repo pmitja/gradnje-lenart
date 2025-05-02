@@ -4,6 +4,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ChevronLeft } from 'lucide-react'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import { useCallback, useEffect, useState, useTransition } from 'react'
@@ -32,7 +33,6 @@ import { Table,
   TableHead,
   TableHeader,
   TableRow } from '@/components/ui/table'
-import { ProtectedNadzornaPlosca } from '@/routes'
 import { updateSchema } from '@/schemas'
 import { Apartment, Location, LocationType, StatusType } from '@/types/general'
 
@@ -169,11 +169,12 @@ const AktualniProjektPage = ({ params: { slug } }: { params: { slug: string } })
               variant='outline'
               size='icon'
               className='size-7'
+              asChild
             >
-              <ProtectedNadzornaPlosca.Link>
+              <Link href="/nadzorna-plosca">
                 <ChevronLeft className='size-4' />
                 <span className='sr-only'>Back</span>
-              </ProtectedNadzornaPlosca.Link>
+              </Link>
             </Button>
             <h1 className='flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight text-primary-300 sm:grow-0'>
               {location.name}

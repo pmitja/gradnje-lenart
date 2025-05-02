@@ -6,7 +6,7 @@ import { ChevronLeft } from 'lucide-react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
-import { useEffect, useState, useTransition } from 'react'
+import React, { useEffect, useState, useTransition } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -44,16 +44,27 @@ import { ProtectedNadzornaPlosca } from '@/routes'
 import { mainFormSchema } from '@/schemas'
 import { Apartment, LocationType, StatusType } from '@/types/general'
 
+// Define a type that ensures files is always null for form submission
+type ApartmentFormSubmission = Omit<Apartment, 'files'> & {
+  files: null;
+};
+
+// Create a RequiredLabel component for required fields
+const RequiredLabel = ({ children }: { children: React.ReactNode }) => (
+  <span className='flex items-center gap-1'>
+    {children}
+    <span className='text-destructive'>*</span>
+  </span>
+)
+
 const NovAktualniProjektPage = () => {
   const { data: session } = useSession()
 
-  const userRole = session?.user?.role
-
-  const isAdmin = true
+  const isAdmin = session?.user?.role === 'ADMIN'
 
   const router = useRouter()
 
-  const [ apartments, setApartments ] = useState<Apartment[]>([])
+  const [ apartments, setApartments ] = useState<ApartmentFormSubmission[]>([])
 
   const [ isPending, startTransition ] = useTransition()
 
@@ -61,7 +72,8 @@ const NovAktualniProjektPage = () => {
 
   const [ success, setSuccess ] = useState<string | undefined>('')
 
-  const [ , setImagesBeginUploading ] = useState(false)
+  // We only need to set this state but don't need to read it directly
+  const [ , setUploadingImages ] = useState(false)
 
   const [ uploadedImages, setUploadedImages ] = useState<string[]>([])
 
@@ -73,24 +85,28 @@ const NovAktualniProjektPage = () => {
       city: '',
       address: '',
       images: [],
-      apartments,
+      apartments: [],
       type: LocationType.Apartments,
       isActive: true,
     },
   })
 
-  const { setValue } = form
+  const { setValue, getValues } = form
 
   const saveFormValues = (values: Apartment) => {
-    setApartments((prevApartments) => [ ...prevApartments, values ])
-  }
-
-  useEffect(() => {
-    setValue('apartments', apartments.map((apartment) => ({
-      ...apartment,
+    // Convert apartment to the required form submission format
+    const apartmentForForm: ApartmentFormSubmission = {
+      ...values,
       files: null,
-    })))
-  }, [ apartments ])
+    }
+
+    const newApartments = [ ...apartments, apartmentForForm ]
+
+    setApartments(newApartments)
+
+    // Set the form value
+    setValue('apartments', newApartments)
+  }
 
   useEffect(() => {
     if (!isAdmin) {
@@ -102,17 +118,67 @@ const NovAktualniProjektPage = () => {
     return null // or a loading spinner
   }
 
-  function onSubmit(values: z.infer<typeof mainFormSchema>) {
-    setError('')
-    setSuccess('')
+  // Create a direct submit handler that doesn't rely on form.handleSubmit
+  const handleManualSubmit = async () => {
+    try {
+      // Get current form values
+      const formValues = getValues()
 
-    startTransition(() => {
-      newLocation(values).then((data) => {
-        setError(data.error)
-        setSuccess(data.success)
+      setError('')
+      setSuccess('')
+
+      // Validate if at least one apartment is added
+      if (!apartments || apartments.length === 0) {
+        setError('Dodajte vsaj eno stanovanje.')
+        return
+      }
+
+      // Validate required fields in the main form
+      const requiredFields = {
+        name: formValues.name,
+        description: formValues.description,
+        city: formValues.city,
+        address: formValues.address,
+      }
+
+      const missingFields = Object.entries(requiredFields)
+        .filter(([ , value ]) => !value)
+        .map(([ key ]) => key)
+
+      if (missingFields.length > 0) {
+        setError(`Manjkajoča obvezna polja: ${missingFields.join(', ')}`)
+        return
+      }
+
+      // Ensure apartments are properly set in form values
+      formValues.apartments = apartments
+
+      // Start transition to show loading state
+      startTransition(() => {
+        newLocation(formValues)
+          .then((data) => {
+            if (data.error) {
+              setError(data.error)
+            } else {
+              setSuccess(data.success)
+              // Reset form and state after successful submission
+              form.reset()
+              setApartments([])
+              setUploadedImages([])
+
+              // Redirect back to dashboard after a short delay
+              setTimeout(() => {
+                router.push('/nadzorna-plosca')
+              }, 2000)
+            }
+          })
+          .catch(() => {
+            setError('Prišlo je do nepričakovane napake. Prosimo, poskusite znova.')
+          })
       })
-    })
-    form.reset()
+    } catch (error) {
+      setError('Prišlo je do napake pri obdelavi obrazca.')
+    }
   }
 
   const handleRemoveImage = (image: string) => async () => {
@@ -132,7 +198,6 @@ const NovAktualniProjektPage = () => {
     <main className='grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8'>
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(onSubmit)}
           className='space-y-8'
         >
           <div className='mx-auto grid max-w-[59rem] flex-1 auto-rows-max gap-4'>
@@ -155,6 +220,14 @@ const NovAktualniProjektPage = () => {
                 <Button
                   variant='outline'
                   size='sm'
+                  type='button'
+                  onClick={() => {
+                    // Clear form and navigate back to dashboard
+                    form.reset()
+                    setApartments([])
+                    setUploadedImages([])
+                    router.push('/nadzorna-plosca')
+                  }}
                 >
                   Prekliči
                 </Button>
@@ -162,9 +235,13 @@ const NovAktualniProjektPage = () => {
                   size='sm'
                   variant={'primary'}
                   className='border border-body-200'
-                  type='submit'
+                  type='button'
+                  onClick={() => {
+                    handleManualSubmit()
+                  }}
+                  disabled={isPending}
                 >
-                  Dodaj lokacijo
+                  {isPending ? 'Dodajanje...' : 'Dodaj lokacijo'}
                 </Button>
               </div>
             </div>
@@ -188,14 +265,13 @@ const NovAktualniProjektPage = () => {
                           name='name'
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>Naziv</FormLabel>
+                              <FormLabel><RequiredLabel>Naziv</RequiredLabel></FormLabel>
                               <FormControl>
                                 <Input
                                   {...field}
                                   id='name'
                                   type='text'
                                   className='w-full'
-                                  defaultValue='Več stanovanjski objekt'
                                 />
                               </FormControl>
                               <FormMessage />
@@ -209,13 +285,12 @@ const NovAktualniProjektPage = () => {
                           name='description'
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>Opis</FormLabel>
+                              <FormLabel><RequiredLabel>Opis</RequiredLabel></FormLabel>
                               <FormControl>
                                 <Textarea
                                   {...field}
                                   id='description'
                                   className='min-h-32 w-full'
-                                  defaultValue='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl nec ultricies ultricies, nunc nisl ultricies nunc, nec ultricies nunc nisl nec nunc.'
                                 />
                               </FormControl>
                               <FormMessage />
@@ -229,14 +304,13 @@ const NovAktualniProjektPage = () => {
                           name='city'
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>Mesto</FormLabel>
+                              <FormLabel><RequiredLabel>Mesto</RequiredLabel></FormLabel>
                               <FormControl>
                                 <Input
                                   {...field}
                                   id='city'
                                   type='text'
                                   className='w-full'
-                                  defaultValue='Lenart'
                                 />
                               </FormControl>
                               <FormMessage />
@@ -250,14 +324,13 @@ const NovAktualniProjektPage = () => {
                           name='address'
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>Naslov</FormLabel>
+                              <FormLabel><RequiredLabel>Naslov</RequiredLabel></FormLabel>
                               <FormControl>
                                 <Input
                                   {...field}
                                   id='address'
                                   type='text'
                                   className='w-full'
-                                  defaultValue='Jurovska cesta 14'
                                 />
                               </FormControl>
                               <FormMessage />
@@ -309,16 +382,16 @@ const NovAktualniProjektPage = () => {
                       <div className='grid gap-3'>
                         <UploadButton
                           endpoint='imageUploader'
-                          onUploadProgress={() => setImagesBeginUploading(true)}
+                          onUploadProgress={() => setUploadingImages(true)}
                           onClientUploadComplete={(res) => {
                             const array = res.map((file) => file.key)
 
                             setValue('images', array)
                             setUploadedImages(array)
-                            setImagesBeginUploading(false)
+                            setUploadingImages(false)
                           }}
                           onUploadError={() => {
-                            setImagesBeginUploading(false)
+                            setUploadingImages(false)
                           }}
                           className='ut-button:bg-primary-500 ut-button:ut-readying:bg-primary-500/50 ut-button:ut-uploading:bg-primary-300'
                         />
@@ -352,7 +425,7 @@ const NovAktualniProjektPage = () => {
                         name='isActive'
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Tip</FormLabel>
+                            <FormLabel>Status</FormLabel>
                             <FormControl>
                               <ToggleGroup
                                 type='single'
@@ -457,10 +530,27 @@ const NovAktualniProjektPage = () => {
               <Button
                 variant='outline'
                 size='sm'
+                type='button'
+                onClick={() => {
+                  // Clear form and navigate back to dashboard
+                  form.reset()
+                  setApartments([])
+                  setUploadedImages([])
+                  router.push('/nadzorna-plosca')
+                }}
               >
-                Discard
+                Prekliči
               </Button>
-              <Button size='sm'>Save Product</Button>
+              <Button
+                size='sm'
+                type='button'
+                onClick={() => {
+                  handleManualSubmit()
+                }}
+                disabled={isPending}
+              >
+                {isPending ? 'Dodajanje...' : 'Dodaj lokacijo'}
+              </Button>
             </div>
           </div>
           <FormError message={error} />

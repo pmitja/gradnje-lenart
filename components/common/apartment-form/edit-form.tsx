@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { ToggleGroup } from '@radix-ui/react-toggle-group'
 import { Tag, TagInput } from 'emblor'
 import Image from 'next/image'
-import { useState, useTransition } from 'react'
+import React, { useEffect, useState, useTransition } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -24,6 +24,7 @@ import { Form,
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { ToggleGroupItem } from '@/components/ui/toggle-group'
+import { useToast } from '@/components/ui/use-toast'
 import { UploadButton } from '@/lib/utils/uploadthing'
 import { formSchema } from '@/schemas'
 import { Apartment, EnergyClass, ExposedType, LocationType, SpacesType, StatusType } from '@/types/general'
@@ -55,12 +56,14 @@ const EditApartmentForm = ({ data, onCancel, id = '', type }: {
 
   const [ isPending, startTransition ] = useTransition()
 
+  const { toast } = useToast()
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       number: data.number,
       name: data.name,
-      floor: type === LocationType.Apartments ? data.floor : undefined,
+      floor: type === LocationType.Apartments ? data.floor : '1',
       size: data.size,
       price: data.price,
       priceWithTax: data.priceWithTax,
@@ -77,12 +80,29 @@ const EditApartmentForm = ({ data, onCancel, id = '', type }: {
     },
   })
 
+  // Effect to ensure floor is set to '1' for houses
+  useEffect(() => {
+    if (type === LocationType.House) {
+      form.setValue('floor', '1')
+    }
+  }, [ type, form ])
+
   function onSubmit(values: z.infer<typeof formSchema>) {
     setError('')
     setSuccess('')
+
+    // Ensure floor is set to '1' for houses
+    const processedValues = {
+      ...values,
+    }
+
+    if (type === LocationType.House) {
+      processedValues.floor = '1'
+    }
+
     startTransition(() => {
       const updatedValues = {
-        apartment: values,
+        apartment: processedValues,
         locationId: id,
       }
 
@@ -221,6 +241,9 @@ const EditApartmentForm = ({ data, onCancel, id = '', type }: {
               )}
             />
           </div>
+        )}
+        {type === LocationType.House && (
+          <input type="hidden" id="floor" value="1" />
         )}
         <div className="grid grid-cols-1 items-center gap-4">
           <FormField
@@ -510,8 +533,11 @@ const EditApartmentForm = ({ data, onCancel, id = '', type }: {
             }}
             onUploadError={(error: Error) => {
               setImagesBeginUploading(false)
-              // Do something with the error.
-              alert(`ERROR! ${error.message}`)
+              toast({
+                variant: 'destructive',
+                title: 'Napaka pri nalaganju',
+                description: error.message,
+              })
             }}
             className="ut-button:bg-primary-500 ut-button:ut-readying:bg-primary-500/50"
           />
@@ -555,8 +581,11 @@ const EditApartmentForm = ({ data, onCancel, id = '', type }: {
             }}
             onUploadError={(error: Error) => {
               setFilesBeginUploading(false)
-              // Do something with the error.
-              alert(`ERROR! ${error.message}`)
+              toast({
+                variant: 'destructive',
+                title: 'Napaka pri nalaganju',
+                description: error.message,
+              })
             }}
             className="ut-button:bg-primary-500 ut-button:ut-readying:bg-primary-500/50"
           />

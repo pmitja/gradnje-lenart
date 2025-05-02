@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { ToggleGroup } from '@radix-ui/react-toggle-group'
 import { Tag, TagInput } from 'emblor'
 import Image from 'next/image'
-import { useState, useTransition } from 'react'
+import React, { useEffect, useState, useTransition } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -28,12 +28,27 @@ import { Form,
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { ToggleGroupItem } from '@/components/ui/toggle-group'
+import { useToast } from '@/components/ui/use-toast'
 import { UploadButton } from '@/lib/utils/uploadthing'
 import { formSchema } from '@/schemas'
-import { Apartment, EnergyClass, ExposedType, LocationType, SpacesType, StatusType } from '@/types/general'
+import { EnergyClass, ExposedType, LocationType, SpacesType, StatusType } from '@/types/general'
 
-const ApartmentForm = ({ saveFormValues, nextNumber = '1', type }:
-  { saveFormValues: (values: Apartment) => void, nextNumber?: string, type: LocationType }) => {
+// Simple interface definition to avoid linter issues
+interface Props {
+  saveFormValues: Function;
+  nextNumber?: string;
+  type: LocationType;
+}
+
+// Create a RequiredLabel component for required fields
+const RequiredLabel = ({ children }: { children: React.ReactNode }) => (
+  <span className='flex items-center gap-1'>
+    {children}
+    <span className='text-destructive'>*</span>
+  </span>
+)
+
+const ApartmentForm = ({ saveFormValues, nextNumber = '1', type }: Props) => {
   const [ open, setOpen ] = useState(false)
 
   const [ imagesBeginUploading, setImagesBeginUploading ] = useState(false)
@@ -50,12 +65,15 @@ const ApartmentForm = ({ saveFormValues, nextNumber = '1', type }:
 
   const [ isPending, startTransition ] = useTransition()
 
+  // Add toast functionality
+  const { toast } = useToast()
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       number: nextNumber,
       name: '',
-      floor: type === LocationType.Apartments ? '' : undefined,
+      floor: type === LocationType.Apartments ? '' : '1',
       size: 0,
       price: 0,
       priceWithTax: 0,
@@ -72,9 +90,88 @@ const ApartmentForm = ({ saveFormValues, nextNumber = '1', type }:
     },
   })
 
+  // Effect to update floor value when type changes
+  useEffect(() => {
+    if (type === LocationType.House) {
+      form.setValue('floor', '1')
+    }
+  }, [ type, form ])
+
   function onSubmit(values: z.infer<typeof formSchema>) {
-    saveFormValues(values)
-    setOpen(false)
+    // Ensure required fields are present
+    if (!values.name || !values.number || !values.size || !values.price
+        || !values.priceWithTax || !values.shortDescription || !values.description) {
+      // Show toast error instead of alert
+      toast({
+        variant: 'destructive',
+        title: 'Manjkajoča polja',
+        description: 'Prosim izpolnite vsa obvezna polja označena z *.',
+      })
+      return
+    }
+
+    // Ensure floor is set to '1' for houses
+    const processedValues = {
+      ...values,
+    }
+
+    if (type === LocationType.House) {
+      processedValues.floor = '1'
+    }
+
+    // Ensure files is either an array or null, not undefined
+    const hasFiles = Array.isArray(processedValues.files) && processedValues.files.length > 0
+
+    const safeValues = {
+      ...processedValues,
+      files: hasFiles ? processedValues.files : null,
+    }
+
+    try {
+      // Call the saveFormValues function passed to this component
+      saveFormValues(safeValues)
+
+      // Reset form values
+      form.reset({
+        number: String(Number(nextNumber) + 1), // Increment the apartment number
+        name: '',
+        floor: type === LocationType.Apartments ? '' : '1',
+        size: 0,
+        price: 0,
+        priceWithTax: 0,
+        status: StatusType.Prodaja,
+        images: [],
+        shortDescription: '',
+        description: '',
+        spaces: [],
+        energyLevel: '',
+        parkingSpaces: type === LocationType.Apartments ? 0 : undefined,
+        technicalData: [],
+        files: [],
+        isExposed: false,
+      })
+
+      // Reset state values
+      setUploadedImages([])
+      setUploadedFiles([])
+      setTechnicalData([])
+
+      // Close the dialog
+      setOpen(false)
+
+      // Show confirmation toast instead of alert
+      toast({
+        title: 'Uspešno dodano',
+        description: 'Stanovanje je bilo uspešno dodano.',
+      })
+    } catch (error) {
+      // Show error toast instead of alert
+      toast({
+        variant: 'destructive',
+        title: 'Napaka',
+        description: 'Prišlo je do napake pri dodajanju stanovanja.',
+      })
+    }
   }
 
   const { setValue } = form
@@ -120,7 +217,6 @@ const ApartmentForm = ({ saveFormValues, nextNumber = '1', type }:
         </DialogHeader>
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(onSubmit)}
             className='grid gap-4 py-4'
           >
             <div className='grid grid-cols-1 items-center gap-4'>
@@ -129,11 +225,12 @@ const ApartmentForm = ({ saveFormValues, nextNumber = '1', type }:
                 name='number'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Št. {type === LocationType.Apartments ? 'stanovanja' : 'hiše'}</FormLabel>
+                    <FormLabel>
+                      <RequiredLabel>Št. {type === LocationType.Apartments ? 'stanovanja' : 'hiše'}</RequiredLabel>
+                    </FormLabel>
                     <FormControl>
                       <Input
                         id='number'
-                        defaultValue={String(nextNumber)}
                         className='col-span-3'
                         {...field}
                       />
@@ -149,12 +246,14 @@ const ApartmentForm = ({ saveFormValues, nextNumber = '1', type }:
                 name='name'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Naziv</FormLabel>
+                    <FormLabel>
+                      <RequiredLabel>Naziv</RequiredLabel>
+                    </FormLabel>
                     <FormControl>
                       <Input
                         id='name'
-                        defaultValue='2 sobno stanovanje'
                         className='col-span-3'
+                        placeholder='2 sobno stanovanje'
                         {...field}
                       />
                     </FormControl>
@@ -169,12 +268,14 @@ const ApartmentForm = ({ saveFormValues, nextNumber = '1', type }:
                 name='shortDescription'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Kratki opis</FormLabel>
+                    <FormLabel>
+                      <RequiredLabel>Kratki opis</RequiredLabel>
+                    </FormLabel>
                     <FormControl>
                       <Textarea
                         id='description'
-                        defaultValue='Opis stanovanja'
                         className='col-span-3'
+                        placeholder='Kratek opis stanovanja'
                         {...field}
                       />
                     </FormControl>
@@ -189,12 +290,14 @@ const ApartmentForm = ({ saveFormValues, nextNumber = '1', type }:
                 name='description'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Opis</FormLabel>
+                    <FormLabel>
+                      <RequiredLabel>Opis</RequiredLabel>
+                    </FormLabel>
                     <FormControl>
                       <Textarea
                         id='description'
-                        defaultValue='Opis stanovanja'
                         className='col-span-3'
+                        placeholder='Podroben opis stanovanja'
                         {...field}
                       />
                     </FormControl>
@@ -210,12 +313,14 @@ const ApartmentForm = ({ saveFormValues, nextNumber = '1', type }:
                   name='floor'
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Etaža</FormLabel>
+                      <FormLabel>
+                        <RequiredLabel>Etaža</RequiredLabel>
+                      </FormLabel>
                       <FormControl>
                         <Input
                           id='floor'
-                          defaultValue='3. nadstropje'
                           className='col-span-3'
+                          placeholder='3. nadstropje'
                           {...field}
                         />
                       </FormControl>
@@ -225,19 +330,24 @@ const ApartmentForm = ({ saveFormValues, nextNumber = '1', type }:
                 />
               </div>
             )}
+            {type === LocationType.House && (
+              <input type="hidden" id="floor" value="1" />
+            )}
             <div className='grid grid-cols-1 items-center gap-4'>
               <FormField
                 control={form.control}
                 name='size'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Kvadratura</FormLabel>
+                    <FormLabel>
+                      <RequiredLabel>Kvadratura</RequiredLabel>
+                    </FormLabel>
                     <FormControl>
                       <Input
                         id='size'
-                        defaultValue='3'
                         className='col-span-3'
                         type='number'
+                        placeholder='70'
                         {...field}
                         onChange={(event) => field.onChange(+event.target.value)}
                       />
@@ -253,13 +363,15 @@ const ApartmentForm = ({ saveFormValues, nextNumber = '1', type }:
                 name='price'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Cena (brez ddv)</FormLabel>
+                    <FormLabel>
+                      <RequiredLabel>Cena (brez ddv)</RequiredLabel>
+                    </FormLabel>
                     <FormControl>
                       <Input
                         id='price'
-                        defaultValue='100000'
                         className='col-span-3'
                         type='number'
+                        placeholder='100000'
                         {...field}
                         onChange={(event) => field.onChange(+event.target.value)}
                       />
@@ -275,13 +387,15 @@ const ApartmentForm = ({ saveFormValues, nextNumber = '1', type }:
                 name='priceWithTax'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Cena</FormLabel>
+                    <FormLabel>
+                      <RequiredLabel>Cena</RequiredLabel>
+                    </FormLabel>
                     <FormControl>
                       <Input
                         id='priceWithTax'
-                        defaultValue='130000'
                         className='col-span-3'
                         type='number'
+                        placeholder='130000'
                         {...field}
                         onChange={(event) => field.onChange(+event.target.value)}
                       />
@@ -518,7 +632,11 @@ const ApartmentForm = ({ saveFormValues, nextNumber = '1', type }:
                 onUploadError={(error: Error) => {
                   setImagesBeginUploading(false)
                   // Do something with the error.
-                  alert(`ERROR! ${error.message}`)
+                  toast({
+                    variant: 'destructive',
+                    title: 'Napaka pri nalaganju',
+                    description: `${error.message}`,
+                  })
                 }}
                 className='ut-button:bg-primary-500 ut-button:ut-readying:bg-primary-500/50'
               />
@@ -562,7 +680,11 @@ const ApartmentForm = ({ saveFormValues, nextNumber = '1', type }:
                 onUploadError={(error: Error) => {
                   setFilesBeginUploading(false)
                   // Do something with the error.
-                  alert(`ERROR! ${error.message}`)
+                  toast({
+                    variant: 'destructive',
+                    title: 'Napaka pri nalaganju',
+                    description: `${error.message}`,
+                  })
                 }}
                 className='ut-button:bg-primary-500 ut-button:ut-readying:bg-primary-500/50'
               />
@@ -584,11 +706,32 @@ const ApartmentForm = ({ saveFormValues, nextNumber = '1', type }:
             {isPending && <Spinner />}
             <DialogFooter>
               <Button
-                type='submit'
-                disabled={imagesBeginUploading || filesBeginUploading}
+                type='button'
+                onClick={() => {
+                  // Get the form values directly and validate them
+                  const values = form.getValues()
+
+                  // Run validation manually
+                  form.trigger().then((isValid) => {
+                    if (isValid) {
+                      onSubmit(values)
+                    } else {
+                      toast({
+                        variant: 'destructive',
+                        title: 'Napaka pri validaciji',
+                        description: 'Prosim izpolnite vsa obvezna polja označena z *.',
+                      })
+                    }
+                  })
+                }}
+                disabled={
+                  imagesBeginUploading
+                  || filesBeginUploading
+                  || form.formState.isSubmitting
+                }
                 variant={'form'}
               >
-                Dodaj stanovanje
+                Dodaj {type === LocationType.Apartments ? 'stanovanje' : 'hišo'}
               </Button>
             </DialogFooter>
           </form>

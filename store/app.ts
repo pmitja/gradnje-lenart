@@ -1,7 +1,6 @@
-import { Location } from '@prisma/client'
 import { create } from 'zustand'
 
-type PropertyFilterOptions = {
+interface PropertyFilters {
   floor?: string
   size?: string
   priceRange?: [number, number]
@@ -9,61 +8,50 @@ type PropertyFilterOptions = {
   isReseted?: boolean
 }
 
-interface AppStoreState {
-  projectFilters: {
-    location?: string
-    type?: string
-  }
-  propertyFilters: PropertyFilterOptions
-  currentProjects: Location[]
-  isFilterLoading: boolean
-  updateProjectFilters: (_filter: Partial<{ location?: string; type?: string }>) => void
-  updatePropertyFilters: (_filter: Partial<PropertyFilterOptions>) => void
-  updateCurrentProjects: (_projects: Location[]) => void
-  setFilterLoading: (_isLoading: boolean) => void
+interface ProjectFilters {
+  location?: string
+  type?: string
+}
+
+interface AppState {
+  propertyFilters: PropertyFilters
+  projectFilters: ProjectFilters
+  // eslint-disable-next-line no-unused-vars
+  updatePropertyFilters: (_filters: PropertyFilters) => void
+  // eslint-disable-next-line no-unused-vars
+  updateProjectFilters: (_filters: ProjectFilters) => void
   resetFilters: () => void
 }
 
-export const useAppStore = create<AppStoreState>((set) => ({
+export const useAppStore = create<AppState>((set) => ({
+  propertyFilters: {
+    priceRange: [ 0, 500000 ],
+    isReseted: false,
+  },
   projectFilters: {
     location: 'all',
     type: 'all',
   },
-  propertyFilters: {
-    isReseted: false,
-  },
-  isFilterLoading: false,
-  updateProjectFilters: (filter) => set((state) => ({
-    projectFilters: {
-      ...state.projectFilters,
-      ...filter,
-    },
-  })),
-  updatePropertyFilters: (filter) => set((state) => ({
+  updatePropertyFilters: (_filters) => set((state) => ({
     propertyFilters: {
       ...state.propertyFilters,
-      ...filter,
+      ..._filters,
     },
-    isFilterLoading: true,
   })),
-  currentProjects: [],
-  updateCurrentProjects: (projects) => set({
-    currentProjects: projects,
-  }),
-  setFilterLoading: (isLoading) => set({
-    isFilterLoading: isLoading,
-  }),
+  updateProjectFilters: (_filters) => set((state) => ({
+    projectFilters: {
+      ...state.projectFilters,
+      ..._filters,
+    },
+  })),
   resetFilters: () => set({
+    propertyFilters: {
+      priceRange: [ 0, 500000 ],
+      isReseted: true,
+    },
     projectFilters: {
       location: 'all',
       type: 'all',
     },
-    propertyFilters: {
-      floor: undefined,
-      size: undefined,
-      priceRange: undefined,
-      availability: undefined,
-    },
-    isFilterLoading: true,
   }),
 }))

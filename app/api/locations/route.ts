@@ -1,8 +1,8 @@
-'use server'
+import { NextResponse } from 'next/server'
 
 import { db } from '@/lib/db'
 
-export const getAllLocations = async () => {
+export async function GET() {
   try {
     const locations = await db.location.findMany({
       where: {
@@ -20,19 +20,16 @@ export const getAllLocations = async () => {
       },
     })
 
-    if (locations.length === 0) {
-      return null
-    }
-
-    return locations.map((location) => ({
-      ...location,
-      count: {
-        realEstates: location.realEstates.length,
-      },
-      realEstates: undefined,
-    }))
+    return NextResponse.json(locations)
   } catch (error) {
     console.error('Error fetching locations:', error)
-    return []
+    return NextResponse.json(
+      {
+        error: 'Failed to fetch locations',
+      },
+      {
+        status: 500,
+      },
+    )
   }
 }

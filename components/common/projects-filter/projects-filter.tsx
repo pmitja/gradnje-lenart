@@ -2,7 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Location } from '@prisma/client'
-import { Search } from 'lucide-react'
+import { Home, MapPin, Search } from 'lucide-react'
 import { useEffect, useState, useTransition } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -64,21 +64,26 @@ const ProjectsFilter = () => {
 
   return (
     <Form {...form}>
-      <div className='relative flex-col items-start gap-8 md:flex'>
-        {isPending && <Spinner />}
+      <div className="relative w-full">
+        {isPending && (
+          <div className="flex h-24 w-full items-center justify-center rounded-xl bg-white/80 backdrop-blur-sm">
+            <Spinner />
+          </div>
+        )}
         {!isPending && (
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className='grid w-full items-start gap-6'
+            className="w-full"
           >
-            <fieldset className='grid max-w-fit items-center gap-4 rounded-lg border bg-body-200 p-4 shadow-sm lg:grid-cols-3 lg:gap-9 lg:rounded-full lg:px-10 lg:py-5'>
+            <div className="grid gap-4 md:grid-cols-12">
               {location && (
                 <FormField
                   control={form.control}
-                  name='location'
+                  name="location"
                   render={({ field }) => (
-                    <FormItem className='flex flex-col border-secondary-200 pr-2 md:pr-4 lg:border-r-2 lg:pr-6'>
-                      <FormLabel className='px-3 text-base font-bold lg:text-xl'>
+                    <FormItem className="md:col-span-5">
+                      <FormLabel className="text-secondary-600 flex items-center gap-2 text-sm font-medium">
+                        <MapPin className="size-4 text-primary-500" />
                         Lokacija
                       </FormLabel>
                       <FormControl>
@@ -87,21 +92,23 @@ const ProjectsFilter = () => {
                           value={field.value}
                         >
                           <SelectTrigger
-                            id='location'
-                            className='!mt-0 flex min-w-[220px] place-items-center items-start gap-2 border-0 bg-transparent [&_[data-description]]:hidden'
+                            id="location"
+                            className="mt-1 border-secondary-200 bg-white py-2 transition-all duration-200 hover:border-primary-300 focus:border-primary-400 focus:ring-1 focus:ring-primary-300"
                           >
-                            <SelectValue placeholder='Izberi lokacijo' />
+                            <SelectValue placeholder="Izberi lokacijo" />
                           </SelectTrigger>
-                          <SelectContent>
+                          <SelectContent className="border-secondary-200 shadow-lg">
+                            <SelectItem value="all" className="mb-1 font-medium hover:bg-primary-50">Vse lokacije</SelectItem>
+                            <div className="my-1 h-px w-full bg-secondary-100"></div>
                             {location.map((location) => (
                               <SelectItem
                                 value={location.city}
                                 key={location.id}
+                                className="hover:bg-primary-50"
                               >
                                 {location.city}
                               </SelectItem>
                             ))}
-                            <SelectItem value='all'>Vse lokacije</SelectItem>
                           </SelectContent>
                         </Select>
                       </FormControl>
@@ -112,10 +119,11 @@ const ProjectsFilter = () => {
               )}
               <FormField
                 control={form.control}
-                name='type'
+                name="type"
                 render={({ field }) => (
-                  <FormItem className='flex flex-col border-secondary-200 pr-2 md:pr-4 lg:border-r-2 lg:pr-6'>
-                    <FormLabel className='px-3 text-base font-bold lg:text-xl'>
+                  <FormItem className="md:col-span-5">
+                    <FormLabel className="text-secondary-600 flex items-center gap-2 text-sm font-medium">
+                      <Home className="size-4 text-primary-500" />
                       Vrsta
                     </FormLabel>
                     <FormControl>
@@ -124,20 +132,26 @@ const ProjectsFilter = () => {
                         value={field.value}
                       >
                         <SelectTrigger
-                          id='type'
-                          className='!mt-0 flex min-w-[220px] items-start gap-2 border-0 bg-transparent [&_[data-description]]:hidden'
+                          id="type"
+                          className="mt-1 border-secondary-200 bg-white py-2 transition-all duration-200 hover:border-primary-300 focus:border-primary-400 focus:ring-1 focus:ring-primary-300"
                         >
-                          <SelectValue placeholder='Izberi vrsto' />
+                          <SelectValue placeholder="Izberi vrsto" />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="border-secondary-200 shadow-lg">
+                          <SelectItem value="all" className="mb-1 font-medium hover:bg-primary-50">Vse vrste</SelectItem>
+                          <div className="my-1 h-px w-full bg-secondary-100"></div>
                           <SelectItem
                             value={LocationType.Apartments}
-                            className='hover:bg-primary-50'
+                            className="hover:bg-primary-50"
                           >
                             Večstanovanjski objekt
                           </SelectItem>
-                          <SelectItem value={LocationType.House}>Hiša</SelectItem>
-                          <SelectItem value='all'>Vse vrste</SelectItem>
+                          <SelectItem
+                            value={LocationType.House}
+                            className="hover:bg-primary-50"
+                          >
+                            Hiša
+                          </SelectItem>
                         </SelectContent>
                       </Select>
                     </FormControl>
@@ -147,14 +161,14 @@ const ProjectsFilter = () => {
               />
 
               <Button
-                type='submit'
-                variant='primary'
-                className='flex w-full gap-2 px-6 py-2 lg:w-auto lg:px-8 lg:py-3'
+                type="submit"
+                variant="primary"
+                className="hover:bg-primary-600 mt-2 flex w-full items-center justify-center gap-2 px-6 py-2.5 shadow-md transition-all duration-200 hover:shadow-lg md:col-span-2 md:mt-auto md:self-end"
               >
-                <Search />
-                Filter
+                <Search className="size-4" />
+                <span>Išči</span>
               </Button>
-            </fieldset>
+            </div>
           </form>
         )}
       </div>

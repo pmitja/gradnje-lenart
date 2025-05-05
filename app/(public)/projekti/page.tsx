@@ -1,13 +1,22 @@
+import { Metadata } from 'next'
+
 import ProjectFilterHero from '@/components/common/hero/project-filter-hero'
 import ProccesOfBuying from '@/components/common/procces-of-buying'
 import Faq from '@/components/layouts/sections/faq'
+import LocationsSection from '@/components/layouts/sections/locations-section'
 import OffersBanner from '@/components/layouts/sections/offers-banner'
-import ProjectsSection from '@/components/layouts/sections/projects-section'
+import PropertyListingSection from '@/components/layouts/sections/property-listing-section'
+
+export const metadata: Metadata = {
+  title: 'Naši Projekti | Gradnje Lenart',
+  description: 'Odkrijte naše aktualne projekte in nepremičnine - hiše, stanovanja in večstanovanjske objekte na različnih lokacijah.',
+}
 
 const ActualProjectPage = () => (
-  <div>
+  <div className="min-h-screen">
     <ProjectFilterHero />
-    <ProjectsSection />
+    <LocationsSection />
+    <PropertyListingSection />
     <ProccesOfBuying />
     <OffersBanner />
     <Faq />

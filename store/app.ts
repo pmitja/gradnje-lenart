@@ -16,9 +16,11 @@ interface AppStoreState {
   }
   propertyFilters: PropertyFilterOptions
   currentProjects: Location[]
-  updateProjectFilters: (filter: Partial<{ location?: string; type?: string }>) => void
-  updatePropertyFilters: (filter: Partial<PropertyFilterOptions>) => void
-  updateCurrentProjects: (projects: Location[]) => void
+  isFilterLoading: boolean
+  updateProjectFilters: (_filter: Partial<{ location?: string; type?: string }>) => void
+  updatePropertyFilters: (_filter: Partial<PropertyFilterOptions>) => void
+  updateCurrentProjects: (_projects: Location[]) => void
+  setFilterLoading: (_isLoading: boolean) => void
   resetFilters: () => void
 }
 
@@ -30,6 +32,7 @@ export const useAppStore = create<AppStoreState>((set) => ({
   propertyFilters: {
     isReseted: false,
   },
+  isFilterLoading: false,
   updateProjectFilters: (filter) => set((state) => ({
     projectFilters: {
       ...state.projectFilters,
@@ -41,10 +44,14 @@ export const useAppStore = create<AppStoreState>((set) => ({
       ...state.propertyFilters,
       ...filter,
     },
+    isFilterLoading: true,
   })),
   currentProjects: [],
   updateCurrentProjects: (projects) => set({
     currentProjects: projects,
+  }),
+  setFilterLoading: (isLoading) => set({
+    isFilterLoading: isLoading,
   }),
   resetFilters: () => set({
     projectFilters: {
@@ -57,5 +64,6 @@ export const useAppStore = create<AppStoreState>((set) => ({
       priceRange: undefined,
       availability: undefined,
     },
+    isFilterLoading: true,
   }),
 }))

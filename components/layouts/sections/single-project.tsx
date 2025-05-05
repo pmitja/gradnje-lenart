@@ -1,7 +1,7 @@
 'use client'
 
 import { Location, RealEstate } from '@prisma/client'
-import { ArrowRight, BedIcon, Car, Home, InfoIcon, KeySquare, Maximize2, PackageOpen, TableIcon, TvIcon } from 'lucide-react'
+import { ArrowRight, BedIcon, Car, Home, InfoIcon, KeySquare, Loader, Maximize2, PackageOpen, TableIcon, TvIcon } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useEffect, useMemo, useState } from 'react'
@@ -20,7 +20,6 @@ import { Accordion,
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
 import { useMediaQuery } from '@/hooks/use-media-query'
 import { formatNumber } from '@/lib/helpers'
 import { cn } from '@/lib/utils'
@@ -90,7 +89,7 @@ interface PropertyCardProps {
   realEstate: RealEstate
   city: string
   address: string
-  onClick: (realEstate: RealEstate) => void
+  onClick: (_realEstate: RealEstate) => void
   isActive: boolean
   spaces?: string[] | null
 }
@@ -103,62 +102,89 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
   isActive = false,
   spaces,
 }) => (
-  <Button
-    variant="outline"
+  <div
     className={cn(
-      'grid h-full w-full grid-cols-1 gap-4 rounded-xl border-4 border-transparent bg-primary-50 p-4 shadow-md hover:bg-primary-75/25 sm:w-[280px]',
-      isActive && 'border-4 border-primary-400',
+      'group relative flex h-full flex-col overflow-hidden rounded-xl border border-gray-100 bg-white shadow-sm transition-all duration-300 hover:shadow-md',
+      isActive && 'ring-2 ring-primary-400 ring-offset-2',
     )}
     onClick={() => onClick(realEstate)}
   >
-    <div className="relative size-full min-h-[150px]">
+    <div className="relative aspect-video w-full overflow-hidden">
       <Image
         src={realEstate.images[0] ? `https://utfs.io/f/${realEstate.images[0]}` : '/no-image.webp'}
         alt={realEstate.name}
         fill
-        className="relative aspect-square size-full max-h-[200px] rounded-2xl object-cover"
+        className="object-cover transition-transform duration-500 group-hover:scale-105"
       />
 
       {realEstate.status === StatusType.Rezervirano && (
-        <div className="absolute right-0 top-0 w-full rounded-t-2xl bg-orange-100 px-2 py-1 text-xs text-orange-800">
+        <div className="absolute inset-x-0 top-0 bg-orange-500 py-1.5 text-center text-sm font-medium text-white">
           Rezervirano
         </div>
       )}
       {realEstate.status === StatusType.Prodano && (
-        <div className="absolute right-0 top-0 w-full rounded-t-2xl bg-destructive-200 px-2 py-1 text-xs text-white">
+        <div className="absolute inset-x-0 top-0 bg-destructive-500 py-1.5 text-center text-sm font-medium text-white">
           Prodano
         </div>
       )}
     </div>
-    <div className="flex min-w-fit flex-col place-content-start items-start gap-2">
-      <h3 className="text-[38px] font-bold leading-[57px] text-primary-200">
-        {formatNumber(Number(realEstate.priceWithTax))} €
-      </h3>
-      <span className="text-start text-[28px] font-bold leading-8 text-secondary-400">
-        {realEstate.name}
-      </span>
-      <span className="text-xs leading-3.5 text-secondary-200">
+
+    <div className="flex flex-1 flex-col p-4">
+      <div className="mb-2 flex items-center justify-between">
+        <h3 className="text-secondary-700 text-xl font-bold">{realEstate.name}</h3>
+        {realEstate.size && (
+          <Badge variant="outline" className="flex items-center gap-1 text-xs">
+            <Maximize2 className="size-3" />
+            {realEstate.size} m²
+          </Badge>
+        )}
+      </div>
+
+      <p className="mb-2 text-sm text-gray-500">
         {city}, {address}
-      </span>
-      {spaces && (
-        <div className="grid grid-cols-3 gap-2">
+      </p>
+      {spaces && spaces.length > 0 && (
+        <div className="mb-3 flex flex-wrap gap-1">
           {spaces.slice(0, 3).map((space, index) => {
             const matchingRoom = rooms.find((room) => room.label === space)
 
-            return (
+            return matchingRoom ? (
               <Badge
                 key={index}
-                variant={'pills'}
-                className="px-2 py-1 text-xs font-bold text-secondary-400"
+                variant="secondary"
+                className="flex items-center gap-1 px-2 py-1 text-xs"
               >
-                {matchingRoom ? matchingRoom.icon : null}
+                {matchingRoom.icon}
+                <span className="hidden sm:inline">{space}</span>
               </Badge>
-            )
+            ) : null
           })}
+          {spaces.length > 3 && (
+            <Badge variant="outline" className="px-2 py-1 text-xs">
+              +{spaces.length - 3}
+            </Badge>
+          )}
         </div>
       )}
+
+      <div className="mt-auto">
+        <p className="text-2xl font-bold">
+          {formatNumber(Number(realEstate.priceWithTax))} €
+        </p>
+      </div>
+
+      <Button
+        variant="ghost"
+        className="mt-3 w-full justify-between bg-primary-50 hover:bg-primary-100"
+        onClick={(e) => {
+          e.stopPropagation()
+          onClick(realEstate)
+        }}
+      >
+        Podrobnosti <ArrowRight className="size-4" />
+      </Button>
     </div>
-  </Button>
+  </div>
 )
 
 interface DetailedPropertyViewProps extends PropertyDetails {
@@ -183,98 +209,120 @@ const DetailedPropertyView: React.FC<DetailedPropertyViewProps> = ({
   url,
   id,
 }) => (
-  <Card className="w-full bg-primary-50">
-    <CardContent className="p-6">
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        <div className="relative">
+  <Card className="overflow-hidden border border-gray-200 bg-white shadow-lg">
+    <CardContent className="p-0">
+      <div className="grid grid-cols-1 gap-0 lg:grid-cols-2">
+        <div className="relative aspect-video lg:aspect-auto">
           <Image
             src={imageSrc ? `https://utfs.io/f/${imageSrc}` : '/no-image.webp'}
             alt={name}
-            width={800}
-            height={600}
-            className="max-h-[600px] w-full rounded-xl object-cover"
+            fill
+            className="object-cover"
           />
           {status && status === StatusType.Rezervirano && (
-            <div className="absolute right-0 top-0 w-full rounded-t-xl bg-orange-100 p-2.5 text-center font-semibold text-orange-800">
+            <div className="absolute inset-x-0 top-0 bg-orange-500 py-2 text-center font-medium text-white">
               Rezervirano
             </div>
           )}
           {status && status === StatusType.Prodano && (
-            <div className="absolute right-0 top-0 w-full rounded-t-xl bg-destructive-200 p-2.5 text-center font-semibold text-white">
+            <div className="absolute inset-x-0 top-0 bg-destructive-500 py-2 text-center font-medium text-white">
               Prodano
             </div>
           )}
         </div>
-        <div className="text-secondary-400">
-          <h2 className="mb-2 text-2xl font-bold">{type}</h2>
-          <h3 className="mb-4 text-3xl font-bold text-primary-200">{price} €</h3>
-          <p className="mb-4 text-gray-600">{location}</p>
-          {status && status === StatusType.Rezervirano && (
-            <div className="mb-4 flex flex-col gap-y-4">
-              <div className="flex w-full place-content-center items-start gap-2 rounded-md border border-secondary-200 bg-informative-50 p-2.5 text-secondary-200">
-                <InfoIcon className="shrink-0" size={20} />
-                <p className="text-sm">
-                  V primeru sprostitve rezervacije se prosim prijavite v čakalno listo.
-                </p>
+
+        <div className="flex flex-col justify-between p-6 lg:p-8">
+          <div>
+            <div className="mb-5 flex flex-wrap items-start justify-between gap-2">
+              <div>
+                <h2 className="text-secondary-800 text-2xl font-bold">{type}</h2>
+                <p className="text-sm text-gray-600">{location}</p>
               </div>
-              <div className="flex flex-wrap gap-4">
-                <Button variant={'primary'}>Obvesti me</Button>
+              <h3 className="text-primary-600 rounded-lg bg-primary-50 px-4 py-2 text-3xl font-bold">{price} €</h3>
+            </div>
+
+            <div className="mb-6 flex flex-wrap gap-3">
+              {size && (
+                <Badge variant="outline" className="flex items-center gap-2 bg-gray-50 px-3 py-1.5">
+                  <Maximize2 size={16} className="text-primary-500" />
+                  <span>{size} m²</span>
+                </Badge>
+              )}
+
+              {spaces && spaces.map((space, index) => {
+                const matchingRoom = rooms.find((room) => room.label === space)
+
+                return matchingRoom ? (
+                  <Badge
+                    key={index}
+                    variant="outline"
+                    className="flex items-center gap-2 bg-gray-50 px-3 py-1.5"
+                  >
+                    {React.cloneElement(matchingRoom.icon as React.ReactElement, {
+                      className: 'text-primary-500 size-4',
+                    })}
+                    <span>{space}</span>
+                  </Badge>
+                ) : null
+              })}
+            </div>
+
+            {description && (
+              <div className="mb-6 border-t border-gray-100 pt-5">
+                <h4 className="text-secondary-700 mb-3 flex items-center gap-2 font-semibold">
+                  <InfoIcon className="size-4 text-primary-500" />
+                  O nepremičnini
+                </h4>
+                <p className="text-gray-700">{description}</p>
+              </div>
+            )}
+          </div>
+
+          <div className="mt-6 border-t border-gray-100 pt-5">
+            {status && status === StatusType.Rezervirano && (
+              <div className="mb-4 rounded-lg bg-orange-50 p-4">
+                <div className="flex gap-3">
+                  <InfoIcon className="mt-0.5 size-5 shrink-0 text-orange-500" />
+                  <p className="text-sm text-orange-800">
+                    V primeru sprostitve rezervacije se prosim prijavite v čakalno listo.
+                  </p>
+                </div>
+
+                <div className="mt-4 flex flex-wrap gap-3">
+                  <Button variant="primary">Obvesti me</Button>
+                  <Link href={url}>
+                    <Button variant="ghost" className="w-full justify-between gap-2 bg-primary-50 hover:bg-primary-100">
+                      Podrobnejši ogled <ArrowRight className="size-4" />
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            )}
+
+            {status !== StatusType.Prodano && status !== StatusType.Rezervirano && (
+              <div className="flex flex-wrap gap-3">
+                <ReservationDialog realEstateId={id}>
+                  <Button variant="primary" className="gap-2">
+                    <KeySquare className="size-4" />
+                    Rezerviraj
+                  </Button>
+                </ReservationDialog>
+
                 <Link href={url}>
-                  <Button asChild variant={'secondary'}>
-                    <span>
-                      Ogled <ArrowRight />
-                    </span>
+                  <Button variant="ghost" className="w-full justify-between gap-2 bg-primary-50 hover:bg-primary-100">
+                    Podrobnejši ogled <ArrowRight className="size-4" />
                   </Button>
                 </Link>
               </div>
-            </div>
-          )}
-          {status !== StatusType.Prodano && status !== StatusType.Rezervirano && (
-            <div className="mb-4 flex flex-wrap gap-4">
-              <ReservationDialog realEstateId={id}>
-            <Button variant="primary" className="w-fit self-center lg:w-auto">
-              <KeySquare className="mr-2 size-4" />
-              Rezerviraj
-            </Button>
-          </ReservationDialog>
-              <Link href={url}>
-                <Button asChild variant={'secondary'}>
-                  <span>
-                    Ogled <ArrowRight />
-                  </span>
-                </Button>
-              </Link>
-            </div>
-          )}
-          {status === StatusType.Prodano && (
-            <div className="mb-4 flex flex-wrap gap-4">
-              <Link href={url}>
-                <Button asChild variant={'secondary'}>
-                  <span>
-                    Ogled <ArrowRight />
-                  </span>
-                </Button>
-              </Link>
-            </div>
-          )}
-          <p className="mb-4 text-gray-700">{description}</p>
-          <div className="mb-4 flex flex-wrap gap-4">
-            <Badge variant={'pills'} className="flex items-center gap-2">
-              <Maximize2 size={20} />
-              <span>{size} m²</span>
-            </Badge>
-            {spaces && (
-              <div className="flex flex-wrap gap-2">
-                {spaces.map((space, index) => {
-                  const matchingRoom = rooms.find((room) => room.label === space)
+            )}
 
-                  return (
-                    <Badge key={index} variant={'pills'} className="flex items-center gap-2 text-sm">
-                      {matchingRoom ? matchingRoom.icon : null}
-                      <span className="text-sm">{space}</span>
-                    </Badge>
-                  )
-                })}
+            {status === StatusType.Prodano && (
+              <div className="flex flex-wrap gap-3">
+                <Link href={url}>
+                  <Button variant="ghost" className="w-full justify-between gap-2 bg-primary-50 hover:bg-primary-100">
+                    Podrobnejši ogled <ArrowRight className="size-4" />
+                  </Button>
+                </Link>
               </div>
             )}
           </div>
@@ -291,7 +339,12 @@ const RealEstateListing = ({
   location: LocationWithRealEstates
   slug: string
 }) => {
-  const { propertyFilters, updatePropertyFilters } = useAppStore()
+  const {
+    propertyFilters,
+    updatePropertyFilters,
+    isFilterLoading,
+    setFilterLoading,
+  } = useAppStore()
 
   const [ selectedProject, setSelectedProject ] = useState<RealEstate | null>(null)
 
@@ -334,71 +387,102 @@ const RealEstateListing = ({
     } else if (selectedProject && !filteredRealEstates.includes(selectedProject)) {
       setSelectedProject(filteredRealEstates[0])
     }
-  }, [ filteredRealEstates, selectedProject ])
+
+    if (isFilterLoading) {
+      setTimeout(() => {
+        setFilterLoading(false)
+      }, 500)
+    }
+  }, [ filteredRealEstates, selectedProject, isFilterLoading, setFilterLoading ])
 
   if (filteredRealEstates.length === 0) {
     return (
-      <>
+      <div className="space-y-6">
         <PropertyFilter type={location.type} />
         <NoResultComponent onReset={resetFilters} />
-      </>
+      </div>
     )
   }
 
   return (
-    <>
-      {isDesktop ? (
-        <PropertyFilter type={location.type} />
-      ) : (
-        <Accordion type="single" collapsible>
-          <AccordionItem value="item-1">
-            <AccordionTrigger className="text-xl font-bold data-[state=open]:bg-transparent lg:text-3xl">
-              Filtri
-            </AccordionTrigger>
-            <AccordionContent className="data-[state=open]:bg-transparent">
-              <PropertyFilter isDesktop={isDesktop} type={location.type} />
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
-      )}
-      <section className="flex w-full flex-col gap-3 lg:gap-5">
-        <h2 className="flex items-center gap-2 text-xl font-bold text-secondary-400 lg:text-3xl">
-          <Home size={32} className="size-4 lg:size-8" /> Nepremičnine
-        </h2>
-        <Carousel className="w-full">
-          <CarouselContent className="-ml-4">
-            {filteredRealEstates.map((realEstate) => (
-              <CarouselItem key={realEstate.id} className="pl-4 sm:basis-auto">
-                <PropertyCard
-                  realEstate={realEstate}
-                  city={location.city}
-                  address={location.address}
-                  onClick={setSelectedProject}
-                  isActive={selectedProject?.id === realEstate.id}
-                  spaces={realEstate.spaces}
-                />
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-        </Carousel>
-        {selectedProject && (
-          <DetailedPropertyView
-            price={formatNumber(Number(selectedProject.priceWithTax))}
-            type={selectedProject.name}
-            location={`${location.city}, ${location.address}`}
-            size={selectedProject.size?.toString() || ''}
-            imageSrc={selectedProject.images[0]}
-            name={selectedProject.name}
-            spaces={selectedProject.spaces}
-            description={selectedProject.shortDescription || ''}
-            url={`${slug}/${selectedProject.id}`}
-            status={selectedProject.status}
-            id={selectedProject.id}
-          />
+    <div className="space-y-8">
+      <div className="rounded-lg bg-gray-50 p-4">
+        {isDesktop ? (
+          <PropertyFilter type={location.type} />
+        ) : (
+          <Accordion type="single" collapsible className="w-full">
+            <AccordionItem value="item-1" className="border-none">
+              <AccordionTrigger className="text-secondary-700 px-0 py-2 text-lg font-semibold">
+                <div className="flex items-center gap-2">
+                  <div className="rounded-full bg-primary-100 p-1.5">
+                    <TableIcon className="text-primary-600 size-4" />
+                  </div>
+                  Filtri
+                </div>
+              </AccordionTrigger>
+              <AccordionContent>
+                <PropertyFilter isDesktop={isDesktop} type={location.type} />
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        )}
+      </div>
 
+      <section className="relative space-y-6">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="rounded-full bg-primary-100 p-2">
+              <Home className="text-primary-600 size-5" />
+            </div>
+            <h2 className="text-secondary-700 text-xl font-bold lg:text-2xl">
+              Nepremičnine ({filteredRealEstates.length})
+            </h2>
+          </div>
+        </div>
+
+        {isFilterLoading && (
+          <div className="absolute inset-0 z-10 flex items-center justify-center rounded-lg bg-white/70 backdrop-blur-sm">
+            <div className="flex flex-col items-center gap-3 rounded-lg bg-white p-6 shadow-lg">
+              <Loader className="size-10 animate-spin text-primary-400" />
+              <p className="text-secondary-700 text-base font-medium">Filtriranje nepremičnin...</p>
+            </div>
+          </div>
+        )}
+
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {filteredRealEstates.map((realEstate) => (
+            <PropertyCard
+              key={realEstate.id}
+              realEstate={realEstate}
+              city={location.city}
+              address={location.address}
+              onClick={setSelectedProject}
+              isActive={selectedProject?.id === realEstate.id}
+              spaces={realEstate.spaces}
+            />
+          ))}
+        </div>
+
+        {selectedProject && (
+          <div className="mt-8">
+            <h3 className="text-secondary-700 mb-4 text-lg font-semibold">Podrobnosti izbrane nepremičnine</h3>
+            <DetailedPropertyView
+              price={formatNumber(Number(selectedProject.priceWithTax))}
+              type={selectedProject.name}
+              location={`${location.city}, ${location.address}`}
+              size={selectedProject.size?.toString() || ''}
+              imageSrc={selectedProject.images[0]}
+              name={selectedProject.name}
+              spaces={selectedProject.spaces}
+              description={selectedProject.shortDescription || ''}
+              url={`${slug}/${selectedProject.id}`}
+              status={selectedProject.status}
+              id={selectedProject.id}
+            />
+          </div>
         )}
       </section>
-    </>
+    </div>
   )
 }
 

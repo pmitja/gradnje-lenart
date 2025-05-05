@@ -30,7 +30,7 @@ export default async function RootLayout({ children }: Readonly<{
   return (
     <SessionProvider session={session}>
       <html lang='sl'>
-        <body className={`${montserrat.className} ${archivo.variable} overflow-x-hidden bg-body-75`}>
+        <body className={`${montserrat.className} ${archivo.variable} overflow-x-hidden`}>
           <WithLayout layout='centered'>{children}</WithLayout>
           <Toaster position="top-center" />
         </body>

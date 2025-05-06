@@ -93,10 +93,12 @@ const AktualniProjektPage = ({ params: { slug } }: { params: { slug: string } })
   }
 
   useEffect(() => {
-    setValue('apartments', apartments.map((apartment) => ({
-      ...apartment,
-      files: null,
-    })))
+    if (apartments && apartments.length > 0) {
+      setValue('apartments', apartments.map((apartment) => ({
+        ...apartment,
+        files: null,
+      })))
+    }
   }, [ apartments, setValue ])
 
   function onSubmit(values: z.infer<typeof updateSchema>) {

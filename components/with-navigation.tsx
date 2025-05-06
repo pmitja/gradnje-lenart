@@ -20,10 +20,6 @@ const navItems = [
     text: 'Reference',
     link: '/reference',
   },
-  {
-    text: 'Kontakt',
-    link: '/kontakt',
-  },
 ]
 
 const WithNavigation: FC = () => {

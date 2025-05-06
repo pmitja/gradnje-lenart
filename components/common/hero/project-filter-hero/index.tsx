@@ -17,35 +17,46 @@ const ProjectFilterHero = () => {
   }
 
   return (
-    <div className="relative inset-x-1/2 mx-[-50vw] w-screen min-w-[100vw] bg-hero-page bg-cover py-16 lg:py-20">
+    <div className="relative inset-x-1/2 mx-[-50vw] min-h-[60dvh] w-screen py-16 lg:py-20">
+      {/* Background Image with Overlay */}
+      <div className="absolute inset-0">
+        <Image
+          src="/hero-2.webp"
+          alt="Modern Apartment"
+          fill
+          className="object-cover"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
+      </div>
       <div className="container relative px-4 lg:px-8">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
           {/* Left side - Text and filters */}
           <div className="flex flex-col justify-center lg:col-span-6">
-            <p className="text-primary-600 mb-3 text-sm font-medium">Najdite svoj sanjski dom že danes.</p>
+            <p className="mb-3 text-sm font-medium text-white">Najdite svoj sanjski dom že danes.</p>
             <h1 className="mb-6 text-4xl font-bold lg:text-5xl">
-              <span className="text-secondary-800">Vaša </span>
-              <span className="text-primary-400">nepremičnina</span>
-              <span className="text-secondary-800">, naša prioriteta.</span>
+              <span className="text-white">Vaša </span>
+              <span className="text-primary-100">nepremičnina</span>
+              <span className="text-white">, naša prioriteta.</span>
             </h1>
 
             <div className="mb-8 mt-2 rounded-xl bg-white p-5 shadow-lg">
-              <h3 className="text-secondary-800 mb-4 text-xl font-semibold">Najdite Svoj Dom</h3>
+              <h3 className="mb-4 text-xl font-semibold text-secondary-500">Najdite svoj dom</h3>
               <ProjectsFilter />
             </div>
 
             {/* Popular search tags */}
             <div className="mt-2">
-              <div className="text-secondary-600 text-sm font-medium">Priljubljeno Iskanje</div>
+              <div className="text-sm font-medium text-white">Priljubljeno iskanje</div>
               <div className="mt-3 flex flex-wrap gap-2">
                 <Badge
-                  className="text-secondary-600 cursor-pointer rounded-full bg-white px-4 py-2 text-sm font-medium shadow-sm hover:bg-secondary-50"
+                  className="cursor-pointer rounded-full bg-white px-4 py-2 text-sm font-medium text-secondary-500 shadow-sm hover:bg-secondary-50"
                   onClick={() => handlePopularSearchClick(LocationType.Apartments)}
                 >
                   Večstanovanjski objekti
                 </Badge>
                 <Badge
-                  className="text-secondary-600 cursor-pointer rounded-full bg-white px-4 py-2 text-sm font-medium shadow-sm hover:bg-secondary-50"
+                  className="cursor-pointer rounded-full bg-white px-4 py-2 text-sm font-medium text-secondary-500 shadow-sm hover:bg-secondary-50"
                   onClick={() => handlePopularSearchClick(LocationType.House)}
                 >
                   Hiše

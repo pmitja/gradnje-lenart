@@ -1,11 +1,13 @@
 'use client'
 
+import { Car, Maximize2 } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useCallback, useEffect, useRef, useState, useTransition } from 'react'
 
 import { getAllRealEstates } from '@/actions/get-all-real-estates'
 import Spinner from '@/components/common/spinner'
+import FloorIcon from '@/components/icons/floor'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { useAppStore } from '@/store/app'
@@ -81,7 +83,7 @@ const PropertyCard = ({ property }: { property: RealEstate }) => {
 
     <div className="space-y-3 p-4">
       {/* Property Title */}
-      <h3 className="text-secondary-900 text-xl font-bold">{property.name}</h3>
+      <h3 className="text-xl font-bold text-secondary-500">{property.name}</h3>
 
       {/* Location */}
       <div className="flex items-center text-gray-600">
@@ -96,26 +98,18 @@ const PropertyCard = ({ property }: { property: RealEstate }) => {
 
       {/* Property Details */}
       <div className="grid grid-cols-3 gap-2 border-y border-gray-100 py-2">
-        <div className="flex items-center justify-center">
-          <svg xmlns="http://www.w3.org/2000/svg" className="mr-1 size-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6z" />
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6z" />
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2z" />
-          </svg>
+        <div className="flex items-center justify-center gap-4">
+          <Maximize2 className="mr-1 size-5 text-gray-500" />
           <span className="text-sm font-medium">{property.size} m²</span>
         </div>
 
-        <div className="flex items-center justify-center">
-          <svg xmlns="http://www.w3.org/2000/svg" className="mr-1 size-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-          </svg>
+        <div className="flex items-center justify-center gap-4">
+          <FloorIcon className="mr-1 size-5 text-gray-500" width={20} height={20}/>
           <span className="text-sm font-medium">{property.floor || 'P'}</span>
         </div>
 
-        <div className="flex items-center justify-center">
-          <svg xmlns="http://www.w3.org/2000/svg" className="mr-1 size-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
-          </svg>
+        <div className="flex items-center justify-center gap-4">
+          <Car className="mr-1 size-5 text-gray-500" />
           <span className="text-sm font-medium">{property.parkingSpaces || 0}</span>
         </div>
       </div>
@@ -129,7 +123,6 @@ const PropertyCard = ({ property }: { property: RealEstate }) => {
         </span>
         <Button
           variant="outline"
-          className="border-primary-600 text-primary-600 rounded-full hover:bg-primary-50"
           asChild
         >
           <Link href={`/projekt/${property.location.slug}/${property.id}`}>
@@ -372,8 +365,8 @@ export default function PropertyListingSection() {
           key={filter.id}
           className={`cursor-pointer rounded-full px-6 py-2.5 text-sm font-medium ${
             activeFilter === filter.id
-              ? 'text-secondary-900 border border-gray-200 bg-secondary-50 shadow-sm'
-              : 'hover:text-secondary-700 border border-gray-200 bg-white text-secondary-500'
+              ? 'border border-gray-200 bg-secondary-50 text-secondary-500 shadow-sm'
+              : 'border border-gray-200 bg-white text-secondary-500 hover:text-secondary-400'
           }`}
           onClick={() => handleFilterChange(filter.id)}
         >

@@ -82,7 +82,7 @@ const ProjectsFilter = () => {
                   name="location"
                   render={({ field }) => (
                     <FormItem className="md:col-span-5">
-                      <FormLabel className="text-secondary-600 flex items-center gap-2 text-sm font-medium">
+                      <FormLabel className="flex items-center gap-2 text-sm font-medium text-secondary-500">
                         <MapPin className="size-4 text-primary-500" />
                         Lokacija
                       </FormLabel>
@@ -163,9 +163,9 @@ const ProjectsFilter = () => {
               <Button
                 type="submit"
                 variant="primary"
-                className="hover:bg-primary-600 mt-2 flex w-full items-center justify-center gap-2 px-6 py-2.5 shadow-md transition-all duration-200 hover:shadow-lg md:col-span-2 md:mt-auto md:self-end"
+                className="mt-2 flex w-full items-center justify-center gap-2 px-6 py-2.5 shadow-md transition-all duration-200 hover:bg-primary-500 hover:shadow-lg md:col-span-2 md:mt-auto md:self-end"
               >
-                <Search className="size-4" />
+                <Search className="min-w-3" />
                 <span>Išči</span>
               </Button>
             </div>

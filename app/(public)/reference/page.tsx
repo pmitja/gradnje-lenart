@@ -31,8 +31,8 @@ const ReferencePage = async () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section - Full-screen green background */}
-      <div className="w-full bg-primary-75">
-        <div className="absolute inset-x-0 h-[600px] w-full bg-primary-75">
+      <div className="w-full">
+        <div className="absolute inset-x-0 h-[600px] w-full bg-hero-page bg-cover">
           <div className="absolute inset-0 z-0 opacity-15">
             <Image
               src="/page-hero.webp"
@@ -188,7 +188,7 @@ const ReferencePage = async () => {
         </section>
 
         {/* Timeline Section */}
-        <section className="bg-secondary-50 py-16 lg:py-24">
+        <section className="py-16 lg:py-24">
           <div className="container px-4 sm:px-6">
             <h2 className="mb-12 text-center text-3xl font-bold text-secondary-500 md:text-4xl">
               Zgodovina projektov

@@ -3,7 +3,7 @@ import Image from 'next/image'
 import React from 'react'
 
 import ContactUs from '@/components/common/contact-us'
-import Cta from '@/components/common/cta'
+import ProjectsCta from '@/components/common/projects-cta'
 import GradnjeIcon from '@/components/icons/gradnje-icon'
 import OffersBanner from '@/components/layouts/sections/offers-banner'
 import ShadowBanner from '@/components/ui/shadow-banner'
@@ -76,8 +76,8 @@ const KontaktPage = () => (
     <section className="py-6 lg:py-12">
       <ContactUs />
     </section>
-      <Cta />
-      <OffersBanner />
+    <ProjectsCta />
+    <OffersBanner />
   </div>
 )
 

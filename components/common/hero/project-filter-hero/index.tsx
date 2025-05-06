@@ -60,11 +60,11 @@ const ProjectFilterHero = () => {
               <div className="col-span-8 col-start-1 row-span-1">
                 <div className="overflow-hidden rounded-xl shadow-lg">
                   <Image
-                    src="/apartment-image.webp"
+                    src="/filters-hero-2.webp"
                     alt="Moderna zunanjost stanovanja"
                     width={600}
                     height={400}
-                    className="h-64 w-full object-cover"
+                    className="h-64 w-full object-cover object-[0_38%]"
                   />
                 </div>
               </div>
@@ -72,11 +72,11 @@ const ProjectFilterHero = () => {
               <div className="col-span-6 col-start-7 row-span-1 row-start-1">
                 <div className="overflow-hidden rounded-xl shadow-lg">
                   <Image
-                    src="/apartment-image.webp"
+                    src="/filters-hero-1.webp"
                     alt="Luksuzna dnevna soba"
                     width={300}
                     height={200}
-                    className="h-44 w-full object-cover"
+                    className="h-44 w-full object-cover object-[0_27%]"
                   />
                 </div>
               </div>
@@ -84,7 +84,7 @@ const ProjectFilterHero = () => {
               <div className="col-span-5 col-start-8 row-span-1 row-start-2">
                 <div className="overflow-hidden rounded-xl shadow-lg">
                   <Image
-                    src="/apartment-image.webp"
+                    src="/filters-hero-4.webp"
                     alt="Moderna kuhinja"
                     width={300}
                     height={200}
@@ -96,7 +96,7 @@ const ProjectFilterHero = () => {
               <div className="col-span-7 col-start-1 row-span-1 row-start-2">
                 <div className="overflow-hidden rounded-xl shadow-lg">
                   <Image
-                    src="/apartment-image.webp"
+                    src="/filters-hero-3.webp"
                     alt="Zunanjost nepremičnine"
                     width={350}
                     height={200}

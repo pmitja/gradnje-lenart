@@ -39,8 +39,8 @@ const DesktopNavigation = ({ navItems }: NavbarProps) => {
     <>
       {/* Top info bar */}
       <div className={cn(
-        'fixed inset-x-0 top-0 z-[21480000] h-[36px] transition-all duration-300',
-        'bg-primary-300 text-white',
+        'fixed inset-x-0 top-0 z-[21480000] h-[40px] transition-all duration-300',
+        'bg-primary-200 text-white',
       )}>
         <div className="container mx-auto flex h-full items-center justify-between px-4">
           <div className="flex items-center gap-6">
@@ -104,7 +104,7 @@ const DesktopNavigation = ({ navItems }: NavbarProps) => {
 
       {/* Main navigation */}
       <header className={cn(
-        'fixed inset-x-0 top-[36px] z-[21470000] transition-all duration-500',
+        'fixed inset-x-0 top-[40px] z-[21470000] transition-all duration-500',
         scrolled
           ? 'bg-white/95 backdrop-blur-md shadow-md'
           : 'bg-transparent',
@@ -146,8 +146,9 @@ const DesktopNavigation = ({ navItems }: NavbarProps) => {
 
                   {/* Active indicator */}
                   <div className={cn(
-                    'absolute bottom-0 left-0 h-1 w-full origin-center scale-x-0 bg-primary-300 transition-transform duration-300',
+                    'absolute bottom-0 left-0 h-1 w-full origin-center scale-x-0 bg-primary-100 transition-transform duration-300',
                     (pathname === navItem.link || hoveredItem === navItem.link) && 'scale-x-100',
+                    pathname === navItem.link && 'bg-primary-300',
                   )} />
                 </li>
               ))}

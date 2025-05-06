@@ -19,25 +19,17 @@ const ProjectFilterHero = () => {
   return (
     <div className="relative inset-x-1/2 mx-[-50vw] min-h-[60dvh] w-screen py-16 lg:py-20">
       {/* Background Image with Overlay */}
-      <div className="absolute inset-0">
-        <Image
-          src="/hero-2.webp"
-          alt="Modern Apartment"
-          fill
-          className="object-cover"
-          priority
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
+      <div className="absolute inset-0 bg-hero-page">
       </div>
       <div className="container relative px-4 lg:px-8">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
           {/* Left side - Text and filters */}
           <div className="flex flex-col justify-center lg:col-span-6">
-            <p className="mb-3 text-sm font-medium text-white">Najdite svoj sanjski dom že danes.</p>
+            <p className="mb-6 flex max-w-fit items-center gap-2 rounded-full bg-white px-3 py-2 text-xs font-medium text-secondary-300 shadow-lg">Najdite svoj sanjski dom že danes.</p>
             <h1 className="mb-6 text-4xl font-bold lg:text-5xl">
-              <span className="text-white">Vaša </span>
-              <span className="text-primary-100">nepremičnina</span>
-              <span className="text-white">, naša prioriteta.</span>
+              <span className="text-secondary-300">Vaša </span>
+              <span className="text-primary-400">nepremičnina</span>
+              <span className="text-secondary-300">, naša prioriteta.</span>
             </h1>
 
             <div className="mb-8 mt-2 rounded-xl bg-white p-5 shadow-lg">

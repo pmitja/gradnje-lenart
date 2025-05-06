@@ -62,7 +62,8 @@ export default function Footer() {
               />
             </div>
             <p className="mb-4 text-gray-200">
-              Gradnje Lenart je vodilno podjetje za gradnjo in prodajo nepremičnin v Slovenskih goricah z več kot 15 let izkušenj.
+              Gradnje Lenart je vodilno podjetje za gradnjo in prodajo nepremičnin
+              v Slovenskih goricah.
             </p>
             <div className="flex space-x-3">
               {socialLinks.map((link, i) => (
@@ -118,28 +119,6 @@ export default function Footer() {
             <div className="mt-4">
               <p className="text-sm">Delovni čas: Pon-Pet, 8:00 - 16:00</p>
             </div>
-          </div>
-
-          {/* Newsletter */}
-          <div>
-            <h3 className="mb-4 text-lg font-bold">Ostanite obveščeni</h3>
-            <p className="mb-4 text-gray-200">
-              Prijavite se na naše e-novice in bodite prvi obveščeni o novih projektih in ponudbah.
-            </p>
-            <form className="flex">
-              <input
-                type="email"
-                placeholder="Vaš email naslov"
-                className="w-full rounded-l-md px-4 py-2 text-secondary-300"
-                required
-              />
-              <button
-                type="submit"
-                className="rounded-r-md bg-primary-300 px-4 py-2"
-              >
-                Prijava
-              </button>
-            </form>
           </div>
         </div>
 

@@ -41,7 +41,7 @@ const Footer = ({ navItems }: NavbarProps) => {
       </button>
 
       <div className="container mx-auto px-4 py-16">
-        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
           {/* Company Info */}
           <div className="flex flex-col items-center text-center md:items-start md:text-left">
             <div className="mb-6 transition-transform duration-300 hover:scale-105">
@@ -125,29 +125,6 @@ const Footer = ({ navItems }: NavbarProps) => {
             </ul>
           </div>
 
-          {/* Newsletter Signup */}
-          <div className="flex flex-col items-center md:items-start">
-            <h3 className="mb-6 text-lg font-bold text-secondary-400">Ostanite obveščeni</h3>
-            <p className="mb-4 text-secondary-300">
-              Prijavite se na naše e-novice za prejemanje novic o nepremičninah
-              in aktualnih projektih.
-            </p>
-            <div className="flex w-full max-w-xs flex-col space-y-3">
-              <input
-                type="email"
-                placeholder="Vaš e-naslov"
-                className="w-full rounded-md border border-secondary-200/20 bg-white/80 px-4 py-2 text-secondary-300 placeholder:text-secondary-200 focus:border-primary-300 focus:outline-none"
-                aria-label="Email za novice"
-              />
-              <Button
-                variant="primary"
-                size="default"
-                className="w-full transition-all duration-300 hover:translate-y-[-2px] hover:shadow-md"
-              >
-                Prijava
-              </Button>
-            </div>
-          </div>
         </div>
 
         {/* Bottom Bar */}

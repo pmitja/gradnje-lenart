@@ -127,8 +127,8 @@ export default function LocationsSection() {
     <section className="py-16">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
-          <h2 className="text-secondary-800 text-3xl font-bold sm:text-4xl">Najdi Projekte v Teh Lokacijah</h2>
-          <p className="text-secondary-600 mt-2">Odkrijte naše stanovanjske projekte na različnih lokacijah</p>
+          <h2 className="text-secondary-800 text-3xl font-bold sm:text-4xl">Aktivne lokacije</h2>
+          <p className="text-secondary-600 mt-2">Odkrijte naše aktualne projekte na različnih lokacijah</p>
         </div>
         {content}
       </div>

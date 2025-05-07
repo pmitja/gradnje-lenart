@@ -102,14 +102,14 @@ export default function Footer() {
               <li className="flex items-start">
                 <MapPin className="mr-2 size-5 shrink-0" />
                 <span>
-                  Ljubljanska cesta 25,
+                  Partizanska cesta 14,
                   <br />
                   2230 Lenart v Slovenskih goricah
                 </span>
               </li>
               <li className="flex items-center">
                 <Phone className="mr-2 size-5" />
-                <span>+386 2 720 83 30</span>
+                <span>+386 41 638 451</span>
               </li>
               <li className="flex items-center">
                 <Mail className="mr-2 size-5" />

@@ -5,6 +5,11 @@ import { db } from '@/lib/db'
 export async function getAllRealEstates() {
   try {
     const realEstates = await db.realEstate.findMany({
+      where: {
+        status: {
+          not: 'Prodano'
+        }
+      },
       include: {
         location: true,
       },

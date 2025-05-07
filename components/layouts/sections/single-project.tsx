@@ -123,7 +123,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
         </div>
       )}
       {realEstate.status === StatusType.Prodano && (
-        <div className="absolute inset-x-0 top-0 bg-destructive-500 py-1.5 text-center text-sm font-medium text-white">
+        <div className="absolute inset-x-0 top-0 bg-gradient-to-r from-destructive-300 to-destructive-200 py-1.5 text-center text-sm font-medium text-white">
           Prodano
         </div>
       )}
@@ -225,7 +225,7 @@ const DetailedPropertyView: React.FC<DetailedPropertyViewProps> = ({
             </div>
           )}
           {status && status === StatusType.Prodano && (
-            <div className="absolute inset-x-0 top-0 bg-destructive-500 py-2 text-center font-medium text-white">
+            <div className="absolute inset-x-0 top-0 bg-gradient-to-r from-destructive-300 to-destructive-200 py-2 text-center font-medium text-white">
               Prodano
             </div>
           )}

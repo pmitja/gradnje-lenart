@@ -2,12 +2,13 @@
 
 import 'yet-another-react-lightbox/styles.css'
 
-import { ThumbsUp, X } from 'lucide-react'
+import { Camera, Image as ImageIcon, ThumbsUp, X } from 'lucide-react'
 import Image from 'next/image'
 import React, { useState } from 'react'
 import Lightbox from 'yet-another-react-lightbox'
 
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
 
@@ -16,9 +17,8 @@ interface ImageGalleryProps {
 }
 
 const RealEstateImages: React.FC<ImageGalleryProps> = ({ images }) => {
-  const [ isOpen, setIsOpen ] = useState(false)
-
-  const [ currentImageIndex, setCurrentImageIndex ] = useState(0)
+  const [isOpen, setIsOpen] = useState(false)
+  const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
   const openLightbox = (index: number) => {
     setCurrentImageIndex(index)
@@ -27,35 +27,53 @@ const RealEstateImages: React.FC<ImageGalleryProps> = ({ images }) => {
 
   return (
     <>
-      <div className={cn(
-        'grid gap-4',
-        images.length === 1 && 'grid-cols-1',
-        images.length >= 2 && 'grid-cols-2 md:grid-cols-3',
-      )}>
-        {images.slice(0, 3).map((image, index) => (
-          <Card key={index} className="overflow-hidden">
-            <CardContent className="relative p-0">
-              <div className="relative h-48 w-full md:h-64" >
-                <Image
-                  src={`https://utfs.io/f/${image}`}
-                  alt={image}
-                  className='cursor-pointer object-cover'
-                  fill
-                  onClick={() => openLightbox(index)}
-                />
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-semibold text-secondary-400">
+            Fotografije ({images.length})
+          </h2>
+          {images.length > 3 && (
+            <Button
+              variant="outline"
+              size="sm"
+              className="flex items-center gap-2 text-sm font-medium text-primary-300 hover:text-primary-400"
+              onClick={() => openLightbox(0)}
+            >
+              <Camera className="h-4 w-4" />
+              Ogled vseh slik
+            </Button>
+          )}
+        </div>
+
+        {/* Horizontally scrollable thumbnail gallery */}
+        <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-primary-100" style={{ height: 120 }}>
+          {images.map((image, index) => (
+            <div
+              key={index}
+              className="relative flex-shrink-0 cursor-pointer rounded-lg overflow-hidden border border-secondary-100 shadow-sm group"
+              style={{ width: 160, height: 110 }}
+              tabIndex={0}
+              aria-label={`Poglej sliko ${index + 1}`}
+              onClick={() => openLightbox(index)}
+              onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') openLightbox(index) }}
+            >
+              <Image
+                src={`https://utfs.io/f/${image}`}
+                alt={`Real estate image ${index + 1}`}
+                fill
+                className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
+                sizes="160px"
+                quality={80}
+                loading="lazy"
+              />
+              <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/20 transition-all duration-200">
+                <ImageIcon className="opacity-0 group-hover:opacity-100 text-white size-6" />
               </div>
-              {index === 1 && (
-                <Badge
-                  className="absolute left-2 top-2 flex items-center gap-1 bg-primary-500 shadow-md"
-                >
-                  <ThumbsUp className="size-4" />
-                  Top izbira
-                </Badge>
-              )}
-            </CardContent>
-          </Card>
-        ))}
+            </div>
+          ))}
+        </div>
       </div>
+
       <Lightbox
         open={isOpen}
         close={() => setIsOpen(false)}
@@ -67,9 +85,25 @@ const RealEstateImages: React.FC<ImageGalleryProps> = ({ images }) => {
           root: {
             zIndex: 99999999,
           },
+          container: {
+            backgroundColor: 'rgba(0, 0, 0, 0.9)',
+          },
         }}
         render={{
           iconClose: () => <X className="size-6" />,
+        }}
+        carousel={{
+          finite: false,
+          preload: 3,
+          padding: '16px',
+          spacing: '30px',
+          imageFit: 'contain',
+        }}
+        animation={{
+          swipe: 300,
+        }}
+        controller={{
+          closeOnBackdropClick: true,
         }}
         toolbar={{
           buttons: [

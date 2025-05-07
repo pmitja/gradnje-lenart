@@ -69,7 +69,14 @@ const PropertyCard = ({ property }: { property: RealEstate }) => {
   <div className="group flex flex-col overflow-hidden rounded-lg shadow-md transition-all hover:shadow-lg">
     <div className="relative h-[260px] w-full overflow-hidden">
       <Image
-        src={property.images[0] || '/apartment-image.webp'}
+        src={
+          property.images[0] && 
+          (property.images[0].startsWith('/') || 
+           property.images[0].startsWith('http://') || 
+           property.images[0].startsWith('https://')) 
+            ? property.images[0] 
+            : '/apartment-image.webp'
+        }
         alt={property.name}
         fill
         className="object-cover transition-transform duration-500 group-hover:scale-105"

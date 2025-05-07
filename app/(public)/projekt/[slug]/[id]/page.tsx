@@ -6,10 +6,10 @@ import OffersBanner from '@/components/layouts/sections/offers-banner'
 import { LocationType, SpacesType } from '@/types/general'
 
 import DetailViewRealEstate from './_components/detail-view-real-estate'
+import ProjectsCta from '@/components/common/projects-cta'
 
 const SingleProjectPage = async ({ params }: { params: { slug: string; id: string } }) => {
   const location = await getLocationRealEstates(params.slug.toString())
-
   const realEstates = await getRealEstateById(params.id.toString())
 
   if (!realEstates || !location) {
@@ -17,7 +17,7 @@ const SingleProjectPage = async ({ params }: { params: { slug: string; id: strin
   }
 
   return (
-    <div>
+    <div className="min-h-screen bg-body-50">
       <RealEstateHero
         id={params.id}
         title={realEstates.name}
@@ -26,26 +26,30 @@ const SingleProjectPage = async ({ params }: { params: { slug: string; id: strin
         parkingSpaces={realEstates.parkingSpaces ?? 0}
         status={realEstates.status}
       />
-      <DetailViewRealEstate
-        id={params.id}
-        description={realEstates.description ?? ''}
-        technicalData={realEstates.technicalData as { id: string; text: string }[]}
-        address={location.address}
-        city={location.city}
-        files={realEstates.files as { name: string; key: string }[]}
-        spaces={realEstates.spaces as SpacesType[]}
-        status={realEstates.status}
-        price={realEstates.priceWithTax}
-        lastTimeReserved={realEstates.updatedAt}
-        energyLevel={realEstates.energyLevel}
-        parkingSpaces={realEstates.parkingSpaces}
-        size={realEstates.size}
-        images={realEstates.images}
-        type={location.type as LocationType}
-      />
-      <div className="mt-5 flex flex-col gap-5 lg:mt-10 lg:gap-10">
-        <Cta />
-        <OffersBanner />
+      
+      <div className="mx-auto max-w-container px-4 py-8 sm:px-6 lg:py-12">
+        <DetailViewRealEstate
+          id={params.id}
+          description={realEstates.description ?? ''}
+          technicalData={realEstates.technicalData as { id: string; text: string }[]}
+          address={location.address}
+          city={location.city}
+          files={realEstates.files as { name: string; key: string }[]}
+          spaces={realEstates.spaces as SpacesType[]}
+          status={realEstates.status}
+          price={realEstates.priceWithTax}
+          lastTimeReserved={realEstates.updatedAt}
+          energyLevel={realEstates.energyLevel}
+          parkingSpaces={realEstates.parkingSpaces}
+          size={realEstates.size}
+          images={realEstates.images}
+          type={location.type as LocationType}
+        />
+        
+        <div className="mt-10 space-y-10 lg:mt-16 lg:space-y-16">
+          <ProjectsCta />
+          <OffersBanner />
+        </div>
       </div>
     </div>
   )

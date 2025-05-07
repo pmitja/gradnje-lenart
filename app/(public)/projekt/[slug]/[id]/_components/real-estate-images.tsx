@@ -2,23 +2,21 @@
 
 import 'yet-another-react-lightbox/styles.css'
 
-import { Camera, Image as ImageIcon, ThumbsUp, X } from 'lucide-react'
+import { Camera, Image as ImageIcon, X } from 'lucide-react'
 import Image from 'next/image'
 import React, { useState } from 'react'
 import Lightbox from 'yet-another-react-lightbox'
 
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
-import { cn } from '@/lib/utils'
 
 interface ImageGalleryProps {
   images: string[];
 }
 
 const RealEstateImages: React.FC<ImageGalleryProps> = ({ images }) => {
-  const [isOpen, setIsOpen] = useState(false)
-  const [currentImageIndex, setCurrentImageIndex] = useState(0)
+  const [ isOpen, setIsOpen ] = useState(false)
+
+  const [ currentImageIndex, setCurrentImageIndex ] = useState(0)
 
   const openLightbox = (index: number) => {
     setCurrentImageIndex(index)
@@ -39,35 +37,39 @@ const RealEstateImages: React.FC<ImageGalleryProps> = ({ images }) => {
               className="flex items-center gap-2 text-sm font-medium text-primary-300 hover:text-primary-400"
               onClick={() => openLightbox(0)}
             >
-              <Camera className="h-4 w-4" />
+              <Camera className="size-4" />
               Ogled vseh slik
             </Button>
           )}
         </div>
 
         {/* Horizontally scrollable thumbnail gallery */}
-        <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-primary-100" style={{ height: 120 }}>
+        <div className="scrollbar-thin scrollbar-thumb-primary-100 flex gap-3 overflow-x-auto pb-2" style={{
+          height: 120,
+        }}>
           {images.map((image, index) => (
             <div
               key={index}
-              className="relative flex-shrink-0 cursor-pointer rounded-lg overflow-hidden border border-secondary-100 shadow-sm group"
-              style={{ width: 160, height: 110 }}
+              className="group relative shrink-0 cursor-pointer overflow-hidden rounded-lg border border-secondary-100 shadow-sm"
+              style={{
+                width: 160, height: 110,
+              }}
               tabIndex={0}
               aria-label={`Poglej sliko ${index + 1}`}
               onClick={() => openLightbox(index)}
-              onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') openLightbox(index) }}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') openLightbox(index) }}
             >
               <Image
                 src={`https://utfs.io/f/${image}`}
                 alt={`Real estate image ${index + 1}`}
                 fill
-                className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
+                className="size-full object-cover transition-transform duration-300 group-hover:scale-105"
                 sizes="160px"
                 quality={80}
                 loading="lazy"
               />
-              <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/20 transition-all duration-200">
-                <ImageIcon className="opacity-0 group-hover:opacity-100 text-white size-6" />
+              <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-all duration-200 group-hover:bg-black/20">
+                <ImageIcon className="size-6 text-white opacity-0 group-hover:opacity-100" />
               </div>
             </div>
           ))}

@@ -1,6 +1,6 @@
 'use client'
 
-import { ArrowUpRight, Calendar, Check, MapPin, MoreHorizontal, User, X } from 'lucide-react'
+import { Calendar, Check, MapPin, User, X } from 'lucide-react'
 import Image from 'next/image'
 import { useState } from 'react'
 import { toast } from 'sonner'
@@ -11,8 +11,7 @@ import { removeAllFromWaitingList } from '@/actions/remove-all-from-waiting-list
 import { removeReservation } from '@/actions/remove-reservation'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Separator } from '@/components/ui/separator'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -40,10 +39,13 @@ interface ReservationsListProps {
 }
 
 const ReservationsList = ({ initialReservations, onReservationUpdated, userRole = 'USER' }: ReservationsListProps) => {
-  const [reservations, setReservations] = useState(initialReservations)
-  const [selectedReservation, setSelectedReservation] = useState<Reservation | null>(null)
-  const [viewType, setViewType] = useState<'grid' | 'table'>('grid')
-  const [detailsOpen, setDetailsOpen] = useState(false)
+  const [ reservations, setReservations ] = useState(initialReservations)
+
+  const [ selectedReservation, setSelectedReservation ] = useState<Reservation | null>(null)
+
+  const [ viewType, setViewType ] = useState<'grid' | 'table'>('grid')
+
+  const [ detailsOpen, setDetailsOpen ] = useState(false)
 
   const isAdmin = userRole === 'ADMIN'
 
@@ -114,7 +116,7 @@ const ReservationsList = ({ initialReservations, onReservationUpdated, userRole 
           <h2 className="text-2xl font-semibold text-secondary-300">Rezervacije</h2>
           <p className="text-muted-foreground">Upravljajte rezervacije nepremičnin</p>
         </div>
-        
+
         <div className="flex items-center gap-2">
           <Tabs defaultValue="grid" onValueChange={(value) => setViewType(value as 'grid' | 'table')}>
             <TabsList className="grid w-[180px] grid-cols-2">
@@ -124,7 +126,7 @@ const ReservationsList = ({ initialReservations, onReservationUpdated, userRole 
           </Tabs>
         </div>
       </div>
-      
+
       {viewType === 'grid' ? (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {reservations.map((reservation) => (
@@ -148,8 +150,8 @@ const ReservationsList = ({ initialReservations, onReservationUpdated, userRole 
               </div>
               <CardHeader className="p-4">
                 <CardTitle className="flex justify-between">
-                  <span className="text-lg text-secondary-300 line-clamp-1">{reservation.realEstate.name}</span>
-                  <span className="text-sm font-normal text-primary-300 bg-primary-50 px-2 py-0.5 rounded-full">
+                  <span className="line-clamp-1 text-lg text-secondary-300">{reservation.realEstate.name}</span>
+                  <span className="rounded-full bg-primary-50 px-2 py-0.5 text-sm font-normal text-primary-300">
                     #{reservation.realEstate.apartmentNumber}
                   </span>
                 </CardTitle>
@@ -159,33 +161,35 @@ const ReservationsList = ({ initialReservations, onReservationUpdated, userRole 
                 </CardDescription>
               </CardHeader>
               <CardContent className="px-4 py-0">
-                <div className="flex items-center text-sm text-muted-foreground gap-1 mb-2">
+                <div className="mb-2 flex items-center gap-1 text-sm text-muted-foreground">
                   <User className="size-3.5" />
                   <span className="font-medium">{reservation.fullName}</span>
                 </div>
-                <div className="flex items-center text-sm text-muted-foreground gap-1">
+                <div className="flex items-center gap-1 text-sm text-muted-foreground">
                   <Calendar className="size-3.5" />
                   <span>{formatDate(reservation.createdAt)}</span>
                 </div>
               </CardContent>
-              <CardFooter className="p-4 pt-3 flex justify-between">
+              <CardFooter className="flex justify-between p-4 pt-3">
                 <Button variant="outline" size="sm" onClick={() => openDetails(reservation)}>
                   Podrobnosti
                 </Button>
                 {isAdmin && (
                   <div className="flex gap-2">
-                    <Button 
-                      variant="outline" 
-                      size="icon" 
-                      className="h-8 w-8 rounded-full bg-success-50 text-success-400 hover:bg-success-100 hover:text-success-500"
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="size-8 rounded-full bg-success-50 text-success-400 
+                        hover:bg-success-100 hover:text-success-500"
                       onClick={() => handleConfirm(reservation.id)}
                     >
                       <Check className="size-4" />
                     </Button>
-                    <Button 
-                      variant="outline" 
-                      size="icon" 
-                      className="h-8 w-8 rounded-full bg-destructive-50 text-destructive-400 hover:bg-destructive-100 hover:text-destructive-500"
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="size-8 rounded-full bg-destructive-50 text-destructive-400 
+                        hover:bg-destructive-100 hover:text-destructive-500"
                       onClick={() => handleRemove(reservation.id)}
                     >
                       <X className="size-4" />
@@ -221,24 +225,26 @@ const ReservationsList = ({ initialReservations, onReservationUpdated, userRole 
                     <TableCell>
                       {isAdmin && (
                         <div className="flex justify-end gap-2">
-                          <Button 
-                            variant="outline" 
-                            size="icon" 
-                            className="h-8 w-8 rounded-full bg-success-50 text-success-400 hover:bg-success-100 hover:text-success-500"
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            className="size-8 rounded-full bg-success-50 text-success-400 
+                              hover:bg-success-100 hover:text-success-500"
                             onClick={(e) => {
-                              e.stopPropagation();
-                              handleConfirm(reservation.id);
+                              e.stopPropagation()
+                              handleConfirm(reservation.id)
                             }}
                           >
                             <Check className="size-4" />
                           </Button>
-                          <Button 
-                            variant="outline" 
-                            size="icon" 
-                            className="h-8 w-8 rounded-full bg-destructive-50 text-destructive-400 hover:bg-destructive-100 hover:text-destructive-500"
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            className="size-8 rounded-full bg-destructive-50 text-destructive-400 
+                              hover:bg-destructive-100 hover:text-destructive-500"
                             onClick={(e) => {
-                              e.stopPropagation();
-                              handleRemove(reservation.id);
+                              e.stopPropagation()
+                              handleRemove(reservation.id)
                             }}
                           >
                             <X className="size-4" />
@@ -258,7 +264,7 @@ const ReservationsList = ({ initialReservations, onReservationUpdated, userRole 
           </CardFooter>
         </Card>
       )}
-      
+
       {/* Detailed Reservation Modal */}
       <Dialog open={detailsOpen} onOpenChange={setDetailsOpen}>
         <DialogContent className="sm:max-w-[600px]">
@@ -270,12 +276,12 @@ const ReservationsList = ({ initialReservations, onReservationUpdated, userRole 
                   Podrobne informacije o izbrani rezervaciji
                 </DialogDescription>
               </DialogHeader>
-              
+
               <div className="grid gap-6 py-4">
                 <div className="space-y-2">
                   <h3 className="text-lg font-medium text-secondary-300">Podatki o nepremičnini</h3>
                   <div className="flex gap-4">
-                    <div className="relative h-24 w-24 overflow-hidden rounded-md">
+                    <div className="relative size-24 overflow-hidden rounded-md">
                       {selectedReservation.realEstate.images?.[0] ? (
                         <Image
                           alt="Slika nepremičnine"
@@ -293,20 +299,21 @@ const ReservationsList = ({ initialReservations, onReservationUpdated, userRole 
                       )}
                     </div>
                     <div className="flex-1">
-                      <p className="font-semibold text-xl">{selectedReservation.realEstate.name}</p>
+                      <p className="text-xl font-semibold">{selectedReservation.realEstate.name}</p>
                       <div className="flex items-center gap-1 text-muted-foreground">
                         <MapPin className="size-3.5" />
                         {selectedReservation.realEstate.location}
                       </div>
-                      <div className="mt-1 inline-block rounded-full bg-primary-50 px-2 py-0.5 text-sm text-primary-300">
+                      <div className="mt-1 inline-block rounded-full bg-primary-50 px-2 py-0.5 
+                        text-sm text-primary-300">
                         Apartma #{selectedReservation.realEstate.apartmentNumber}
                       </div>
                     </div>
                   </div>
                 </div>
-                
+
                 <Separator />
-                
+
                 <div className="space-y-2">
                   <h3 className="text-lg font-medium text-secondary-300">Podatki o stranki</h3>
                   <div className="grid grid-cols-2 gap-4">
@@ -329,23 +336,23 @@ const ReservationsList = ({ initialReservations, onReservationUpdated, userRole 
                   </div>
                 </div>
               </div>
-              
+
               {isAdmin && (
                 <div className="flex justify-end gap-2">
-                  <Button 
-                    variant="destructive" 
+                  <Button
+                    variant="destructive"
                     onClick={() => {
-                      handleRemove(selectedReservation.id);
-                      setDetailsOpen(false);
+                      handleRemove(selectedReservation.id)
+                      setDetailsOpen(false)
                     }}
                   >
                     Odstrani rezervacijo
                   </Button>
-                  <Button 
-                    variant="primary" 
+                  <Button
+                    variant="primary"
                     onClick={() => {
-                      handleConfirm(selectedReservation.id);
-                      setDetailsOpen(false);
+                      handleConfirm(selectedReservation.id)
+                      setDetailsOpen(false)
                     }}
                   >
                     Potrdi rezervacijo

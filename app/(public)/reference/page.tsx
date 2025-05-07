@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Zaključeni projekti | Gradnje Plus',
     description: 'Odkrijte naše zaključene nepremičninske projekte in reference.',
-    images: ['/page-hero.webp'],
+    images: [ '/page-hero.webp' ],
     type: 'website',
   },
   alternates: {
@@ -49,25 +49,27 @@ export default async function ReferencePage() {
       "numberOfItems": ${totalLocations},
       "itemListElement": [
         ${inactiveLocations.map((location, index) => {
-          // Find the best image to display for this location
-          let displayImage = ''
-          
-          if (location.images?.length > 0) {
-            const [firstImage] = location.images
-            displayImage = `https://utfs.io/f/${firstImage}`
-          } else {
-            // If not, try to find an image from any of its real estates
-            const estateWithImage = location.realEstates.find(
-              (estate) => estate.images?.length > 0,
-            )
-            
-            if (estateWithImage?.images?.length) {
-              const [firstImage] = estateWithImage.images
-              displayImage = `https://utfs.io/f/${firstImage}`
-            }
-          }
-          
-          return `{
+    // Find the best image to display for this location
+    let displayImage = ''
+
+    if (location.images?.length > 0) {
+      const [ firstImage ] = location.images
+
+      displayImage = `https://utfs.io/f/${firstImage}`
+    } else {
+      // If not, try to find an image from any of its real estates
+      const estateWithImage = location.realEstates.find(
+        (estate) => estate.images?.length > 0,
+      )
+
+      if (estateWithImage?.images?.length) {
+        const [ firstImage ] = estateWithImage.images
+
+        displayImage = `https://utfs.io/f/${firstImage}`
+      }
+    }
+
+    return `{
             "@type": "ListItem",
             "position": ${index + 1},
             "item": {
@@ -86,7 +88,7 @@ export default async function ReferencePage() {
               "propertyCount": ${location.realEstates.length}
             }
           }`
-        }).join(',\n')}
+  }).join(',\n')}
       ]
     },
     "publisher": {
@@ -101,9 +103,11 @@ export default async function ReferencePage() {
       {/* Add JSON-LD script */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: jsonLdString } as { __html: string }}
+        dangerouslySetInnerHTML={{
+          __html: jsonLdString,
+        } as { __html: string }}
       />
-    
+
       <div className="min-h-screen">
         {/* Hero Section - Full-screen green background */}
         <div className="w-full">
@@ -346,4 +350,3 @@ export default async function ReferencePage() {
     </>
   )
 }
-

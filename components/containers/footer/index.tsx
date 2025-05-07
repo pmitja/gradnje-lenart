@@ -4,13 +4,12 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
 import { Button } from '@/components/ui/button'
-import { ProtectedNadzornaPlosca } from '@/routes'
 import { NavbarProps } from '@/types/general'
 
 const Footer = ({ navItems }: NavbarProps) => {
   const currentYear = new Date().getFullYear()
 
-  const [showScrollTop, setShowScrollTop] = useState(false)
+  const [ showScrollTop, setShowScrollTop ] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {

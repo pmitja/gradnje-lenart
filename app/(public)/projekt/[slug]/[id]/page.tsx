@@ -1,13 +1,13 @@
+import { Metadata } from 'next'
+
 import { getLocationRealEstates } from '@/actions/get-location-real-esatates'
 import { getRealEstateById } from '@/actions/get-real-estate-by-id'
-import { Metadata } from 'next'
-import Cta from '@/components/common/cta'
 import RealEstateHero from '@/components/common/hero/real-estate-hero'
+import ProjectsCta from '@/components/common/projects-cta'
 import OffersBanner from '@/components/layouts/sections/offers-banner'
 import { LocationType, SpacesType } from '@/types/general'
 
 import DetailViewRealEstate from './_components/detail-view-real-estate'
-import ProjectsCta from '@/components/common/projects-cta'
 
 interface MetadataProps {
   params: { slug: string; id: string }
@@ -19,42 +19,42 @@ interface PageProps {
 
 export async function generateMetadata({ params }: MetadataProps): Promise<Metadata> {
   const location = await getLocationRealEstates(params.slug.toString())
+
   const realEstate = await getRealEstateById(params.id.toString())
-  
+
   if (!realEstate || !location) {
     return {
       title: 'Nepremičnina ni najdena | Gradnje Lenart',
       description: 'Iskana nepremičnina ni bila najdena.',
     }
   }
-  
-  // Format price with locale
-  const formattedPrice = realEstate.priceWithTax 
-    ? new Intl.NumberFormat('sl-SI', { style: 'currency', currency: 'EUR' }).format(realEstate.priceWithTax)
-    : 'Cena po dogovoru'
-  
+
   // Create appropriate description based on available data
   const locationInfo = `${location.city}, ${location.address}`
+
   const sizeInfo = realEstate.size ? `${realEstate.size} m²` : ''
+
   const description = `${realEstate.name} - ${locationInfo}${sizeInfo ? ` - ${sizeInfo}` : ''}. ${
     realEstate.description?.substring(0, 100) || ''
   }${realEstate.description && realEstate.description.length > 100 ? '...' : ''}`
-  
+
   // Determine property type based on location.type
   let propertyType = 'Apartment'
+
   if (location.type === 'house') {
     propertyType = 'House'
   } else if (location.type === 'building') {
     propertyType = 'ApartmentComplex'
   }
-  
+
   // Map status to availability
   const availability = realEstate.status === 'available' ? 'InStock' : 'SoldOut'
-  
+
   // Format dates for ISO compatibility (if they exist)
   const createdAt = realEstate.createdAt ? new Date(realEstate.createdAt).toISOString() : undefined
+
   const updatedAt = realEstate.updatedAt ? new Date(realEstate.updatedAt).toISOString() : undefined
-  
+
   // Build a clean JSON-LD object without null or undefined values
   const jsonLd: Record<string, any> = {
     '@context': 'https://schema.org',
@@ -63,21 +63,21 @@ export async function generateMetadata({ params }: MetadataProps): Promise<Metad
     name: realEstate.name,
     description: realEstate.description || description,
   }
-  
+
   // Add dates only if they exist
   if (createdAt) {
     jsonLd.datePosted = createdAt
   }
-  
+
   if (updatedAt) {
     jsonLd.dateModified = updatedAt
   }
-  
+
   // Add images if they exist
   if (realEstate.images?.length) {
-    jsonLd.image = realEstate.images.map(img => `https://utfs.io/f/${img}`)
+    jsonLd.image = realEstate.images.map((img) => `https://utfs.io/f/${img}`)
   }
-  
+
   // Add price information if it exists
   if (realEstate.priceWithTax) {
     jsonLd.offers = {
@@ -86,13 +86,13 @@ export async function generateMetadata({ params }: MetadataProps): Promise<Metad
       priceCurrency: 'EUR',
       availability: `https://schema.org/${availability}`,
     }
-    
+
     // Add validity dates if available
     if (createdAt) {
       jsonLd.offers.validFrom = createdAt
     }
   }
-  
+
   // Add location information
   jsonLd.contentLocation = {
     '@type': 'Place',
@@ -102,12 +102,12 @@ export async function generateMetadata({ params }: MetadataProps): Promise<Metad
       addressLocality: location.city,
       streetAddress: location.address,
       addressCountry: 'SI',
-    }
+    },
   }
-  
+
   // Add property details
   const additionalProperties = []
-  
+
   if (realEstate.size) {
     additionalProperties.push({
       '@type': 'PropertyValue',
@@ -116,7 +116,7 @@ export async function generateMetadata({ params }: MetadataProps): Promise<Metad
       unitText: 'm²',
     })
   }
-  
+
   if (realEstate.parkingSpaces) {
     additionalProperties.push({
       '@type': 'PropertyValue',
@@ -124,7 +124,7 @@ export async function generateMetadata({ params }: MetadataProps): Promise<Metad
       value: realEstate.parkingSpaces,
     })
   }
-  
+
   if (realEstate.energyLevel) {
     additionalProperties.push({
       '@type': 'PropertyValue',
@@ -132,24 +132,24 @@ export async function generateMetadata({ params }: MetadataProps): Promise<Metad
       value: realEstate.energyLevel,
     })
   }
-  
+
   if (additionalProperties.length > 0) {
     jsonLd.additionalProperty = additionalProperties
   }
-  
+
   // Add main entity
   jsonLd.mainEntityOfPage = {
     '@type': 'WebPage',
     '@id': `https://gradnje-lenart.si/projekt/${params.slug}/${params.id}`,
   }
-  
+
   // Add provider
   jsonLd.provider = {
     '@type': 'Organization',
     name: 'Gradnje Lenart',
     url: 'https://gradnje-lenart.si',
   }
-  
+
   // Add property type
   jsonLd.about = {
     '@type': propertyType,
@@ -157,11 +157,11 @@ export async function generateMetadata({ params }: MetadataProps): Promise<Metad
 
   return {
     title: `${realEstate.name} | ${location.name} | Gradnje Lenart`,
-    description: description,
+    description,
     openGraph: {
       title: `${realEstate.name} | ${location.name}`,
-      description: description,
-      images: realEstate.images?.length ? [`https://utfs.io/f/${realEstate.images[0]}`] : [],
+      description,
+      images: realEstate.images?.length ? [ `https://utfs.io/f/${realEstate.images[0]}` ] : [],
       type: 'website',
     },
     alternates: {
@@ -176,7 +176,9 @@ export async function generateMetadata({ params }: MetadataProps): Promise<Metad
 
 const SingleProjectPage = async ({ params }: PageProps) => {
   const resolvedParams = await params
+
   const location = await getLocationRealEstates(resolvedParams.slug.toString())
+
   const realEstates = await getRealEstateById(resolvedParams.id.toString())
 
   if (!realEstates || !location) {
@@ -193,7 +195,7 @@ const SingleProjectPage = async ({ params }: PageProps) => {
         parkingSpaces={realEstates.parkingSpaces ?? 0}
         status={realEstates.status}
       />
-      
+
       <div className="mx-auto max-w-container px-4 py-8 sm:px-6 lg:py-12">
         <DetailViewRealEstate
           id={resolvedParams.id}
@@ -212,7 +214,7 @@ const SingleProjectPage = async ({ params }: PageProps) => {
           images={realEstates.images}
           type={location.type as LocationType}
         />
-        
+
         <div className="mt-10 space-y-10 lg:mt-16 lg:space-y-16">
           <ProjectsCta />
           <OffersBanner />

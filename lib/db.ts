@@ -7,6 +7,11 @@ declare global {
   var prisma: PrismaClient | undefined
 }
 
-export const db = globalThis.prisma || new PrismaClient()
+// Using the singleton pattern for PrismaClient
+const _prisma = globalThis as typeof globalThis & {
+  prisma?: PrismaClient
+}
 
-if (process.env.NODE_ENV !== 'production') globalThis.prisma = db
+export const db = _prisma.prisma || new PrismaClient()
+
+if (process.env.NODE_ENV !== 'production') _prisma.prisma = db

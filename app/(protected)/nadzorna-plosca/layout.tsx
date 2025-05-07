@@ -35,8 +35,8 @@ export const metadata: Metadata = {
       url: '/favicon-256x256.ico',
       sizes: '256x256',
       type: 'image/ico',
-    }
-  ]
+    },
+  ],
 }
 
 export default async function RootLayout({ children }: Readonly<{

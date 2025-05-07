@@ -36,7 +36,7 @@ import { Table,
 import { updateSchema } from '@/schemas'
 import { Apartment, Location, LocationType, StatusType } from '@/types/general'
 
-const AktualniProjektPage = ({ params: { slug } }: { params: { slug: string } }) => {
+const AktualniProjektPage = ({ params }: { params: { slug: string } }) => {
   const router = useRouter()
 
   const { data: session } = useSession()
@@ -64,7 +64,7 @@ const AktualniProjektPage = ({ params: { slug } }: { params: { slug: string } })
   const fetchLocationData = useCallback(() => {
     setIsError(false)
     startTransition(() => {
-      getLocationRealEstates(slug).then((result) => {
+      getLocationRealEstates(params.slug).then((result) => {
         setLocation(result as Location | null)
         setApartments(result?.realEstates as unknown as Apartment[])
         if (!result) {
@@ -72,7 +72,7 @@ const AktualniProjektPage = ({ params: { slug } }: { params: { slug: string } })
         }
       })
     })
-  }, [ slug ])
+  }, [ params.slug ])
 
   useEffect(() => {
     fetchLocationData()
@@ -82,7 +82,7 @@ const AktualniProjektPage = ({ params: { slug } }: { params: { slug: string } })
     resolver: zodResolver(updateSchema),
     defaultValues: {
       apartments,
-      locationSlug: slug,
+      locationSlug: params.slug,
     },
   })
 
@@ -124,7 +124,7 @@ const AktualniProjektPage = ({ params: { slug } }: { params: { slug: string } })
   }
 
   const handleFinishProject = async () => {
-    const result = await finishProject(slug)
+    const result = await finishProject(params.slug)
 
     if (result.success) {
       toast.success('Projekt zaključen', {
@@ -147,7 +147,7 @@ const AktualniProjektPage = ({ params: { slug } }: { params: { slug: string } })
   }
 
   const handleReactivateProject = async () => {
-    const result = await reactivateProject(slug)
+    const result = await reactivateProject(params.slug)
 
     if (result.success) {
       toast.success('Projekt ponovno aktiviran', {

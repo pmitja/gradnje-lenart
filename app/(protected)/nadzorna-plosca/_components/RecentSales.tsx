@@ -1,17 +1,17 @@
 'use client'
 
+import { format } from 'date-fns'
+import { sl } from 'date-fns/locale'
+import { ArrowUpIcon } from 'lucide-react'
+
 import { Avatar,
   AvatarFallback,
   AvatarImage } from '@/components/ui/avatar'
 import { Card,
   CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription } from '@/components/ui/card'
+  CardDescription, CardHeader,
+  CardTitle } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { format } from 'date-fns'
-import { sl } from 'date-fns/locale'
-import { ArrowUpIcon } from 'lucide-react'
 
 interface Sale {
   id: string
@@ -72,7 +72,9 @@ export default function RecentSales({ sales }: { sales: Sale[] }) {
                   </TableCell>
                   <TableCell className="text-sm">{sale.location.name}</TableCell>
                   <TableCell className="text-sm text-muted-foreground">
-                    {format(new Date(sale.updatedAt), 'dd. MMM', { locale: sl })}
+                    {format(new Date(sale.updatedAt), 'dd. MMM', {
+                      locale: sl,
+                    })}
                   </TableCell>
                   <TableCell className="text-right">
                     <div className="font-medium text-primary-400">

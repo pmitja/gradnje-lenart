@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars */
-/* eslint-disable unused-imports/no-unused-vars */
 import React from 'react'
 
 import { Button } from './button'

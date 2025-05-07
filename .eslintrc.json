@@ -1,0 +1,31 @@
+{
+  "extends": ["next/core-web-vitals"],
+  "plugins": ["simple-import-sort", "tailwindcss"],
+  "rules": {
+    "no-underscore-dangle": "off",
+    "tailwindcss/no-custom-classname": "off",
+    "simple-import-sort/imports": "warn",
+    "no-console": "warn",
+    "react-hooks/exhaustive-deps": "off",
+    "max-len": [
+      "warn",
+      {
+        "code": 120,
+        "ignorePattern": "^import\\s.+\\sfrom\\s.+;$|^export\\s.+;$",
+        "ignoreUrls": true,
+        "ignoreStrings": true,
+        "ignoreTemplateLiterals": true,
+        "ignoreRegExpLiterals": true
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": ["components/icons/*.tsx"],
+      "rules": {
+        "max-len": "off"
+      }
+    }
+  ],
+  "ignorePatterns": ["node_modules/", ".next/"]
+}

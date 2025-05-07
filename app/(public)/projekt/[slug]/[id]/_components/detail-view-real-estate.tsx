@@ -114,8 +114,8 @@ const DetailViewRealEstate = ({
   return (
     <div className="relative">
       <div className={cn(
-        "relative flex flex-col gap-8 md:gap-10 lg:gap-12",
-        status === StatusType.Prodano && "relative"
+        'relative flex flex-col gap-8 md:gap-10 lg:gap-12',
+        status === StatusType.Prodano && 'relative',
       )}>
         {/* Sold Status Banner */}
         {status && status === StatusType.Prodano && (
@@ -142,11 +142,11 @@ const DetailViewRealEstate = ({
             </Button>
           </div>
         )}
-        
+
         {/* Property Content */}
         <div className={cn(
-          "flex flex-col gap-8 md:gap-10 lg:gap-12",
-          status === StatusType.Prodano && "relative opacity-40 blur-[2px]"
+          'flex flex-col gap-8 md:gap-10 lg:gap-12',
+          status === StatusType.Prodano && 'relative opacity-40 blur-[2px]',
         )}>
           {/* Reserved Status Banner */}
           {status && status === StatusType.Rezervirano && (
@@ -171,12 +171,12 @@ const DetailViewRealEstate = ({
               </WaitingListDialog>
             </div>
           )}
-          
+
           {/* Property Images */}
           <div className="overflow-hidden rounded-xl shadow-lg">
             <RealEstateImages images={images} />
           </div>
-          
+
           {/* Property Details */}
           <section className="space-y-4">
             <h2 className="text-xl font-bold leading-tight text-secondary-400 lg:text-3xl">
@@ -190,7 +190,7 @@ const DetailViewRealEstate = ({
                       key={index}
                       className="flex basis-full items-center gap-4 border-b border-secondary-100/50 pb-4 md:basis-[calc(50%-1rem)] md:border-b-0 md:border-r md:pb-0 lg:basis-auto lg:gap-5 lg:pr-8"
                     >
-                      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary-75/40 p-3">
+                      <div className="flex size-12 items-center justify-center rounded-full bg-primary-75/40 p-3">
                         {detail.icon}
                       </div>
                       <div className="flex flex-col gap-1">
@@ -235,13 +235,13 @@ const DetailViewRealEstate = ({
               Podrobni opis
             </h2>
             <Card className="rounded-xl border-none bg-white p-6 shadow-md">
-              <p className="text-secondary-300 leading-relaxed">{description}</p>
+              <p className="leading-relaxed text-secondary-300">{description}</p>
             </Card>
           </section>
 
           {/* Technical Data */}
-          {technicalData.length > 0 && 
-            <section className="space-y-4">
+          {technicalData.length > 0
+            && <section className="space-y-4">
               <h2 className="text-xl font-bold leading-tight text-secondary-400 lg:text-2xl">
                 Tehnični podatki
               </h2>
@@ -249,8 +249,8 @@ const DetailViewRealEstate = ({
                 <ul className="grid grid-cols-1 gap-4 text-secondary-300 sm:grid-cols-2 md:grid-cols-3">
                   {technicalData.map((data, index) => (
                     <li className="flex items-start gap-3" key={index}>
-                      <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary-75">
-                        <Check className="h-4 w-4 text-primary-300" />
+                      <div className="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary-75">
+                        <Check className="size-4 text-primary-300" />
                       </div>
                       <span className="mt-0.5">{data.text}</span>
                     </li>
@@ -270,7 +270,7 @@ const DetailViewRealEstate = ({
                 <PropertyMap address={address} city={city} />
               </div>
             </section>
-            
+
             {files && files?.length > 0 && (
               <section className="flex flex-col gap-6">
                 <h2 className="text-xl font-bold leading-tight text-secondary-400 lg:text-2xl">
@@ -283,9 +283,9 @@ const DetailViewRealEstate = ({
                         <DocumentIcon className="text-primary-300" />
                         <div className="flex flex-wrap gap-2">
                           {files.map((file, index) => (
-                            <a 
-                              href={`https://utfs.io/f/${file.key}`} 
-                              target="_blank" 
+                            <a
+                              href={`https://utfs.io/f/${file.key}`}
+                              target="_blank"
                               key={index}
                               className="inline-flex rounded-md bg-secondary-50 px-3 py-1.5 text-sm font-medium text-secondary-400 transition-colors hover:bg-secondary-75"
                             >
@@ -297,8 +297,8 @@ const DetailViewRealEstate = ({
                     </div>
                   </CardContent>
                   <div className="p-6 pt-0">
-                    <Button 
-                      variant="secondary" 
+                    <Button
+                      variant="secondary"
                       className="w-full rounded-lg border-secondary-200 bg-secondary-50 py-2.5 shadow-sm transition-colors hover:bg-secondary-75"
                     >
                       Vstopite v stik
@@ -308,13 +308,13 @@ const DetailViewRealEstate = ({
               </section>
             )}
           </div>
-          
+
           {/* Reservation Button */}
           {status !== StatusType.Prodano && status !== StatusType.Rezervirano && (
             <div className="flex justify-center py-6">
               <ReservationDialog realEstateId={id}>
-                <Button 
-                  variant="primary" 
+                <Button
+                  variant="primary"
                   className="px-8 py-3 text-lg shadow-lg transition-transform hover:scale-105"
                 >
                   <KeySquare className="mr-3 size-5" />

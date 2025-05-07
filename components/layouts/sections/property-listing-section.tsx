@@ -70,11 +70,11 @@ const PropertyCard = ({ property }: { property: RealEstate }) => {
     <div className="relative h-[260px] w-full overflow-hidden">
       <Image
         src={
-          property.images[0] && 
-          (property.images[0].startsWith('/') || 
-           property.images[0].startsWith('http://') || 
-           property.images[0].startsWith('https://')) 
-            ? property.images[0] 
+          property.images[0]
+          && (property.images[0].startsWith('/')
+           || property.images[0].startsWith('http://')
+           || property.images[0].startsWith('https://'))
+            ? property.images[0]
             : '/apartment-image.webp'
         }
         alt={property.name}

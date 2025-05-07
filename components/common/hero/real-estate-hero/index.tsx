@@ -1,23 +1,20 @@
-"use client"
+'use client'
 
-import { BadgeCheckIcon, Car, Expand, Home, MapPin, ParkingSquare, Share2 } from 'lucide-react'
-import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogClose,
-} from '@/components/ui/dialog'
-import { Facebook, Instagram, Linkedin, Copy, Check } from 'lucide-react'
+import { BadgeCheckIcon, Car, Check, Expand, Facebook, Home, Instagram, Linkedin, MapPin, ParkingSquare, Share2 } from 'lucide-react'
 import { useState } from 'react'
 
 import ReservationDialog from '@/app/(public)/projekt/[slug]/[id]/_components/ReservationDialog'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { Dialog,
+  DialogClose,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger } from '@/components/ui/dialog'
 
 const ShareDialog = ({ url, title }: { url: string; title: string }) => {
-  const [copied, setCopied] = useState(false)
+  const [ copied, setCopied ] = useState(false)
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(url)
@@ -94,16 +91,16 @@ const RealEstateHero = ({
         <Home className="mr-2 size-4" />
         Nepremičnina
       </Badge>
-      
+
       <h1 className="animate-fade-in-up text-center text-3xl font-bold leading-tight tracking-tight md:text-4xl lg:max-w-4xl lg:text-5xl lg:leading-tight">
         {title}
       </h1>
-      
+
       <div className="animate-fade-in-up flex items-center gap-1 rounded-full bg-white/10 px-4 py-2 text-center font-medium backdrop-blur-sm">
         <MapPin className="size-5 text-primary-100" />
         <span className="text-lg">{address}</span>
       </div>
-      
+
       <div className="mt-2 flex flex-wrap justify-center gap-2">
         <Badge
           variant="heroPills"
@@ -112,7 +109,7 @@ const RealEstateHero = ({
           <Expand className="size-5 text-primary-100" />
           <span>{size} m²</span>
         </Badge>
-        
+
         {parkingSpaces > 0 && (
           <Badge
             variant="heroPills"
@@ -122,7 +119,7 @@ const RealEstateHero = ({
             <span>Parkirišče</span>
           </Badge>
         )}
-        
+
         {parkingSpaces > 0 && (
           <Badge
             variant="heroPills"
@@ -133,12 +130,12 @@ const RealEstateHero = ({
           </Badge>
         )}
       </div>
-      
+
       <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
         {status !== 'Prodano' && status !== 'Rezervirano' && (
           <ReservationDialog realEstateId={id}>
-            <Button 
-              variant="primary" 
+            <Button
+              variant="primary"
               className="animate-fade-in-up flex h-12 items-center gap-3 rounded-full px-8 text-base font-medium shadow-lg transition-transform duration-300 hover:scale-105"
             >
               <BadgeCheckIcon className="size-5" />
@@ -148,16 +145,16 @@ const RealEstateHero = ({
         )}
         <Dialog>
           <DialogTrigger asChild>
-            <Button 
-              variant="secondary" 
-              className="animate-fade-in-up flex h-12 w-12 items-center justify-center rounded-full bg-white/15 p-0 backdrop-blur-sm transition-all duration-300 hover:bg-white/25"
+            <Button
+              variant="secondary"
+              className="animate-fade-in-up flex size-12 items-center justify-center rounded-full bg-white/15 p-0 backdrop-blur-sm transition-all duration-300 hover:bg-white/25"
               aria-label="Deli nepremičnino"
             >
               <Share2 className="size-5" />
             </Button>
           </DialogTrigger>
-          <ShareDialog 
-            url={typeof window !== 'undefined' ? window.location.href : ''} 
+          <ShareDialog
+            url={typeof window !== 'undefined' ? window.location.href : ''}
             title={title}
           />
         </Dialog>

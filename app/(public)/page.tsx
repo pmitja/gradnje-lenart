@@ -18,7 +18,7 @@ const organizationSchema = {
     streetAddress: 'Partizanska cesta 14',
     addressLocality: 'Lenart v Slovenskih goricah',
     postalCode: '2230',
-    addressCountry: 'SI'
+    addressCountry: 'SI',
   },
   contactPoint: {
     '@type': 'ContactPoint',
@@ -27,16 +27,16 @@ const organizationSchema = {
     contactType: 'customer service',
     hoursAvailable: {
       '@type': 'OpeningHoursSpecification',
-      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      dayOfWeek: [ 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday' ],
       opens: '08:00',
-      closes: '16:00'
-    }
+      closes: '16:00',
+    },
   },
   sameAs: [
     'https://facebook.com',
-    'https://instagram.com'
-  ]
-};
+    'https://instagram.com',
+  ],
+}
 
 const websiteSchema = {
   '@context': 'https://schema.org',
@@ -48,14 +48,14 @@ const websiteSchema = {
     '@type': 'SearchAction',
     target: {
       '@type': 'EntryPoint',
-      urlTemplate: 'https://gradnje-lenart.si/projekti/{search_term_string}'
+      urlTemplate: 'https://gradnje-lenart.si/projekti/{search_term_string}',
     },
-    'query-input': 'required name=search_term_string'
-  }
-};
+    'query-input': 'required name=search_term_string',
+  },
+}
 
 // Combine both schemas in an array
-const structuredData = [organizationSchema, websiteSchema];
+const structuredData = [ organizationSchema, websiteSchema ]
 
 export const metadata: Metadata = {
   title: 'Gradnje Lenart | Gradnja in prodaja nepremičnin',
@@ -63,15 +63,15 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Gradnje Lenart | Gradnja in prodaja nepremičnin',
     description: 'Odkrijte kakovostne nepremičnine na najboljših lokacijah. Stanovanja, hiše in poslovni prostori po vaši meri.',
-    images: ['/page-hero.webp'],
+    images: [ '/page-hero.webp' ],
     type: 'website',
   },
   alternates: {
     canonical: 'https://gradnje-lenart.si',
   },
   other: {
-    'structured-data': JSON.stringify(structuredData)
-  }
+    'structured-data': JSON.stringify(structuredData),
+  },
 }
 
 export default function Home() {

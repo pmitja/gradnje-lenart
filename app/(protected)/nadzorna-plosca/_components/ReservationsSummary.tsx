@@ -11,7 +11,7 @@ interface ReservationsSummaryProps {
 
 export default function ReservationsSummary({ reservationsCount }: ReservationsSummaryProps) {
   return (
-    <Card className="bg-white">
+    <Card className="border-none shadow-lg">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-sm font-medium">Aktivne rezervacije</CardTitle>
         <Activity className="size-4 text-muted-foreground" />

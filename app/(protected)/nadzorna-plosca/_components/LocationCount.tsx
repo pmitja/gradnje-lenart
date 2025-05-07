@@ -12,7 +12,7 @@ interface LocationCountProps {
 
 export default function LocationCount({ title, count }: LocationCountProps) {
   return (
-    <Card className="bg-white">
+    <Card className="border-none shadow-lg">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-sm font-medium">{title}</CardTitle>
         <Activity className="size-4 text-muted-foreground" />

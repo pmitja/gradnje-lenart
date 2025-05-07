@@ -6,7 +6,10 @@ import OffersBanner from '@/components/layouts/sections/offers-banner'
 import RealEstateListing from '@/components/layouts/sections/single-project'
 
 const SelectedProject = async ({ params }: { params: { slug: string } }) => {
-  const location = await getLocationRealEstates(params.slug.toString())
+  // First await the params object
+  const awaitedParams = await params
+  const slug = awaitedParams.slug.toString()
+  const location = await getLocationRealEstates(slug)
 
   if (!location) {
     return null
@@ -16,8 +19,8 @@ const SelectedProject = async ({ params }: { params: { slug: string } }) => {
     <div>
       <InnerHero title={location.name} />
       <div className='mt-5 flex flex-col gap-5 lg:mt-10 lg:gap-10'>
-      <RealEstateTable location={location} slug={params.slug.toString()} />
-      <RealEstateListing location={location} slug={params.slug.toString()} />
+      <RealEstateTable location={location} slug={slug} />
+      <RealEstateListing location={location} slug={slug} />
       <ProjectsCta />
       <OffersBanner />
       </div>

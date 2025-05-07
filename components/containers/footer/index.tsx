@@ -10,7 +10,7 @@ import { NavbarProps } from '@/types/general'
 const Footer = ({ navItems }: NavbarProps) => {
   const currentYear = new Date().getFullYear()
 
-  const [ showScrollTop, setShowScrollTop ] = useState(false)
+  const [showScrollTop, setShowScrollTop] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -23,7 +23,8 @@ const Footer = ({ navItems }: NavbarProps) => {
 
   const scrollToTop = () => {
     window.scrollTo({
-      top: 0, behavior: 'smooth',
+      top: 0,
+      behavior: 'smooth',
     })
   }
 
@@ -124,7 +125,6 @@ const Footer = ({ navItems }: NavbarProps) => {
               </li>
             </ul>
           </div>
-
         </div>
 
         {/* Bottom Bar */}
@@ -132,7 +132,9 @@ const Footer = ({ navItems }: NavbarProps) => {
           <div className="flex flex-col items-center justify-between space-y-4 md:flex-row md:space-y-0">
             <p className="text-center text-sm text-secondary-300 md:text-left">
               © {currentYear} Gradnje plus d.o.o., vse pravice pridržane. Izdelava:
-              <a href="https://mipa.si" className="ml-1 text-primary-300 hover:underline">Mipa solutions</a>
+              <a href="https://mipa.si" className="ml-1 text-primary-300 hover:underline">
+                Mipa solutions
+              </a>
             </p>
             <div className="flex items-center space-x-6">
               <Link
@@ -141,16 +143,14 @@ const Footer = ({ navItems }: NavbarProps) => {
               >
                 Politika zasebnosti
               </Link>
-              <ProtectedNadzornaPlosca.Link>
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  className="transition-transform duration-300 hover:scale-105"
-                  asChild
-                >
-                  <Link href="/nadzorna-plosca">Nadzorna plošča</Link>
-                </Button>
-              </ProtectedNadzornaPlosca.Link>
+              <Button
+                variant="secondary"
+                size="sm"
+                className="transition-transform duration-300 hover:scale-105"
+                asChild
+              >
+                <Link href="/nadzorna-plosca">Nadzorna plošča</Link>
+              </Button>
             </div>
           </div>
         </div>

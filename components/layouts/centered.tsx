@@ -8,7 +8,7 @@ const CenteredLayout: FC<PropsWithChildren & { className?: string }> = ({
 }) => (
   <main
     className={cn(
-      'container mx-auto mt-[116px] flex w-full min-w-0 flex-col justify-center gap-16 bg-white md:gap-20 lg:mt-[41px] lg:gap-36',
+      'container mx-auto mt-[116px] flex w-full min-w-0 flex-col justify-center gap-16 bg-white md:gap-20 lg:mt-[41px] lg:gap-36 px-4 sm:px-10 lg:px-8',
       className,
     )}
   >

@@ -75,9 +75,9 @@ const LocationCard = ({
 }
 
 export default function LocationsSection() {
-  const [ isPending, startTransition ] = useTransition()
+  const [isPending, startTransition] = useTransition()
 
-  const [ locations, setLocations ] = useState<Location[]>([])
+  const [locations, setLocations] = useState<Location[]>([])
 
   useEffect(() => {
     startTransition(async () => {
@@ -101,7 +101,9 @@ export default function LocationsSection() {
   } else if (locations.length === 0) {
     content = (
       <div className="rounded-lg border border-secondary-200 bg-white p-8 text-center shadow-sm">
-        <h3 className="text-secondary-800 text-xl font-medium">Trenutno ni na voljo nobenih lokacij</h3>
+        <h3 className="text-secondary-800 text-xl font-medium">
+          Trenutno ni na voljo nobenih lokacij
+        </h3>
         <p className="text-secondary-600 mt-2">Preverite ponovno kasneje za nove projekte.</p>
       </div>
     )
@@ -114,7 +116,11 @@ export default function LocationsSection() {
             name={location.name}
             description={location.description}
             city={location.city}
-            image={location.images && location.images[0] ? `https://utfs.io/f/${location.images[0]}` : '/apartment-image.webp'}
+            image={
+              location.images && location.images[0]
+                ? `https://utfs.io/f/${location.images[0]}`
+                : '/apartment-image.webp'
+            }
             count={location.count?.realEstates || 0}
             slug={location.slug}
           />
@@ -124,14 +130,14 @@ export default function LocationsSection() {
   }
 
   return (
-    <section className="py-16">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-8">
-          <h2 className="text-secondary-800 text-3xl font-bold sm:text-4xl">Aktivne lokacije</h2>
-          <p className="text-secondary-600 mt-2">Odkrijte naše aktualne projekte na različnih lokacijah</p>
-        </div>
-        {content}
+    <section className="py-8 md:py-16">
+      <div className="mb-8">
+        <h2 className="text-secondary-800 text-3xl font-bold sm:text-4xl">Aktivne lokacije</h2>
+        <p className="text-secondary-600 mt-2">
+          Odkrijte naše aktualne projekte na različnih lokacijah
+        </p>
       </div>
+      {content}
     </section>
   )
 }

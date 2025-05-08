@@ -58,7 +58,7 @@ const ShadowBanner = ({ backgroundImagePath, icon, heading, subheading }: Shadow
 
   return (
     <div
-      className="relative inset-x-1/2 mx-[-50vw] flex min-h-[55rem] w-screen min-w-[100vw] items-end overflow-hidden bg-cover bg-fixed bg-center pt-10 md:pt-16 lg:pt-0"
+      className="relative inset-x-1/2 mx-[-50vw] flex max-h-[35dvh] min-h-[35dvh] sm:max-h-none sm:min-h-[55rem] w-screen min-w-[100vw] items-end overflow-hidden bg-cover bg-fixed bg-center pt-10 md:pt-16 lg:pt-0"
       style={{
         backgroundImage: `url(${backgroundImagePath})`,
       }}
@@ -73,7 +73,7 @@ const ShadowBanner = ({ backgroundImagePath, icon, heading, subheading }: Shadow
         >
           <motion.div
             variants={iconVariants}
-            className="mr-2 rounded-full bg-black/20 p-3 backdrop-blur-sm transition-all duration-300 hover:scale-110"
+            className="mr-2 rounded-full bg-black/20 p-3 backdrop-blur-sm transition-all duration-300 hover:scale-110 w-20 h-20 md:w-[120px] md:h-[120px]"
           >
             {icon}
           </motion.div>

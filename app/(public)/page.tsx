@@ -3,6 +3,7 @@ import { Metadata } from 'next'
 import Hero from '@/components/common/hero'
 import PartnersBanner from '@/components/common/partners-banner'
 import WhyChooseUs from '@/components/common/why-choose-us'
+import Faq from '@/components/layouts/sections/faq'
 import PropertyListingSection from '@/components/layouts/sections/property-listing-section'
 
 // Prepare both JSON-LD schemas
@@ -81,6 +82,7 @@ export default function Home() {
       <PropertyListingSection />
       <PartnersBanner />
       <WhyChooseUs />
+      <Faq />
     </div>
   )
 }

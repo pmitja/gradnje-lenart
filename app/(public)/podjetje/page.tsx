@@ -50,7 +50,7 @@ const About = () => (
     <ShadowBanner
       backgroundImagePath="/about-hero-image.webp"
       heading="Gradnje Plus"
-      icon={<GradnjeIcon className="h-20 w-24 fill-primary-200" />}
+      icon={<GradnjeIcon className="h-14 w-14 md:h-20 md:w-24 fill-primary-200" />}
       subheading="Nepremičnine niso zgolj nakup. So nepogrešljiv del vsakega izmed nas."
     />
 

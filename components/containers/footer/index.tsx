@@ -43,7 +43,7 @@ const Footer = ({ navItems }: NavbarProps) => {
       <div className="container mx-auto px-4 py-16">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
           {/* Company Info */}
-          <div className="flex flex-col items-center text-center md:items-start md:text-left">
+          <div className="flex flex-col items-start md:text-left">
             <div className="mb-6 transition-transform duration-300 hover:scale-105">
               <Image
                 src="/gradnje-plus-logo.webp"
@@ -76,7 +76,7 @@ const Footer = ({ navItems }: NavbarProps) => {
           </div>
 
           {/* Quick Links */}
-          <div className="flex flex-col items-center md:items-start">
+          <div className="flex flex-col items-start">
             <h3 className="mb-6 text-lg font-bold text-secondary-400">Navigacija</h3>
             <nav className="flex flex-col space-y-3">
               {navItems.map((navItem) => (
@@ -85,7 +85,7 @@ const Footer = ({ navItems }: NavbarProps) => {
                   key={navItem.link}
                   className="group flex items-center text-secondary-300 transition-colors duration-300 hover:text-primary-300"
                 >
-                  <ChevronRight className="mr-2 size-4 opacity-0 transition-all duration-300 group-hover:opacity-100" />
+                  <ChevronRight className="mr-2 size-4 opacity-0 transition-all duration-300 group-hover:opacity-100 hidden sm:block" />
                   <span className="transition-all duration-300 group-hover:translate-x-1">
                     {navItem.text}
                   </span>
@@ -95,7 +95,7 @@ const Footer = ({ navItems }: NavbarProps) => {
           </div>
 
           {/* Contact Info */}
-          <div className="flex flex-col items-center md:items-start">
+          <div className="flex flex-col items-start">
             <h3 className="mb-6 text-lg font-bold text-secondary-400">Kontakt</h3>
             <ul className="space-y-4">
               <li className="group flex items-start">

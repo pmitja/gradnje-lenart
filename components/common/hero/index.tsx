@@ -41,8 +41,8 @@ export default function Hero() {
       </div>
 
       {/* Content */}
-      <div className="container relative z-10 mx-auto flex h-full min-h-[60dvh] flex-col justify-between gap-8 px-4 pt-32 sm:px-10 lg:px-8">
-        <div className="max-w-4xl space-y-12 py-20">
+      <div className="container relative z-10 mx-auto flex h-full min-h-[60dvh] flex-col justify-between gap-8 px-4 lg:pt-32 sm:px-10 lg:px-8">
+        <div className="max-w-4xl space-y-12 lg:py-20">
           {/* Main Content */}
           <div className="space-y-6">
             <motion.h1

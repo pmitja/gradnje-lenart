@@ -38,7 +38,6 @@ const partners = [
 
 const PartnersBanner = () => (
   <div className="relative py-16">
-    <div className="container mx-auto px-4">
       <div className="mb-10 text-center">
         <h3 className="mb-2 text-2xl font-bold text-secondary-300">Naši zaupanja vredni partnerji</h3>
         <p className="mx-auto max-w-2xl text-secondary-200">
@@ -94,7 +93,6 @@ const PartnersBanner = () => (
         <div className="pointer-events-none absolute inset-y-0 left-0 w-1/6 bg-gradient-to-r from-body-50 to-transparent" />
         <div className="pointer-events-none absolute inset-y-0 right-0 w-1/6 bg-gradient-to-l from-body-50 to-transparent" />
       </div>
-    </div>
   </div>
 )
 

@@ -18,7 +18,7 @@ const KontaktPage = () => (
     <ShadowBanner
       backgroundImagePath="/about-hero-image.webp"
       heading="Gradnje Plus"
-      icon={<GradnjeIcon className="h-20 w-24 fill-primary-200" />}
+      icon={<GradnjeIcon className="h-14 w-14 md:h-20 md:w-24 fill-primary-200" />}
     />
     <section className="relative inset-x-1/2 mx-[-50vw] w-screen min-w-[100vw] bg-primary-75">
       <div className="container flex w-full justify-between gap-4 overflow-hidden py-8 lg:py-[70px]">

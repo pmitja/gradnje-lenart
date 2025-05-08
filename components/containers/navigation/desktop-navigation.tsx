@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 import { Button } from '@/components/ui/button'
+import { PATHS_WITH_DARK_NAV } from '@/lib/navigation-config'
 import { cn } from '@/lib/utils'
 import { Public, PublicKontakt, PublicProjekti } from '@/routes'
 import { NavbarProps } from '@/types/general'
@@ -34,6 +35,9 @@ const DesktopNavigation = ({ navItems }: NavbarProps) => {
       window.removeEventListener('scroll', handleScroll)
     }
   }, [])
+  console.log(pathname)
+  // Check if current page needs dark navigation background
+  const needsDarkBackground = PATHS_WITH_DARK_NAV.includes(pathname)
 
   return (
     <>
@@ -107,13 +111,15 @@ const DesktopNavigation = ({ navItems }: NavbarProps) => {
         'fixed inset-x-0 top-[40px] z-[21470000] transition-all duration-500',
         scrolled
           ? 'bg-white/95 backdrop-blur-md shadow-md'
-          : 'bg-transparent',
+          : needsDarkBackground 
+            ? 'backdrop-blur-sm' 
+            : 'bg-transparent',
       )}>
         <div className='container mx-auto flex h-20 w-full items-center justify-between px-4'>
           <div className='flex items-center'>
             <Public.Link className='group flex items-center transition-all duration-300 hover:opacity-90'>
               <Image
-                src={scrolled ? '/gradnje-logo.webp' : '/gradnje-logo-white.webp'}
+                src={scrolled || needsDarkBackground ? '/gradnje-logo.webp' : '/gradnje-logo-white.webp'}
                 width={265}
                 height={30}
                 alt='Gradnje plus'
@@ -135,7 +141,7 @@ const DesktopNavigation = ({ navItems }: NavbarProps) => {
                     href={navItem.link}
                     className={cn(
                       'flex h-full items-center px-2 text-base font-semibold leading-5 transition-all duration-300',
-                      scrolled
+                      scrolled || needsDarkBackground
                         ? 'text-secondary-400 hover:text-primary-300'
                         : 'text-white hover:text-primary-100',
                       pathname === navItem.link && 'text-primary-300',
@@ -157,10 +163,10 @@ const DesktopNavigation = ({ navItems }: NavbarProps) => {
             <div className='flex items-center gap-3'>
               <PublicKontakt.Link>
                 <Button
-                  variant={scrolled ? 'ghost' : 'secondary'}
+                  variant={scrolled || needsDarkBackground ? 'ghost' : 'secondary'}
                   className={cn(
                     'h-11 rounded-full transition-all duration-300 hover:bg-opacity-90',
-                    !scrolled && 'border-white bg-white/10 text-white hover:bg-white/30',
+                    !scrolled && !needsDarkBackground && 'border-white bg-white/10 text-white hover:bg-white/30',
                   )}
                 >
                   <Phone className="mr-2 size-4" />
@@ -173,7 +179,7 @@ const DesktopNavigation = ({ navItems }: NavbarProps) => {
                   variant="primary"
                   className={cn(
                     'h-11 rounded-full shadow-md transition-all duration-300 hover:bg-opacity-90 hover:shadow-lg',
-                    !scrolled && 'border-primary-200 bg-primary-300/90 text-white hover:bg-primary-300',
+                    !scrolled && !needsDarkBackground && 'border-primary-200 bg-primary-300/90 text-white hover:bg-primary-300',
                   )}
                 >
                   Projekti

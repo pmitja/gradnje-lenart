@@ -11,5 +11,11 @@ export const PATHS_WITH_DARK_NAV = [
   '/politika-zasebnosti',
   '/auth/login',
   '/auth/register',
+  '/auth/forgot-password',
+  '/auth/reset-password',
+  '/auth/verify-email',
+  '/auth/verify-email/success',
+  '/auth/verify-email/error',
+  '/auth/verify-email/resend',
   // Add more paths as needed
 ] 

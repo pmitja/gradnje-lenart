@@ -28,7 +28,7 @@ const partners = [
   },
   {
     name: 'Elektro Amper Mont d.o.o.',
-    logo: '/elektro-amper-mont-logo.webp',
+    logo: '/elektro-aper-mont-logo.webp',
   },
 ]
 

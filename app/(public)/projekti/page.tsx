@@ -8,7 +8,7 @@ import OffersBanner from '@/components/layouts/sections/offers-banner'
 import PropertyListingSection from '@/components/layouts/sections/property-listing-section'
 
 export const metadata: Metadata = {
-  title: 'Naši Projekti | Gradnje Lenart',
+  title: 'Naši Projekti | Gradnje Plus',
   description: 'Odkrijte naše aktualne projekte in nepremičnine - hiše, stanovanja in večstanovanjske objekte na različnih lokacijah.',
 }
 

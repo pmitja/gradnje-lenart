@@ -116,10 +116,10 @@ const Footer = ({ navItems }: NavbarProps) => {
               <li className="group flex items-center">
                 <Mail className="mr-3 size-5 shrink-0 text-primary-300" />
                 <a
-                  href="mailto:info@gradnje-plus.si"
+                  href="mailto:info@gradnjeplus.com"
                   className="transition-all duration-300 hover:text-primary-300 group-hover:translate-x-1"
                 >
-                  info@gradnje-plus.si
+                  info@gradnjeplus.com
                 </a>
               </li>
             </ul>

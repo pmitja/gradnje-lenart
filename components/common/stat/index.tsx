@@ -14,6 +14,7 @@ export interface StatType {
   subtitle: string
   endValue: number
   isPercentage?: boolean
+  isYear?: boolean
 }
 
 const Stat: React.FC<StatProps> = ({ subtitle, endValue, duration = 2, isPercentage = false }) => {

@@ -22,7 +22,7 @@ export async function sendEmail(formData: z.infer<typeof contactFormSchema>) {
   try {
     const data = await resend.emails.send({
       from: 'Gradnje Plus <info@gradnjeplus.com>',
-      to: 'info@gradnjeplus.com',
+      to: ['info@gradnjeplus.com', 'info@gradnjelenart.com'],
       subject: `Novo kontaktno sporočilo od ${name} ${surname}`,
       react: ContactFormEmail({
         name,

@@ -21,8 +21,8 @@ const archivo = Archivo({
 })
 
 export const metadata: Metadata = {
-  title: 'Gradnje Lenart',
-  description: 'Gradnje Lenart',
+  title: 'Gradnje Plus',
+  description: 'Gradnje Plus',
   icons: [
     {
       rel: 'icon',

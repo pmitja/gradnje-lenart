@@ -17,14 +17,14 @@ export default function Banner() {
           <div className="h-4 w-px bg-primary-400" aria-hidden="true" />
 
           <a
-            href="mailto:info@gradnje-plus.si"
+            href="mailto:info@gradnjeplus.com"
             target="_blank"
             rel="noopener noreferrer"
             className="group flex items-center space-x-2 transition-colors hover:text-body-100"
           >
             <Mail className="size-4 transition-colors group-hover:text-body-100" />
             <span className="sr-only">Email:</span>
-            <span className="font-medium">info@gradnje-plus.si</span>
+            <span className="font-medium">info@gradnjeplus.com</span>
           </a>
         </div>
       </div>

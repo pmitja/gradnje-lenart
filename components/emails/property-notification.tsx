@@ -84,8 +84,8 @@ export const PropertyNotificationEmail = ({
                 </Link>
                 <br />
                 • Telefon:{' '}
-                <Link href="tel:+38640777777" className="text-black underline">
-                  +386 40 777 777
+                <Link href="tel:+38641638451" className="text-black underline">
+                  +386 41 638 451
                 </Link>
               </Text>
             </Section>
@@ -95,18 +95,6 @@ export const PropertyNotificationEmail = ({
               <Text className="text-xs text-gray-500">
                 © {new Date().getFullYear()} Gradnje Plus. Vse pravice pridržane.
               </Text>
-              {recipientEmail && (
-                <Text className="mt-2 text-xs text-gray-400">
-                  Prejeli ste to sporočilo, ker ste se prijavili na obvestila za
-                  to nepremičnino z emailom {recipientEmail}.{' '}
-                  <Link
-                    href="https://gradnjeplus.com/odjava"
-                    className="text-black underline"
-                  >
-                    Odjava od obvestil
-                  </Link>
-                </Text>
-              )}
             </Section>
           </Container>
         </Body>

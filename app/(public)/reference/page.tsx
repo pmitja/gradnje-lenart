@@ -27,12 +27,12 @@ export default async function ReferencePage() {
   const inactiveLocations = await getInactiveLocations()
 
   // Calculate overall statistics
-  const totalLocations = inactiveLocations.length
+  const totalLocations = inactiveLocations.length + 5;
 
   const totalRealEstates = inactiveLocations.reduce(
     (sum, location) => sum + location.realEstates.length,
     0
-  )
+  ) + 8;
 
   const recentYear =
     inactiveLocations.length > 0
@@ -43,8 +43,8 @@ export default async function ReferencePage() {
   const jsonLdString = `{
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    "name": "Zaključeni projekti Gradnje Lenart",
-    "description": "Pregled vseh zaključenih nepremičninskih projektov podjetja Gradnje Lenart.",
+    "name": "Zaključeni projekti Gradnje Plus",
+    "description": "Pregled vseh zaključenih nepremičninskih projektov podjetja Gradnje Plus.",
     "url": "https://gradnje-lenart.si/reference",
     "mainEntity": {
       "@type": "ItemList",
@@ -105,7 +105,7 @@ export default async function ReferencePage() {
     },
     "publisher": {
       "@type": "Organization",
-      "name": "Gradnje Lenart",
+      "name": "Gradnje Plus",
       "url": "https://gradnje-lenart.si"
     }
   }`

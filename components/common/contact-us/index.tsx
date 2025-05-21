@@ -51,11 +51,11 @@ const ContactUs = () => (
               <Mail size={18} className="stroke-secondary-500" />
             </div>
             <a
-              href="mailto:info@gradnje-plus.si"
+              href="mailto:info@gradnjeplus.com"
               target="_blank"
               className="font-medium transition-colors hover:text-body-200"
             >
-              info@gradnje-plus.si
+              info@gradnjeplus.com
             </a>
           </div>
 

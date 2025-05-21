@@ -11,7 +11,7 @@ export default function Zasebnost() {
           <h2 className="mb-3 text-2xl font-semibold">1. Upravljavec osebnih podatkov</h2>
           <p>
             Gradnje Plus d.o.o., Partizanska cesta 14, 2230 Lenart v Slovenskih goricah, je upravljavec vaših osebnih podatkov. 
-            Za vsa vprašanja v zvezi z vašimi osebnimi podatki nas lahko kontaktirate na info@gradnje-plus.si ali 041 638 451.
+            Za vsa vprašanja v zvezi z vašimi osebnimi podatki nas lahko kontaktirate na info@gradnjeplus.com ali 041 638 451.
           </p>
         </section>
 
@@ -98,7 +98,7 @@ export default function Zasebnost() {
             <li><strong>Pravica do preklica privolitve:</strong> če obdelava temelji na privolitvi, imate pravico kadarkoli preklicati privolitev, ne da bi to vplivalo na zakonitost obdelave na podlagi privolitve pred njenim preklicem</li>
           </ul>
           <p className="mt-2">
-            Za uveljavljanje katerekoli od teh pravic nas kontaktirajte na info@gradnje-plus.si. Na vašo zahtevo bomo odgovorili v enem mesecu, v primeru kompleksnosti ali večjega števila zahtev pa lahko ta rok podaljšamo za največ dva dodatna meseca.
+            Za uveljavljanje katerekoli od teh pravic nas kontaktirajte na info@gradnjeplus.com. Na vašo zahtevo bomo odgovorili v enem mesecu, v primeru kompleksnosti ali večjega števila zahtev pa lahko ta rok podaljšamo za največ dva dodatna meseca.
           </p>
           <p className="mt-2">
             Če menite, da naša obdelava vaših osebnih podatkov krši določbe GDPR, imate pravico vložiti pritožbo pri Informacijskem pooblaščencu, Dunajska cesta 22, 1000 Ljubljana, telefon: 01 230 97 30, e-pošta: gp.ip@ip-rs.si.
@@ -140,7 +140,7 @@ export default function Zasebnost() {
             <p><strong>Gradnje Plus d.o.o.</strong></p>
             <p>Partizanska cesta 14, 2230 Lenart v Slovenskih goricah</p>
             <p>Telefon: 041 638 451</p>
-            <p>E-pošta: info@gradnje-plus.si</p>
+            <p>E-pošta: info@gradnjeplus.com</p>
           </div>
         </section>
       </div>

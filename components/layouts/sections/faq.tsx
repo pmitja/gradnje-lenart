@@ -28,10 +28,11 @@ const Faq = () => (
             <span className="text-left font-medium">Kako poteka postopek nakupa nepremičnine?</span>
           </AccordionTrigger>
           <AccordionContent className="border-t border-secondary-50 px-6 py-4 font-archivo text-secondary-200">
-            Iskanje, ogled, finančno načrtovanje, oddaja ponudbe in pogajanja tvorijo osnovne korake
-            v postopku nakupa nepremičnine. Predhodna odobritev kredita in posvet s strokovnjakom
-            sta ključna. Oddana ponudba pripelje do dogovora in nakupa. Za več informacij smo na
-            voljo.
+            Oglejte si prosta stanovanja na spletni strani ali se oglasite v naših poslovnih
+            prostorih na Partizanski cesti 14, 2230 Leanrt v Slovenskih goricah. Opravite brezplačno
+            rezervacijo stanovanja za 14 dni. Po sprejemu odločitve o nakupu se podpiše predpogodba
+            za nakup stanovanja in vplača ara v vrednosti 10%. Preostalih 90% vrednosti stanovanja
+            se plača po podpisani prodajni pogodbi in pred prevzemom stanovanja.
           </AccordionContent>
         </AccordionItem>
 
@@ -45,10 +46,8 @@ const Faq = () => (
             </span>
           </AccordionTrigger>
           <AccordionContent className="border-t border-secondary-50 px-6 py-4 font-archivo text-secondary-200">
-            Iskanje, ogled, finančno načrtovanje, oddaja ponudbe in pogajanja tvorijo osnovne korake
-            v postopku nakupa nepremičnine. Predhodna odobritev kredita in posvet s strokovnjakom
-            sta ključna. Oddana ponudba pripelje do dogovora in nakupa. Za več informacij smo na
-            voljo.
+            Skupaj s poslovnim partnerjem NLB se trudimo iskati najugodnejše rešitve financiranja
+            tudi za naše stranke.
           </AccordionContent>
         </AccordionItem>
 
@@ -62,10 +61,8 @@ const Faq = () => (
             </span>
           </AccordionTrigger>
           <AccordionContent className="border-t border-secondary-50 px-6 py-4 font-archivo text-secondary-200">
-            Iskanje, ogled, finančno načrtovanje, oddaja ponudbe in pogajanja tvorijo osnovne korake
-            v postopku nakupa nepremičnine. Predhodna odobritev kredita in posvet s strokovnjakom
-            sta ključna. Oddana ponudba pripelje do dogovora in nakupa. Za več informacij smo na
-            voljo.
+            V primeru da je nepremičnina že zgrajena je seveda mogoč ogled le te. Če je novogradnja
+            še v teku pa vam zagotovimo kar se da realne vizualizacije stanovanj.
           </AccordionContent>
         </AccordionItem>
 
@@ -79,27 +76,8 @@ const Faq = () => (
             </span>
           </AccordionTrigger>
           <AccordionContent className="border-t border-secondary-50 px-6 py-4 font-archivo text-secondary-200">
-            Iskanje, ogled, finančno načrtovanje, oddaja ponudbe in pogajanja tvorijo osnovne korake
-            v postopku nakupa nepremičnine. Predhodna odobritev kredita in posvet s strokovnjakom
-            sta ključna. Oddana ponudba pripelje do dogovora in nakupa. Za več informacij smo na
-            voljo.
-          </AccordionContent>
-        </AccordionItem>
-
-        <AccordionItem
-          value="item-5"
-          className="overflow-hidden rounded-md border border-secondary-50"
-        >
-          <AccordionTrigger className="flex items-center justify-between px-6 py-4 text-secondary-300 transition-colors duration-200 hover:text-primary-300">
-            <span className="text-left font-medium">
-              Kako je z vzdrževanjem skupnih prostorov v večstanovanjskih stavbah?
-            </span>
-          </AccordionTrigger>
-          <AccordionContent className="border-t border-secondary-50 px-6 py-4 font-archivo text-secondary-200">
-            Iskanje, ogled, finančno načrtovanje, oddaja ponudbe in pogajanja tvorijo osnovne korake
-            v postopku nakupa nepremičnine. Predhodna odobritev kredita in posvet s strokovnjakom
-            sta ključna. Oddana ponudba pripelje do dogovora in nakupa. Za več informacij smo na
-            voljo.
+            Stroški vključujejo nepremičnino z vsemi pripadajočimi deli izvedeno do dogovorjene faze
+            ob podpisu predpogodbe za nakup.
           </AccordionContent>
         </AccordionItem>
 
@@ -114,10 +92,9 @@ const Faq = () => (
             </span>
           </AccordionTrigger>
           <AccordionContent className="border-t border-secondary-50 px-6 py-4 font-archivo text-secondary-200">
-            Iskanje, ogled, finančno načrtovanje, oddaja ponudbe in pogajanja tvorijo osnovne korake
-            v postopku nakupa nepremičnine. Predhodna odobritev kredita in posvet s strokovnjakom
-            sta ključna. Oddana ponudba pripelje do dogovora in nakupa. Za več informacij smo na
-            voljo.
+            Projekti oz. novogradnje so že v času projektiranja zasnovani in kasneje tudi
+            preizkušeni da dosegajo vse standarde zvočne izoliranosti. Vedno poskrbimo tudi za
+            zadostno število razpoložljivih parkirišč, glede na potrebe modernega življenja.
           </AccordionContent>
         </AccordionItem>
       </Accordion>

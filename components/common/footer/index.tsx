@@ -55,14 +55,14 @@ export default function Footer() {
             <div className="mb-4">
               <Image
                 src="/gradnje-plus-logo-card.webp"
-                alt="Gradnje Lenart"
+                alt="Gradnje Plus"
                 width={180}
                 height={60}
                 className="rounded bg-white p-2"
               />
             </div>
             <p className="mb-4 text-gray-200">
-              Gradnje Lenart je vodilno podjetje za gradnjo in prodajo nepremičnin
+              Gradnje Plus je vodilno podjetje za gradnjo in prodajo nepremičnin
               v Slovenskih goricah.
             </p>
             <div className="flex space-x-3">
@@ -113,7 +113,7 @@ export default function Footer() {
               </li>
               <li className="flex items-center">
                 <Mail className="mr-2 size-5" />
-                <span>info@gradnje-lenart.si</span>
+                <span>info@gradnjeplus.com</span>
               </li>
             </ul>
             <div className="mt-4">
@@ -126,7 +126,7 @@ export default function Footer() {
         <div className="mt-12 border-t border-white/10 pt-6">
           <div className="flex flex-col items-center justify-between space-y-4 md:flex-row md:space-y-0">
             <div className="text-center text-sm text-gray-300 md:text-left">
-              &copy; {currentYear} Gradnje Lenart. Vse pravice pridržane.
+              &copy; {currentYear} Gradnje Plus. Vse pravice pridržane.
             </div>
             <div className="flex space-x-4 text-sm text-gray-300">
               {legalLinks.map((link, i) => (

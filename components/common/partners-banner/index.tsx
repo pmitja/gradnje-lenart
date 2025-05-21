@@ -1,38 +1,34 @@
-'use client'
+import Image from "next/image"
 
 // Partner logos data with placeholder images
 const partners = [
   {
-    name: 'Wienerberger',
-    logo: '/gradnje-plus-logo.webp', // Using existing image as placeholder
+    name: 'NLB d.d.',
+    logo: '/nlb-logo.svg', // Using existing image as placeholder
   },
   {
-    name: 'Velux',
-    logo: '/gradnje-plus-logo.webp',
+    name: 'Marles Hiše Maribor d.o.o.',
+    logo: '/marles-logo.svg',
   },
   {
-    name: 'Knauf',
-    logo: '/gradnje-plus-logo.webp',
+    name: 'Preklade d.o.o.',
+    logo: '/preklade-logo-siva-retina.png',
   },
   {
-    name: 'Geberit',
-    logo: '/gradnje-plus-logo.webp',
+    name: 'GTP Kramberger d.o.o.',
+    logo: '/gtp-kamberger.png',
   },
   {
-    name: 'Schüco',
-    logo: '/gradnje-plus-logo.webp',
+    name: 'THS d.o.o.',
+    logo: '/ths-logo.png',
   },
   {
-    name: 'Gorenje',
-    logo: '/gradnje-plus-logo.webp',
+    name: 'Rajmax d.o.o.',
+    logo: '/rajmax-logo.png',
   },
   {
-    name: 'JUB',
-    logo: '/gradnje-plus-logo.webp',
-  },
-  {
-    name: 'Ytong',
-    logo: '/gradnje-plus-logo.webp',
+    name: 'Elektro Amper Mont d.o.o.',
+    logo: '/elektro-amper-mont-logo.webp',
   },
 ]
 
@@ -62,7 +58,7 @@ const PartnersBanner = () => (
                 className="flex h-24 w-[200px] shrink-0 items-center justify-center rounded-xl border border-gray-100 bg-white p-6 shadow-sm transition-all hover:shadow-md"
               >
                 <div className="flex flex-col items-center justify-center">
-                  <div className="text-lg font-bold text-secondary-300">{partner.name}</div>
+                  <Image src={partner.logo} alt={partner.name} width={200} height={200} className="w-full h-full object-contain" />
                 </div>
               </div>
             ))}
@@ -82,7 +78,7 @@ const PartnersBanner = () => (
                 className="flex h-24 w-[200px] shrink-0 items-center justify-center rounded-xl border border-gray-100 bg-white p-6 shadow-sm transition-all hover:shadow-md"
               >
                 <div className="flex flex-col items-center justify-center">
-                  <div className="text-lg font-bold text-secondary-300">{partner.name}</div>
+                  <Image src={partner.logo} alt={partner.name} width={200} height={200} className="w-full h-full object-contain" />
                 </div>
               </div>
             ))}

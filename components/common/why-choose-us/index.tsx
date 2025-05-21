@@ -61,7 +61,7 @@ export default function WhyChooseUs() {
 
         <div className="mb-16 flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
           <h2 className="max-w-2xl text-3xl font-bold leading-tight sm:text-4xl lg:text-5xl">
-            Zakaj <span className="text-primary-300">Gradnje Lenart</span> je prava izbira za vas
+            Zakaj <span className="text-primary-300">Gradnje Plus</span> je prava izbira za vas
           </h2>
           <p className="max-w-md text-secondary-200">
             Ustvarjamo prostore, ki navdihujejo, z inovativnim pristopom in predanostjo kakovosti.

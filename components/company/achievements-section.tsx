@@ -77,8 +77,8 @@ const AchievementsSection = ({ stats }: AchievementsSectionProps) => {
                     <CountUp
                       end={stat.endValue}
                       duration={2.5}
-                      separator="."
-                      suffix={stat.isPercentage ? '%' : ''}
+                      separator={stat.isYear ? '' : '.'}
+                      suffix={stat.isPercentage ? '%' : stat.isYear ? '' : ''}
                     />
                   ) : (
                     <span>0</span>

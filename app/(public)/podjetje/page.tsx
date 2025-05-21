@@ -1,5 +1,4 @@
 import ContactUs from '@/components/common/contact-us'
-import Cta from '@/components/common/cta'
 import PartnersBanner from '@/components/common/partners-banner'
 import ProjectsCta from '@/components/common/projects-cta'
 import { StatType } from '@/components/common/stat'
@@ -10,39 +9,30 @@ import ShadowBanner from '@/components/ui/shadow-banner'
 
 const stats: StatType[] = [
   {
-    subtitle: 'nepremičnin zgrajenih',
-    endValue: 100,
+    subtitle: 'let izkušenj v gradbeništvu',
+    endValue: 40,
   },
   {
     subtitle: 'zadovoljnih strank',
-    endValue: 1200,
+    endValue: 500,
   },
   {
-    subtitle: 'zadovoljstva',
-    endValue: 99,
-    isPercentage: true,
+    subtitle: 'leta Nominacija štajerski gospodarski oskar za najperspektivnejše podjetje',
+    endValue: 2022,
+    isYear: true,
   },
 ]
 
 const companyMilestones = [
   {
-    year: 2010, title: 'Ustanovitev podjetja', description: 'Začetek delovanja na nepremičninskem trgu.',
+    year: 2016, title: 'Visoke in nizke gradnje', description: 'Začetek delovanja na nepremičninskem trgu in prva večja investicija',
   },
   {
-    year: 2013, title: 'Prva večja investicija', description: 'Uspešna izgradnja prvega stanovanjskega kompleksa.',
+    year: 2019, title: 'Širitev poslovanja', description: 'Vstop na nove trge in razširitev ponudbe storitev.',
   },
   {
-    year: 2016, title: 'Širitev poslovanja', description: 'Vstop na nove trge in razširitev ponudbe storitev.',
-  },
-  {
-    year: 2018, title: 'Tehnološka prenova', description: 'Implementacija naprednih digitalnih rešitev.',
-  },
-  {
-    year: 2021, title: 'Trajnostna gradnja', description: 'Prehod na okolju prijazne gradbene metode.',
-  },
-  {
-    year: 2023, title: 'Mednarodna priznanja', description: 'Prejemnik nagrad za inovativne nepremičninske projekte.',
-  },
+    year: 2022, title: 'Narodno priznanje', description: 'Iskanje energetsko varčnih in tehnološko naprednih rešitev gradnje.',
+  }
 ]
 
 const About = () => (
@@ -53,7 +43,7 @@ const About = () => (
       icon={<GradnjeIcon className="h-14 w-14 md:h-20 md:w-24 fill-primary-200" />}
       subheading="Nepremičnine niso zgolj nakup. So nepogrešljiv del vsakega izmed nas."
     />
-
+    <PartnersBanner />
     <CompanyOverview
       vision="Ustvarjamo prostore, kjer se življenje razvija in uspeva."
       strategy="Z inovativnim pristopom, trajnostno gradnjo in osredotočenostjo na potrebe strank gradimo prihodnost nepremičninskega trga."
@@ -62,9 +52,7 @@ const About = () => (
       culture="Naša kultura temelji na odličnosti, integriteti in trajnostnem razvoju. Združujemo strokovnost in inovativnost, da ustvarjamo nepremičnine, ki presegajo pričakovanja."
     />
 
-    <PartnersBanner />
     <ProjectsCta backgroundImage="/abstract-pattern.png" />
-    <Cta />
     <OffersBanner />
     <section className="py-6 lg:py-12">
       <ContactUs />

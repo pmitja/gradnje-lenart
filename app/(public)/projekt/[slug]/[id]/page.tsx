@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: MetadataProps): Promise<Metad
 
   if (!realEstate || !location) {
     return {
-      title: 'Nepremičnina ni najdena | Gradnje Lenart',
+      title: 'Nepremičnina ni najdena | Gradnje Plus',
       description: 'Iskana nepremičnina ni bila najdena.',
     }
   }
@@ -146,7 +146,7 @@ export async function generateMetadata({ params }: MetadataProps): Promise<Metad
   // Add provider
   jsonLd.provider = {
     '@type': 'Organization',
-    name: 'Gradnje Lenart',
+    name: 'Gradnje Plus',
     url: 'https://gradnje-lenart.si',
   }
 
@@ -156,7 +156,7 @@ export async function generateMetadata({ params }: MetadataProps): Promise<Metad
   }
 
   return {
-    title: `${realEstate.name} | ${location.name} | Gradnje Lenart`,
+    title: `${realEstate.name} | ${location.name} | Gradnje Plus`,
     description,
     openGraph: {
       title: `${realEstate.name} | ${location.name}`,

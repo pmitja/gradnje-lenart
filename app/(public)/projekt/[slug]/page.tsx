@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   if (!location) {
     return {
-      title: 'Projekt ni najden | Gradnje Lenart',
+      title: 'Projekt ni najden | Gradnje Plus',
       description: 'Iskani projekt ni bil najden.',
     }
   }
@@ -77,15 +77,15 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   // Add provider
   jsonLd.provider = {
     '@type': 'Organization',
-    name: 'Gradnje Lenart',
+    name: 'Gradnje Plus',
     url: 'https://gradnje-lenart.si',
   }
 
   return {
-    title: `${location.name} | Gradnje Lenart`,
+    title: `${location.name} | Gradnje Plus`,
     description: location.description || `Preglejte podrobnosti nepremičninskega projekta ${location.name} na lokaciji ${location.city}, ${location.address}.`,
     openGraph: {
-      title: `${location.name} | Gradnje Lenart`,
+      title: `${location.name} | Gradnje Plus`,
       description: location.description || `Nepremičninski projekt ${location.name} na lokaciji ${location.city}.`,
       images: location.images?.length ? [ `https://utfs.io/f/${location.images[0]}` ] : [],
       type: 'website',

@@ -10,10 +10,10 @@ import PropertyListingSection from '@/components/layouts/sections/property-listi
 const organizationSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
-  name: 'Gradnje Lenart',
+  name: 'Gradnje Plus',
   url: 'https://gradnje-lenart.si',
   logo: 'https://gradnje-lenart.si/gradnje-plus-logo-card.webp',
-  description: 'Gradnje Lenart je vodilno podjetje za gradnjo in prodajo nepremičnin v Slovenskih goricah.',
+  description: 'Gradnje Plus je vodilno podjetje za gradnjo in prodajo nepremičnin v Slovenskih goricah.',
   address: {
     '@type': 'PostalAddress',
     streetAddress: 'Partizanska cesta 14',
@@ -24,7 +24,7 @@ const organizationSchema = {
   contactPoint: {
     '@type': 'ContactPoint',
     telephone: '+386 41 638 451',
-    email: 'info@gradnje-lenart.si',
+    email: 'info@gradnjeplus.com',
     contactType: 'customer service',
     hoursAvailable: {
       '@type': 'OpeningHoursSpecification',
@@ -42,9 +42,9 @@ const organizationSchema = {
 const websiteSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
-  name: 'Gradnje Lenart',
+  name: 'Gradnje Plus',
   url: 'https://gradnje-lenart.si',
-  description: 'Uradna spletna stran podjetja Gradnje Lenart - vodilnega podjetja za gradnjo in prodajo nepremičnin v Slovenskih goricah.',
+  description: 'Uradna spletna stran podjetja Gradnje Plus - vodilnega podjetja za gradnjo in prodajo nepremičnin v Slovenskih goricah.',
   potentialAction: {
     '@type': 'SearchAction',
     target: {
@@ -59,10 +59,10 @@ const websiteSchema = {
 const structuredData = [ organizationSchema, websiteSchema ]
 
 export const metadata: Metadata = {
-  title: 'Gradnje Lenart | Gradnja in prodaja nepremičnin',
-  description: 'Gradnje Lenart je vodilno podjetje za gradnjo in prodajo nepremičnin v Slovenskih goricah. Oglejte si našo ponudbo stanovanj, hiš in poslovnih prostorov.',
+  title: 'Gradnje Plus | Gradnja in prodaja nepremičnin',
+  description: 'Gradnje Plus je vodilno podjetje za gradnjo in prodajo nepremičnin v Slovenskih goricah. Oglejte si našo ponudbo stanovanj, hiš in poslovnih prostorov.',
   openGraph: {
-    title: 'Gradnje Lenart | Gradnja in prodaja nepremičnin',
+    title: 'Gradnje Plus | Gradnja in prodaja nepremičnin',
     description: 'Odkrijte kakovostne nepremičnine na najboljših lokacijah. Stanovanja, hiše in poslovni prostori po vaši meri.',
     images: [ '/page-hero.webp' ],
     type: 'website',

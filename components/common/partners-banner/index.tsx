@@ -20,7 +20,7 @@ const partners = [
   },
   {
     name: 'THS d.o.o.',
-    logo: '/ths-logo.png',
+    logo: '/ths-logo.webp',
   },
   {
     name: 'Rajmax d.o.o.',

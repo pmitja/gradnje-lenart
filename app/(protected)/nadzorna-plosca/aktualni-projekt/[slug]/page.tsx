@@ -35,6 +35,8 @@ import { Table,
   TableRow } from '@/components/ui/table'
 import { updateSchema } from '@/schemas'
 import { Apartment, Location, LocationType, StatusType } from '@/types/general'
+import { X } from 'lucide-react'
+import { deleteRealEstate } from '@/actions/delete-real-estate'
 
 const AktualniProjektPage = ({ params }: { params: { slug: string } }) => {
   const router = useRouter()
@@ -60,6 +62,8 @@ const AktualniProjektPage = ({ params }: { params: { slug: string } }) => {
   const [ selectedApartment, setSelectedApartment ] = useState<Apartment | null>(null)
 
   const [ isFinishDialogOpen, setIsFinishDialogOpen ] = useState(false)
+
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState<string | null>(null)
 
   const fetchLocationData = useCallback(() => {
     setIsError(false)
@@ -89,7 +93,23 @@ const AktualniProjektPage = ({ params }: { params: { slug: string } }) => {
   const { setValue } = form
 
   const saveFormValues = (values: Apartment) => {
-    setApartments((prevApartments) => [ ...prevApartments, values ])
+    setApartments((prevApartments) => [
+      ...prevApartments,
+      {
+        ...values,
+        id: undefined,
+        locationId: location?.id ?? undefined,
+        slug: undefined,
+        createdAt: undefined,
+        updatedAt: undefined,
+        customerId: undefined,
+        parkingSpaces: values.parkingSpaces === null ? undefined : values.parkingSpaces,
+        images: values.images ?? [],
+        technicalData: values.technicalData ?? [],
+        spaces: values.spaces ?? [],
+        files: values.files ?? null,
+      },
+    ])
   }
 
   useEffect(() => {
@@ -104,10 +124,20 @@ const AktualniProjektPage = ({ params }: { params: { slug: string } }) => {
   function onSubmit(values: z.infer<typeof updateSchema>) {
     setError('')
     setSuccess('')
+    console.log('Submitting values to updateLocationRealEstate:', values)
     startTransition(() => {
       updateLocationRealEstate(values).then((result) => {
         setError(result.error)
         setSuccess(result.success)
+        if (result.error) {
+          toast.error(result.error || 'Prišlo je do napake pri shranjevanju lokacije.')
+        }
+        if (result.success) {
+          toast.success('Lokacija je bila uspešno shranjena!', {
+            description: 'Vse spremembe so bile shranjene.'
+          })
+          fetchLocationData() // Refresh apartments after successful update
+        }
       })
     })
   }
@@ -120,28 +150,27 @@ const AktualniProjektPage = ({ params }: { params: { slug: string } }) => {
 
   const handleEditCancel = () => {
     setSelectedApartment(null)
-    fetchLocationData() // Revalidate path to get latest location real estates
+    // fetchLocationData() removed to prevent overwriting local apartments state
   }
 
   const handleFinishProject = async () => {
     const result = await finishProject(params.slug)
 
     if (result.success) {
-      toast.success('Projekt zaključen', {
-        description: 'Vse nepremičnine so prodane.',
+      toast.success('Projekt je bil uspešno zaključen!', {
+        description: 'Vse nepremičnine so prodane.'
       })
       setIsFinishDialogOpen(false)
-      // Redirect to the dashboard page after a short delay
       setTimeout(() => {
         router.push('/nadzorna-plosca')
-      }, 2000) // 2 second delay
+      }, 2000)
     } else if (result.error === 'Not all real estates are sold') {
       toast.error(`Projekta ni mogoče zaključiti. Obstaja še ${result.unsoldCount} neprodanih nepremičnin na tej lokaciji.`, {
-        description: 'Prosimo, poskusite znova.',
+        description: 'Prosimo, poskusite znova.'
       })
     } else {
       toast.error(result.error || 'Pri zaključevanju projekta je prišlo do napake.', {
-        description: 'Prosimo, poskusite znova.',
+        description: 'Prosimo, poskusite znova.'
       })
     }
   }
@@ -150,14 +179,14 @@ const AktualniProjektPage = ({ params }: { params: { slug: string } }) => {
     const result = await reactivateProject(params.slug)
 
     if (result.success) {
-      toast.success('Projekt ponovno aktiviran', {
-        description: 'Lokacija je zdaj označena kot aktivna.',
+      toast.success('Projekt je bil ponovno aktiviran!', {
+        description: 'Lokacija je zdaj označena kot aktivna.'
       })
       setIsFinishDialogOpen(false)
-      fetchLocationData() // Refresh the location data
+      fetchLocationData()
     } else {
       toast.error(result.error || 'Pri ponovni aktivaciji projekta je prišlo do napake.', {
-        description: 'Prosimo, poskusite znova.',
+        description: 'Prosimo, poskusite znova.'
       })
     }
   }
@@ -198,6 +227,7 @@ const AktualniProjektPage = ({ params }: { params: { slug: string } }) => {
                       apartments: apartments.map((apartment) => ({
                         ...apartment,
                         files: apartment.files || null,
+                        parkingSpaces: apartment.parkingSpaces === null ? undefined : apartment.parkingSpaces,
                       })),
                       locationSlug: location.slug,
                     })}
@@ -240,7 +270,7 @@ const AktualniProjektPage = ({ params }: { params: { slug: string } }) => {
                           <TableRow
                             key={apartment.number}
                             className={isAdmin ? 'cursor-pointer hover:bg-primary-100' : ''}
-                            onClick={() => isAdmin && handleApartmentEdit(apartment)}
+                            onClick={() => isAdmin && !deleteDialogOpen && handleApartmentEdit(apartment)}
                           >
                             <TableCell className='font-semibold'>{apartment.number}</TableCell>
                             <TableCell>{apartment.name}</TableCell>
@@ -260,6 +290,55 @@ const AktualniProjektPage = ({ params }: { params: { slug: string } }) => {
                                 <div className='size-4 rounded-full bg-red-400'></div>
                               )}
                             </TableCell>
+                            {isAdmin && (
+                              <TableCell>
+                                <Button
+                                  variant='ghost'
+                                  size='icon'
+                                  onClick={(e) => {
+                                    e.stopPropagation()
+                                    setDeleteDialogOpen(apartment.id || '')
+                                  }}
+                                  aria-label='Izbriši nepremičnino'
+                                  className='p-1 h-6 w-6'
+                                >
+                                  <span className='flex items-center justify-center'>
+                                    <X className='w-4 h-4' />
+                                  </span>
+                                </Button>
+                                <Dialog open={deleteDialogOpen === apartment.id} onOpenChange={(open) => {
+                                  if (!open) setDeleteDialogOpen(null)
+                                }}>
+                                  <DialogContent>
+                                    <DialogHeader>
+                                      <DialogTitle>Izbriši nepremičnino</DialogTitle>
+                                      <DialogDescription>
+                                        Ali ste prepričani, da želite izbrisati to nepremičnino? To dejanje je nepovratno.
+                                      </DialogDescription>
+                                    </DialogHeader>
+                                    <DialogFooter>
+                                      <Button variant='secondary' onClick={() => setDeleteDialogOpen(null)}>Prekliči</Button>
+                                      <Button
+                                        variant='destructive'
+                                        onClick={async () => {
+                                          setDeleteDialogOpen(null)
+                                          if (!apartment.id) return
+                                          const result = await deleteRealEstate(apartment.id)
+                                          if (result?.success) {
+                                            toast.success(result.success)
+                                            fetchLocationData()
+                                          } else {
+                                            toast.error(result?.error || 'Prišlo je do napake pri brisanju nepremičnine.')
+                                          }
+                                        }}
+                                      >
+                                        Izbriši
+                                      </Button>
+                                    </DialogFooter>
+                                  </DialogContent>
+                                </Dialog>
+                              </TableCell>
+                            )}
                           </TableRow>
                         ))}
                     </TableBody>
@@ -332,7 +411,7 @@ const AktualniProjektPage = ({ params }: { params: { slug: string } }) => {
             </Button>
             <Button size='sm'>Save Product</Button>
           </div>
-          {isAdmin && selectedApartment && (
+          {isAdmin && selectedApartment && !deleteDialogOpen && (
             <EditApartmentDialog
               apartment={selectedApartment}
               id={selectedApartment.id ?? ''}

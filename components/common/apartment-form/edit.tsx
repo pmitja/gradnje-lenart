@@ -25,7 +25,7 @@ const EditApartmentDialog: React.FC<EditApartmentDialogProps> = ({
   isAdmin,
 }) => (
   <Dialog open={true} onOpenChange={onCancel}>
-    <DialogContent className='max-h-screen w-full max-w-3xl overflow-y-scroll'>
+    <DialogContent className='max-h-screen w-full max-w-[1400px] overflow-y-scroll'>
       <DialogHeader>
         <DialogTitle>Uredi {type === LocationType.Apartments ? 'stanovanje' : 'hišo'}</DialogTitle>
       </DialogHeader>

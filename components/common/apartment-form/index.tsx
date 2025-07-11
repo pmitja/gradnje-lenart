@@ -32,6 +32,7 @@ import { useToast } from '@/components/ui/use-toast'
 import { UploadButton } from '@/lib/utils/uploadthing'
 import { formSchema } from '@/schemas'
 import { EnergyClass, ExposedType, LocationType, SpacesType, StatusType } from '@/types/general'
+import { toast as sonnerToast } from 'sonner'
 
 // Simple interface definition to avoid linter issues
 interface Props {
@@ -159,10 +160,9 @@ const ApartmentForm = ({ saveFormValues, nextNumber = '1', type }: Props) => {
       // Close the dialog
       setOpen(false)
 
-      // Show confirmation toast instead of alert
-      toast({
-        title: 'Uspešno dodano',
-        description: 'Stanovanje je bilo uspešno dodano.',
+      // Show confirmation toast using sonner
+      sonnerToast.success('Stanovanje je bilo uspešno dodano.', {
+        position: 'top-center',
       })
     } catch (error) {
       // Show error toast instead of alert
@@ -210,288 +210,243 @@ const ApartmentForm = ({ saveFormValues, nextNumber = '1', type }: Props) => {
       <DialogTrigger asChild>
         <Button variant='outline'>Dodaj {type === LocationType.Apartments ? 'stanovanje' : 'hišo'}</Button>
       </DialogTrigger>
-      <DialogContent className='max-h-screen w-full max-w-3xl overflow-y-scroll'>
-        <DialogHeader>
-          <DialogTitle>Dodaj {type === LocationType.Apartments ? 'stanovanje' : 'hišo'}</DialogTitle>
-          <DialogDescription>Prosim vnesite točne podatke o {type === LocationType.Apartments ? 'stanovanju' : 'hiši'}.</DialogDescription>
+      <DialogContent className='max-h-screen w-full max-w-[1400px] overflow-y-scroll bg-white rounded-2xl shadow-xl p-8'>
+        <DialogHeader className='mb-6'>
+          <DialogTitle className='text-2xl font-bold mb-1'>Dodaj {type === LocationType.Apartments ? 'stanovanje' : 'hišo'}</DialogTitle>
+          <DialogDescription className='text-muted-foreground'>Prosim vnesite točne podatke o {type === LocationType.Apartments ? 'stanovanju' : 'hiši'}.</DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form
-            className='grid gap-4 py-4'
-          >
-            <div className='grid grid-cols-1 items-center gap-4'>
-              <FormField
-                control={form.control}
-                name='number'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      <RequiredLabel>Št. {type === LocationType.Apartments ? 'stanovanja' : 'hiše'}</RequiredLabel>
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        id='number'
-                        className='col-span-3'
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className='grid grid-cols-1 items-center gap-4'>
-              <FormField
-                control={form.control}
-                name='name'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      <RequiredLabel>Naziv</RequiredLabel>
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        id='name'
-                        className='col-span-3'
-                        placeholder='2 sobno stanovanje'
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className='grid grid-cols-1 items-center gap-4'>
-              <FormField
-                control={form.control}
-                name='shortDescription'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      <RequiredLabel>Kratki opis</RequiredLabel>
-                    </FormLabel>
-                    <FormControl>
-                      <Textarea
-                        id='description'
-                        className='col-span-3'
-                        placeholder='Kratek opis stanovanja'
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className='grid grid-cols-1 items-center gap-4'>
-              <FormField
-                control={form.control}
-                name='description'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      <RequiredLabel>Opis</RequiredLabel>
-                    </FormLabel>
-                    <FormControl>
-                      <Textarea
-                        id='description'
-                        className='col-span-3'
-                        placeholder='Podroben opis stanovanja'
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            {type === LocationType.Apartments && (
-              <div className='grid grid-cols-1 items-center gap-4'>
+          <form className='grid gap-8 py-2'>
+            {/* Section: Osnovni podatki */}
+            <div>
+              <h3 className='text-lg font-semibold mb-4 border-b pb-2'>Osnovni podatki</h3>
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+                {/* number, name */}
                 <FormField
                   control={form.control}
-                  name='floor'
+                  name='number'
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>
-                        <RequiredLabel>Etaža</RequiredLabel>
+                        <RequiredLabel>Št. {type === LocationType.Apartments ? 'stanovanja' : 'hiše'}</RequiredLabel>
                       </FormLabel>
                       <FormControl>
-                        <Input
-                          id='floor'
-                          className='col-span-3'
-                          placeholder='3. nadstropje'
-                          {...field}
-                        />
+                        <Input id='number' className='rounded-lg border-gray-300 focus:ring-2 focus:ring-primary-300' {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-              </div>
-            )}
-            {type === LocationType.House && (
-              <input type="hidden" id="floor" value="1" />
-            )}
-            <div className='grid grid-cols-1 items-center gap-4'>
-              <FormField
-                control={form.control}
-                name='size'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      <RequiredLabel>Kvadratura</RequiredLabel>
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        id='size'
-                        className='col-span-3'
-                        type='number'
-                        placeholder='70'
-                        {...field}
-                        onChange={(event) => field.onChange(+event.target.value)}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className='grid grid-cols-1 items-center gap-4'>
-              <FormField
-                control={form.control}
-                name='price'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      <RequiredLabel>Cena (brez ddv)</RequiredLabel>
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        id='price'
-                        className='col-span-3'
-                        type='number'
-                        placeholder='100000'
-                        {...field}
-                        onChange={(event) => field.onChange(+event.target.value)}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className='grid grid-cols-1 items-center gap-4'>
-              <FormField
-                control={form.control}
-                name='priceWithTax'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      <RequiredLabel>Cena</RequiredLabel>
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        id='priceWithTax'
-                        className='col-span-3'
-                        type='number'
-                        placeholder='130000'
-                        {...field}
-                        onChange={(event) => field.onChange(+event.target.value)}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className='grid grid-cols-1 items-center gap-4'>
-              <FormField
-                control={form.control}
-                name='spaces'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Prostori</FormLabel>
-                    <FormControl>
-                      <ToggleGroup
-                        type='multiple'
-                        onValueChange={field.onChange}
-                        className='flex flex-wrap gap-3'
-                      >
-                        {Object.values(SpacesType).map((space) => (
-                          <FormItem
-                            key={space}
-                            className='rounded-md border border-primary-100'
-                          >
-                            <FormControl>
-                              <ToggleGroupItem
-                                value={space}
-                                className='hover:bg-primary-50 hover:text-primary-500 data-[state=on]:bg-primary-300 data-[state=on]:text-white'
-                              >
-                                {space}
-                              </ToggleGroupItem>
-                            </FormControl>
-                          </FormItem>
-                        ))}
-                      </ToggleGroup>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className='grid grid-cols-1 items-center gap-4'>
-              <FormField
-                control={form.control}
-                name='energyLevel'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Energetski nivo</FormLabel>
-                    <FormControl>
-                      <ToggleGroup
-                        type='single'
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                        className='flex flex-wrap gap-3'
-                      >
-                        {Object.values(EnergyClass).map((level) => (
-                          <FormItem
-                            className='rounded-md border border-primary-100'
-                            key={level}
-                          >
-                            <FormControl>
-                              <ToggleGroupItem
-                                value={level}
-                                className='hover:bg-primary-50 hover:text-primary-500 data-[state=on]:bg-primary-300 data-[state=on]:text-white'
-                              >
-                                {level}
-                              </ToggleGroupItem>
-                            </FormControl>
-                          </FormItem>
-                        ))}
-                      </ToggleGroup>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            {type === LocationType.Apartments && (
-              <div className='grid grid-cols-1 items-center gap-4'>
                 <FormField
                   control={form.control}
-                  name='parkingSpaces'
+                  name='name'
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Število parkirnih mest</FormLabel>
+                      <FormLabel>
+                        <RequiredLabel>Naziv</RequiredLabel>
+                      </FormLabel>
                       <FormControl>
-                        <Input
-                          type='number'
-                          min={0}
-                          id='parkingSpaces'
-                          className='col-span-3'
-                          {...field}
-                          onChange={(event) => field.onChange(+event.target.value)}
+                        <Input id='name' className='rounded-lg border-gray-300 focus:ring-2 focus:ring-primary-300' placeholder='2 sobno stanovanje' {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-6 mt-4'>
+                <FormField
+                  control={form.control}
+                  name='shortDescription'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>
+                        <RequiredLabel>Kratki opis</RequiredLabel>
+                      </FormLabel>
+                      <FormControl>
+                        <Textarea id='shortDescription' className='rounded-lg border-gray-300 focus:ring-2 focus:ring-primary-300' placeholder='Kratek opis stanovanja' {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='description'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>
+                        <RequiredLabel>Opis</RequiredLabel>
+                      </FormLabel>
+                      <FormControl>
+                        <Textarea id='description' className='rounded-lg border-gray-300 focus:ring-2 focus:ring-primary-300' placeholder='Podroben opis stanovanja' {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-6 mt-4'>
+                {type === LocationType.Apartments && (
+                  <FormField
+                    control={form.control}
+                    name='floor'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          <RequiredLabel>Etaža</RequiredLabel>
+                        </FormLabel>
+                        <FormControl>
+                          <Input id='floor' className='rounded-lg border-gray-300 focus:ring-2 focus:ring-primary-300' placeholder='3. nadstropje' {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
+                {type === LocationType.House && (
+                  <input type="hidden" id="floor" value="1" />
+                )}
+              </div>
+            </div>
+            {/* Section: Lastnosti */}
+            <div>
+              <h3 className='text-lg font-semibold mb-4 border-b pb-2'>Lastnosti</h3>
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+                <FormField
+                  control={form.control}
+                  name='size'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>
+                        <RequiredLabel>Kvadratura</RequiredLabel>
+                      </FormLabel>
+                      <FormControl>
+                        <Input id='size' className='rounded-lg border-gray-300 focus:ring-2 focus:ring-primary-300' type='number' placeholder='70' {...field} onChange={e => field.onChange(e.target.value === '' ? '' : +e.target.value)} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='price'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>
+                        <RequiredLabel>Cena (brez ddv)</RequiredLabel>
+                      </FormLabel>
+                      <FormControl>
+                        <Input id='price' className='rounded-lg border-gray-300 focus:ring-2 focus:ring-primary-300' type='number' placeholder='100000' {...field} onChange={e => field.onChange(e.target.value === '' ? '' : +e.target.value)} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-6 mt-4'>
+                <FormField
+                  control={form.control}
+                  name='priceWithTax'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>
+                        <RequiredLabel>Cena</RequiredLabel>
+                      </FormLabel>
+                      <FormControl>
+                        <Input id='priceWithTax' className='rounded-lg border-gray-300 focus:ring-2 focus:ring-primary-300' type='number' placeholder='130000' {...field} onChange={e => field.onChange(e.target.value === '' ? '' : +e.target.value)} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                {type === LocationType.Apartments && (
+                  <FormField
+                    control={form.control}
+                    name='parkingSpaces'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Število parkirnih mest</FormLabel>
+                        <FormControl>
+                          <Input type='number' min={0} id='parkingSpaces' className='rounded-lg border-gray-300 focus:ring-2 focus:ring-primary-300' {...field} onChange={e => field.onChange(e.target.value === '' ? '' : +e.target.value)} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
+              </div>
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-6 mt-4'>
+                <FormField
+                  control={form.control}
+                  name='spaces'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Prostori</FormLabel>
+                      <FormControl>
+                        <ToggleGroup type='multiple' onValueChange={field.onChange} className='flex flex-wrap gap-3'>
+                          {Object.values(SpacesType).map((space) => (
+                            <FormItem key={space} className='rounded-md border border-primary-100'>
+                              <FormControl>
+                                <ToggleGroupItem value={space} className='hover:bg-primary-50 hover:text-primary-500 data-[state=on]:bg-primary-400 data-[state=on]:text-white rounded-md px-4 py-2 transition-all'>
+                                  {space}
+                                </ToggleGroupItem>
+                              </FormControl>
+                            </FormItem>
+                          ))}
+                        </ToggleGroup>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='energyLevel'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Energetski nivo</FormLabel>
+                      <FormControl>
+                        <ToggleGroup type='single' onValueChange={field.onChange} defaultValue={field.value} className='flex flex-wrap gap-3'>
+                          {Object.values(EnergyClass).map((level) => (
+                            <FormItem className='rounded-md border border-primary-100' key={level}>
+                              <FormControl>
+                                <ToggleGroupItem value={level} className='hover:bg-primary-50 hover:text-primary-500 data-[state=on]:bg-primary-400 data-[state=on]:text-white rounded-md px-4 py-2 transition-all'>
+                                  {level}
+                                </ToggleGroupItem>
+                              </FormControl>
+                            </FormItem>
+                          ))}
+                        </ToggleGroup>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-6 mt-4'>
+                <FormField
+                  control={form.control}
+                  name='technicalData'
+                  render={() => (
+                    <FormItem>
+                      <FormLabel>Tehnični podatki</FormLabel>
+                      <FormControl>
+                        <TagInput
+                          activeTagIndex={activeTagIndex}
+                          setActiveTagIndex={setActiveTagIndex}
+                          placeholder='Vnesi tehnične podatke'
+                          tags={technicalData}
+                          className='sm:min-w-[350px] rounded-lg border-gray-300 focus:ring-2 focus:ring-primary-300'
+                          styleClasses={{
+                            tag: {
+                              body: 'bg-primary-400 rounded-md text-white hover:bg-primary-300/50',
+                              closeButton: 'text-white hover:text-white',
+                            },
+                          }}
+                          setTags={(newTags) => {
+                            setTechnicalData(newTags)
+                            setValue('technicalData', newTags as Array<Tag>)
+                          }}
                         />
                       </FormControl>
                       <FormMessage />
@@ -499,238 +454,106 @@ const ApartmentForm = ({ saveFormValues, nextNumber = '1', type }: Props) => {
                   )}
                 />
               </div>
-            )}
-            <div className='grid grid-cols-1 items-center gap-4'>
-              <FormField
-                control={form.control}
-                name='technicalData'
-                render={() => (
-                  <FormItem>
-                    <FormLabel>Tehnični podatki</FormLabel>
-                    <FormControl>
-                      <TagInput
-                        activeTagIndex={activeTagIndex}
-                        setActiveTagIndex={setActiveTagIndex}
-                        placeholder='Vnesi tehnične podatke'
-                        tags={technicalData}
-                        className='sm:min-w-[450px]'
-                        styleClasses={{
-                          tag: {
-                            body: 'bg-primary-300 rounded-md text-white hover:bg-primary-300/50',
-                            closeButton: 'text-white hover:text-white',
-                          },
-                        }}
-                        setTags={(newTags) => {
-                          setTechnicalData(newTags)
-                          setValue('technicalData', newTags as Array<Tag>)
-                        }}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
             </div>
-            <div className='grid grid-cols-1 items-center gap-4'>
-              <FormField
-                control={form.control}
-                name='status'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Status</FormLabel>
-                    <FormControl>
-                      <ToggleGroup
-                        type='single'
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                        className='flex flex-wrap gap-3'
-                      >
-                        {Object.values(StatusType).map((status) => (
-                          <FormItem
-                            className='rounded-md border border-primary-100'
-                            key={status}
-                          >
+            {/* Section: Status & Izpostavljenost */}
+            <div>
+              <h3 className='text-lg font-semibold mb-4 border-b pb-2'>Status & Izpostavljenost</h3>
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+                <FormField
+                  control={form.control}
+                  name='status'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Status</FormLabel>
+                      <FormControl>
+                        <ToggleGroup type='single' onValueChange={field.onChange} defaultValue={field.value} className='flex flex-wrap gap-3'>
+                          {Object.values(StatusType).map((status) => (
+                            <FormItem className='rounded-md border border-primary-100' key={status}>
+                              <FormControl>
+                                <ToggleGroupItem value={status} className='hover:bg-primary-50 hover:text-primary-500 data-[state=on]:bg-primary-400 data-[state=on]:text-white rounded-md px-4 py-2 transition-all'>
+                                  {status}
+                                </ToggleGroupItem>
+                              </FormControl>
+                            </FormItem>
+                          ))}
+                        </ToggleGroup>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='isExposed'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Izpostavi v posebni sekciji?</FormLabel>
+                      <FormControl>
+                        <ToggleGroup type='single' onValueChange={(e) => { if (e === ExposedType.Expose.toString()) { field.onChange(true) } else { field.onChange(false) } }} className='flex flex-wrap gap-3'>
+                          <FormItem className='rounded-md border border-primary-100'>
                             <FormControl>
-                              <ToggleGroupItem
-                                value={status}
-                                className='hover:bg-primary-50 hover:text-primary-500 data-[state=on]:bg-primary-300 data-[state=on]:text-white'
-                              >
-                                {status}
-                              </ToggleGroupItem>
-                            </FormControl>
-                          </FormItem>
-                        ))}
-                      </ToggleGroup>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className='grid grid-cols-1 items-center gap-4'>
-              <FormField
-                control={form.control}
-                name='isExposed'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Izpostavi v posebni sekciji?</FormLabel>
-                    <FormControl>
-                      <ToggleGroup
-                        type='single'
-                        onValueChange={(e) => {
-                          if (e === ExposedType.Expose.toString()) {
-                            field.onChange(true)
-                          } else {
-                            field.onChange(false)
-                          }
-                        }}
-                        className='flex flex-wrap gap-3'
-                      >
-                          <FormItem
-                            className='rounded-md border border-primary-100'
-                          >
-                            <FormControl>
-                              <ToggleGroupItem
-                                value={ExposedType.Expose.toString()}
-                                className='hover:bg-primary-50 hover:text-primary-500 data-[state=on]:bg-primary-300 data-[state=on]:text-white'
-                              >
+                              <ToggleGroupItem value={ExposedType.Expose.toString()} className='hover:bg-primary-50 hover:text-primary-500 data-[state=on]:bg-primary-400 data-[state=on]:text-white rounded-md px-4 py-2 transition-all'>
                                 Izpostavi
                               </ToggleGroupItem>
                             </FormControl>
                           </FormItem>
-                          <FormItem
-                            className='rounded-md border border-primary-100'
-                          >
+                          <FormItem className='rounded-md border border-primary-100'>
                             <FormControl>
-                              <ToggleGroupItem
-                                value={ExposedType.Hide.toString()}
-                                className='hover:bg-primary-50 hover:text-primary-500 data-[state=on]:bg-primary-300 data-[state=on]:text-white'
-                              >
+                              <ToggleGroupItem value={ExposedType.Hide.toString()} className='hover:bg-primary-50 hover:text-primary-500 data-[state=on]:bg-primary-400 data-[state=on]:text-white rounded-md px-4 py-2 transition-all'>
                                 Ne izpostavi
                               </ToggleGroupItem>
                             </FormControl>
                           </FormItem>
-                      </ToggleGroup>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                        </ToggleGroup>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
             </div>
-            <div className='grid grid-cols-1 gap-4'>
-              <FormLabel>Slike</FormLabel>
-              <UploadButton
-                endpoint='imageUploader'
-                onUploadProgress={() => setImagesBeginUploading(true)}
-                onClientUploadComplete={(res) => {
-                  const array = res.map((file) => file.key)
-
-                  setValue('images', array)
-                  setUploadedImages(array)
-                  setImagesBeginUploading(false)
-                }}
-                onUploadError={(error: Error) => {
-                  setImagesBeginUploading(false)
-                  // Do something with the error.
-                  toast({
-                    variant: 'destructive',
-                    title: 'Napaka pri nalaganju',
-                    description: `${error.message}`,
-                  })
-                }}
-                className='ut-button:bg-primary-500 ut-button:ut-readying:bg-primary-500/50'
-              />
-            </div>
-            {!isPending
-              && uploadedImages.length > 0
-              && uploadedImages.map((image) => (
-                <div className='relative max-w-fit' key={image}>
-                  <Image
-                    className='size-[200px] rounded-xl object-cover'
-                    width={200}
-                    height={200}
-                    key={image}
-                    src={`https://utfs.io/f/${image}`}
-                    alt={image}
-                  />
-                  <Button
-                    variant={'ghost'}
-                    className='absolute right-2 top-2 max-w-fit bg-white/50'
-                    onClick={handleRemoveImage(image)}
-                  >
-                    <CloseIcon />
-                  </Button>
+            {/* Section: Naloži slike in datoteke */}
+            <div>
+              <h3 className='text-lg font-semibold mb-4 border-b pb-2'>Naloži slike in datoteke</h3>
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+                <div>
+                  <FormLabel>Slike</FormLabel>
+                  <UploadButton endpoint='imageUploader' onUploadProgress={() => setImagesBeginUploading(true)} onClientUploadComplete={(res) => { const array = res.map((file) => file.key); setValue('images', array); setUploadedImages(array); setImagesBeginUploading(false); }} onUploadError={(error: Error) => { setImagesBeginUploading(false); toast({ variant: 'destructive', title: 'Napaka pri nalaganju', description: `${error.message}`, }); }} className='ut-button:bg-primary-500 ut-button:ut-readying:bg-primary-500/50 mt-2' />
+                  {!isPending && uploadedImages.length > 0 && (
+                    <div className='flex flex-wrap gap-4 mt-4'>
+                      {uploadedImages.map((image) => (
+                        <div className='relative max-w-fit rounded-lg border border-gray-200 shadow-sm' key={image}>
+                          <Image className='size-[140px] rounded-lg object-cover' width={140} height={140} key={image} src={`https://utfs.io/f/${image}`} alt={image} />
+                          <Button variant={'ghost'} className='absolute right-2 top-2 max-w-fit bg-white/70 rounded-full p-1' onClick={handleRemoveImage(image)} size='icon'>
+                            <CloseIcon />
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {isPending && <Spinner />}
                 </div>
-              ))}
-            {isPending && <Spinner />}
-            <div className='grid grid-cols-1 gap-4'>
-              <FormLabel>Datoteke</FormLabel>
-              <UploadButton
-                endpoint='fileUpload'
-                onUploadProgress={() => setFilesBeginUploading(true)}
-                onClientUploadComplete={(res) => {
-                  const array = res.map((file) => ({
-                    name: file.name, key: file.key,
-                  }))
-
-                  setValue('files', array)
-                  setUploadedFiles(array)
-                  setFilesBeginUploading(false)
-                }}
-                onUploadError={(error: Error) => {
-                  setFilesBeginUploading(false)
-                  // Do something with the error.
-                  toast({
-                    variant: 'destructive',
-                    title: 'Napaka pri nalaganju',
-                    description: `${error.message}`,
-                  })
-                }}
-                className='ut-button:bg-primary-500 ut-button:ut-readying:bg-primary-500/50'
-              />
-            </div>
-            {!isPending
-              && uploadedFiles.length > 0
-              && uploadedFiles.map((file) => (
-                <div className='relative flex max-w-fit items-center gap-3 rounded-md bg-primary-300 p-2 text-white' key={file.key}>
-                  <div>{file.name}</div>
-                  <Button
-                    variant={'ghost'}
-                    className='max-w-fit'
-                    onClick={handleRemoveFile(file.key)}
-                  >
-                    <CloseIcon />
-                  </Button>
+                <div>
+                  <FormLabel>Datoteke</FormLabel>
+                  <UploadButton endpoint='fileUpload' onUploadProgress={() => setFilesBeginUploading(true)} onClientUploadComplete={(res) => { const array = res.map((file) => ({ name: file.name, key: file.key, })); setValue('files', array); setUploadedFiles(array); setFilesBeginUploading(false); }} onUploadError={(error: Error) => { setFilesBeginUploading(false); toast({ variant: 'destructive', title: 'Napaka pri nalaganju', description: `${error.message}`, }); }} className='ut-button:bg-primary-500 ut-button:ut-readying:bg-primary-500/50 mt-2' />
+                  {!isPending && uploadedFiles.length > 0 && (
+                    <div className='flex flex-col gap-2 mt-4'>
+                      {uploadedFiles.map((file) => (
+                        <div className='relative flex items-center gap-3 rounded-md border border-gray-200 bg-primary-300/80 p-2 text-white shadow-sm' key={file.key}>
+                          <div className='truncate'>{file.name}</div>
+                          <Button variant={'ghost'} className='max-w-fit' onClick={handleRemoveFile(file.key)} size='icon'>
+                            <CloseIcon />
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {isPending && <Spinner />}
                 </div>
-              ))}
-            {isPending && <Spinner />}
-            <DialogFooter>
-              <Button
-                type='button'
-                onClick={() => {
-                  // Get the form values directly and validate them
-                  const values = form.getValues()
-
-                  // Run validation manually
-                  form.trigger().then((isValid) => {
-                    if (isValid) {
-                      onSubmit(values)
-                    } else {
-                      toast({
-                        variant: 'destructive',
-                        title: 'Napaka pri validaciji',
-                        description: 'Prosim izpolnite vsa obvezna polja označena z *.',
-                      })
-                    }
-                  })
-                }}
-                disabled={
-                  imagesBeginUploading
-                  || filesBeginUploading
-                  || form.formState.isSubmitting
-                }
-                variant={'form'}
-              >
+              </div>
+            </div>
+            <DialogFooter className='mt-8'>
+              <Button type='button' onClick={() => { const values = form.getValues(); form.trigger().then((isValid) => { if (isValid) { onSubmit(values) } else { toast({ variant: 'destructive', title: 'Napaka pri validaciji', description: 'Prosim izpolnite vsa obvezna polja označena z *.', }) } }) }} disabled={imagesBeginUploading || filesBeginUploading || form.formState.isSubmitting} variant={'form'} className='w-full md:w-auto px-8 py-3 text-base rounded-lg shadow-md'>
                 Dodaj {type === LocationType.Apartments ? 'stanovanje' : 'hišo'}
               </Button>
             </DialogFooter>

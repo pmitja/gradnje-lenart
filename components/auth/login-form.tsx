@@ -75,7 +75,7 @@ function LoginForm() {
                       <Input
                         {...field}
                         disabled={isPending}
-                        placeholder='john.wick@example.com'
+                        placeholder='email@example.com'
                         type='email'
                       />
                     </FormControl>
@@ -118,7 +118,7 @@ function LoginForm() {
             disabled={isPending}
             variant={'primary'}
           >
-            Login
+            Prijavi se
           </Button>
         </form>
       </Form>

@@ -12,7 +12,9 @@ interface PageProps {
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const slug = params.slug.toString()
+  const resolvedParams = await params
+  
+  const slug = resolvedParams.slug.toString()
 
   const location = await getLocationRealEstates(slug)
 

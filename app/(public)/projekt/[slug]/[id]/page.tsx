@@ -18,9 +18,12 @@ interface PageProps {
 }
 
 export async function generateMetadata({ params }: MetadataProps): Promise<Metadata> {
-  const location = await getLocationRealEstates(params.slug.toString())
+  // Await params in case it's a Promise
+  const resolvedParams = await params
 
-  const realEstate = await getRealEstateById(params.id.toString())
+  const location = await getLocationRealEstates(resolvedParams.slug.toString())
+
+  const realEstate = await getRealEstateById(resolvedParams.id.toString())
 
   if (!realEstate || !location) {
     return {
@@ -59,7 +62,7 @@ export async function generateMetadata({ params }: MetadataProps): Promise<Metad
   const jsonLd: Record<string, any> = {
     '@context': 'https://schema.org',
     '@type': 'RealEstateListing',
-    url: `https://gradnje-lenart.si/projekt/${params.slug}/${params.id}`,
+    url: `https://gradnje-lenart.si/projekt/${resolvedParams.slug}/${resolvedParams.id}`,
     name: realEstate.name,
     description: realEstate.description || description,
   }
@@ -140,7 +143,7 @@ export async function generateMetadata({ params }: MetadataProps): Promise<Metad
   // Add main entity
   jsonLd.mainEntityOfPage = {
     '@type': 'WebPage',
-    '@id': `https://gradnje-lenart.si/projekt/${params.slug}/${params.id}`,
+    '@id': `https://gradnje-lenart.si/projekt/${resolvedParams.slug}/${resolvedParams.id}`,
   }
 
   // Add provider
@@ -165,7 +168,7 @@ export async function generateMetadata({ params }: MetadataProps): Promise<Metad
       type: 'website',
     },
     alternates: {
-      canonical: `https://gradnje-lenart.si/projekt/${params.slug}/${params.id}`,
+      canonical: `https://gradnje-lenart.si/projekt/${resolvedParams.slug}/${resolvedParams.id}`,
     },
     // JSON-LD structured data
     other: {

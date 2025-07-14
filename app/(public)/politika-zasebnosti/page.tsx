@@ -11,7 +11,7 @@ export default function Zasebnost() {
           <h2 className="mb-3 text-2xl font-semibold">1. Upravljavec osebnih podatkov</h2>
           <p>
             Gradnje Plus d.o.o., Partizanska cesta 14, 2230 Lenart v Slovenskih goricah, je upravljavec vaših osebnih podatkov. 
-            Za vsa vprašanja v zvezi z vašimi osebnimi podatki nas lahko kontaktirate na info@gradnjeplus.com ali 041 638 451.
+            Za vsa vprašanja v zvezi z vašimi osebnimi podatki nas lahko kontaktirate na info@gradnjeplus.com ali 051 635 106.
           </p>
         </section>
 
@@ -139,7 +139,7 @@ export default function Zasebnost() {
           <div className="mt-3 space-y-1">
             <p><strong>Gradnje Plus d.o.o.</strong></p>
             <p>Partizanska cesta 14, 2230 Lenart v Slovenskih goricah</p>
-            <p>Telefon: 041 638 451</p>
+            <p>Telefon: 051 635 106</p>
             <p>E-pošta: info@gradnjeplus.com</p>
           </div>
         </section>

@@ -15,6 +15,7 @@ interface EditApartmentDialogProps {
   onCancel: () => void
   type: LocationType
   isAdmin: boolean
+  onSuccess?: () => void // Add onSuccess prop
 }
 
 const EditApartmentDialog: React.FC<EditApartmentDialogProps> = ({
@@ -23,6 +24,7 @@ const EditApartmentDialog: React.FC<EditApartmentDialogProps> = ({
   onCancel,
   type,
   isAdmin,
+  onSuccess, // Accept onSuccess
 }) => (
   <Dialog open={true} onOpenChange={onCancel}>
     <DialogContent className='max-h-screen w-full max-w-[1400px] overflow-y-scroll'>
@@ -30,7 +32,7 @@ const EditApartmentDialog: React.FC<EditApartmentDialogProps> = ({
         <DialogTitle>Uredi {type === LocationType.Apartments ? 'stanovanje' : 'hišo'}</DialogTitle>
       </DialogHeader>
       {isAdmin ? (
-        <EditApartmentForm data={apartment} onCancel={onCancel} id={id} type={type} />
+        <EditApartmentForm data={apartment} onCancel={onCancel} id={id} type={type} onSuccess={onSuccess} />
       ) : (
         <p>Nimate dovoljenja za urejanje tega {type === LocationType.Apartments ? 'stanovanja' : 'hiše'}.</p>
       )}

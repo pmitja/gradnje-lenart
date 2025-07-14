@@ -456,6 +456,10 @@ const AktualniProjektPage = ({ params }: { params: Promise<{ slug: string }> }) 
                 id={selectedApartment.id ?? ''}
                 isAdmin={isAdmin}
                 onCancel={handleEditCancel}
+                onSuccess={() => {
+                  setSelectedApartment(null);
+                  fetchLocationData();
+                }}
                 type={location.type}
               />
             )}

@@ -27,7 +27,7 @@ interface Sale {
   }
 }
 
-export default function RecentSales({ sales }: { sales: Sale[] }) {
+export default function RecentSales({ sales, onLoadMore, loading, hasMore }: { sales: Sale[], onLoadMore?: () => void, loading?: boolean, hasMore?: boolean }) {
   return (
     <Card className="overflow-hidden border-none shadow-lg">
       <CardHeader className="border-b border-primary-50 pb-4">
@@ -44,50 +44,63 @@ export default function RecentSales({ sales }: { sales: Sale[] }) {
       </CardHeader>
       <CardContent className="p-0">
         {sales && sales.length > 0 ? (
-          <Table>
-            <TableHeader className="bg-primary-50/50">
-              <TableRow>
-                <TableHead>Stranka</TableHead>
-                <TableHead>Lokacija</TableHead>
-                <TableHead>Datum</TableHead>
-                <TableHead className="text-right">Znesek</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {sales.map((sale) => (
-                <TableRow key={sale.id} className="hover:bg-primary-50/30">
-                  <TableCell>
-                    <div className="flex items-center gap-3">
-                      <Avatar className="size-8">
-                        <AvatarImage src="/placeholder-avatar.png" alt="Avatar" />
-                        <AvatarFallback className="bg-primary-200 text-xs text-primary-foreground">
-                          {sale.customer?.fullName.slice(0, 2).toUpperCase() || 'NA'}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <p className="font-medium text-secondary-300">{sale.customer?.fullName || 'N/A'}</p>
-                        <p className="text-xs text-muted-foreground">{sale.customer?.email || 'N/A'}</p>
-                      </div>
-                    </div>
-                  </TableCell>
-                  <TableCell className="text-sm">{sale.location.name}</TableCell>
-                  <TableCell className="text-sm text-muted-foreground">
-                    {format(new Date(sale.updatedAt), 'dd. MMM', {
-                      locale: sl,
-                    })}
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <div className="font-medium text-primary-400">
-                      {sale.priceWithTax?.toLocaleString('de-DE', {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      }) || '0,00'} €
-                    </div>
-                  </TableCell>
+          <div className="relative">
+            <Table>
+              <TableHeader className="bg-primary-50/50">
+                <TableRow>
+                  <TableHead>Stranka</TableHead>
+                  <TableHead>Lokacija</TableHead>
+                  <TableHead>Datum</TableHead>
+                  <TableHead className="text-right">Znesek</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {sales.map((sale) => (
+                  <TableRow key={sale.id} className="hover:bg-primary-50/30">
+                    <TableCell>
+                      <div className="flex items-center gap-3">
+                        <Avatar className="size-8">
+                          <AvatarImage src="/placeholder-avatar.png" alt="Avatar" />
+                          <AvatarFallback className="bg-primary-200 text-xs text-primary-foreground">
+                            {sale.customer?.fullName.slice(0, 2).toUpperCase() || 'NA'}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <p className="font-medium text-secondary-300">{sale.customer?.fullName || 'N/A'}</p>
+                          <p className="text-xs text-muted-foreground">{sale.customer?.email || 'N/A'}</p>
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-sm">{sale.location.name}</TableCell>
+                    <TableCell className="text-sm text-muted-foreground">
+                      {format(new Date(sale.updatedAt), 'dd. MMM', {
+                        locale: sl,
+                      })}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <div className="font-medium text-primary-400">
+                        {sale.priceWithTax?.toLocaleString('de-DE', {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        }) || '0,00'} €
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+            {hasMore && (
+              <div className="flex justify-center py-4">
+                <button
+                  className="rounded bg-primary-200 px-4 py-2 text-primary-foreground hover:bg-primary-300 disabled:opacity-50"
+                  onClick={onLoadMore}
+                  disabled={loading}
+                >
+                  {loading ? 'Nalagam ...' : 'Naloži več'}
+                </button>
+              </div>
+            )}
+          </div>
         ) : (
           <div className="flex h-56 items-center justify-center text-muted-foreground">
             Trenutno ni nedavnih prodaj.

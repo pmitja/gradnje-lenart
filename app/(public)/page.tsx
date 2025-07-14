@@ -23,7 +23,7 @@ const organizationSchema = {
   },
   contactPoint: {
     '@type': 'ContactPoint',
-    telephone: '+386 41 638 451',
+    telephone: '+386 51 635 106',
     email: 'info@gradnjeplus.com',
     contactType: 'customer service',
     hoursAvailable: {
@@ -33,10 +33,7 @@ const organizationSchema = {
       closes: '16:00',
     },
   },
-  sameAs: [
-    'https://facebook.com',
-    'https://instagram.com',
-  ],
+  sameAs: [],
 }
 
 const websiteSchema = {

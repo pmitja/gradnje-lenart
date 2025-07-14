@@ -85,7 +85,7 @@ export const PropertyNotificationEmail = ({
                 <br />
                 • Telefon:{' '}
                 <Link href="tel:+38641638451" className="text-black underline">
-                  +386 41 638 451
+                  +386 51 635 106
                 </Link>
               </Text>
             </Section>

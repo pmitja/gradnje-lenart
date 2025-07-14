@@ -76,49 +76,10 @@ const MobileNavigation = ({ navItems }: NavbarProps) => {
           href="tel:+38641638451"
           className="flex items-center gap-1 text-xs"
         >
-          <Phone className="size-3" /> 041 638 451
+          <Phone className="size-3" /> 051 635 106
         </a>
         <div className="flex items-center gap-3">
-          <a
-            href="#"
-            className="flex size-6 items-center justify-center rounded-full bg-white/10 text-xs"
-            aria-label="Facebook"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="12"
-              height="12"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
-            </svg>
-          </a>
-          <a
-            href="#"
-            className="flex size-6 items-center justify-center rounded-full bg-white/10 text-xs"
-            aria-label="Instagram"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="12"
-              height="12"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
-              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-              <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
-            </svg>
-          </a>
+          {/* Removed Facebook and Instagram icons */}
         </div>
       </div>
 
@@ -225,7 +186,7 @@ const MobileNavigation = ({ navItems }: NavbarProps) => {
 
           <div className="mt-8 flex items-center justify-between border-t border-gray-100 pt-6 text-xs text-secondary-200">
             <a href="tel:+38641638451" className="flex items-center hover:text-primary-300">
-              <Phone className="mr-1 size-3" /> 041 638 451
+              <Phone className="mr-1 size-3" /> 051 635 106
             </a>
             <a href="#" className="flex items-center hover:text-primary-300">
               <MapPin className="mr-1 size-3" /> Partizanska 14

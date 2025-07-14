@@ -1,4 +1,4 @@
-import { ArrowUp, ChevronRight, Facebook, Instagram, Mail, MapPin, Phone } from 'lucide-react'
+import { ArrowUp, ChevronRight, Mail, MapPin, Phone } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
@@ -58,20 +58,7 @@ const Footer = ({ navItems }: NavbarProps) => {
               izkušenj na slovenskem trgu.
             </p>
             <div className="flex space-x-4">
-              <a
-                href="#"
-                className="group flex size-10 items-center justify-center rounded-full bg-secondary-200/10 transition-all duration-300 hover:bg-primary-300 hover:text-white"
-                aria-label="Facebook"
-              >
-                <Facebook className="size-5 transition-transform duration-300 group-hover:scale-110" />
-              </a>
-              <a
-                href="#"
-                className="group flex size-10 items-center justify-center rounded-full bg-secondary-200/10 transition-all duration-300 hover:bg-primary-300 hover:text-white"
-                aria-label="Instagram"
-              >
-                <Instagram className="size-5 transition-transform duration-300 group-hover:scale-110" />
-              </a>
+              {/* Removed Facebook and Instagram links */}
             </div>
           </div>
 
@@ -110,7 +97,7 @@ const Footer = ({ navItems }: NavbarProps) => {
                   href="tel:+38641638451"
                   className="transition-all duration-300 hover:text-primary-300 group-hover:translate-x-1"
                 >
-                  041 638 451
+                  051 635 106
                 </a>
               </li>
               <li className="group flex items-center">

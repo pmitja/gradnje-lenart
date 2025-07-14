@@ -29,11 +29,12 @@ import { UploadButton } from '@/lib/utils/uploadthing'
 import { formSchema } from '@/schemas'
 import { Apartment, EnergyClass, ExposedType, LocationType, SpacesType, StatusType } from '@/types/general'
 
-const EditApartmentForm = ({ data, onCancel, id = '', type }: {
+const EditApartmentForm = ({ data, onCancel, id = '', type, onSuccess }: {
   data: Apartment,
   onCancel: () => void,
   id?: string,
-  type: LocationType
+  type: LocationType,
+  onSuccess?: () => void // Add onSuccess prop
 }) => {
   const [ imagesBeginUploading, setImagesBeginUploading ] = useState(false)
 
@@ -109,6 +110,21 @@ const EditApartmentForm = ({ data, onCancel, id = '', type }: {
       updateRealEstate(updatedValues).then((result) => {
         setError(result.error)
         setSuccess(result.success)
+        if (result.success) {
+          toast({
+            title: 'Nepremičnina uspešno posodobljena!',
+            description: 'Vse spremembe so bile shranjene.',
+            variant: 'default',
+          })
+          if (onSuccess) onSuccess()
+        }
+        if (result.error) {
+          toast({
+            title: 'Prišlo je do napake pri posodabljanju nepremičnine.',
+            description: result.error,
+            variant: 'destructive',
+          })
+        }
       })
     })
   }

@@ -1,6 +1,6 @@
 'use client'
 
-import { BadgeCheckIcon, Car, Check, Expand, Facebook, Home, Instagram, Linkedin, MapPin, ParkingSquare, Share2 } from 'lucide-react'
+import { BadgeCheckIcon, Car, Check, Expand, Home, Linkedin, MapPin, ParkingSquare, Share2 } from 'lucide-react'
 import { useState } from 'react'
 
 import ReservationDialog from '@/app/(public)/projekt/[slug]/[id]/_components/ReservationDialog'
@@ -28,15 +28,6 @@ const ShareDialog = ({ url, title }: { url: string; title: string }) => {
         <DialogTitle className="text-center text-secondary-300">Deli nepremičnino</DialogTitle>
       </DialogHeader>
       <div className="mt-2 flex flex-col gap-3 py-2">
-        <a
-          href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(`Oglejte si to nepremičnino: ${title}`)}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-3 rounded-lg bg-body-50 px-5 py-3 text-secondary-300 transition hover:bg-blue-50 hover:text-blue-600"
-        >
-          <Facebook className="size-6 text-blue-600" />
-          <span className="font-medium">Deli na Facebook</span>
-        </a>
         <button
           onClick={handleCopy}
           className="flex items-center gap-3 rounded-lg bg-body-50 px-5 py-3 text-secondary-300 transition hover:bg-pink-50"
@@ -48,8 +39,8 @@ const ShareDialog = ({ url, title }: { url: string; title: string }) => {
             </>
           ) : (
             <>
-              <Instagram className="size-6 text-pink-500" />
-              <span className="font-medium">Kopiraj za Instagram</span>
+              <Share2 className="size-6 text-pink-500" />
+              <span className="font-medium">Kopiraj povezavo</span>
             </>
           )}
         </button>

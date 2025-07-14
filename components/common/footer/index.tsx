@@ -1,17 +1,10 @@
 'use client'
 
-import { Facebook, Instagram, Mail, MapPin, Phone } from 'lucide-react'
+import { Mail, MapPin, Phone } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 
-const socialLinks = [
-  {
-    icon: Facebook, href: 'https://facebook.com', label: 'Facebook',
-  },
-  {
-    icon: Instagram, href: 'https://instagram.com', label: 'Instagram',
-  },
-]
+const socialLinks = []
 
 const quickLinks = [
   {
@@ -66,18 +59,7 @@ export default function Footer() {
               v Slovenskih goricah.
             </p>
             <div className="flex space-x-3">
-              {socialLinks.map((link, i) => (
-                <Link
-                  key={i}
-                  href={link.href}
-                  aria-label={link.label}
-                  className="flex size-10 items-center justify-center rounded-full bg-white/10 hover:bg-white/20"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <link.icon className="size-5" />
-                </Link>
-              ))}
+              {/* Removed Facebook and Instagram links */}
             </div>
           </div>
 
@@ -109,7 +91,7 @@ export default function Footer() {
               </li>
               <li className="flex items-center">
                 <Phone className="mr-2 size-5" />
-                <span>+386 41 638 451</span>
+                <span>+386 51 635 106</span>
               </li>
               <li className="flex items-center">
                 <Mail className="mr-2 size-5" />

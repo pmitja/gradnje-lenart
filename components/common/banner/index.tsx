@@ -11,7 +11,7 @@ export default function Banner() {
           >
             <Phone className="size-4 transition-colors group-hover:text-body-100" />
             <span className="sr-only">Telefon:</span>
-            <span className="font-medium">041 638 451</span>
+            <span className="font-medium">051 635 106</span>
           </a>
 
           <div className="h-4 w-px bg-primary-400" aria-hidden="true" />

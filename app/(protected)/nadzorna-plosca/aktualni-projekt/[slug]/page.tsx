@@ -123,6 +123,7 @@ const AktualniProjektPage = ({ params }: { params: Promise<{ slug: string }> }) 
       setValue('apartments', apartments.map((apartment) => ({
         ...apartment,
         files: null,
+        sobnost: apartment.sobnost ?? 1,
       })))
     }
   }, [ apartments, setValue ])
@@ -235,6 +236,7 @@ const AktualniProjektPage = ({ params }: { params: Promise<{ slug: string }> }) 
                           ...apartment,
                           files: apartment.files || null,
                           parkingSpaces: apartment.parkingSpaces === null ? undefined : apartment.parkingSpaces,
+                          sobnost: apartment.sobnost ?? 1,
                         })),
                         locationSlug: location.slug,
                       })}

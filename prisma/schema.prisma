@@ -95,6 +95,7 @@ model RealEstate {
   energyLevel      String?
   technicalData    Json?
   isExposed        Boolean       @default(false)
+  sobnost          Float?        // Number of rooms (1, 1.5, 2, 2.5, 3)
   location         Location      @relation("LocationRealEstate", fields: [locationId], references: [id], onDelete: Cascade)
   reservations     Reservation[]
   customerId       String?

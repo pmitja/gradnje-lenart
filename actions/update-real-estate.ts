@@ -49,6 +49,7 @@ export const updateRealEstate = async (values: z.infer<typeof updateRealEstateSc
             }))
             : undefined,
           isExposed: apartment.isExposed,
+          sobnost: apartment.sobnost,
         },
       })
     }

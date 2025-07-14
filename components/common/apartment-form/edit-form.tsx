@@ -78,6 +78,7 @@ const EditApartmentForm = ({ data, onCancel, id = '', type, onSuccess }: {
       technicalData: data.technicalData,
       files: data.files,
       isExposed: data.isExposed,
+      sobnost: data.sobnost,
     },
   })
 
@@ -259,6 +260,27 @@ const EditApartmentForm = ({ data, onCancel, id = '', type, onSuccess }: {
                 </FormItem>
               )}
             />
+            {type === LocationType.Apartments && (
+              <FormField
+                control={form.control}
+                name="sobnost"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Number of rooms</FormLabel>
+                    <FormControl>
+                      <ToggleGroup type="single" value={field.value?.toString()} onValueChange={val => field.onChange(val ? parseFloat(val) : undefined)} className="flex flex-wrap gap-3">
+                        {[1, 1.5, 2, 2.5, 3].map(option => (
+                          <ToggleGroupItem key={option} value={option.toString()} className="hover:bg-primary-50 hover:text-primary-500 data-[state=on]:bg-primary-400 data-[state=on]:text-white rounded-md px-4 py-2 transition-all">
+                            {option}
+                          </ToggleGroupItem>
+                        ))}
+                      </ToggleGroup>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
             <FormField
               control={form.control}
               name="price"

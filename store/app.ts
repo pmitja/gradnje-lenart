@@ -6,6 +6,7 @@ interface PropertyFilters {
   priceRange?: [number, number]
   availability?: string
   isReseted?: boolean
+  sobnost?: number // Number of rooms
 }
 
 interface ProjectFilters {
@@ -56,6 +57,7 @@ export const useAppStore = create<AppState>((set) => ({
     propertyFilters: {
       priceRange: [ 0, 500000 ],
       isReseted: true,
+      sobnost: undefined,
     },
     projectFilters: {
       location: 'all',

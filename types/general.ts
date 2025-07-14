@@ -85,6 +85,7 @@ export interface RealEstate {
   createdAt?: Date
   updatedAt?: Date
   statusType?: StatusType
+  sobnost?: number // Number of rooms
 }
 
 export interface Location {
@@ -125,6 +126,7 @@ export type Apartment = {
   }[] | null
   isExposed: boolean
   id?: string
+  sobnost?: number // Number of rooms
 }
 
 export interface OfferInfo {

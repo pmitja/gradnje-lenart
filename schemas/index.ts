@@ -54,6 +54,9 @@ export const formSchema = z.object({
   priceWithTax: z.number().min(1, {
     message: 'Vnesi ceno ki je daljša od 3 znakov, to polje je obvezno.',
   }),
+  sobnost: z.number().refine(val => [1, 1.5, 2, 2.5, 3].includes(val), {
+    message: 'Izberite veljavno sobnost: 1, 1.5, 2, 2.5 ali 3.'
+  }),
   status: z.nativeEnum(StatusType),
   id: z.string().optional(),
   images: z.array(z.string()).optional(),

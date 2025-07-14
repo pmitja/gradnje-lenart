@@ -26,10 +26,10 @@ const PropertyFilter = ({ isDesktop = true, type }: PropertyFilterProps) => {
 
   const { propertyFilters, updatePropertyFilters, resetFilters } = useAppStore()
 
-  const form = useForm({
+  const form = useForm<{ floor?: string; sobnost?: number; priceRange?: [number, number]; availability?: string }>({
     defaultValues: {
       floor: propertyFilters.floor,
-      size: propertyFilters.size,
+      sobnost: propertyFilters.sobnost,
       priceRange: propertyFilters.priceRange || [ MIN_PRICE, MAX_PRICE ],
       availability: propertyFilters.availability,
     },
@@ -110,13 +110,13 @@ const PropertyFilter = ({ isDesktop = true, type }: PropertyFilterProps) => {
             {type === 'Večstanovanjski objekt' && (
               <FormField
                 control={form.control}
-                name="size"
+                name="sobnost"
                 render={({ field }) => (
                   <FormItem className="flex h-auto flex-col gap-3 rounded-lg border border-gray-100 bg-white p-4 shadow-sm">
-                    <FormLabel className="text-secondary-700 text-base font-semibold">Velikost</FormLabel>
+                    <FormLabel className="text-secondary-700 text-base font-semibold">Sobnost</FormLabel>
                     <FormControl>
                       <div className="flex flex-wrap gap-2">
-                        {[ 'Enosobno', 'Ena in pol sobno', 'Dvosobno', 'Trisobno' ].map((value) => (
+                        {[1, 1.5, 2, 2.5, 3].map((value) => (
                           <Button
                             key={value}
                             type="button"
@@ -194,8 +194,8 @@ const PropertyFilter = ({ isDesktop = true, type }: PropertyFilterProps) => {
                             <Input
                               type="number"
                               className="inline h-auto max-w-16 border-none bg-transparent p-0 px-1 text-center text-sm font-medium"
-                              onChange={(e) => field.onChange([ parseInt(e.target.value, 10), field.value[1] ])}
-                              value={field.value[0]}
+                              onChange={(e) => field.onChange([ parseInt(e.target.value, 10), field.value?.[1] ?? MAX_PRICE ])}
+                              value={field.value?.[0] ?? MIN_PRICE}
                             />
                             <span className="text-xs font-medium text-gray-500">€</span>
                           </div>
@@ -206,8 +206,8 @@ const PropertyFilter = ({ isDesktop = true, type }: PropertyFilterProps) => {
                             <Input
                               type="number"
                               className="inline h-auto max-w-16 border-none bg-transparent p-0 px-1 text-center text-sm font-medium"
-                              onChange={(e) => field.onChange([ field.value[0], parseInt(e.target.value, 10) ])}
-                              value={field.value[1]}
+                              onChange={(e) => field.onChange([ field.value?.[0] ?? MIN_PRICE, parseInt(e.target.value, 10) ])}
+                              value={field.value?.[1] ?? MAX_PRICE}
                             />
                             <span className="text-xs font-medium text-gray-500">€</span>
                           </div>

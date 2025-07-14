@@ -88,6 +88,7 @@ const ApartmentForm = ({ saveFormValues, nextNumber = '1', type }: Props) => {
       technicalData: [],
       files: [],
       isExposed: false,
+      sobnost: undefined,
     },
   })
 
@@ -150,6 +151,7 @@ const ApartmentForm = ({ saveFormValues, nextNumber = '1', type }: Props) => {
         technicalData: [],
         files: [],
         isExposed: false,
+        sobnost: undefined,
       })
 
       // Reset state values
@@ -327,6 +329,37 @@ const ApartmentForm = ({ saveFormValues, nextNumber = '1', type }: Props) => {
                     </FormItem>
                   )}
                 />
+                {type === LocationType.Apartments && (
+                  <FormField
+                    control={form.control}
+                    name='sobnost'
+                    render={({ field }) => (
+                      <FormItem>
+                      <FormLabel><RequiredLabel>Sobnost</RequiredLabel></FormLabel>
+                      <FormControl>
+                        <ToggleGroup
+                          type='single'
+                          value={field.value?.toString()}
+                          onValueChange={val => field.onChange(val ? parseFloat(val) : undefined)}
+                          className='flex flex-wrap gap-3'
+                        >
+                          {[1, 1.5, 2, 2.5, 3].map(option => (
+                            <FormItem className='rounded-md border border-primary-100' key={option}>
+                            <FormControl>
+                              <ToggleGroupItem value={option.toString()} className='hover:bg-primary-50 hover:text-primary-500 data-[state=on]:bg-primary-400 data-[state=on]:text-white rounded-md px-4 py-2 transition-all'>
+                                {option}
+                              </ToggleGroupItem>
+                            </FormControl>
+                          </FormItem>
+                            ))}
+                        </ToggleGroup>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                      
+                    )}
+                  />
+                )}
                 <FormField
                   control={form.control}
                   name='price'

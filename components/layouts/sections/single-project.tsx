@@ -352,11 +352,13 @@ const RealEstateListing = ({
 
   const filteredRealEstates = useMemo(
     () => location.realEstates.filter((realEstate) => {
-      const { floor, size, priceRange, availability } = propertyFilters
+      const { floor, sobnost, priceRange, availability } = propertyFilters
 
       const floorMatch = !floor || floor === 'Vsa' || realEstate.floor === floor
 
-      const sizeMatch = !size || realEstate.name.includes(size)
+      // Filter by sobnost (number of rooms)
+      const sobnostMatch =
+        sobnost === undefined || sobnost === null || realEstate.sobnost === sobnost
 
       const priceMatch = !priceRange
           || (Number(realEstate.priceWithTax) >= priceRange[0]
@@ -364,7 +366,7 @@ const RealEstateListing = ({
 
       const availabilityMatch = !availability || realEstate.status === availability
 
-      return floorMatch && sizeMatch && priceMatch && availabilityMatch
+      return floorMatch && sobnostMatch && priceMatch && availabilityMatch
     }),
     [ location.realEstates, propertyFilters ],
   )

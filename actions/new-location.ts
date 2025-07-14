@@ -76,6 +76,7 @@ export const newLocation = async (values: z.infer<typeof mainFormSchema>) => {
             name: td.name, key: td.key,
           }))
           : undefined,
+        sobnost: apartment.sobnost,
       },
     })),
   )

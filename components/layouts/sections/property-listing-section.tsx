@@ -11,6 +11,7 @@ import FloorIcon from '@/components/icons/floor'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { useAppStore } from '@/store/app'
+import React from 'react'
 
 // Types based on Prisma schema
 interface Location {
@@ -37,6 +38,7 @@ interface RealEstate {
   parkingSpaces?: number | null
   shortDescription?: string | null
   location: Location
+  sobnost?: number | null
 }
 
 // Helper functions
@@ -121,17 +123,17 @@ const PropertyCard = ({ property }: { property: RealEstate }) => {
         <div className="grid grid-cols-3 gap-2 border-y border-gray-100 py-2">
           <div className="flex items-center justify-center gap-4">
             <Maximize2 className="mr-1 size-5 text-gray-500" />
-            <span className="text-sm font-medium">{property.size} m²</span>
+            <span className="text-sm font-medium truncate">{property.size} m²</span>
           </div>
 
           <div className="flex items-center justify-center gap-4">
             <FloorIcon className="mr-1 size-5 text-gray-500" width={20} height={20} />
-            <span className="text-sm font-medium">{property.floor || 'P'}</span>
+            <span className="text-sm font-medium truncate">{property.floor || 'P'}</span>
           </div>
 
           <div className="flex items-center justify-center gap-4">
             <Car className="mr-1 size-5 text-gray-500" />
-            <span className="text-sm font-medium">{property.parkingSpaces || 0}</span>
+            <span className="text-sm font-medium truncate">{property.parkingSpaces || 0}</span>
           </div>
         </div>
 
@@ -180,7 +182,12 @@ const PROPERTY_TYPES = [
   },
 ]
 
-export default function PropertyListingSection() {
+export interface PropertyListingSectionProps {
+  forwardedRef?: React.RefObject<HTMLElement> | ((el: HTMLElement | null) => void)
+  id?: string
+}
+
+export default function PropertyListingSection({ forwardedRef, id = 'property-listing-section' }: PropertyListingSectionProps = {}) {
   const [properties, setProperties] = useState<RealEstate[]>([])
 
   const [displayedProperties, setDisplayedProperties] = useState<RealEstate[]>([])
@@ -235,19 +242,9 @@ export default function PropertyListingSection() {
           return false
         }
 
-        // Filter by size/type
-        if (propertyFilters.size) {
-          // This is simplified - in a real app, you'd have a more sophisticated mapping
-          const sizeMappings: Record<string, number[]> = {
-            Enosobno: [0, 45],
-            'Ena in pol sobno': [45, 55],
-            Dvosobno: [55, 75],
-            Trisobno: [75, 1000],
-          }
-
-          const range = sizeMappings[propertyFilters.size]
-
-          if (range && property.size && (property.size < range[0] || property.size > range[1])) {
+        // Filter by sobnost (number of rooms)
+        if (propertyFilters.sobnost !== undefined && propertyFilters.sobnost !== null) {
+          if (property.sobnost !== propertyFilters.sobnost) {
             return false
           }
         }
@@ -435,7 +432,7 @@ export default function PropertyListingSection() {
   }
 
   return (
-    <section className="py-8 md:py-16">
+    <section ref={forwardedRef} id={id} className="py-8 md:py-16">
       <div className="mb-8 flex flex-col md:flex-row md:items-center md:justify-between">
         <div>
           <h2 className="text-3xl font-bold">Vse nepremičnine</h2>

@@ -25,7 +25,11 @@ import { useAppStore } from '@/store/app'
 import { LocationType } from '@/types/general'
 import { projectFilterSchema } from '@/validation-schemas/project-filters-schema'
 
-const ProjectsFilter = () => {
+interface ProjectsFilterProps {
+  onFilter?: () => void
+}
+
+const ProjectsFilter = ({ onFilter }: ProjectsFilterProps) => {
   const { projectFilters, updateProjectFilters } = useAppStore()
 
   const form = useForm<z.infer<typeof projectFilterSchema>>({
@@ -60,6 +64,11 @@ const ProjectsFilter = () => {
 
   function onSubmit(values: z.infer<typeof projectFilterSchema>) {
     updateProjectFilters(values)
+    if (onFilter) {
+      setTimeout(() => {
+        onFilter()
+      }, 100) // slight delay to ensure state update
+    }
   }
 
   return (

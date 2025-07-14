@@ -98,6 +98,7 @@ const NovAktualniProjektPage = () => {
     const apartmentForForm: ApartmentFormSubmission = {
       ...values,
       files: null,
+      sobnost: values.sobnost ?? 1, // Ensure sobnost is always a number
     }
 
     const newApartments = [ ...apartments, apartmentForForm ]
@@ -105,7 +106,10 @@ const NovAktualniProjektPage = () => {
     setApartments(newApartments)
 
     // Set the form value
-    setValue('apartments', newApartments)
+    setValue('apartments', newApartments.map(a => ({
+      ...a,
+      sobnost: a.sobnost ?? 1, // Ensure sobnost is always a number
+    })))
   }
 
   useEffect(() => {
@@ -151,7 +155,10 @@ const NovAktualniProjektPage = () => {
       }
 
       // Ensure apartments are properly set in form values
-      formValues.apartments = apartments
+      formValues.apartments = apartments.map(a => ({
+        ...a,
+        sobnost: a.sobnost ?? 1, // Ensure sobnost is always a number
+      }));
 
       // Start transition to show loading state
       startTransition(() => {

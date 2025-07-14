@@ -7,7 +7,11 @@ import { Badge } from '@/components/ui/badge'
 import { useAppStore } from '@/store/app'
 import { LocationType } from '@/types/general'
 
-const ProjectFilterHero = () => {
+interface ProjectFilterHeroProps {
+  onFilter?: () => void
+}
+
+const ProjectFilterHero = ({ onFilter }: ProjectFilterHeroProps) => {
   const { updateProjectFilters } = useAppStore()
 
   const handlePopularSearchClick = (type: string) => {
@@ -34,7 +38,7 @@ const ProjectFilterHero = () => {
 
             <div className="mb-8 mt-2 rounded-xl bg-white p-5 shadow-lg">
               <h3 className="mb-4 text-xl font-semibold text-secondary-500">Najdite svoj dom</h3>
-              <ProjectsFilter />
+              <ProjectsFilter onFilter={onFilter} />
             </div>
 
             {/* Popular search tags */}

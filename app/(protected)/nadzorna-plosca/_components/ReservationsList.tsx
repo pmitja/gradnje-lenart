@@ -2,7 +2,7 @@
 
 import { Calendar, Check, MapPin, User, X } from 'lucide-react'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useState, useEffect, startTransition } from 'react'
 import { toast } from 'sonner'
 
 import { confirmReservation } from '@/actions/confirm-reservation'
@@ -11,11 +11,18 @@ import { removeAllFromWaitingList } from '@/actions/remove-all-from-waiting-list
 import { removeReservation } from '@/actions/remove-reservation'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from '@/components/ui/dialog'
 import { Separator } from '@/components/ui/separator'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { formatDate } from '@/lib/utils'
+import { newClient } from '@/actions/new-client'
+import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from '@/components/ui/select'
+import { Input } from '@/components/ui/input'
+import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form'
+import { Label } from '@/components/ui/label'
+import { useForm } from 'react-hook-form'
+import { getAllClients } from '@/actions/get-all-clients'
 
 interface Reservation {
   id: string
@@ -33,6 +40,13 @@ interface Reservation {
   }
 }
 
+interface Client {
+  id: string
+  name: string
+  surname: string
+  email: string
+}
+
 interface ReservationsListProps {
   initialReservations: Reservation[]
   onReservationUpdated: () => void
@@ -47,18 +61,50 @@ const ReservationsList = ({ initialReservations, onReservationUpdated, userRole 
   const [ viewType, setViewType ] = useState<'grid' | 'table'>('grid')
 
   const [ detailsOpen, setDetailsOpen ] = useState(false)
+  const [ clients, setClients ] = useState<Client[]>([])
+  const [ confirmDialogOpen, setConfirmDialogOpen ] = useState(false)
+  const [ confirmReservationId, setConfirmReservationId ] = useState<string | null>(null)
+  const [ selectedClientId, setSelectedClientId ] = useState<string>("")
+  const [addClientDialogOpen, setAddClientDialogOpen] = useState(false)
+  const [addClientLoading, setAddClientLoading] = useState(false)
+  const addClientForm = useForm({
+    defaultValues: {
+      name: '',
+      surname: '',
+      address: '',
+      phone: '',
+      email: '',
+      taxNumber: '',
+      idNumber: '',
+    },
+  })
+
+  useEffect(() => {
+    fetch('/api/clients')
+      .then(res => res.json())
+      .then(setClients)
+  }, [])
 
   const isAdmin = userRole === 'ADMIN'
 
-  const handleConfirm = async (id: string) => {
-    const result = await confirmReservation(id)
+  const handleConfirmClick = (id: string) => {
+    setConfirmReservationId(id)
+    setSelectedClientId("")
+    setConfirmDialogOpen(true)
+  }
 
+  const handleConfirm = async () => {
+    if (!confirmReservationId || !selectedClientId) return
+    const result = await confirmReservation(confirmReservationId, selectedClientId)
     if (result.success) {
-      setReservations(reservations.filter((r) => r.id !== id))
+      setReservations(reservations.filter((r) => r.id !== confirmReservationId))
       toast.success('Rezervacija potrjena', {
-        description: 'Kontaktirali vas bomo za potrditev.',
+        description: 'Nepremičnina prodana izbranemu klientu.',
       })
-      onReservationUpdated() // Call the callback
+      setConfirmDialogOpen(false)
+      setConfirmReservationId(null)
+      setSelectedClientId("")
+      onReservationUpdated()
     } else {
       toast.error('Pri potrditvi rezervacije je prišlo do napake.', {
         description: 'Prosimo, poskusite znova.',
@@ -102,6 +148,28 @@ const ReservationsList = ({ initialReservations, onReservationUpdated, userRole 
       toast.error('Pri odstranitvi rezervacije je prišlo do napake.', {
         description: 'Prosimo, poskusite znova.',
       })
+    }
+  }
+
+  const handleAddClient = async (values: any) => {
+    setAddClientLoading(true)
+    try {
+      const client = await newClient(values)
+      toast.success('Klient uspešno dodan.')
+      setAddClientDialogOpen(false)
+      
+      startTransition(async () => {
+        // Refresh clients and pre-select new client
+        const updatedClients = await getAllClients()
+        setClients(updatedClients)
+        setSelectedClientId(client.id ?? "")
+      })
+      
+      addClientForm.reset()
+    } catch (e) {
+      toast.error('Napaka pri dodajanju klienta.')
+    } finally {
+      setAddClientLoading(false)
     }
   }
 
@@ -182,7 +250,7 @@ const ReservationsList = ({ initialReservations, onReservationUpdated, userRole 
                       size="icon"
                       className="size-8 rounded-full bg-success-50 text-success-400 
                         hover:bg-success-100 hover:text-success-500"
-                      onClick={() => handleConfirm(reservation.id)}
+                      onClick={() => handleConfirmClick(reservation.id)}
                     >
                       <Check className="size-4" />
                     </Button>
@@ -233,7 +301,7 @@ const ReservationsList = ({ initialReservations, onReservationUpdated, userRole 
                               hover:bg-success-100 hover:text-success-500"
                             onClick={(e) => {
                               e.stopPropagation()
-                              handleConfirm(reservation.id)
+                              handleConfirmClick(reservation.id)
                             }}
                           >
                             <Check className="size-4" />
@@ -352,7 +420,7 @@ const ReservationsList = ({ initialReservations, onReservationUpdated, userRole 
                   <Button
                     variant="primary"
                     onClick={() => {
-                      handleConfirm(selectedReservation.id)
+                      handleConfirmClick(selectedReservation.id)
                       setDetailsOpen(false)
                     }}
                   >
@@ -362,6 +430,172 @@ const ReservationsList = ({ initialReservations, onReservationUpdated, userRole 
               )}
             </>
           )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Confirm Reservation Dialog */}
+      {confirmDialogOpen && (
+        <Dialog open={confirmDialogOpen} onOpenChange={(open) => setConfirmDialogOpen(open)}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Potrditev rezervacije</DialogTitle>
+              <DialogDescription>
+                Izberite klienta, ki je kupil nepremičnino.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="mb-4">
+              <Label htmlFor="client-select" className="block mb-2">Klient</Label>
+              <Select
+                value={selectedClientId}
+                onValueChange={setSelectedClientId}
+              >
+                <SelectTrigger id="client-select" className="mb-2">
+                  <SelectValue placeholder="Izberi klienta" />
+                </SelectTrigger>
+                <SelectContent>
+                  {clients.length === 0 ? (
+                    <div className="p-2 text-muted-foreground">Ni klientov.</div>
+                  ) : (
+                    clients.map(client => (
+                      <SelectItem key={client.id} value={client.id}>
+                        {client.name} {client.surname} ({client.email})
+                      </SelectItem>
+                    ))
+                  )}
+                </SelectContent>
+              </Select>
+              {clients.length === 0 && (
+                <Button variant="outline" className="mt-2" onClick={() => setAddClientDialogOpen(true)}>
+                  Dodaj novega klienta
+                </Button>
+              )}
+            </div>
+            <div className="flex justify-end gap-2">
+              <Button variant="outline" onClick={() => setConfirmDialogOpen(false)}>
+                Prekliči
+              </Button>
+              <Button
+                variant="primary"
+                onClick={handleConfirm}
+                disabled={!selectedClientId}
+              >
+                Potrdi prodajo
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
+
+      {/* Add Client Dialog */}
+      <Dialog open={addClientDialogOpen} onOpenChange={setAddClientDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Dodaj novega klienta</DialogTitle>
+            <DialogDescription>Vnesite podatke o novem klientu.</DialogDescription>
+          </DialogHeader>
+          <Form {...addClientForm}>
+            <form onSubmit={addClientForm.handleSubmit(handleAddClient)} className="space-y-3">
+              <FormField
+                control={addClientForm.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Ime</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Ime" required />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={addClientForm.control}
+                name="surname"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Priimek</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Priimek" required />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={addClientForm.control}
+                name="address"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Naslov</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Naslov" required />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={addClientForm.control}
+                name="phone"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Telefon</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Telefon" required />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={addClientForm.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Email" required />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={addClientForm.control}
+                name="taxNumber"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Davčna številka</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Davčna številka" required />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={addClientForm.control}
+                name="idNumber"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Matična številka</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Matična številka" required />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <DialogFooter>
+                <Button type="submit" variant="primary" disabled={addClientLoading}>
+                  Dodaj klienta
+                </Button>
+                <DialogClose asChild>
+                  <Button type="button" variant="outline">Prekliči</Button>
+                </DialogClose>
+              </DialogFooter>
+            </form>
+          </Form>
         </DialogContent>
       </Dialog>
     </div>

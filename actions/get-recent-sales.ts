@@ -13,14 +13,19 @@ export const getAllSales = async (
   // Build where clause for search
   const where: any = {
     status: StatusType.Prodano,
-    customer: {
-      isNot: null,
-    },
+    OR: [
+      { customerId: { not: null } },
+      { clientId: { not: null } },
+    ],
   }
   if (search) {
     where.OR = [
+      ...where.OR,
       { customer: { fullName: { contains: search, mode: 'insensitive' } } },
       { customer: { email: { contains: search, mode: 'insensitive' } } },
+      { client: { name: { contains: search, mode: 'insensitive' } } },
+      { client: { surname: { contains: search, mode: 'insensitive' } } },
+      { client: { email: { contains: search, mode: 'insensitive' } } },
       { location: { name: { contains: search, mode: 'insensitive' } } },
     ]
   }
@@ -30,7 +35,11 @@ export const getAllSales = async (
   if (sortBy === 'priceWithTax') {
     orderBy = { priceWithTax: sortOrder }
   } else if (sortBy === 'customer') {
-    orderBy = { customer: { fullName: sortOrder } }
+    // Sort by customer fullName or client name+surname
+    orderBy = {
+      customer: { fullName: sortOrder },
+      client: { name: sortOrder },
+    }
   } else {
     orderBy = { updatedAt: sortOrder }
   }
@@ -41,6 +50,13 @@ export const getAllSales = async (
       customer: {
         select: {
           fullName: true,
+          email: true,
+        },
+      },
+      client: {
+        select: {
+          name: true,
+          surname: true,
           email: true,
         },
       },

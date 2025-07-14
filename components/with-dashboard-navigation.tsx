@@ -8,7 +8,8 @@
     Menu,
     RssIcon,
     SquarePlusIcon,
-    StickyNoteIcon } from 'lucide-react'
+    StickyNoteIcon,
+    Users } from 'lucide-react'
   import Image from 'next/image'
   import Link from 'next/link'
   import React from 'react'
@@ -126,6 +127,15 @@
               <BadgeEuro className="size-6" />
               Nedavne prodaje
             </Link>
+            </AccordionItem>
+            <AccordionItem value="item-5">
+              <Link
+                href={'/nadzorna-plosca/klienti'}
+                className="flex items-center gap-3 rounded-lg px-3 py-4 text-muted-foreground transition-all hover:!text-primary-200"
+              >
+                <Users className="size-6" />
+                Klienti
+              </Link>
             </AccordionItem>
             </Accordion>
             

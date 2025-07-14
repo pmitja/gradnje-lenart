@@ -5,7 +5,7 @@ import { revalidatePath } from 'next/cache'
 import { db } from '@/lib/db'
 import { StatusType } from '@/types/general'
 
-export async function confirmReservation(id: string) {
+export async function confirmReservation(id: string, clientId: string) {
   try {
     // Find the reservation
     const reservation = await db.reservation.findUnique({
@@ -21,23 +21,14 @@ export async function confirmReservation(id: string) {
       throw new Error('Reservation not found')
     }
 
-    // Create a new Customer based on the reservation data
-    const customer = await db.customer.create({
-      data: {
-        fullName: reservation.fullName,
-        email: reservation.email,
-        phoneNumber: reservation.phoneNumber,
-      },
-    })
-
-    // Update the real estate status to 'Prodano' and link it to the customer
+    // Update the real estate status to 'Prodano' and link it to the client
     await db.realEstate.update({
       where: {
         id: reservation.realEstateId,
       },
       data: {
         status: StatusType.Prodano,
-        customerId: customer.id,
+        clientId: clientId,
       },
     })
 

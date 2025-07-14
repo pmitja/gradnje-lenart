@@ -11,8 +11,13 @@ interface Sale {
   name: string
   priceWithTax: number | null
   updatedAt: Date
-  customer: {
+  customer?: {
     fullName: string
+    email: string
+  } | null
+  client?: {
+    name: string
+    surname: string
     email: string
   } | null
   location: {
@@ -115,33 +120,40 @@ export default function RecentSalesPage() {
           </thead>
           <tbody>
             {sales.length > 0 ? (
-              sales.map((sale) => (
-                <tr key={sale.id} className="hover:bg-primary-50/30">
-                  <td className="px-4 py-3">
-                    <div className="flex items-center gap-3">
-                      <div className="size-8 rounded-full bg-primary-200 flex items-center justify-center text-xs text-primary-foreground">
-                        {sale.customer?.fullName.slice(0, 2).toUpperCase() || 'NA'}
+              sales.map((sale) => {
+                const displayName = sale.client ? `${sale.client.name} ${sale.client.surname}` : sale.customer?.fullName || 'N/A';
+                const displayEmail = sale.client ? sale.client.email : sale.customer?.email || 'N/A';
+                const initials = sale.client
+                  ? `${(sale.client.name[0] || '').toUpperCase()}${(sale.client.surname[0] || '').toUpperCase()}`
+                  : (sale.customer?.fullName.slice(0, 2).toUpperCase() || 'NA');
+                return (
+                  <tr key={sale.id} className="hover:bg-primary-50/30">
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-3">
+                        <div className="size-8 rounded-full bg-primary-200 flex items-center justify-center text-xs text-primary-foreground">
+                          {initials}
+                        </div>
+                        <div>
+                          <p className="font-medium text-secondary-300">{displayName}</p>
+                          <p className="text-xs text-muted-foreground">{displayEmail}</p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="font-medium text-secondary-300">{sale.customer?.fullName || 'N/A'}</p>
-                        <p className="text-xs text-muted-foreground">{sale.customer?.email || 'N/A'}</p>
+                    </td>
+                    <td className="px-4 py-3 text-sm">{sale.location.name}</td>
+                    <td className="px-4 py-3 text-sm text-muted-foreground">
+                      {new Date(sale.updatedAt).toLocaleDateString('sl-SI', { day: '2-digit', month: 'short' })}
+                    </td>
+                    <td className="px-4 py-3 text-right">
+                      <div className="font-medium text-primary-400">
+                        {sale.priceWithTax?.toLocaleString('de-DE', {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        }) || '0,00'} €
                       </div>
-                    </div>
-                  </td>
-                  <td className="px-4 py-3 text-sm">{sale.location.name}</td>
-                  <td className="px-4 py-3 text-sm text-muted-foreground">
-                    {new Date(sale.updatedAt).toLocaleDateString('sl-SI', { day: '2-digit', month: 'short' })}
-                  </td>
-                  <td className="px-4 py-3 text-right">
-                    <div className="font-medium text-primary-400">
-                      {sale.priceWithTax?.toLocaleString('de-DE', {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      }) || '0,00'} €
-                    </div>
-                  </td>
-                </tr>
-              ))
+                    </td>
+                  </tr>
+                );
+              })
             ) : (
               <tr>
                 <td colSpan={4} className="h-56 text-center text-muted-foreground">

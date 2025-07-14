@@ -24,14 +24,22 @@ export async function getDashboardData() {
     const recentSales = await db.realEstate.findMany({
       where: {
         status: StatusType.Prodano,
-        customer: {
-          isNot: null,
-        },
+        OR: [
+          { customerId: { not: null } },
+          { clientId: { not: null } },
+        ],
       },
       include: {
         customer: {
           select: {
             fullName: true,
+            email: true,
+          },
+        },
+        client: {
+          select: {
+            name: true,
+            surname: true,
             email: true,
           },
         },

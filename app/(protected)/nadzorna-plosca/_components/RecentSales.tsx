@@ -18,8 +18,13 @@ interface Sale {
   name: string
   priceWithTax: number | null
   updatedAt: Date
-  customer: {
+  customer?: {
     fullName: string
+    email: string
+  } | null
+  client?: {
+    name: string
+    surname: string
     email: string
   } | null
   location: {
@@ -55,38 +60,45 @@ export default function RecentSales({ sales, onLoadMore, loading, hasMore }: { s
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {sales.map((sale) => (
-                  <TableRow key={sale.id} className="hover:bg-primary-50/30">
-                    <TableCell>
-                      <div className="flex items-center gap-3">
-                        <Avatar className="size-8">
-                          <AvatarImage src="/placeholder-avatar.png" alt="Avatar" />
-                          <AvatarFallback className="bg-primary-200 text-xs text-primary-foreground">
-                            {sale.customer?.fullName.slice(0, 2).toUpperCase() || 'NA'}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <p className="font-medium text-secondary-300">{sale.customer?.fullName || 'N/A'}</p>
-                          <p className="text-xs text-muted-foreground">{sale.customer?.email || 'N/A'}</p>
+                {sales.slice(0, 3).map((sale) => { // Only show last 3
+                  const displayName = sale.client ? `${sale.client.name} ${sale.client.surname}` : sale.customer?.fullName || 'N/A';
+                  const displayEmail = sale.client ? sale.client.email : sale.customer?.email || 'N/A';
+                  const initials = sale.client
+                    ? `${(sale.client.name[0] || '').toUpperCase()}${(sale.client.surname[0] || '').toUpperCase()}`
+                    : (sale.customer?.fullName.slice(0, 2).toUpperCase() || 'NA');
+                  return (
+                    <TableRow key={sale.id} className="hover:bg-primary-50/30">
+                      <TableCell>
+                        <div className="flex items-center gap-3">
+                          <Avatar className="size-8">
+                            <AvatarImage src="/placeholder-avatar.png" alt="Avatar" />
+                            <AvatarFallback className="bg-primary-200 text-xs text-primary-foreground">
+                              {initials}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div>
+                            <p className="font-medium text-secondary-300">{displayName}</p>
+                            <p className="text-xs text-muted-foreground">{displayEmail}</p>
+                          </div>
                         </div>
-                      </div>
-                    </TableCell>
-                    <TableCell className="text-sm">{sale.location.name}</TableCell>
-                    <TableCell className="text-sm text-muted-foreground">
-                      {format(new Date(sale.updatedAt), 'dd. MMM', {
-                        locale: sl,
-                      })}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <div className="font-medium text-primary-400">
-                        {sale.priceWithTax?.toLocaleString('de-DE', {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        }) || '0,00'} €
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                      </TableCell>
+                      <TableCell className="text-sm">{sale.location.name}</TableCell>
+                      <TableCell className="text-sm text-muted-foreground">
+                        {format(new Date(sale.updatedAt), 'dd. MMM', {
+                          locale: sl,
+                        })}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <div className="font-medium text-primary-400">
+                          {sale.priceWithTax?.toLocaleString('de-DE', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          }) || '0,00'} €
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
               </TableBody>
             </Table>
             {hasMore && (

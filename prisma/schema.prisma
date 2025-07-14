@@ -101,6 +101,8 @@ model RealEstate {
   customerId       String?
   customer         Customer?     @relation(fields: [customerId], references: [id])
   waitingList      WaitingListEntry[]
+  clientId         String?
+  client           Client?     @relation(fields: [clientId], references: [id])
 }
 
 model Reservation {
@@ -133,6 +135,20 @@ model WaitingListEntry {
   createdAt   DateTime  @default(now())
   realEstate  RealEstate @relation(fields: [realEstateId], references: [id])
   realEstateId String
+}
+
+model Client {
+  id          String     @id @default(cuid())
+  name        String     // Ime
+  surname     String     // Priimek
+  address     String     // Naslov
+  phone       String     // Telefon
+  email       String     // Email
+  taxNumber   String     // Davčna številka
+  idNumber    String     // Matična številka
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  realEstates RealEstate[]
 }
 
 enum UserRole {

@@ -29,6 +29,7 @@ interface Reservation {
     images?: string[]
     location: string
     apartmentNumber: string
+    slug: string
   }
 }
 
@@ -77,10 +78,10 @@ const ReservationsList = ({ initialReservations, onReservationUpdated, userRole 
       const removedReservation = reservations.find((r) => r.id === id)
 
       if (removedReservation) {
-        const { id: realEstateId, name: realEstateName } = removedReservation.realEstate
+        const { id: realEstateId, name: realEstateName, slug } = removedReservation.realEstate
 
         // Notify waiting list
-        const notificationResult = await notifyWaitingList(realEstateId, realEstateName)
+        const notificationResult = await notifyWaitingList(realEstateId, realEstateName, slug)
 
         if (notificationResult.success) {
           toast.success('Obvestila poslana čakalni listi')

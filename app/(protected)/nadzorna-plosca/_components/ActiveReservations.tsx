@@ -19,10 +19,10 @@ interface Reservation {
   realEstate: {
     id: string
     name: string
+    images?: string[]
     location: string
     apartmentNumber: string
-    number: string | null
-    images: string[]
+    slug: string
   }
 }
 
@@ -65,7 +65,7 @@ export default function ActiveReservations(
           ) : (
             <div className="relative space-y-6 before:absolute before:inset-0 before:ml-5 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-primary-100 before:via-primary-200 before:to-transparent">
               {reservations.slice(0, 5).map((reservation) => (
-                <div key={reservation.id} className="relative flex gap-4">
+                <div key={reservation.id} className="relative flex gap-4 cursor-pointer" onClick={() => setShowAllReservations(true)}>
                   <div className="flex size-10 items-center justify-center rounded-full bg-primary-75 shadow-sm">
                     <HomeIcon className="size-5 text-white" />
                   </div>

@@ -18,6 +18,7 @@ interface Reservation {
     number: string | null;
     name: string;
     images: string[];
+    slug: string;
   };
   id: string;
   fullName: string;

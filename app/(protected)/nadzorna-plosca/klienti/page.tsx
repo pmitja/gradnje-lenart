@@ -2,6 +2,7 @@
 
 import { startTransition, useEffect, useState } from "react"
 import { getAllClients } from "@/actions/get-all-clients"
+import { getClientSales } from "@/actions/get-client-sales"
 import { newClient } from "@/actions/new-client"
 import { deleteClient } from "@/actions/delete-client"
 import { updateClient } from "@/actions/update-client"
@@ -58,7 +59,12 @@ import {
   FileText,
   Save,
   X,
-  Loader2
+  Loader2,
+  Eye,
+  Home,
+  Calendar,
+  Euro,
+  ShoppingCart
 } from "lucide-react"
 
 interface Client {
@@ -72,6 +78,55 @@ interface Client {
   idNumber: string
   createdAt: string
   updatedAt: string
+}
+
+interface ClientSales {
+  client: {
+    id: string
+    name: string
+    surname: string
+    address: string
+    phone: string
+    email: string
+    taxNumber: string
+    idNumber: string
+    createdAt: Date
+    updatedAt: Date
+  }
+  sales: Array<{
+    id: string
+    name: string
+    number: string | null
+    floor: string | null
+    size: number | null
+    priceWithTax: number | null
+    updatedAt: Date
+    location: {
+      name: string
+      address: string
+      city: string
+    }
+  }>
+  reservations: Array<{
+    id: string
+    fullName: string
+    email: string
+    phoneNumber: string
+    createdAt: Date
+    realEstate: {
+      id: string
+      name: string
+      number: string | null
+      floor: string | null
+      size: number | null
+      priceWithTax: number | null
+      location: {
+        name: string
+        address: string
+        city: string
+      }
+    }
+  }>
 }
 
 export default function KlientiPage() {
@@ -91,6 +146,9 @@ export default function KlientiPage() {
   const [editForm, setEditForm] = useState(form)
   const [addDialogOpen, setAddDialogOpen] = useState(false)
   const [deleteDialogOpen, setDeleteDialogOpen] = useState<string | null>(null)
+  const [clientDetailsOpen, setClientDetailsOpen] = useState(false)
+  const [selectedClientSales, setSelectedClientSales] = useState<ClientSales | null>(null)
+  const [loadingClientDetails, setLoadingClientDetails] = useState(false)
 
   // Simple search implementation
   const filteredClients = search.trim() === '' 
@@ -104,19 +162,6 @@ export default function KlientiPage() {
           `${client.name} ${client.surname}`.toLowerCase().includes(searchTerm)
         )
       })
-
-  // Debug logging
-  console.log('Search debug:', { 
-    search, 
-    clientsTotal: clients.length, 
-    filteredTotal: filteredClients.length,
-    hasClients: clients.length > 0,
-    firstClient: clients[0] ? {
-      name: clients[0].name,
-      surname: clients[0].surname,
-      email: clients[0].email
-    } : null
-  })
 
   const fetchClients = async () => {
     setLoading(true)
@@ -133,6 +178,19 @@ export default function KlientiPage() {
       toast.error("Napaka pri pridobivanju klientov.")
     } finally {
       setLoading(false)
+    }
+  }
+
+  const fetchClientSales = async (clientId: string) => {
+    setLoadingClientDetails(true)
+    try {
+      const data = await getClientSales(clientId)
+      setSelectedClientSales(data)
+      setClientDetailsOpen(true)
+    } catch (e) {
+      toast.error("Napaka pri pridobivanju podatkov klienta.")
+    } finally {
+      setLoadingClientDetails(false)
     }
   }
 
@@ -222,6 +280,14 @@ export default function KlientiPage() {
     return `${name.charAt(0)}${surname.charAt(0)}`.toUpperCase()
   }
 
+  const formatPrice = (price: number | null) => {
+    if (!price) return "0,00 €"
+    return price.toLocaleString('de-DE', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }) + " €"
+  }
+
   return (
     <div className="flex flex-col gap-6 w-full">
       {/* Header */}
@@ -264,11 +330,6 @@ export default function KlientiPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
-          {search && (
-            <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-xs text-muted-foreground">
-              {filteredClients.length} rezultatov
-            </div>
-          )}
         </div>
         
         <Dialog open={addDialogOpen} onOpenChange={setAddDialogOpen}>
@@ -581,6 +642,19 @@ export default function KlientiPage() {
                           <TableCell>
                             <div className="flex gap-1">
                               <Button
+                                onClick={() => fetchClientSales(client.id)}
+                                variant="outline"
+                                size="sm"
+                                className="h-8 w-8 p-0 hover:bg-primary-100"
+                                disabled={loadingClientDetails}
+                              >
+                                {loadingClientDetails ? (
+                                  <Loader2 className="h-3 w-3 animate-spin" />
+                                ) : (
+                                  <Eye className="h-3 w-3" />
+                                )}
+                              </Button>
+                              <Button
                                 onClick={() => handleEdit(client)}
                                 variant="outline"
                                 size="sm"
@@ -645,6 +719,256 @@ export default function KlientiPage() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Client Details Dialog */}
+      <Dialog open={clientDetailsOpen} onOpenChange={setClientDetailsOpen}>
+        <DialogContent className="sm:max-w-4xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <User className="h-5 w-5 text-primary-300" />
+              Podrobnosti klienta
+            </DialogTitle>
+            <DialogDescription>
+              Pregled vseh podatkov klienta in njegovih nakupov
+            </DialogDescription>
+          </DialogHeader>
+          
+          {selectedClientSales && (
+            <div className="space-y-6">
+              {/* Client Information */}
+              <div className="bg-primary-50 rounded-lg p-4">
+                <h3 className="font-semibold text-secondary-300 mb-3 flex items-center gap-2">
+                  <User className="h-4 w-4" />
+                  Osnovni podatki
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-2">
+                      <div className="h-10 w-10 rounded-full bg-primary-200 flex items-center justify-center text-sm font-medium text-primary-600">
+                        {getInitials(selectedClientSales.client.name, selectedClientSales.client.surname)}
+                      </div>
+                      <div>
+                        <p className="font-medium text-secondary-300">
+                          {selectedClientSales.client.name} {selectedClientSales.client.surname}
+                        </p>
+                        <p className="text-sm text-muted-foreground">Klient</p>
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2 text-sm">
+                        <Mail className="h-4 w-4 text-muted-foreground" />
+                        <span>{selectedClientSales.client.email}</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm">
+                        <Phone className="h-4 w-4 text-muted-foreground" />
+                        <span>{selectedClientSales.client.phone}</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm">
+                        <MapPin className="h-4 w-4 text-muted-foreground" />
+                        <span>{selectedClientSales.client.address}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2 text-sm">
+                      <FileText className="h-4 w-4 text-muted-foreground" />
+                      <span>Davčna št.: {selectedClientSales.client.taxNumber}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm">
+                      <FileText className="h-4 w-4 text-muted-foreground" />
+                      <span>Matična št.: {selectedClientSales.client.idNumber}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm">
+                      <Calendar className="h-4 w-4 text-muted-foreground" />
+                      <span>Registriran: {new Date(selectedClientSales.client.createdAt).toLocaleDateString('sl-SI')}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <Separator />
+
+              {/* Sales History */}
+              <div>
+                <h3 className="font-semibold text-secondary-300 mb-3 flex items-center gap-2">
+                  <ShoppingCart className="h-4 w-4" />
+                  Prodajna zgodovina ({selectedClientSales.sales.length})
+                </h3>
+                {selectedClientSales.sales.length > 0 ? (
+                  <div className="border rounded-lg overflow-hidden">
+                    <Table>
+                      <TableHeader>
+                        <TableRow className="bg-primary-50/50">
+                          <TableHead>Nepremičnina</TableHead>
+                          <TableHead>Lokacija</TableHead>
+                          <TableHead>Velikost</TableHead>
+                          <TableHead>Cena</TableHead>
+                          <TableHead>Datum prodaje</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {selectedClientSales.sales.map((sale) => (
+                          <TableRow key={sale.id}>
+                            <TableCell>
+                              <div>
+                                <p className="font-medium">{sale.name}</p>
+                                {sale.number && (
+                                  <p className="text-sm text-muted-foreground">Št. {sale.number}</p>
+                                )}
+                                {sale.floor && (
+                                  <p className="text-sm text-muted-foreground">Nadstropje: {sale.floor}</p>
+                                )}
+                              </div>
+                            </TableCell>
+                            <TableCell>
+                              <div className="flex items-center gap-1">
+                                <MapPin className="h-3 w-3 text-muted-foreground" />
+                                <div>
+                                  <p className="text-sm">{sale.location.name}</p>
+                                  <p className="text-xs text-muted-foreground">{sale.location.city}</p>
+                                </div>
+                              </div>
+                            </TableCell>
+                            <TableCell>
+                              {sale.size ? `${sale.size} m²` : 'N/A'}
+                            </TableCell>
+                            <TableCell>
+                              <span className="font-medium text-primary-400">
+                                {formatPrice(sale.priceWithTax)}
+                              </span>
+                            </TableCell>
+                            <TableCell>
+                              <span className="text-sm">
+                                {new Date(sale.updatedAt).toLocaleDateString('sl-SI')}
+                              </span>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                ) : (
+                  <div className="text-center py-6 text-muted-foreground">
+                    <ShoppingCart className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                    <p>Klient še ni opravil nobenih nakupov</p>
+                  </div>
+                )}
+              </div>
+
+              <Separator />
+
+              {/* Active Reservations */}
+              <div>
+                <h3 className="font-semibold text-secondary-300 mb-3 flex items-center gap-2">
+                  <Calendar className="h-4 w-4" />
+                  Aktivne rezervacije ({selectedClientSales.reservations.length})
+                </h3>
+                {selectedClientSales.reservations.length > 0 ? (
+                  <div className="border rounded-lg overflow-hidden">
+                    <Table>
+                      <TableHeader>
+                        <TableRow className="bg-primary-50/50">
+                          <TableHead>Nepremičnina</TableHead>
+                          <TableHead>Lokacija</TableHead>
+                          <TableHead>Velikost</TableHead>
+                          <TableHead>Cena</TableHead>
+                          <TableHead>Datum rezervacije</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {selectedClientSales.reservations.map((reservation) => (
+                          <TableRow key={reservation.id}>
+                            <TableCell>
+                              <div>
+                                <p className="font-medium">{reservation.realEstate.name}</p>
+                                {reservation.realEstate.number && (
+                                  <p className="text-sm text-muted-foreground">Št. {reservation.realEstate.number}</p>
+                                )}
+                                {reservation.realEstate.floor && (
+                                  <p className="text-sm text-muted-foreground">Nadstropje: {reservation.realEstate.floor}</p>
+                                )}
+                              </div>
+                            </TableCell>
+                            <TableCell>
+                              <div className="flex items-center gap-1">
+                                <MapPin className="h-3 w-3 text-muted-foreground" />
+                                <div>
+                                  <p className="text-sm">{reservation.realEstate.location.name}</p>
+                                  <p className="text-xs text-muted-foreground">{reservation.realEstate.location.city}</p>
+                                </div>
+                              </div>
+                            </TableCell>
+                            <TableCell>
+                              {reservation.realEstate.size ? `${reservation.realEstate.size} m²` : 'N/A'}
+                            </TableCell>
+                            <TableCell>
+                              <span className="font-medium text-primary-400">
+                                {formatPrice(reservation.realEstate.priceWithTax)}
+                              </span>
+                            </TableCell>
+                            <TableCell>
+                              <span className="text-sm">
+                                {new Date(reservation.createdAt).toLocaleDateString('sl-SI')}
+                              </span>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                ) : (
+                  <div className="text-center py-6 text-muted-foreground">
+                    <Calendar className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                    <p>Klient nima aktivnih rezervacij</p>
+                  </div>
+                )}
+              </div>
+
+              {/* Summary */}
+              <div className="bg-primary-50 rounded-lg p-4">
+                <h3 className="font-semibold text-secondary-300 mb-3 flex items-center gap-2">
+                  <Euro className="h-4 w-4" />
+                  Povzetek
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="text-center">
+                    <p className="text-2xl font-bold text-primary-400">
+                      {selectedClientSales.sales.length}
+                    </p>
+                    <p className="text-sm text-muted-foreground">Nakupov</p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-2xl font-bold text-primary-400">
+                      {selectedClientSales.reservations.length}
+                    </p>
+                    <p className="text-sm text-muted-foreground">Rezervacij</p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-2xl font-bold text-primary-400">
+                      {formatPrice(
+                        selectedClientSales.sales.reduce(
+                          (total, sale) => total + (sale.priceWithTax || 0),
+                          0
+                        )
+                      )}
+                    </p>
+                    <p className="text-sm text-muted-foreground">Skupna vrednost nakupov</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          
+          <DialogFooter>
+            <Button 
+              variant="outline" 
+              onClick={() => setClientDetailsOpen(false)}
+            >
+              Zapri
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 } 

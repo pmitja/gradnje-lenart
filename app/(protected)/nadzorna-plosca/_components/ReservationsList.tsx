@@ -445,30 +445,35 @@ const ReservationsList = ({ initialReservations, onReservationUpdated, userRole 
             </DialogHeader>
             <div className="mb-4">
               <Label htmlFor="client-select" className="block mb-2">Klient</Label>
-              <Select
-                value={selectedClientId}
-                onValueChange={setSelectedClientId}
-              >
-                <SelectTrigger id="client-select" className="mb-2">
-                  <SelectValue placeholder="Izberi klienta" />
-                </SelectTrigger>
-                <SelectContent>
-                  {clients.length === 0 ? (
-                    <div className="p-2 text-muted-foreground">Ni klientov.</div>
-                  ) : (
-                    clients.map(client => (
-                      <SelectItem key={client.id} value={client.id}>
-                        {client.name} {client.surname} ({client.email})
-                      </SelectItem>
-                    ))
-                  )}
-                </SelectContent>
-              </Select>
-              {clients.length === 0 && (
-                <Button variant="outline" className="mt-2" onClick={() => setAddClientDialogOpen(true)}>
-                  Dodaj novega klienta
+              <div className="flex gap-2">
+                <Select
+                  value={selectedClientId}
+                  onValueChange={setSelectedClientId}
+                >
+                  <SelectTrigger id="client-select" className="flex-1">
+                    <SelectValue placeholder="Izberi klienta" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {clients.length === 0 ? (
+                      <div className="p-2 text-muted-foreground">Ni klientov.</div>
+                    ) : (
+                      clients.map(client => (
+                        <SelectItem key={client.id} value={client.id}>
+                          {client.name} {client.surname} ({client.email})
+                        </SelectItem>
+                      ))
+                    )}
+                  </SelectContent>
+                </Select>
+                <Button 
+                  variant="outline" 
+                  onClick={() => setAddClientDialogOpen(true)}
+                  className="shrink-0"
+                >
+                  <User className="h-4 w-4 mr-2" />
+                  Dodaj
                 </Button>
-              )}
+              </div>
             </div>
             <div className="flex justify-end gap-2">
               <Button variant="outline" onClick={() => setConfirmDialogOpen(false)}>

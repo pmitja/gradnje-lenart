@@ -37,7 +37,7 @@ import { updateSchema } from '@/schemas'
 import { Apartment, Location, LocationType, StatusType } from '@/types/general'
 import { X } from 'lucide-react'
 import { deleteRealEstate } from '@/actions/delete-real-estate'
-import { Info, Save, Trash2, ArrowLeft } from 'lucide-react'
+import { Info, Save, Trash2, ArrowLeft, Copy } from 'lucide-react'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { use as usePromise } from 'react'
 
@@ -357,6 +357,38 @@ const AktualniProjektPage = ({ params }: { params: Promise<{ slug: string }> }) 
                                       className="p-1 h-7 w-7 text-destructive hover:bg-destructive/10"
                                     >
                                       <Trash2 className="w-4 h-4" />
+                                    </Button>
+                                    <Button
+                                      variant="ghost"
+                                      size="icon"
+                                      onClick={(e) => {
+                                        e.stopPropagation()
+                                        // Find the next available number
+                                        const maxNumber = apartments.reduce((max, a) => {
+                                          const num = Number(a.number)
+                                          return !isNaN(num) && num > max ? num : max
+                                        }, 0)
+                                        const nextNumber = String(maxNumber + 1)
+                                        // Duplicate the apartment
+                                        const duplicated = {
+                                          ...apartment,
+                                          id: undefined,
+                                          slug: undefined,
+                                          createdAt: undefined,
+                                          updatedAt: undefined,
+                                          customerId: undefined,
+                                          files: apartment.files ?? null,
+                                          number: nextNumber,
+                                        }
+                                        setApartments((prev) => [...prev, duplicated])
+                                        toast.success('Nepremičnina je bila uspešno podvojena!', {
+                                          description: `Nova nepremičnina ima številko ${nextNumber}.`,
+                                        })
+                                      }}
+                                      aria-label="Podvoji nepremičnino"
+                                      className="p-1 h-7 w-7 text-primary-500 hover:bg-primary-100"
+                                    >
+                                      <Copy className="w-4 h-4" />
                                     </Button>
                                     <Dialog open={deleteDialogOpen === apartment.id} onOpenChange={(open) => {
                                       if (!open) setDeleteDialogOpen(null)

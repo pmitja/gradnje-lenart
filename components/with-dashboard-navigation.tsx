@@ -4,6 +4,7 @@
   import { ArchiveIcon,
     ArrowBigLeft,
     BadgeEuro,
+    CalendarClock,
     DoorOpenIcon,
     Menu,
     RssIcon,
@@ -37,6 +38,7 @@
     userRole,
   }) => {
     const isAdmin = userRole === 'ADMIN'
+    const isEmployee = userRole === 'EMPLOYEE'
 
     const SidebarContent = () => (
       <div className="fixed flex h-full max-h-screen min-w-[279px] flex-col gap-2">
@@ -53,93 +55,119 @@
                   <ArrowBigLeft /> Nazaj na stran
                 </Link>
               </div>
-              <AccordionItem value="item-1">
-                <AccordionTrigger>
-                  <DoorOpenIcon /> Aktualni projekti
-                </AccordionTrigger>
-                <AccordionContent>
-                  {isAdmin && (
-                    <Link
-                      href={'/nadzorna-plosca/aktualni-projekt/nov'}
-                      className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:!text-primary-200"
-                    >
-                      Nov vnos
-                    </Link>
+              {!isEmployee && (
+                <>
+                  <AccordionItem value="item-1">
+                    <AccordionTrigger>
+                      <DoorOpenIcon /> Aktualni projekti
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      {isAdmin && (
+                        <Link
+                          href={'/nadzorna-plosca/aktualni-projekt/nov'}
+                          className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:!text-primary-200"
+                        >
+                          Nov vnos
+                        </Link>
+                      )}
+                      {activeNavItems && activeNavItems.map((location) => (
+                        <Link
+                          href={`/nadzorna-plosca/aktualni-projekt/${location.slug}`}
+                          key={location.slug}
+                          className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:!text-primary-200"
+                        >
+                          {location.name}
+                        </Link>
+                      ))}
+                    </AccordionContent>
+                  </AccordionItem>
+                  {finishedNavItems && (
+                    <AccordionItem value="item-2">
+                      <AccordionTrigger>
+                        <ArchiveIcon /> Pretekli projekti
+                      </AccordionTrigger>
+                      <AccordionContent>
+                        {finishedNavItems && finishedNavItems.map((location) => (
+                          <Link
+                            href={`/nadzorna-plosca/aktualni-projekt/${location.slug}`}
+                            key={location.slug}
+                            className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:!text-primary-200"
+                          >
+                            {location.name}
+                          </Link>
+                        ))}
+                      </AccordionContent>
+                    </AccordionItem>
                   )}
-                  {activeNavItems
-                    && activeNavItems.map((location) => (
-                      <Link
-                        href={`/nadzorna-plosca/aktualni-projekt/${location.slug}`}
-                        key={location.slug}
-                        className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:!text-primary-200"
-                      >
-                        {location.name}
-                      </Link>
-                    ))}
-                </AccordionContent>
-              </AccordionItem>
-              {finishedNavItems && <AccordionItem value="item-2">
-                <AccordionTrigger>
-                  <ArchiveIcon /> Pretekli projekti
-                </AccordionTrigger>
-                <AccordionContent>
-                {finishedNavItems
-                    && finishedNavItems.map((location) => (
-                      <Link
-                        href={`/nadzorna-plosca/aktualni-projekt/${location.slug}`}
-                        key={location.slug}
-                        className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:!text-primary-200"
-                      >
-                        {location.name}
-                      </Link>
-                    ))}
-                </AccordionContent>
-              </AccordionItem>}
-              {isAdmin && (
-                <AccordionItem value="item-3">
-                  <AccordionTrigger>
-                    <RssIcon />
-                    Blog objave
-                  </AccordionTrigger>
-                  <AccordionContent>
+                  {isAdmin && (
+                    <AccordionItem value="item-3">
+                      <AccordionTrigger>
+                        <RssIcon />
+                        Blog objave
+                      </AccordionTrigger>
+                      <AccordionContent>
+                        <Link
+                          href="#"
+                          className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:!text-primary-200"
+                        >
+                          <StickyNoteIcon className="size-4" />
+                          Pregled
+                        </Link>
+                        <Link
+                          href="#"
+                          className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:!text-primary-200"
+                        >
+                          <SquarePlusIcon className="size-4" />
+                          Dodaj blog objavo
+                        </Link>
+                      </AccordionContent>
+                    </AccordionItem>
+                  )}
+                  <AccordionItem value="item-4">
                     <Link
-                      href="#"
-                      className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:!text-primary-200"
+                      href={'/nadzorna-plosca/recent-sales'}
+                      className="flex items-center gap-3 rounded-lg px-3 py-4 text-muted-foreground transition-all hover:!text-primary-200"
                     >
-                      <StickyNoteIcon className="size-4" />
-                      Pregled
+                      <BadgeEuro className="size-6" />
+                      Nedavne prodaje
                     </Link>
+                  </AccordionItem>
+                  <AccordionItem value="item-5">
                     <Link
-                      href="#"
-                      className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:!text-primary-200"
+                      href={'/nadzorna-plosca/klienti'}
+                      className="flex items-center gap-3 rounded-lg px-3 py-4 text-muted-foreground transition-all hover:!text-primary-200"
                     >
-                      <SquarePlusIcon className="size-4" />
-                      Dodaj blog objavo
+                      <Users className="size-6" />
+                      Klienti
                     </Link>
-                  </AccordionContent>
+                  </AccordionItem>
+                  {isAdmin && (
+                    <AccordionItem value="item-7">
+                      <Link
+                        href={'/nadzorna-plosca/ure-zaposleni'}
+                        className="flex items-center gap-3 rounded-lg px-3 py-4 text-muted-foreground transition-all hover:!text-primary-200"
+                      >
+                        <CalendarClock className="size-6" />
+                        Ure zaposlenih
+                      </Link>
+                    </AccordionItem>
+                  )}
+                </>
+              )}
+              {isEmployee && (
+                <AccordionItem value="item-6">
+                  <Link
+                    href={'/nadzorna-plosca/ure-osebno'}
+                    className="flex items-center gap-3 rounded-lg px-3 py-4 text-muted-foreground transition-all hover:!text-primary-200"
+                  >
+                    <CalendarClock className="size-6" />
+                    Moje ure
+                  </Link>
                 </AccordionItem>
               )}
-              <AccordionItem value="item-4">
-            <Link
-              href={'/nadzorna-plosca/recent-sales'}
-              className="flex items-center gap-3 rounded-lg px-3 py-4 text-muted-foreground transition-all hover:!text-primary-200"
-            >
-              <BadgeEuro className="size-6" />
-              Nedavne prodaje
-            </Link>
-            </AccordionItem>
-            <AccordionItem value="item-5">
-              <Link
-                href={'/nadzorna-plosca/klienti'}
-                className="flex items-center gap-3 rounded-lg px-3 py-4 text-muted-foreground transition-all hover:!text-primary-200"
-              >
-                <Users className="size-6" />
-                Klienti
-              </Link>
-            </AccordionItem>
             </Accordion>
             
-            {isAdmin && (
+            {isAdmin && !isEmployee && (
               <Link
                 href={'/nadzorna-plosca/aktualni-projekt/nov'}
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:!text-primary-200"

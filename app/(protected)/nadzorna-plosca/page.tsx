@@ -2,6 +2,7 @@
 
 import { useSession } from 'next-auth/react'
 import { useCallback, useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 import { getDashboardData } from '@/actions/get-dashboard-data'
 
@@ -55,6 +56,7 @@ interface DashboardData {
 
 const UserPage = () => {
   const { data: session } = useSession()
+  const router = useRouter()
 
   const userRole = session?.user?.role || 'USER'
 
@@ -77,9 +79,19 @@ const UserPage = () => {
     fetchData()
   }, [ fetchData ])
 
+  useEffect(() => {
+    if (userRole === 'EMPLOYEE') {
+      router.replace('/nadzorna-plosca/ure-osebno')
+    }
+  }, [userRole, router])
+
   const handleReservationUpdated = useCallback(() => {
     fetchData()
   }, [ fetchData ])
+
+  if (userRole === 'EMPLOYEE') {
+    return null
+  }
 
   return (
     <div className="flex min-h-screen w-full flex-col">

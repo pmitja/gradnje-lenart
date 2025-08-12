@@ -80,6 +80,7 @@
     "uploadthing": "^7.0.2",
     "uuid": "^9.0.1",
     "vaul": "^0.9.1",
+    "xlsx": "^0.18.5",
     "yet-another-react-lightbox": "^3.21.5",
     "zod": "^3.23.8",
     "zustand": "^4.5.4"
